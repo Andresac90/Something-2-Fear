@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class CablesGame : MonoBehaviour
-{
+{/*
     private InputMaster Controls;
     private Vector2 mousePosition;
     private Vector2 originPosition;
@@ -99,5 +99,5 @@ public class CablesGame : MonoBehaviour
         light.SetActive(true);
         //To not move the cable again
         Destroy(this);
-    }
+    }*/
 }

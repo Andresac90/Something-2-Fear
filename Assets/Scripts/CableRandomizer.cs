@@ -5,7 +5,7 @@ using UnityEngine;
 public class CableRandomizer : MonoBehaviour
 {
     private void Awake()
-    {
+    {/*
         for (int i = 0; i < transform.childCount; i++)
         {
             GameObject currentCable = transform.GetChild(i).gameObject;
@@ -16,6 +16,6 @@ public class CableRandomizer : MonoBehaviour
 
             currentCable.transform.position = newPosCurrentCable;
             connectorCable.transform.position = newPosConnectorCable;
-        }
+        }*/
     }
 }
