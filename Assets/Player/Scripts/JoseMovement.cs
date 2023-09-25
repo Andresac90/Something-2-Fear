@@ -24,6 +24,8 @@ public class JoseMovement : MonoBehaviour
 
     private CharacterController CharController;
 
+    public bool HasRun = false;
+
     //Grounded
     public bool IsGrounded;
     //Head Check in editor
@@ -42,7 +44,6 @@ public class JoseMovement : MonoBehaviour
     private bool HasCrouched = false;
 
     //Jump
-
     private bool HasJump = false;
 
 
@@ -64,6 +65,7 @@ public class JoseMovement : MonoBehaviour
         Movement();
         Jump();
         Crouch();
+        Sprint();
     }
     void Movement()
     {
@@ -78,7 +80,22 @@ public class JoseMovement : MonoBehaviour
         YVel.y += Gravity * Time.deltaTime;
         CharController.Move(MovementZ * Speed * Time.deltaTime);
         CharController.Move(YVel * Speed * Time.deltaTime);
-        
+    }
+
+    void Sprint()
+    {
+        bool IsSprintPressed = Controls.Player.Run.ReadValue<float>() > 0.1f;
+        if (IsSprintPressed && !HasRun)
+        {
+            Speed *= 2.0f;
+            HasRun = true;
+        }
+
+        if (!IsSprintPressed && HasRun == true)
+        {
+            Speed = OriginalSpeed;
+            HasRun = false;
+        }
     }
 
     void Jump()
@@ -110,7 +127,7 @@ public class JoseMovement : MonoBehaviour
             IsCrouched = true;
         }
 
-        if ((Controls.Player.Crouch.WasReleasedThisFrame() && HasCeiling == false) || (HasCeiling == false && !IsCrouchPressed))
+        if (HasCeiling == false && !IsCrouchPressed && HasRun == false)
         {
             CharController.height = 2;
             CharController.center = new Vector3(0, 0, 0);
