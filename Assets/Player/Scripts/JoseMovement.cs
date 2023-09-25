@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using UnityEditor;
-using Unity.VisualScripting;
 
 public class JoseMovement : MonoBehaviour
 {

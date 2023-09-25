@@ -1,70 +1,70 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
+using UnityEngine;
+using UnityEditor;
 
 public class SantiController : MonoBehaviour
 {
-    private Vector2 move;
-    
-    private float moveSpeed = 6f;
-
-    private Vector3 velocity;
+    private Vector2 Move;
+    private Vector2 YVel;
+    public float Speed;
+    private float OriginalSpeed;
 
     [SerializeField]
-    private float gravity = -9.81f;
+    private float Gravity = -9.81f;
 
-    private InputMaster controls;
-    private CharacterController controller;
+    private InputMaster Controls;
+    private CharacterController CharController;
 
-    private bool isGrounded;
-    public Transform ground;
-    public float distanceToGround = 0.4f;
-    public LayerMask groundMask;
-    
+    //Grounded
+    public bool IsGrounded;
+    //Head Check in editor
+    [SerializeField]
+    private Transform GroundCheck;
+    public float RadiusGround;
+    public LayerMask GroundMask;
+
     void Awake()
     {
-        controls = new InputMaster();
-        controller = GetComponent<CharacterController>();
+        Controls = new InputMaster();
     }
 
+    void Start()
+    {
+        CharController = GetComponent<CharacterController>();
+        OriginalSpeed = Speed;
+    }
     // Update is called once per frame
     void Update()
     {
-        GroundCheck();
-        PlayerMovement();
+        Movement();
     }
 
-    private void GroundCheck()
+    private void Movement()
     {
-        isGrounded = Physics.CheckSphere(ground.position, distanceToGround, groundMask);
+        IsGrounded = Physics.CheckSphere(GroundCheck.position, RadiusGround, GroundMask);
+        Move = Controls.Player.Movement.ReadValue<Vector2>();
 
-        if(isGrounded && velocity.y < 0)
+        if (IsGrounded && YVel.y < 0)
         {
-            velocity.y = 0;
+            YVel.y = 0;
         }
 
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
-    }
-
-    private void PlayerMovement()
-    {
-        move = controls.Player.Movement.ReadValue<Vector2>();
-
-        Vector3 movement = (move.y * transform.forward) + (move.x * transform.right);
-        controller.Move(movement * moveSpeed * Time.deltaTime);
+        Vector3 MovementZ = (transform.right * Move.x + transform.forward * Move.y);
+        YVel.y += Gravity * Time.deltaTime;
+        CharController.Move(MovementZ * Speed * Time.deltaTime);
+        CharController.Move(YVel * Speed * Time.deltaTime);
     }
 
     private void OnEnable()
     {
-        controls.Enable();
+        Controls.Enable();
     }
 
     private void OnDisable()
     {
-        controls.Disable();
+        Controls.Disable();
     }
 
 }
