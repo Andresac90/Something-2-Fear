@@ -84,9 +84,9 @@ public class JoseMovement : MonoBehaviour
     void Sprint()
     {
         bool IsSprintPressed = Controls.Player.Run.ReadValue<float>() > 0.1f;
-        if (IsSprintPressed && !HasRun)
+        if (IsSprintPressed && !HasRun && HasCrouched == false && IsGrounded == true)
         {
-            Speed *= 2.0f;
+            Speed *= 1.9f;
             HasRun = true;
         }
 
@@ -116,7 +116,7 @@ public class JoseMovement : MonoBehaviour
     {
         HasCeiling = Physics.CheckSphere(HeadCheck.position, RadiusHead, GroundMask);
         bool IsCrouchPressed = Controls.Player.Crouch.ReadValue<float>() > 0.1f;
-        if (IsCrouchPressed && !HasCrouched)
+        if (IsCrouchPressed && !HasCrouched && HasJump == false)
         {
             CharController.height = 1;
             CharController.center = new Vector3(0, -0.5f, 0);

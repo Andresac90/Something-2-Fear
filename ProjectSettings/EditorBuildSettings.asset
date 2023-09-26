@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/PruebaJose.unity
+    guid: 5c3a4bb99dde34ba0a952c5a1750d565
+  - enabled: 1
+    path: Assets/Scenes/Santi Prueba.unity
+    guid: db9489057aa355b4ab6b2663ad5bc83b
   m_configObjects: {}
