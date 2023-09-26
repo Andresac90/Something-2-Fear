@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class CablesGame : MonoBehaviour
-{/*
+{
     private InputMaster Controls;
     private Vector2 mousePosition;
     private Vector2 originPosition;
@@ -13,14 +13,14 @@ public class CablesGame : MonoBehaviour
     private Vector2 originalPosition;
     private Vector2 originalSize;
 
-    public SpriteRender finalCable;
+    public SpriteRenderer finalCable;
     public GameObject light;
 
     // Start is called before the first frame update
     void Start()
     {
         originalPosition = transform.position;
-        originSize = finalCable.size;
+        originalSize = finalCable.size;
     }
 
     // Update is called once per frame
@@ -37,7 +37,7 @@ public class CablesGame : MonoBehaviour
         ChangePosition();
         ChangeRotation();
         ChangeSize();
-        ConnectionCheck;
+        ConnectionCheck();
     }
 
     private void ChangePosition()
@@ -83,7 +83,7 @@ public class CablesGame : MonoBehaviour
             {
                 transform.position = col.transform.position;
                 
-                Cable connectorCable = col.gameObject.GetComponent<Cable>();
+                CablesGame connectorCable = col.gameObject.GetComponent<CablesGame>();
 
                 if (finalCable.color == connectorCable.finalCable.color)
                 {
@@ -99,5 +99,5 @@ public class CablesGame : MonoBehaviour
         light.SetActive(true);
         //To not move the cable again
         Destroy(this);
-    }*/
+    }
 }
