@@ -7,8 +7,8 @@ public class AIControl : MonoBehaviour
     public NavMeshAgent navMeshAgent;               //  Nav mesh agent component
     public float startWaitTime = 4;                 //  Wait time of every action
     public float timeToRotate = 2;                  //  Wait time when the enemy detect near the player without seeing
-    public float speedWalk = 6;                     //  Walking speed, speed in the nav mesh agent
-    public float speedRun = 9;                      //  Running speed
+    public float walkSpeed = 6;                     //  Walking speed, speed in the nav mesh agent
+    public float runSpeed = 9;                      //  Running speed
 
     public float viewRadius = 15;                   //  Radius of the enemy view
     public float viewAngle = 90;                    //  Angle of the enemy view
@@ -28,9 +28,9 @@ public class AIControl : MonoBehaviour
     float m_WaitTime;                               //  Variable of the wait time that makes the delay
     float m_TimeToRotate;                           //  Variable of the wait time to rotate when the player is near that makes the delay
     bool m_playerInRange;                           //  If the player is in range of vision, state of chasing
-    bool m_PlayerNear;                              //  If the player is near, state of hearing
-    bool m_IsPatrol;                                //  If the enemy is patrol, state of patroling
-    bool m_CaughtPlayer;                            //  if the enemy has caught the player
+    public bool m_PlayerNear;                              //  If the player is near, state of hearing
+    public bool m_IsPatrol;                                //  If the enemy is patrol, state of patroling
+    public bool m_CaughtPlayer;                            //  if the enemy has caught the player
 
     void Start()
     {
@@ -46,7 +46,7 @@ public class AIControl : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
 
         navMeshAgent.isStopped = false;
-        navMeshAgent.speed = speedWalk;             //  Set the navemesh speed with the normal speed of the enemy
+        navMeshAgent.speed = walkSpeed;             //  Set the navemesh speed with the normal speed of the enemy
         navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);    //  Set the destination to the first waypoint
     }
 
@@ -54,25 +54,31 @@ public class AIControl : MonoBehaviour
     {
             EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
 
-        if (!m_IsPatrol)
+        if (!m_IsPatrol && !m_CaughtPlayer)
         {
             Chasing();
         }
-        else
+        else if(m_IsPatrol && !m_CaughtPlayer)
         {
             Patroling();
+        }
+        else if (m_CaughtPlayer)
+        {
+            Debug.Log("Attacking");
+            Attacking();
         }
     }
 
     private void Chasing()
     {
+        
         //  The enemy is chasing the player
         m_PlayerNear = false;                       //  Set false that hte player is near beacause the enemy already sees the player
         playerLastPosition = Vector3.zero;          //  Reset the player near position
 
         if (!m_CaughtPlayer)
         {
-            Move(speedRun);
+            Move(runSpeed);
             navMeshAgent.SetDestination(m_PlayerPosition);          //  set the destination of the enemy to the player location
         }
         if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)    //  Control if the enemy arrive to the player location
@@ -82,7 +88,7 @@ public class AIControl : MonoBehaviour
                 //  Check if the enemy is not near to the player, returns to patrol after the wait time delay
                 m_IsPatrol = true;
                 m_PlayerNear = false;
-                Move(speedWalk);
+                Move(walkSpeed);
                 m_TimeToRotate = timeToRotate;
                 m_WaitTime = startWaitTime;
                 navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
@@ -94,6 +100,10 @@ public class AIControl : MonoBehaviour
                     Stop();
                 m_WaitTime -= Time.deltaTime;
             }
+            if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) < 2f)
+            {   
+                CaughtPlayer();
+            }
         }
     }
 
@@ -104,7 +114,7 @@ public class AIControl : MonoBehaviour
             //  Check if the enemy detect near the player, so the enemy will move to that position
             if (m_TimeToRotate <= 0)
             {
-                Move(speedWalk);
+                Move(walkSpeed);
                 LookingPlayer(playerLastPosition);
             }
             else
@@ -125,7 +135,7 @@ public class AIControl : MonoBehaviour
                 if (m_WaitTime <= 0)
                 {
                     NextPoint();
-                    Move(speedWalk);
+                    Move(walkSpeed);
                     m_WaitTime = startWaitTime;
                 }
                 else
@@ -135,6 +145,22 @@ public class AIControl : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void Attacking()
+    {
+        Debug.Log("Attack");
+        
+        m_CaughtPlayer = false;
+        m_IsPatrol = true;
+        m_PlayerNear = false;
+        Stop();
+        m_WaitTime -= Time.deltaTime;
+        Move(walkSpeed);
+        m_TimeToRotate = timeToRotate;
+        m_WaitTime = startWaitTime;
+        navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+
     }
 
     private void OnAnimatorMove()
@@ -173,7 +199,7 @@ public class AIControl : MonoBehaviour
             if (m_WaitTime <= 0)
             {
                 m_PlayerNear = false;
-                Move(speedWalk);
+                Move(walkSpeed);
                 navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
                 m_WaitTime = startWaitTime;
                 m_TimeToRotate = timeToRotate;
