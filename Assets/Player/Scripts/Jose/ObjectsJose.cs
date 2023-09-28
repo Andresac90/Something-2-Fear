@@ -11,11 +11,15 @@ public class ObjectsJose : MonoBehaviour
     private Transform ObjectRight;
     [SerializeField]
     private Transform ObjectLeft;
+    [SerializeField]
+    private Camera PlayerCamera;
 
     public LayerMask PlayerMask;
 
-    public 
-    // Start is called before the first frame update
+    void Awake()
+    {
+        Controls = new InputMaster();
+    }
     void Start()
     {
         
@@ -29,7 +33,7 @@ public class ObjectsJose : MonoBehaviour
 
     void Grab()
     {
-
+        
     }
 
     private void OnEnable()
