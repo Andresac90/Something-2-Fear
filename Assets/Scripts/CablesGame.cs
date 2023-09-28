@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class CablesGame : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class CablesGame : MonoBehaviour
     private Vector2 originalPosition;
     private Vector2 originalSize;
 
-    public SpriteRenderer finalCable;
+    public Image finalCable;
     public GameObject light;
 
     // Start is called before the first frame update
