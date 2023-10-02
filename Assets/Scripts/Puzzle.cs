@@ -7,43 +7,59 @@ public class Puzzle : MonoBehaviour
     private InputMaster Controls;
 
     public GameObject Task;
-    bool openTask;
+    bool playerNear;
 
     void Awake()
     {
         Controls = new InputMaster();
-        Cursor.lockState = CursorLockMode.None;
     }
 
     // Update is called once per frame
     void Update()
     {
+        OpenPuzzle();
+        ClosePuzzle();
+    }
+
+    public void OnTriggerEnter(Collider collision)
+    {
+        if(collision.CompareTag("Player"))
+        {
+            playerNear = true;
+        }
+    }
+
+    public void OnTriggerExit(Collider collision)
+    {
+        if(collision.CompareTag("Player"))
+        {
+            playerNear = false;
+        }
+    }
+
+    private bool isPuzzleActive()
+    {
+        return playerNear;
+    }
+
+    private void OpenPuzzle()
+    {
         bool IsInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0f;
-        if(isTaskActive() && IsInteractPressed)
+        if(isPuzzleActive() && IsInteractPressed && Task.activeSelf == false)
         {
-            Instantiate(Task);
+            Task.SetActive (true);
+            //Instantiate(Task);
         }
     }
 
-    public void OnTriggerEnter2D(Collider2D collision)
+    private void ClosePuzzle()
     {
-        if(collision.CompareTag("Player"))
+        bool IsCancelPressed = Controls.Player.Cancel.ReadValue<float>() > 0f;
+        if(Task.activeSelf && IsCancelPressed)
         {
-            openTask = true;
+            Task.SetActive (false);
+            //Instantiate(Task);
         }
-    }
-
-    public void OnTriggerExit2D(Collider2D collision)
-    {
-        if(collision.CompareTag("Player"))
-        {
-            openTask = false;
-        }
-    }
-
-    private bool isTaskActive()
-    {
-        return openTask && !GameObject.FindWithTag("Task");
     }
 
     private void OnEnable()

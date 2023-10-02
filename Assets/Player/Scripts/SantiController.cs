@@ -17,6 +17,7 @@ public class SantiController : MonoBehaviour
     private InputMaster Controls;
     private CharacterController CharController;
 
+    // public GameObject Task;
     //Grounded
     public bool IsGrounded;
     //Head Check in editor
@@ -39,6 +40,7 @@ public class SantiController : MonoBehaviour
     void Update()
     {
         Movement();
+        // Interact();
     }
 
     private void Movement()
@@ -56,6 +58,16 @@ public class SantiController : MonoBehaviour
         CharController.Move(MovementZ * Speed * Time.deltaTime);
         CharController.Move(YVel * Speed * Time.deltaTime);
     }
+
+    // private void Interact()
+    // {
+    //     bool IsInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0f;
+    //     if(isTaskActive() && IsInteractPressed)
+    //     {
+    //         Debug.Log("Iniciado");
+    //         Instantiate(Task);
+    //     }
+    // }
 
     private void OnEnable()
     {
