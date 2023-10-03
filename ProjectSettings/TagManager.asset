@@ -7,11 +7,12 @@ TagManager:
   - Puzzle
   - Object
   - PlayerSanti
+  - PlayerJose
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Player
+  - PlayerJose
   - Water
   - UI
   - Obstacle
