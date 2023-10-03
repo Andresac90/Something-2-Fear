@@ -79,7 +79,7 @@ public class JoseMovement : MonoBehaviour
         Vector3 MovementZ = (transform.right * Move.x + transform.forward * Move.y);
         YVel.y += Gravity * Time.deltaTime;
         CharController.Move(MovementZ * Speed * Time.deltaTime);
-        CharController.Move(YVel * Speed * Time.deltaTime);
+        CharController.Move(YVel * Time.deltaTime);
     }
 
     void Sprint()

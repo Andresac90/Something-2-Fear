@@ -30,6 +30,7 @@ public class ObjectsJose : MonoBehaviour
     private Transform ObjectLeftT;
     private bool HasObjectRight = false;
     private bool HasObjectLeft = false;
+    private bool ThrowCheck = false;
 
     void Awake()
     {
@@ -49,7 +50,7 @@ public class ObjectsJose : MonoBehaviour
 
     IEnumerator Grab()
     {
-        Physics.Raycast(PlayerCamera.position, PlayerCamera.forward, out Hit, RayLine);
+        Physics.Raycast(PlayerCamera.position, PlayerCamera.TransformDirection(Vector3.forward), out Hit, RayLine);
         if(Hit.transform != null && Hit.transform.tag == "Object")
         {
             bool IsRightPressed = Controls.Player.RightItem.ReadValue<float>() > 0.1f;
@@ -67,6 +68,7 @@ public class ObjectsJose : MonoBehaviour
                 ObjectRightT = Hit.transform;
                 yield return new WaitForSeconds(0.5f);
                 HasObjectRight = true;
+                ThrowCheck = true;
             }
             
         }
@@ -75,13 +77,14 @@ public class ObjectsJose : MonoBehaviour
     IEnumerator Throw()
     {
         bool IsRightTPressed = Controls.Player.RightThrow.ReadValue<float>() > 0.1f;
-        if(IsRightTPressed && HasObjectRight == true)
+        if(IsRightTPressed && HasObjectRight == true && ThrowCheck)
         {
             ObjectRightT.transform.localScale = new Vector3(ObjectOriginalScale, ObjectOriginalScale, ObjectOriginalScale);
             Vector3 camerDirection = PlayerCamera.transform.forward;
             ObjectRightT.transform.parent = null;
             ObjectRightRb.isKinematic = false;
             ObjectRightRb.AddForce(camerDirection * ThrowForce);
+            ThrowCheck = false;
             yield return new WaitForSeconds(0.5f);
             HasObjectRight = false;
             Debug.Log("Hola");
@@ -93,7 +96,7 @@ public class ObjectsJose : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(PlayerCamera.position, PlayerCamera.forward * RayLine);
+        Gizmos.DrawLine(PlayerCamera.position, PlayerCamera.TransformDirection(Vector3.forward) * RayLine);
     }
 
     private void OnEnable()
