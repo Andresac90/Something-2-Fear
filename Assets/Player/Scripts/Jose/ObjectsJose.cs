@@ -22,15 +22,18 @@ public class ObjectsJose : MonoBehaviour
 
 
     private RaycastHit Hit;
-    private float ObjectScaleData;
-    private float ObjectOriginalScale;
+    private float ObjectRScaleData;
+    private float ObjectROriginalScale;
+    private float ObjectLScaleData;
+    private float ObjectLOriginalScale;
     private Rigidbody ObjectRightRb;
     private Rigidbody ObjectLeftRb;
     private Transform ObjectRightT;
     private Transform ObjectLeftT;
     private bool HasObjectRight = false;
     private bool HasObjectLeft = false;
-    private bool ThrowCheck = false;
+    private bool ThrowCheckR = false;
+    private bool ThrowCheckL = false;
 
     void Awake()
     {
@@ -59,38 +62,70 @@ public class ObjectsJose : MonoBehaviour
                 Hit.transform.position = ObjectRightCamera.position;
                 Hit.rigidbody.isKinematic = true;
                 Hit.transform.parent = ObjectRightCamera;
-                ObjectScaleData = Hit.transform.GetComponent<ObjectsData>().ObjectScale;
-                Hit.transform.localScale = new Vector3(ObjectScaleData, ObjectScaleData, ObjectScaleData);
+                ObjectRScaleData = Hit.transform.GetComponent<ObjectsData>().ObjectScale;
+                Hit.transform.localScale = new Vector3(ObjectRScaleData, ObjectRScaleData, ObjectRScaleData);
                 Hit.transform.localPosition = new Vector3(0, 0, 0);
                 Hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
-                ObjectOriginalScale = Hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
+                ObjectROriginalScale = Hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
                 ObjectRightRb = Hit.rigidbody;
                 ObjectRightT = Hit.transform;
                 yield return new WaitForSeconds(0.5f);
                 HasObjectRight = true;
-                ThrowCheck = true;
+                ThrowCheckR = true;
             }
-            
+
+            bool IsLeftPressed = Controls.Player.LeftItem.ReadValue<float>() > 0.1f;
+            if (IsLeftPressed && HasObjectLeft == false)
+            {
+                Hit.transform.position = ObjectRightCamera.position;
+                Hit.rigidbody.isKinematic = true;
+                Hit.transform.parent = ObjectLeftCamera;
+                ObjectLScaleData = Hit.transform.GetComponent<ObjectsData>().ObjectScale;
+                Hit.transform.localScale = new Vector3(ObjectLScaleData, ObjectLScaleData, ObjectLScaleData);
+                Hit.transform.localPosition = new Vector3(0, 0, 0);
+                Hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
+                ObjectLOriginalScale = Hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
+                ObjectLeftRb = Hit.rigidbody;
+                ObjectLeftT = Hit.transform;
+                yield return new WaitForSeconds(0.5f);
+                HasObjectLeft = true;
+                ThrowCheckL = true;
+            }
+
         }
     }
 
     IEnumerator Throw()
     {
         bool IsRightTPressed = Controls.Player.RightThrow.ReadValue<float>() > 0.1f;
-        if(IsRightTPressed && HasObjectRight == true && ThrowCheck)
+        if(IsRightTPressed && HasObjectRight == true && ThrowCheckR)
         {
-            ObjectRightT.transform.localScale = new Vector3(ObjectOriginalScale, ObjectOriginalScale, ObjectOriginalScale);
+            ObjectRightT.transform.localScale = new Vector3(ObjectROriginalScale, ObjectROriginalScale, ObjectROriginalScale);
             Vector3 camerDirection = PlayerCamera.transform.forward;
             ObjectRightT.transform.parent = null;
             ObjectRightRb.isKinematic = false;
             ObjectRightRb.AddForce(camerDirection * ThrowForce);
-            ThrowCheck = false;
+            ThrowCheckR = false;
             yield return new WaitForSeconds(0.5f);
             HasObjectRight = false;
-            Debug.Log("Hola");
+            Debug.Log("Hola1");
            
         }
-        
+
+        bool IsLeftPressed = Controls.Player.LeftThrow.ReadValue<float>() > 0.1f;
+        if (IsLeftPressed && HasObjectLeft == true && ThrowCheckL)
+        {
+            ObjectLeftT.transform.localScale = new Vector3(ObjectLOriginalScale, ObjectLOriginalScale, ObjectLOriginalScale);
+            Vector3 camerDirection = PlayerCamera.transform.forward;
+            ObjectLeftT.transform.parent = null;
+            ObjectLeftRb.isKinematic = false;
+            ObjectLeftRb.AddForce(camerDirection * ThrowForce);
+            ThrowCheckL = false;
+            yield return new WaitForSeconds(0.5f);
+            HasObjectLeft = false;
+            Debug.Log("Hola2");
+        }
+
     }
 
     private void OnDrawGizmos()
