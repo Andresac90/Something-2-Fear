@@ -81,7 +81,7 @@ public class AIControl : MonoBehaviour
             Debug.Log("Attacking");
             Attacking();
         }
-        else if(isSeen)
+        else if(isSeen) // if Pascualita is seen stop (recibe valor de PlayerScript)
         {
             Debug.Log("Pascualita is being seen");
         }
