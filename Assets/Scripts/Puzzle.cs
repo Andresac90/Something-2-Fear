@@ -23,7 +23,7 @@ public class Puzzle : MonoBehaviour
 
     public void OnTriggerEnter(Collider collision)
     {
-        if(collision.CompareTag("Player"))
+        if(collision.CompareTag("PlayerSanti"))
         {
             playerNear = true;
         }
@@ -31,7 +31,7 @@ public class Puzzle : MonoBehaviour
 
     public void OnTriggerExit(Collider collision)
     {
-        if(collision.CompareTag("Player"))
+        if(collision.CompareTag("PlayerSanti"))
         {
             playerNear = false;
         }
@@ -47,6 +47,7 @@ public class Puzzle : MonoBehaviour
         bool IsInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0f;
         if(isPuzzleActive() && IsInteractPressed && Task.activeSelf == false)
         {
+            Cursor.lockState = CursorLockMode.None;
             Task.SetActive (true);
             //Instantiate(Task);
         }
@@ -57,6 +58,7 @@ public class Puzzle : MonoBehaviour
         bool IsCancelPressed = Controls.Player.Cancel.ReadValue<float>() > 0f;
         if(Task.activeSelf && IsCancelPressed)
         {
+            Cursor.lockState = CursorLockMode.Locked;
             Task.SetActive (false);
             //Instantiate(Task);
         }

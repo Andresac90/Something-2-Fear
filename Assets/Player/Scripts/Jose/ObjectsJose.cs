@@ -3,29 +3,33 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using Unity.VisualScripting;
+using System.Runtime.CompilerServices;
 
 public class ObjectsJose : MonoBehaviour
 {
     private InputMaster Controls;
 
     [SerializeField]
-    private Transform ObjectRight;
+    private Transform ObjectRightCamera;
     [SerializeField]
-    private Transform ObjectLeft;
+    private Transform ObjectLeftCamera;
     [SerializeField]
     private Transform PlayerCamera;
     [SerializeField]
-    private Transform Player;
-    [SerializeField]
     private float RayLine;
+    [SerializeField]
+    private float ThrowForce;
+
 
     private RaycastHit Hit;
     private float ObjectScaleData;
-
-    public LayerMask PlayerMask;
-    public float RadiousObject;
-    public bool NearObject;
-    
+    private float ObjectOriginalScale;
+    private Rigidbody ObjectRightRb;
+    private Rigidbody ObjectLeftRb;
+    private Transform ObjectRightT;
+    private Transform ObjectLeftT;
+    private bool HasObjectRight = false;
+    private bool HasObjectLeft = false;
 
     void Awake()
     {
@@ -39,24 +43,51 @@ public class ObjectsJose : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Grab();
+        StartCoroutine(Grab());
+        StartCoroutine(Throw());
     }
 
-    void Grab()
+    IEnumerator Grab()
     {
         Physics.Raycast(PlayerCamera.position, PlayerCamera.forward, out Hit, RayLine);
         if(Hit.transform != null && Hit.transform.tag == "Object")
         {
-            bool IsRightObject = Controls.Player.RightItem.ReadValue<float>() > 0.1f;
-            if(IsRightObject)
+            bool IsRightPressed = Controls.Player.RightItem.ReadValue<float>() > 0.1f;
+            if(IsRightPressed && HasObjectRight == false)
             {
-                Hit.transform.position = ObjectRight.position;
+                Hit.transform.position = ObjectRightCamera.position;
                 Hit.rigidbody.isKinematic = true;
-                Hit.transform.parent = ObjectRight;
+                Hit.transform.parent = ObjectRightCamera;
                 ObjectScaleData = Hit.transform.GetComponent<ObjectsData>().ObjectScale;
                 Hit.transform.localScale = new Vector3(ObjectScaleData, ObjectScaleData, ObjectScaleData);
+                Hit.transform.localPosition = new Vector3(0, 0, 0);
+                Hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
+                ObjectOriginalScale = Hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
+                ObjectRightRb = Hit.rigidbody;
+                ObjectRightT = Hit.transform;
+                yield return new WaitForSeconds(0.5f);
+                HasObjectRight = true;
             }
+            
         }
+    }
+
+    IEnumerator Throw()
+    {
+        bool IsRightTPressed = Controls.Player.RightThrow.ReadValue<float>() > 0.1f;
+        if(IsRightTPressed && HasObjectRight == true)
+        {
+            ObjectRightT.transform.localScale = new Vector3(ObjectOriginalScale, ObjectOriginalScale, ObjectOriginalScale);
+            Vector3 camerDirection = PlayerCamera.transform.forward;
+            ObjectRightT.transform.parent = null;
+            ObjectRightRb.isKinematic = false;
+            ObjectRightRb.AddForce(camerDirection * ThrowForce);
+            yield return new WaitForSeconds(0.5f);
+            HasObjectRight = false;
+            Debug.Log("Hola");
+           
+        }
+        
     }
 
     private void OnDrawGizmos()

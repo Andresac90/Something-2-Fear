@@ -6,5 +6,7 @@ public class ObjectsData : MonoBehaviour
 {
     public float ObjectScale;
 
-    public float ObjectOrigiaScale;
+    public float ObjectOriginalScale;
+
+    public string ObjectName;
 }
