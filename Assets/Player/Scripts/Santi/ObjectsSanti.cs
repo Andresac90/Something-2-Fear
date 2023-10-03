@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using Unity.VisualScripting;
+using System.Runtime.CompilerServices;
 
 public class ObjectsSanti : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class ObjectsSanti : MonoBehaviour
     private Transform ObjectRightCamera;
     [SerializeField]
     private Transform ObjectLeftCamera;
+    [SerializeField]
+    private Transform ObjectRightHand;
+    [SerializeField]
+    private Transform ObjectLeftHand;
     [SerializeField]
     private Transform PlayerCamera;
     [SerializeField]
@@ -28,6 +33,7 @@ public class ObjectsSanti : MonoBehaviour
     private Transform ObjectLeftT;
     private bool GrabbedObjR = false;
     private bool GrabbedObjL = false;
+    private bool ThrowCheck = false;
 
     public void Awake()
     {
@@ -79,6 +85,7 @@ public class ObjectsSanti : MonoBehaviour
 
     public IEnumerator LeftGrab()
     {
+        Hit.transform.position = ObjectLeftCamera.position;
         Hit.rigidbody.isKinematic = true;
         Hit.transform.parent = ObjectLeftCamera;
         ObjectScaleData = Hit.transform.GetComponent<ObjectsData>().ObjectScale;
@@ -90,10 +97,12 @@ public class ObjectsSanti : MonoBehaviour
         ObjectLeftT = Hit.transform;
         yield return new WaitForSeconds(0.5f);
         GrabbedObjL = true;
+        ThrowCheck = true;
     }
 
     public IEnumerator RightGrab()
     {
+        Hit.transform.position = ObjectRightCamera.position;
         Hit.rigidbody.isKinematic = true;
         Hit.transform.parent = ObjectRightCamera;
         ObjectScaleData = Hit.transform.GetComponent<ObjectsData>().ObjectScale;
@@ -103,8 +112,12 @@ public class ObjectsSanti : MonoBehaviour
         ObjectOriginalScale = Hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
         ObjectRightRb = Hit.rigidbody;
         ObjectRightT = Hit.transform;
+        // GameObject HitTwo = Instantiate(Hit);
+        // HitTwo.transform.position = ObjectRightHand.position;
+        // HitTwo.transform.parent = ObjectRightHand;
         yield return new WaitForSeconds(0.5f);
         GrabbedObjR = true;
+        ThrowCheck = true;
     }
 
     public IEnumerator LeftDrop()
@@ -114,6 +127,7 @@ public class ObjectsSanti : MonoBehaviour
         ObjectLeftT.transform.parent = null;
         ObjectLeftRb.isKinematic = false;
         ObjectLeftRb.AddForce(camerDirection * ThrowForce);
+        ThrowCheck = false;
         yield return new WaitForSeconds(0.5f);
         GrabbedObjL = false;
     }
@@ -125,6 +139,8 @@ public class ObjectsSanti : MonoBehaviour
         ObjectRightT.transform.parent = null;
         ObjectRightRb.isKinematic = false;
         ObjectRightRb.AddForce(camerDirection * ThrowForce);
+        ThrowCheck = false;
+        // Destroy(HitTwo);
         yield return new WaitForSeconds(0.5f);
         GrabbedObjR = false;
     }

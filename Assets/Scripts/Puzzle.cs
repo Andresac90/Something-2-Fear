@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class Puzzle : MonoBehaviour
 {
-    private InputMaster Controls;
+    private InputMaster controls;
 
-    public GameObject Task;
-    bool playerNear;
+    public GameObject task;
+    
+    private GameObject taskCopy;
+    private GameObject playerMove;
+    private bool playerNear;
+    private bool taskCreated = false;
 
     void Awake()
     {
-        Controls = new InputMaster();
+        controls = new InputMaster();
+        playerMove = GameObject.Find("Santi");
     }
 
     // Update is called once per frame
@@ -44,33 +49,53 @@ public class Puzzle : MonoBehaviour
 
     private void OpenPuzzle()
     {
-        bool IsInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0f;
-        if(isPuzzleActive() && IsInteractPressed && Task.activeSelf == false)
+        bool IsInteractPressed = controls.Player.Interact.ReadValue<float>() > 0f;
+        if(isPuzzleActive() && IsInteractPressed && taskCreated == false)
         {
-            Cursor.lockState = CursorLockMode.None;
-            Task.SetActive (true);
-            //Instantiate(Task);
+            PlayerMovement();
+            taskCopy = Instantiate(task);
+            taskCreated = true;
+        }
+        else if(isPuzzleActive() && IsInteractPressed && taskCopy.activeSelf == false)
+        {
+            PlayerMovement();
+            taskCopy.SetActive (true);
         }
     }
 
     private void ClosePuzzle()
     {
-        bool IsCancelPressed = Controls.Player.Cancel.ReadValue<float>() > 0f;
-        if(Task.activeSelf && IsCancelPressed)
+        bool IsCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0f;
+        if(IsCancelPressed && taskCopy.activeSelf)
         {
+            PlayerMovement();
+        }
+    }
+
+    private void PlayerMovement()
+    {
+        if(taskCreated == false || taskCopy.activeSelf == false)
+        {
+            playerMove.GetComponent<SantiController>().enabled = false;
+            playerMove.GetComponentInChildren<PlayerLook>().enabled = false;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else if(taskCopy.activeSelf)
+        {
+            playerMove.GetComponent<SantiController>().enabled = true;
+            playerMove.GetComponentInChildren<PlayerLook>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
-            Task.SetActive (false);
-            //Instantiate(Task);
+            taskCopy.SetActive(false);
         }
     }
 
     private void OnEnable()
     {
-        Controls.Enable();
+        controls.Enable();
     }
 
     private void OnDisable()
     {
-        Controls.Disable();
+        controls.Disable();
     }
 }

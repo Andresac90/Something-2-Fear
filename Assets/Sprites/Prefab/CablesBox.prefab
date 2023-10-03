@@ -797,6 +797,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: FinalCableL(2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4500945967767634451, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_Pivot.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4500945967767634451, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 11.99785
+      objectReference: {fileID: 0}
     - target: {fileID: 6621203504703731764, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
       propertyPath: m_Color.b
       value: 0.1199637
@@ -926,6 +934,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: FinalCableR (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4500945967767634451, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_Pivot.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4500945967767634451, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 11.997854
+      objectReference: {fileID: 0}
     - target: {fileID: 6621203504703731764, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
       propertyPath: m_Color.b
       value: 0.1199637
@@ -1043,6 +1059,18 @@ PrefabInstance:
     - target: {fileID: 3151319491319892968, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
       propertyPath: m_Name
       value: FinalCableR
+      objectReference: {fileID: 0}
+    - target: {fileID: 4500945967767634451, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_Pivot.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4500945967767634451, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 11.99785
+      objectReference: {fileID: 0}
+    - target: {fileID: 4500945967767634451, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.0000009536743
       objectReference: {fileID: 0}
     - target: {fileID: 6621203504703731764, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
       propertyPath: m_Color.b
@@ -1165,6 +1193,18 @@ PrefabInstance:
     - target: {fileID: 3151319491319892968, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
       propertyPath: m_Name
       value: FinalCableL
+      objectReference: {fileID: 0}
+    - target: {fileID: 4500945967767634451, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_Pivot.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4500945967767634451, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 11.997847
+      objectReference: {fileID: 0}
+    - target: {fileID: 4500945967767634451, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.0000009536743
       objectReference: {fileID: 0}
     - target: {fileID: 6621203504703731764, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
       propertyPath: m_Color.b
@@ -1295,6 +1335,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: FinalCableR (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4500945967767634451, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_Pivot.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4500945967767634451, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 11.997854
+      objectReference: {fileID: 0}
     - target: {fileID: 6621203504703731764, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
       propertyPath: m_Color.b
       value: 0.12641507
@@ -1412,6 +1460,14 @@ PrefabInstance:
     - target: {fileID: 3151319491319892968, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
       propertyPath: m_Name
       value: FinalCableL(1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4500945967767634451, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_Pivot.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4500945967767634451, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 11.99785
       objectReference: {fileID: 0}
     - target: {fileID: 6621203504703731764, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
       propertyPath: m_Color.b
