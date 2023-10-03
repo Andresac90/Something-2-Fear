@@ -83,8 +83,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Camera: {fileID: 6914870178212466546}
   Speed: 5
-  JumpForce: 0.4
-  Gravity: -9.81
+  JumpForce: 3
+  Gravity: -50
   HasRun: 0
   IsGrounded: 0
   GroundCheck: {fileID: 3109496370201296591}
@@ -136,9 +136,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectRightCamera: {fileID: 4770480782155888035}
   ObjectLeftCamera: {fileID: 3228622001852438667}
-  PlayerCamera: {fileID: 6914870178212466546}
-  RayLine: 2
-  ThrowForce: 50
+  PlayerCamera: {fileID: 7266502030151178295}
+  RayLine: 5
+  ThrowForce: 500
 --- !u!1 &6115386676729576291
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,6 +200,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3010966585971695501}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8131092374474373654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7266502030151178295}
+  m_Layer: 3
+  m_Name: RayCast
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7266502030151178295
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8131092374474373654}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.137}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6914870178212466546}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8336998969646604692
 GameObject:
@@ -269,6 +300,7 @@ Transform:
   m_Children:
   - {fileID: 4770480782155888035}
   - {fileID: 3228622001852438667}
+  - {fileID: 7266502030151178295}
   m_Father: {fileID: 3010966585971695501}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &6880435584519348821
