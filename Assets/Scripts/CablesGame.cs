@@ -24,7 +24,6 @@ public class CablesGame : MonoBehaviour
     void Awake()
     {
         Controls = new InputMaster();
-        Cursor.lockState = CursorLockMode.None;
     }
 
     // Start is called before the first frame update
