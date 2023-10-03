@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class CablesGame : MonoBehaviour, IEventSystemHandler
+public class CablesGame : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     private InputMaster Controls;
     private Vector2 mousePosition;
@@ -39,13 +39,13 @@ public class CablesGame : MonoBehaviour, IEventSystemHandler
     void Update()
     {
         bool IsClickPressed = Controls.Player.Click.ReadValue<float>() > 0.1f;
-        if(IsClickPressed)
+        if(IsClickPressed == false)
         {
-            //Reset();
+            Reset();
         }
     }
 
-    private void OnDrag(PointerEventData eventData)
+    public void OnDrag(PointerEventData eventData)
     {
         ChangePosition();
         ChangeRotation();
@@ -69,7 +69,7 @@ public class CablesGame : MonoBehaviour, IEventSystemHandler
         {
             mousePosition = Controls.Player.Look.ReadValue<Vector2>();
             transform.position = new Vector3(mousePosition.x, mousePosition.y);
-            Debug.Log("Move");
+            Debug.Log(mousePosition);
         }
     }
 

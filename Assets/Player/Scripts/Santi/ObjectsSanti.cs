@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 using Unity.VisualScripting;
 using System.Runtime.CompilerServices;
+using UnityEditor;
 
 public class ObjectsSanti : MonoBehaviour
 {
@@ -24,6 +25,10 @@ public class ObjectsSanti : MonoBehaviour
     [SerializeField]
     private float ThrowForce;
 
+    private GameObject playerL;
+    private GameObject playerR;
+    private GameObject cloneL;
+    private GameObject cloneR;
     private RaycastHit Hit;
     private float ObjectScaleData;
     private float ObjectOriginalScale;
@@ -38,6 +43,8 @@ public class ObjectsSanti : MonoBehaviour
     public void Awake()
     {
         Controls = new InputMaster();
+        playerL = GameObject.Find("LeftObject");
+        playerR = GameObject.Find("RightObject");
     }
     public void Start()
     {
@@ -95,9 +102,19 @@ public class ObjectsSanti : MonoBehaviour
         ObjectOriginalScale = Hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
         ObjectLeftRb = Hit.rigidbody;
         ObjectLeftT = Hit.transform;
+        LeftGrabTwo();
         yield return new WaitForSeconds(0.5f);
         GrabbedObjL = true;
         ThrowCheck = true;
+    }
+
+    public void LeftGrabTwo()
+    {
+        int LayerIgnoreRaycast = LayerMask.NameToLayer("PlayerSanti");
+        playerL.GetComponentInChildren<Transform>();
+        cloneL = (GameObject)Instantiate(playerL, ObjectLeftHand.position, Quaternion.identity);
+        cloneL.layer = LayerIgnoreRaycast;
+        cloneL.transform.parent = ObjectLeftHand;
     }
 
     public IEnumerator RightGrab()
@@ -112,12 +129,17 @@ public class ObjectsSanti : MonoBehaviour
         ObjectOriginalScale = Hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
         ObjectRightRb = Hit.rigidbody;
         ObjectRightT = Hit.transform;
-        // GameObject HitTwo = Instantiate(Hit);
-        // HitTwo.transform.position = ObjectRightHand.position;
-        // HitTwo.transform.parent = ObjectRightHand;
+        RightGrabTwo();
         yield return new WaitForSeconds(0.5f);
         GrabbedObjR = true;
         ThrowCheck = true;
+    }
+
+    public void RightGrabTwo()
+    {
+        playerR.GetComponentInChildren<Transform>();
+        cloneR = (GameObject) Instantiate(playerR, ObjectRightHand.position, Quaternion.identity);
+        cloneR.transform.parent = ObjectRightHand;
     }
 
     public IEnumerator LeftDrop()
@@ -128,6 +150,7 @@ public class ObjectsSanti : MonoBehaviour
         ObjectLeftRb.isKinematic = false;
         ObjectLeftRb.AddForce(camerDirection * ThrowForce);
         ThrowCheck = false;
+        Destroy(cloneL);
         yield return new WaitForSeconds(0.5f);
         GrabbedObjL = false;
     }
@@ -140,7 +163,7 @@ public class ObjectsSanti : MonoBehaviour
         ObjectRightRb.isKinematic = false;
         ObjectRightRb.AddForce(camerDirection * ThrowForce);
         ThrowCheck = false;
-        // Destroy(HitTwo);
+        Destroy(cloneR);
         yield return new WaitForSeconds(0.5f);
         GrabbedObjR = false;
     }

@@ -25981,6 +25981,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.0555
       objectReference: {fileID: 0}
+    - target: {fileID: 2043920906562670192, guid: 2855fd5e89c071c43ab4269be542f0d4, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7758464723538168035, guid: 2855fd5e89c071c43ab4269be542f0d4, type: 3}
       propertyPath: ThrowForce
       value: 20
