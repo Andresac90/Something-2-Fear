@@ -72,4 +72,10 @@ public class PlayerLook : MonoBehaviour
     {
         Controls.Disable();
     }
+
+    public void SetSens (float sens)
+    {  
+        SensitivityX = sens;
+        SensitivityY = sens;
+    }
 }
