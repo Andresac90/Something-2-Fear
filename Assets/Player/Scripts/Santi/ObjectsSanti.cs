@@ -38,7 +38,8 @@ public class ObjectsSanti : MonoBehaviour
     private Transform ObjectLeftT;
     private bool GrabbedObjR = false;
     private bool GrabbedObjL = false;
-    private bool ThrowCheck = false;
+    private bool ObjectGrabbed = true;
+    private bool ThrowCheck = true;
 
     public void Awake()
     {
@@ -69,7 +70,7 @@ public class ObjectsSanti : MonoBehaviour
             {
                 StartCoroutine(RightGrab());
             }
-            else if(IsLeftPressed && GrabbedObjL == false)
+            else if(IsLeftPressed && GrabbedObjL == false && ObjectGrabbed)
             {
                 StartCoroutine(LeftGrab());
             }
@@ -80,11 +81,11 @@ public class ObjectsSanti : MonoBehaviour
     {
         bool IsRightPressed = Controls.Player.RightThrow.ReadValue<float>() > 0.1f;
         bool IsLeftPressed = Controls.Player.LeftThrow.ReadValue<float>() > 0.1f;
-        if(IsRightPressed && GrabbedObjR == true)
+        if(IsRightPressed && GrabbedObjR)
         {
             StartCoroutine(RightDrop());
         }
-        else if(IsLeftPressed && GrabbedObjL == true)
+        else if(IsLeftPressed && GrabbedObjL && ThrowCheck)
         {
             StartCoroutine(LeftDrop());
         }
@@ -92,6 +93,7 @@ public class ObjectsSanti : MonoBehaviour
 
     public IEnumerator LeftGrab()
     {
+        ObjectGrabbed = false;
         Hit.transform.position = ObjectLeftCamera.position;
         Hit.rigidbody.isKinematic = true;
         Hit.transform.parent = ObjectLeftCamera;
@@ -105,16 +107,18 @@ public class ObjectsSanti : MonoBehaviour
         LeftGrabTwo();
         yield return new WaitForSeconds(0.5f);
         GrabbedObjL = true;
-        ThrowCheck = true;
+        ObjectGrabbed = true;
     }
 
     public void LeftGrabTwo()
-    {
+    {   
         int LayerIgnoreRaycast = LayerMask.NameToLayer("PlayerSanti");
-        playerL.GetComponentInChildren<Transform>();
-        cloneL = (GameObject)Instantiate(playerL, ObjectLeftHand.position, Quaternion.identity);
-        cloneL.layer = LayerIgnoreRaycast;
+        // playerL.GetComponentInChildren<Transform>();
+        GameObject child= playerL.transform.GetChild(0).gameObject;
+        child.layer = LayerIgnoreRaycast;
+        cloneL = (GameObject)Instantiate(child, ObjectLeftHand.position, Quaternion.identity);
         cloneL.transform.parent = ObjectLeftHand;
+        // cloneL.layer = LayerIgnoreRaycast;
     }
 
     public IEnumerator RightGrab()
@@ -132,37 +136,45 @@ public class ObjectsSanti : MonoBehaviour
         RightGrabTwo();
         yield return new WaitForSeconds(0.5f);
         GrabbedObjR = true;
-        ThrowCheck = true;
     }
 
     public void RightGrabTwo()
     {
-        playerR.GetComponentInChildren<Transform>();
-        cloneR = (GameObject) Instantiate(playerR, ObjectRightHand.position, Quaternion.identity);
+        int LayerIgnoreRaycast = LayerMask.NameToLayer("PlayerSanti");
+        // playerL.GetComponentInChildren<Transform>();
+        GameObject child= playerR.transform.GetChild(0).gameObject;
+        child.layer = LayerIgnoreRaycast;
+        cloneR = (GameObject) Instantiate(child, ObjectRightHand.position, Quaternion.identity);
         cloneR.transform.parent = ObjectRightHand;
     }
 
     public IEnumerator LeftDrop()
     {
+        ThrowCheck = false;
+        int LayerIgnoreRaycast = LayerMask.NameToLayer("Default");
+        GameObject child = playerL.transform.GetChild(0).gameObject;
+        child.layer = 0;
         ObjectLeftT.transform.localScale = new Vector3(ObjectOriginalScale, ObjectOriginalScale, ObjectOriginalScale);
         Vector3 camerDirection = PlayerCamera.transform.forward;
         ObjectLeftT.transform.parent = null;
         ObjectLeftRb.isKinematic = false;
         ObjectLeftRb.AddForce(camerDirection * ThrowForce);
-        ThrowCheck = false;
         Destroy(cloneL);
         yield return new WaitForSeconds(0.5f);
         GrabbedObjL = false;
+        ThrowCheck = true;
     }
 
     public IEnumerator RightDrop()
     {
+        int LayerIgnoreRaycast = LayerMask.NameToLayer("Default");
+        GameObject child= playerR.transform.GetChild(0).gameObject;
+        child.layer = LayerIgnoreRaycast;
         ObjectRightT.transform.localScale = new Vector3(ObjectOriginalScale, ObjectOriginalScale, ObjectOriginalScale);
         Vector3 camerDirection = PlayerCamera.transform.forward;
         ObjectRightT.transform.parent = null;
         ObjectRightRb.isKinematic = false;
         ObjectRightRb.AddForce(camerDirection * ThrowForce);
-        ThrowCheck = false;
         Destroy(cloneR);
         yield return new WaitForSeconds(0.5f);
         GrabbedObjR = false;
