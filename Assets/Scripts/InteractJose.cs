@@ -24,6 +24,7 @@ public class InteractJose : MonoBehaviour
     {
         Interact();
     }
+
     public void OnTriggerEnter(Collider collision)
     {
         if (collision.CompareTag("PlayerJose"))
@@ -50,7 +51,6 @@ public class InteractJose : MonoBehaviour
         bool IsInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0.1f;
         if (isInteractActive() && IsInteractPressed && Task.activeSelf == false)
         {
-            Cursor.lockState = CursorLockMode.None;
             Task.SetActive(true);
             
         }
