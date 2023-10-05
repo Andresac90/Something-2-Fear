@@ -47,6 +47,7 @@ public class CablesGame : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
 
     public void OnDrag(PointerEventData eventData)
     {
+        Vector2 currentMousePosition = eventData.position;
         ChangePosition();
         ChangeRotation();
         ChangeSize();

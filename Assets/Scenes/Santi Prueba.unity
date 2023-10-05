@@ -25987,7 +25987,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7758464723538168035, guid: 2855fd5e89c071c43ab4269be542f0d4, type: 3}
       propertyPath: ThrowForce
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7758464723538168035, guid: 2855fd5e89c071c43ab4269be542f0d4, type: 3}
       propertyPath: ObjectLeftHand
