@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 using UnityEditor;
 
+using Photon.Pun;
+
 public class JoseMovement : MonoBehaviour
 {
     [SerializeField]
@@ -45,6 +47,8 @@ public class JoseMovement : MonoBehaviour
     //Jump
     private bool HasJump = false;
 
+    PhotonView PV;
+
 
     // Start is called before the first frame update
 
@@ -54,6 +58,7 @@ public class JoseMovement : MonoBehaviour
     }
     void Start()
     {
+        PV = GetComponent<PhotonView>();
         CharController = GetComponent<CharacterController>();
         OriginalSpeed = Speed;
     }
@@ -61,6 +66,9 @@ public class JoseMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (PV.IsMine) return;
+        
+        Debug.Log("Si");
         Movement();
         Jump();
         Crouch();

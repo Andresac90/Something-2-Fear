@@ -37,7 +37,7 @@ public class PlayerLook : MonoBehaviour
 
     void Update()
     {
-
+        
         Look();
     }
 
