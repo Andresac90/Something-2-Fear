@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements.Experimental;
+
 public class AIControl : MonoBehaviour
 {
+    private GameObject player;
     public NavMeshAgent aiAgent;               //  Nav mesh agent component
     public float startWaitTime = 4;                 //  Wait time of every action
-    public float timeToRotate = 2;                  //  Wait time when the enemy detect near the player without seeing
+    public float timeToRotate = 1;                  //  Wait time when the enemy detect near the player without seeing
     public float walkSpeed = 6;                     //  Walking speed, speed in the nav mesh agent
     public float chaseSpeed = 9;                      //  Running speed
 
@@ -27,9 +31,11 @@ public class AIControl : MonoBehaviour
     Vector3 PlayerPosition;                       //  Last position of the player when the player is seen by the enemy
 
     float WaitTime;                               //  Variable of the wait time that makes the delay
+    float minWaitTime;
+    float maxWiatTime;
     float TimeToRotate;                           //  Variable of the wait time to rotate when the player is near that makes the delay
     bool playerInRange;                           //  If the player is in range of vision, state of chasing
-    public bool isPlayerNear;                              //  If the player is near, state of hearing
+    //public bool isPlayerNear;                              //  If the player is near, state of hearing
     public bool isPatrol;                                //  If the enemy is patrol, state of patroling
     public bool isPlayerCaught;                            //  if the enemy has caught the player
 
@@ -37,20 +43,24 @@ public class AIControl : MonoBehaviour
     //Testing variables
     bool isSeen;  //Pascualita is being seen by player
     int randNum; //Random val to randomize patrol pattern
+    public float catchDistance;
     public Animator aiAnimation; //for fuuture use in animations
 
     void Start()
     {
+        player = GameObject.Find("Player");
         PlayerPosition = Vector3.zero;
         isPatrol = true;
         isPlayerCaught = false;
-        playerInRange = false;
-        isPlayerNear = false;
+
 
         //Testing
         isSeen = false;
-        aiAgent.destination = waypoints[CurrentWaypointIndex].position;
-        randNum =  Random.Range(0, waypoints.Length);
+        //aiAgent.destination = waypoints[CurrentWaypointIndex].position;
+        randNum = 0;
+        minWaitTime = 1f;
+        maxWiatTime = 3f;
+        catchDistance = 3f;
         //Testing
 
         WaitTime = startWaitTime;                 //  Set the wait time variable that will change
@@ -70,10 +80,16 @@ public class AIControl : MonoBehaviour
 
         if (!isPatrol && !isPlayerCaught)
         {
+            aiAnimation.ResetTrigger("walk");
+            aiAnimation.ResetTrigger("idle");
+            aiAnimation.SetTrigger("sprint");
             Chasing();
         }
         else if(isPatrol && !isPlayerCaught)
         {
+            aiAnimation.ResetTrigger("sprint");
+            aiAnimation.ResetTrigger("idle");
+            aiAnimation.SetTrigger("walk");
             Patroling();
         }
         else if (isPlayerCaught)
@@ -87,11 +103,13 @@ public class AIControl : MonoBehaviour
         }
     }
 
-    private void Chasing()
+
+
+private void Chasing()
     {
         
         //  The enemy is chasing the player
-        isPlayerNear = false;                       //  Set false that hte player is near beacause the enemy already sees the player
+                               //  Set false that hte player is near beacause the enemy already sees the player
         playerLastPosition = Vector3.zero;          //  Reset the player near position
 
         if (!isPlayerCaught)
@@ -105,7 +123,7 @@ public class AIControl : MonoBehaviour
             {
                 //  Check if the enemy is not near to the player, returns to patrol after the wait time delay
                 isPatrol = true;
-                isPlayerNear = false;
+                
                 Move(walkSpeed);
                 TimeToRotate = timeToRotate;
                 WaitTime = startWaitTime;
@@ -118,7 +136,7 @@ public class AIControl : MonoBehaviour
                     Stop();
                 WaitTime -= Time.deltaTime;
             }
-            if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) < 2f)
+            if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) < catchDistance)
             {   
                 CaughtPlayer();
             }
@@ -127,52 +145,61 @@ public class AIControl : MonoBehaviour
 
     private void Patroling()
     {
-        if (isPlayerNear)
+        //if (isPlayerNear)
+        //{
+        //    Debug.Log("One piece");
+        //    //  Check if the enemy detect near the player, so the enemy will move to that position
+        //    if (TimeToRotate <= 0)
+        //    {
+        //        Move(walkSpeed);
+        //        LookingPlayer(playerLastPosition);
+        //    }
+        //    else
+        //    {
+        //        //  The enemy wait for a moment and then go to the last player position
+        //        Stop();
+        //        TimeToRotate -= Time.deltaTime;
+        //    }
+        //}
+        //else
+        //{
+                   //  The player is no near when the enemy is platroling
+        playerLastPosition = Vector3.zero;
+        aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);    //  Set the enemy destination to the next waypoint
+        if (aiAgent.remainingDistance <= aiAgent.stoppingDistance)
         {
-            //  Check if the enemy detect near the player, so the enemy will move to that position
-            if (TimeToRotate <= 0)
+            //  If the enemy arrives to the waypoint position then wait for a moment and go to the next
+            if (WaitTime <= 0)
             {
+                NextPoint();
                 Move(walkSpeed);
-                LookingPlayer(playerLastPosition);
+                WaitTime = Random.Range(minWaitTime, maxWiatTime);
             }
             else
             {
-                //  The enemy wait for a moment and then go to the last player position
+                aiAnimation.ResetTrigger("sprint");
+                aiAnimation.ResetTrigger("walk");
+                aiAnimation.SetTrigger("idle");
                 Stop();
-                TimeToRotate -= Time.deltaTime;
+                WaitTime -= Time.deltaTime;
             }
         }
-        else
-        {
-            isPlayerNear = false;           //  The player is no near when the enemy is platroling
-            playerLastPosition = Vector3.zero;
-            aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);    //  Set the enemy destination to the next waypoint
-            if (aiAgent.remainingDistance <= aiAgent.stoppingDistance)
-            {
-                //  If the enemy arrives to the waypoint position then wait for a moment and go to the next
-                if (WaitTime <= 0)
-                {
-                    NextPoint();
-                    Move(walkSpeed);
-                    WaitTime = startWaitTime;
-                }
-                else
-                {
-                    Stop();
-                    WaitTime -= Time.deltaTime;
-                }
-            }
-        }
+        //}
     }
 
     private void Attacking()
     {
         //llamar funcion de downeado de Jose/Santi y jumpscare
+        aiAnimation.ResetTrigger("walk");
+        aiAnimation.ResetTrigger("idle");
+        aiAnimation.ResetTrigger("sprint");
+        aiAnimation.SetTrigger("jumpscare");
+        //StartCoroutine(deathRoutine());
         Debug.Log("Attack");
-        
+
         isPlayerCaught = false;
-        isPatrol = true;
-        isPlayerNear = false;
+        isPatrol = false;
+
         Stop();
         WaitTime -= Time.deltaTime;
         Move(walkSpeed);
@@ -217,7 +244,7 @@ public class AIControl : MonoBehaviour
         {
             if (WaitTime <= 0)
             {
-                isPlayerNear = false;
+                
                 Move(walkSpeed);
                 aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
                 WaitTime = startWaitTime;
@@ -272,4 +299,28 @@ public class AIControl : MonoBehaviour
             }
         }
     }
+    //IEnumerator stayIdle()
+    //{
+    //    WaitTime = Random.Range(minWaitTime, maxWiatTime);
+    //    yield return new WaitForSeconds(WaitTime);
+    //    isPatrol = true;
+    //    CurrentWaypointIndex = Random.Range(0, waypoints.Length);
+    //    aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
+    //}
+    //IEnumerator chaseRoutine()
+    //{
+    //    chaseTime = Random.Range(minChaseTime, maxChaseTime);
+    //    yield return new WaitForSeconds(chaseTime);
+    //    isPatrol = true;
+    //    chasing = false;
+    //    CurrentWaypointIndex = Random.Range(0, waypoints.Length);
+    //    aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
+    //}
+    //IEnumerator deathRoutine()
+    //{
+    //    Debug.Log("deathroutine");
+      
+    //    yield return new WaitForSeconds(1);//jumpscare time
+    //    //SceneManager.LoadScene(deathScene);
+    //}
 }
