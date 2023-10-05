@@ -3,17 +3,22 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Puzzle
+  - Object
+  - PlayerSanti
+  - PlayerJose
+  - Bengal
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Player
+  - PlayerJose
   - Water
   - UI
   - Obstacle
-  - 
-  - 
+  - PlayerSanti
+  - Objects
   - 
   - 
   - 
