@@ -8,6 +8,7 @@ TagManager:
   - Object
   - PlayerSanti
   - PlayerJose
+  - Bengal
   layers:
   - Default
   - TransparentFX
