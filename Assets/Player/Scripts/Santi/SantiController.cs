@@ -4,8 +4,13 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 using UnityEditor;
 
+using Photon.Pun;
+using Unity.Properties;
+
 public class SantiController : MonoBehaviour
-{
+{   
+    [SerializeField]
+    private Camera Camera;
     private Vector2 Move;
     private Vector2 YVel;
     public float Speed;
@@ -26,6 +31,8 @@ public class SantiController : MonoBehaviour
     public float RadiusGround;
     public LayerMask GroundMask;
 
+    private PhotonView PV;
+
     void Awake()
     {
         Controls = new InputMaster();
@@ -33,12 +40,18 @@ public class SantiController : MonoBehaviour
 
     void Start()
     {
+        PV = GetComponent<PhotonView>();
+        if (!PV.IsMine)
+        {
+            Camera.enabled = false;
+        }
         CharController = GetComponent<CharacterController>();
         OriginalSpeed = Speed;
     }
     // Update is called once per frame
     void Update()
     {
+        if (!PV.IsMine) return;
         Movement();
         // Interact();
     }

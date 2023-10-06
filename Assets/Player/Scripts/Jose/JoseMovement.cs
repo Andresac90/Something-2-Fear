@@ -9,7 +9,7 @@ using Photon.Pun;
 public class JoseMovement : MonoBehaviour
 {
     [SerializeField]
-    private Transform Camera;
+    private Camera Camera;
 
     private InputMaster Controls;
     private Vector2 Move;
@@ -50,8 +50,6 @@ public class JoseMovement : MonoBehaviour
     PhotonView PV;
 
 
-    // Start is called before the first frame update
-
     void Awake()
     {
         Controls = new InputMaster();
@@ -59,21 +57,22 @@ public class JoseMovement : MonoBehaviour
     void Start()
     {
         PV = GetComponent<PhotonView>();
+        if(!PV.IsMine){
+            Camera.enabled = false;
+        }
         CharController = GetComponent<CharacterController>();
         OriginalSpeed = Speed;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!PV.IsMine) return;
-        
-        Debug.Log("Si");
+
         Movement();
         Jump();
         Crouch();
         Sprint();
-        Camera.transform.position = new Vector3(transform.position.x, Camera.position.y, Camera.position.z);
+        // Camera.transform.position = new Vector3(transform.position.x, Camera.position.y, Camera.position.z);
     }
     void Movement()
     {
@@ -129,7 +128,7 @@ public class JoseMovement : MonoBehaviour
         {
             CharController.height = 1;
             CharController.center = new Vector3(0, -0.5f, 0);
-            Camera.localPosition = new Vector3(0, 0.4f, 0.225f);
+            // Camera.localPosition = new Vector3(0, 0.4f, 0.225f);
             Speed *= .40f;
             HasCrouched = true;
             IsCrouched = true;
@@ -139,7 +138,7 @@ public class JoseMovement : MonoBehaviour
         {
             CharController.height = 2;
             CharController.center = new Vector3(0, 0, 0);
-            Camera.localPosition = new Vector3(0, 0.894f, 0.225f);
+            // Camera.localPosition = new Vector3(0, 0.894f, 0.225f);
             Speed = OriginalSpeed;
             HasCrouched = false;
             IsCrouched = false;
