@@ -19,7 +19,8 @@ public class ObjectsJose : MonoBehaviour
     private float RayLine;
     [SerializeField]
     private float ThrowForce;
-
+    [SerializeField]
+    private GameObject Player;
 
     private RaycastHit Hit;
     private float ObjectRScaleData;
@@ -34,6 +35,7 @@ public class ObjectsJose : MonoBehaviour
     private bool HasObjectLeft = false;
     private bool ThrowCheckR = false;
     private bool ThrowCheckL = false;
+    private bool IsCrouched = false;
 
     void Awake()
     {
@@ -49,6 +51,7 @@ public class ObjectsJose : MonoBehaviour
     {
         StartCoroutine(Grab());
         StartCoroutine(Throw());
+        ThrowGrounded();
     }
 
     IEnumerator Grab()
@@ -108,7 +111,6 @@ public class ObjectsJose : MonoBehaviour
             ThrowCheckR = false;
             yield return new WaitForSeconds(0.5f);
             HasObjectRight = false;
-            Debug.Log("Hola1");
            
         }
 
@@ -123,9 +125,34 @@ public class ObjectsJose : MonoBehaviour
             ThrowCheckL = false;
             yield return new WaitForSeconds(0.5f);
             HasObjectLeft = false;
-            Debug.Log("Hola2");
         }
 
+    }
+
+    private void ThrowGrounded()
+    {
+        IsCrouched = Player.transform.GetComponent<JoseMovement>().IsCrouched;
+        if (IsCrouched && HasObjectRight)
+        {
+            ObjectRightT.transform.localScale = new Vector3(ObjectROriginalScale, ObjectROriginalScale, ObjectROriginalScale);
+            Vector3 camerDirection = PlayerCamera.transform.forward;
+            camerDirection += new Vector3(0, 1.2f, 0);
+            ObjectRightT.transform.parent = null;
+            ObjectRightRb.isKinematic = false;
+            ObjectRightRb.AddForce(camerDirection * 1);
+            HasObjectRight = false;
+        }
+
+        if (IsCrouched && HasObjectLeft)
+        {
+            ObjectLeftT.transform.localScale = new Vector3(ObjectLOriginalScale, ObjectLOriginalScale, ObjectLOriginalScale);
+            Vector3 camerDirection = PlayerCamera.transform.forward;
+            camerDirection +=  new Vector3(0, 1.2f, 0);
+            ObjectLeftT.transform.parent = null;
+            ObjectLeftRb.isKinematic = false;
+            ObjectLeftRb.AddForce(camerDirection * 1);
+            HasObjectLeft = false;
+        }
     }
 
     private void OnDrawGizmos()
