@@ -119,7 +119,7 @@ private void Chasing()
         }
         if (aiAgent.remainingDistance <= aiAgent.stoppingDistance)    //  Control if the enemy arrive to the player location
         {
-                if (WaitTime <= 0 && !isPlayerCaught && Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 6f)
+                if (WaitTime <= 0 && !isPlayerCaught && Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerJose").transform.position) >= 6f) //|| Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerSanti").transform.position) >= 6f//)
             {
                 //  Check if the enemy is not near to the player, returns to patrol after the wait time delay
                 isPatrol = true;
@@ -131,12 +131,12 @@ private void Chasing()
             }
             else
             {
-                if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 2.5f)
+                if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerJose").transform.position) >= 2.5f)// || Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerSanti").transform.position) >= 2.5f)
                     //  Wait if the current position is not the player position
                     Stop();
                 WaitTime -= Time.deltaTime;
             }
-            if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) < catchDistance)
+            if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerJose").transform.position)  < catchDistance)// || Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerSanti").transform.position) < catchDistance)
             {   
                 CaughtPlayer();
             }
