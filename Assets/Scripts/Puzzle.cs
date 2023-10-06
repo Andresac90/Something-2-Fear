@@ -6,57 +6,70 @@ public class Puzzle : MonoBehaviour
 {
     private InputMaster controls;
 
-    public GameObject task;
+    [SerializeField]
+    private GameObject task;
+    [SerializeField]
+    private float rayLine;
     
     private GameObject taskCopy;
     private GameObject playerMove;
+    private GameObject child;
+    private Transform playerCam;
     private bool playerNear;
     private bool taskCreated = false;
+    private RaycastHit hit;
+    
 
     void Awake()
     {
         controls = new InputMaster();
         playerMove = GameObject.Find("Santi");
+        child = playerMove.transform.GetChild(0).gameObject;
+        playerCam = child.GetComponent<Transform>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        OpenPuzzle();
+        Physics.Raycast(playerCam.position, playerCam.TransformDirection(Vector3.forward), out hit, rayLine);
+        if(hit.transform != null && hit.transform.tag == "Puzzle")
+        {
+            OpenPuzzle();
+        }
         ClosePuzzle();
     }
 
-    public void OnTriggerEnter(Collider collision)
-    {
-        if(collision.CompareTag("PlayerSanti"))
-        {
-            playerNear = true;
-        }
-    }
+    // public void OnTriggerEnter(Collider collision)
+    // {
+    //     if(collision.CompareTag("PlayerSanti"))
+    //     {
+    //         playerNear = true;
+    //     }
+    // }
 
-    public void OnTriggerExit(Collider collision)
-    {
-        if(collision.CompareTag("PlayerSanti"))
-        {
-            playerNear = false;
-        }
-    }
+    // public void OnTriggerExit(Collider collision)
+    // {
+    //     if(collision.CompareTag("PlayerSanti"))
+    //     {
+    //         playerNear = false;
+    //     }
+    // }
 
-    private bool isPuzzleActive()
-    {
-        return playerNear;
-    }
+    // private bool isPuzzleActive()
+    // {
+    //     return playerNear;
+    // }
 
     private void OpenPuzzle()
     {
         bool IsInteractPressed = controls.Player.Interact.ReadValue<float>() > 0f;
-        if(isPuzzleActive() && IsInteractPressed && taskCreated == false)
+        if(IsInteractPressed && taskCreated == false)
         {
             PlayerMovement();
             taskCopy = Instantiate(task);
             taskCreated = true;
         }
-        else if(isPuzzleActive() && IsInteractPressed && taskCopy.activeSelf == false)
+        else if(IsInteractPressed && taskCopy.activeSelf == false)
         {
             PlayerMovement();
             taskCopy.SetActive (true);

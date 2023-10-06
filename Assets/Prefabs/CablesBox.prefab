@@ -1108,7 +1108,8 @@ PrefabInstance:
       propertyPath: finalCableCol
       value: 
       objectReference: {fileID: 8924813379426069418}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8658546575712135693, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -1138,7 +1139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a6049e4ecbd65842bcdc4798cafed37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  finalCable: {fileID: 2183930778695733645}
+  lightCable: {fileID: 1433440580383002122}
 --- !u!4 &3633662227338887904 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1321014229867549054, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
@@ -1313,7 +1314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a6049e4ecbd65842bcdc4798cafed37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  finalCable: {fileID: 953714609804102931}
+  lightCable: {fileID: 1433440580383002122}
 --- !u!114 &7541815654082606900 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6621203504703731764, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
