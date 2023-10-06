@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
@@ -11,8 +12,10 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     private Vector2 oldPos;
     private Vector2 originalSize;
     private Transform pos;
-
-    public RectTransform finalCable;
+    private Image finalCableCol;
+    private RectTransform finalCable;
+    
+    public GameObject lightCable;
     // private GameObject _canvas;
     // private GameObject child;
  
@@ -25,18 +28,16 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         pos = GetComponent<Transform>();
         Controls = new InputMaster();
         oldPos = pos.position;
+        finalCable = GetComponentInChildren<RectTransform>();
         originalSize = finalCable.sizeDelta;
+        finalCableCol = GetComponentInChildren<Image>();
         // _canvas = GameObject.Find("CablesBox(Clone)");
         // child = _canvas.transform.GetChild(0).gameObject;
     }
 
     void Update()
     {
-        bool IsClickPressed = Controls.Player.Click.ReadValue<float>() > 0.1f;
-        if(IsClickPressed == false)
-        {
-            Reset();
-        }
+    
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -54,7 +55,7 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         Vector2 currentMousePosition = eventData.position;
         Vector2 diff = currentMousePosition - lastMousePosition;
         // RectTransform rect = child.GetComponent<RectTransform>();
- 
+        if(oldPos.x >= currentMousePosition.x || 55 >= currentMousePosition.y || 270 <= currentMousePosition.y) return;
         Vector3 newPosition = pos.position +  new Vector3(diff.x, diff.y, transform.position.z);
         pos.position = newPosition;
         lastMousePosition = currentMousePosition;
@@ -68,6 +69,12 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
+        ConnectionCheck();
+        bool IsClickPressed = Controls.Player.Click.ReadValue<float>() > 0.1f;
+        if(IsClickPressed == false)
+        {
+            Reset();
+        }
         Debug.Log("End Drag");
         //Implement your funtionlity here
     }
@@ -78,8 +85,8 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         Vector2 originalPos = transform.parent.position;
 
         Vector2 direction = currentMousePosition - originalPos;
-        float angle = Vector2.SignedAngle(Vector2.right * transform.lossyScale, direction);
-        transform.rotation = Quaternion.Euler(angle, 0, 0);
+        float angle = Vector2.SignedAngle(Vector2.left * transform.lossyScale, direction);
+        transform.rotation = Quaternion.Euler(0, 0, angle);
         Debug.Log("Rotate");
     }
 
@@ -102,6 +109,37 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         finalCable.sizeDelta = originalSize;
         Debug.Log("Reset");
         //finalCable.SetNativeSize = new Vector2(originalSizeX, originalSizeY);
+    }
+
+    private void ConnectionCheck()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.2f);
+
+        foreach (Collider2D col in colliders)
+        {
+            //Don't check the collider of the cable we are using
+            if (col.gameObject != gameObject)
+            {
+                transform.position = col.transform.position;
+                
+                CablesGame connectorCable = col.gameObject.GetComponent<CablesGame>();
+
+                if (finalCableCol.color == connectorCable.finalCableCol.color)
+                {
+                    Connect();
+                    connectorCable.Connect();
+                }
+            }
+        }
+        Debug.Log("Check");
+    }
+
+    public void Connect()
+    {
+        lightCable.SetActive(true);
+        //To not move the cable again
+        Destroy(this);
+        Debug.Log("Connect");
     }
 
     private void OnEnable()
