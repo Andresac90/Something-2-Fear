@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+using Photon.Pun;
+
 public class PlayerLook : MonoBehaviour
 {
     private InputMaster Controls;
@@ -23,6 +25,9 @@ public class PlayerLook : MonoBehaviour
 
     private Vector2 mouseLook;
 
+    [SerializeField]
+    private PhotonView PV;
+
     void Awake()
     {
         Controls = new InputMaster();
@@ -37,7 +42,7 @@ public class PlayerLook : MonoBehaviour
 
     void Update()
     {
-        
+        if (!PV.IsMine) return;
         Look();
     }
 

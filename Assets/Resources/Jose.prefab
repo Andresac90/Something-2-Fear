@@ -141,6 +141,7 @@ MonoBehaviour:
   PlayerCamera: {fileID: 7266502030151178295}
   RayLine: 5
   ThrowForce: 500
+  Player: {fileID: 3676275686622208031}
 --- !u!114 &-1153828020552127956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,6 +436,7 @@ MonoBehaviour:
   SensitivityX: 80
   SensitivityY: 80
   InvertCamera: 0
+  PV: {fileID: -1153828020552127956}
 --- !u!114 &6471830483022702382
 MonoBehaviour:
   m_ObjectHideFlags: 0
