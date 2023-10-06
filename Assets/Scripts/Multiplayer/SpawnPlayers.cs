@@ -17,7 +17,7 @@ public class SpawnPlayers : MonoBehaviour
     void Start()
     {
         
-        Vector2 randomPosition = new Vector3(2, 2, 4);
+        Vector2 randomPosition = new Vector3(-53, 2, 4);
 
         int playerNumber = PhotonNetwork.CurrentRoom.PlayerCount;
         Debug.Log(playerNumber);

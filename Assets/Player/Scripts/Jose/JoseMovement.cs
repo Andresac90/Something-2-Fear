@@ -72,7 +72,7 @@ public class JoseMovement : MonoBehaviour
         Jump();
         Crouch();
         Sprint();
-        // Camera.transform.position = new Vector3(transform.position.x, Camera.position.y, Camera.position.z);
+        Camera.transform.position = new Vector3(transform.position.x, Camera.transform.position.y, Camera.transform.position.z);
     }
     void Movement()
     {
@@ -129,6 +129,7 @@ public class JoseMovement : MonoBehaviour
             CharController.height = 1;
             CharController.center = new Vector3(0, -0.5f, 0);
             // Camera.localPosition = new Vector3(0, 0.4f, 0.225f);
+            Camera.transform.position = new Vector3(transform.position.x, transform.position.y + 0.4f, transform.position.z + 0.225f);
             Speed *= .40f;
             HasCrouched = true;
             IsCrouched = true;
@@ -139,6 +140,7 @@ public class JoseMovement : MonoBehaviour
             CharController.height = 2;
             CharController.center = new Vector3(0, 0, 0);
             // Camera.localPosition = new Vector3(0, 0.894f, 0.225f);
+            Camera.transform.position = new Vector3(transform.position.x, transform.position.y + 0.894f, transform.position.z + 0.225f);
             Speed = OriginalSpeed;
             HasCrouched = false;
             IsCrouched = false;
