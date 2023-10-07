@@ -24,13 +24,12 @@ public class SpawnPlayers : MonoBehaviour
 
         if(playerNumber == 1)
         {
-            PhotonNetwork.Instantiate(josePrefab.name, randomPosition, Quaternion.identity);
+            PhotonNetwork.Instantiate(josePrefab.name, new Vector3(6, 1.04f, 5), Quaternion.identity);
         }
         else
         {
-            PhotonNetwork.Instantiate(santiPrefab.name, randomPosition, Quaternion.identity);
+            PhotonNetwork.Instantiate(santiPrefab.name, new Vector3(6, 1.04f, 14), Quaternion.identity);
         }
-
         
     }
 }
