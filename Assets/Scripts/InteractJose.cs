@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InteractJose : MonoBehaviour
 {
@@ -52,7 +53,7 @@ public class InteractJose : MonoBehaviour
         if (isInteractActive() && IsInteractPressed && Task.activeSelf == false)
         {
             Task.SetActive(true);
-            
+            SceneManager.LoadScene("LockPick");
         }
     }
 

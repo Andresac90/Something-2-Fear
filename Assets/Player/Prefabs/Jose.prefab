@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bfb8c0c4e65631459671334946547e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Camera: {fileID: 6914870178212466546}
+  Camera: {fileID: 6880435584519348821}
   Speed: 5
   JumpForce: 3
   Gravity: -50
@@ -734,7 +734,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 119
+    m_Bits: 503
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -769,7 +769,7 @@ MonoBehaviour:
   SensitivityX: 10.6
   SensitivityY: 10.7
   InvertCamera: 0
-  PV: {fileID: 5806360458263322422}
+  PV: {fileID: 3291084995305468476}
 --- !u!114 &6471830483022702382
 MonoBehaviour:
   m_ObjectHideFlags: 0
