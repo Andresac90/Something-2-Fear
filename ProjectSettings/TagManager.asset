@@ -6,17 +6,21 @@ TagManager:
   tags:
   - Puzzle
   - Object
+  - PlayerSanti
+  - Bengal
+  - PlayerJose
+  - Obstacle
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Player
+  - 
   - Water
   - UI
   - Obstacle
-  - 
-  - 
-  - 
+  - PlayerSanti
+  - Objects
+  - PlayerJose
   - 
   - 
   - 

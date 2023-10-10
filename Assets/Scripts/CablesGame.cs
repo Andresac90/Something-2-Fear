@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class CablesGame : MonoBehaviour
+public class CablesGame : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     private InputMaster Controls;
     private Vector2 mousePosition;
@@ -14,8 +14,7 @@ public class CablesGame : MonoBehaviour
     private Vector2 direction;
     private Vector2 originalPosition;
 
-    private float originalSizeY;
-    private float originalSizeX;
+    private Vector2 originalSize;
 
     public RectTransform finalCable;
     public Image finalCableCol;
@@ -24,40 +23,55 @@ public class CablesGame : MonoBehaviour
     void Awake()
     {
         Controls = new InputMaster();
-        Cursor.lockState = CursorLockMode.None;
     }
 
     // Start is called before the first frame update
     void Start()
     {
         originalPosition = transform.position;
-        originalSizeY = (finalCable.anchorMax.x - finalCable.anchorMin.x)*Screen.width;
-        originalSizeX = (finalCable.anchorMax.y - finalCable.anchorMin.y)*Screen.height;
+        // originalSizeY = (finalCable.anchorMax.x - finalCable.anchorMin.x)*Screen.width;
+        // originalSizeX = (finalCable.anchorMax.y - finalCable.anchorMin.y)*Screen.height;
+        originalSize = finalCable.sizeDelta;
+        // finalCable.sizeDelta = new Vector2 (10000, finalCable.sizeDelta.y);
     }
 
     // Update is called once per frame
     void Update()
     {
         bool IsClickPressed = Controls.Player.Click.ReadValue<float>() > 0.1f;
-        if(IsClickPressed)
+        if(IsClickPressed == false)
         {
-            //Reset();
+            Reset();
         }
     }
 
-    private void OnDrag(PointerEventData data)
+    public void OnDrag(PointerEventData eventData)
     {
+        Vector2 currentMousePosition = eventData.position;
         ChangePosition();
         ChangeRotation();
         ChangeSize();
+        Debug.Log("And");
+    }
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        Debug.Log("Black");
+    }
+    public void OnEndDrag(PointerEventData eventData)
+    {
         ConnectionCheck();
+        Debug.Log("Yellow");
     }
 
     private void ChangePosition()
     {
-        mousePosition = Controls.Player.Look.ReadValue<Vector2>();
-        transform.position = new Vector3(mousePosition.x, mousePosition.y);
-        Debug.Log("Move");
+        bool IsClickPressed = Controls.Player.Click.ReadValue<float>() > 0.1f;
+        if(IsClickPressed)
+        {
+            mousePosition = Controls.Player.Look.ReadValue<Vector2>();
+            transform.position = new Vector3(mousePosition.x, mousePosition.y);
+            Debug.Log(mousePosition);
+        }
     }
 
     private void ChangeRotation()
@@ -77,7 +91,7 @@ public class CablesGame : MonoBehaviour
         originPosition = transform.parent.position;
 
         float distance = Vector2.Distance(actualPosition, originPosition);
-        finalCable.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, distance);
+        finalCable.sizeDelta = new Vector2 (distance, finalCable.sizeDelta.y);
         Debug.Log("Size");
         //finalCable.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, height);
         //finalCable.RectTransform.SetSizeWithCurrentAnchors = new Vector2(distance, finalCable.RectTransform.sizeDelta.y);
@@ -87,7 +101,7 @@ public class CablesGame : MonoBehaviour
     {
         transform.position = originalPosition;
         transform.rotation = Quaternion.identity;
-        finalCable.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, originalSizeX);
+        finalCable.sizeDelta = originalSize;
         Debug.Log("Reset");
         //finalCable.SetNativeSize = new Vector2(originalSizeX, originalSizeY);
     }

@@ -4,10 +4,12 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 using UnityEditor;
 
+using Photon.Pun;
+
 public class JoseMovement : MonoBehaviour
 {
     [SerializeField]
-    private Transform Camera;
+    private Camera Camera;
 
     private InputMaster Controls;
     private Vector2 Move;
@@ -45,8 +47,8 @@ public class JoseMovement : MonoBehaviour
     //Jump
     private bool HasJump = false;
 
+    PhotonView PV;
 
-    // Start is called before the first frame update
 
     void Awake()
     {
@@ -54,18 +56,23 @@ public class JoseMovement : MonoBehaviour
     }
     void Start()
     {
+        PV = GetComponent<PhotonView>();
+        if(!PV.IsMine){
+            Camera.enabled = false;
+        }
         CharController = GetComponent<CharacterController>();
         OriginalSpeed = Speed;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (!PV.IsMine) return;
+
         Movement();
         Jump();
         Crouch();
         Sprint();
-        Camera.transform.position = new Vector3(transform.position.x, Camera.position.y, Camera.position.z);
+        Camera.transform.position = new Vector3(transform.position.x, Camera.transform.position.y, Camera.transform.position.z);
     }
     void Movement()
     {
@@ -79,7 +86,7 @@ public class JoseMovement : MonoBehaviour
         Vector3 MovementZ = (transform.right * Move.x + transform.forward * Move.y);
         YVel.y += Gravity * Time.deltaTime;
         CharController.Move(MovementZ * Speed * Time.deltaTime);
-        CharController.Move(YVel * Speed * Time.deltaTime);
+        CharController.Move(YVel * Time.deltaTime);
     }
 
     void Sprint()
@@ -121,7 +128,8 @@ public class JoseMovement : MonoBehaviour
         {
             CharController.height = 1;
             CharController.center = new Vector3(0, -0.5f, 0);
-            Camera.localPosition = new Vector3(0, 0.4f, 0.225f);
+            // Camera.localPosition = new Vector3(0, 0.4f, 0.225f);
+            Camera.transform.position = new Vector3(transform.position.x, transform.position.y + 0.4f, transform.position.z + 0.225f);
             Speed *= .40f;
             HasCrouched = true;
             IsCrouched = true;
@@ -131,7 +139,8 @@ public class JoseMovement : MonoBehaviour
         {
             CharController.height = 2;
             CharController.center = new Vector3(0, 0, 0);
-            Camera.localPosition = new Vector3(0, 0.894f, 0.225f);
+            // Camera.localPosition = new Vector3(0, 0.894f, 0.225f);
+            Camera.transform.position = new Vector3(transform.position.x, transform.position.y + 0.894f, transform.position.z + 0.225f);
             Speed = OriginalSpeed;
             HasCrouched = false;
             IsCrouched = false;
