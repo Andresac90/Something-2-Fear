@@ -70,7 +70,6 @@ public class CablesGame : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
         {
             mousePosition = Controls.Player.Look.ReadValue<Vector2>();
             transform.position = new Vector3(mousePosition.x, mousePosition.y);
-            Debug.Log(mousePosition);
         }
     }
 
@@ -80,9 +79,10 @@ public class CablesGame : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
         originPosition = transform.parent.position;
 
         direction = actualPosition - originPosition;
-        float angle = Vector2.SignedAngle(Vector2.right * transform.lossyScale, direction);
-        transform.rotation = Quaternion.Euler(0, 0, angle);
-        Debug.Log("Rotate");
+        transform.right = direction * transform.lossyScale.x;
+        // float angle = Vector2.SignedAngle(Vector2.right * transform.lossyScale, direction);
+        // transform.rotation = Quaternion.Euler(0, 0, angle);
+        // Debug.Log("Rotate");
     }
 
     private void ChangeSize()

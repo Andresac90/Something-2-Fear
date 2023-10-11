@@ -8,31 +8,32 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 {
     private InputMaster Controls;
     private Vector2 lastMousePosition;
-    private Vector2 mousePosition;
-    private Vector2 oldPos;
+    private Vector3 oldPos;
+    private Vector3 oldPosCon;
     private Vector2 originalSize;
     private Transform pos;
     private Image finalCableCol;
     private RectTransform finalCable;
+    private Vector2 fixedAnchor;
+    private GameObject connector;
     
     public GameObject lightCable;
-    // private GameObject _canvas;
-    // private GameObject child;
- 
-    /// <summary>
-    /// This method will be called on the start of the mouse drag
-    /// </summary>
-    /// <param name="eventData">mouse pointer event data</param>
+
     public void Awake()
     {
-        pos = GetComponent<Transform>();
         Controls = new InputMaster();
-        oldPos = pos.position;
+    }
+
+    public void Start()
+    {
+        pos = GetComponent<Transform>();
+        oldPos = transform.position;
         finalCable = GetComponentInChildren<RectTransform>();
         originalSize = finalCable.sizeDelta;
         finalCableCol = GetComponentInChildren<Image>();
-        // _canvas = GameObject.Find("CablesBox(Clone)");
-        // child = _canvas.transform.GetChild(0).gameObject;
+        fixedAnchor = new Vector2(0f, 0.5f);
+        connector = this.transform.GetChild(1).gameObject;
+        oldPosCon = connector.transform.position;
     }
 
     void Update()
@@ -42,96 +43,99 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("Begin Drag");
         lastMousePosition = eventData.position;
     }
- 
-    /// <summary>
-    /// This method will be called during the mouse drag
-    /// </summary>
-    /// <param name="eventData">mouse pointer event data</param>
+
     public void OnDrag(PointerEventData eventData)
     {
         Vector2 currentMousePosition = eventData.position;
-        Vector2 diff = currentMousePosition - lastMousePosition;
-        // RectTransform rect = child.GetComponent<RectTransform>();
-        if(oldPos.x >= currentMousePosition.x || 55 >= currentMousePosition.y || 270 <= currentMousePosition.y) return;
-        Vector3 newPosition = pos.position +  new Vector3(diff.x, diff.y, transform.position.z);
-        pos.position = newPosition;
-        lastMousePosition = currentMousePosition;
         ChangeRotation(currentMousePosition);
         ChangeSize(currentMousePosition);
+        ConnectionCheck();
     }
  
-    /// <summary>
-    /// This method will be called at the end of mouse drag
-    /// </summary>
-    /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
-        ConnectionCheck();
+        
         bool IsClickPressed = Controls.Player.Click.ReadValue<float>() > 0.1f;
         if(IsClickPressed == false)
         {
             Reset();
         }
         Debug.Log("End Drag");
-        //Implement your funtionlity here
     }
 
     private void ChangeRotation(Vector2 currentMousePosition)
     {
-        currentMousePosition = transform.position;
-        Vector2 originalPos = transform.parent.position;
 
-        Vector2 direction = currentMousePosition - originalPos;
-        float angle = Vector2.SignedAngle(Vector2.left * transform.lossyScale, direction);
-        transform.rotation = Quaternion.Euler(0, 0, angle);
-        Debug.Log("Rotate");
+        Vector3 direction = (Vector2)pos.position - currentMousePosition;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        finalCable.rotation = Quaternion.Euler(0, 0, angle);
+        connector.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+
+        lastMousePosition = currentMousePosition;
     }
 
     private void ChangeSize(Vector2 currentMousePosition)
     {
-        currentMousePosition = transform.position;
-        Vector2 originalPos = transform.parent.position;
+        float estirar;
+        if(finalCable.rect.width <= 800)
+        {
+            estirar = 10f;
+        }
+        else
+        {
+            estirar = 7f;
+        }
+        float distance = Vector2.Distance(fixedAnchor * finalCable.rect.width, ((Vector2)pos.position - currentMousePosition)*estirar);
 
-        float distance = Vector2.Distance(currentMousePosition, originalPos);
-        finalCable.sizeDelta = new Vector2 (distance, finalCable.sizeDelta.y);
-        Debug.Log("Size");
-        //finalCable.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, height);
-        //finalCable.RectTransform.SetSizeWithCurrentAnchors = new Vector2(distance, finalCable.RectTransform.sizeDelta.y);
+        finalCable.sizeDelta = new Vector2(distance, finalCable.sizeDelta.y);
+        connector.transform.position = finalCable.TransformPoint(new Vector3(finalCable.rect.width, 0f, 0f));
+        BoxCollider2D boxCollider = this.GetComponent<BoxCollider2D>();
+        boxCollider.offset = this.transform.position - connector.transform.position;
+        Vector2 currOffSet = boxCollider.offset;
+        currOffSet.y = -currOffSet.y;
+        boxCollider.offset = currOffSet;
     }
 
     private void Reset()
     {
+        connector.transform.position = oldPosCon;
         transform.position = oldPos;
+        connector.transform.rotation = Quaternion.Euler(0, 0, 180);
         transform.rotation = Quaternion.identity;
         finalCable.sizeDelta = originalSize;
         Debug.Log("Reset");
-        //finalCable.SetNativeSize = new Vector2(originalSizeX, originalSizeY);
     }
 
     private void ConnectionCheck()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.2f);
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, new Vector2(1f, 1f), 1);
 
         foreach (Collider2D col in colliders)
         {
+            Debug.Log("Check2");
+            Debug.Log(col.gameObject.name);
+            Debug.Log(gameObject.name);
             //Don't check the collider of the cable we are using
             if (col.gameObject != gameObject)
             {
+                Debug.Log("Check3");
                 transform.position = col.transform.position;
                 
                 CablesGame connectorCable = col.gameObject.GetComponent<CablesGame>();
 
                 if (finalCableCol.color == connectorCable.finalCableCol.color)
                 {
+                    Debug.Log("Check4");
                     Connect();
                     connectorCable.Connect();
                 }
             }
         }
-        Debug.Log("Check");
+        
     }
 
     public void Connect()

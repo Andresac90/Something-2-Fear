@@ -19,10 +19,12 @@ public class Puzzle : MonoBehaviour
     private bool taskCreated = false;
     private RaycastHit hit;
     
-
-    void Awake()
+    public void Awake()
     {
         controls = new InputMaster();
+    }
+    void Start()
+    {
         playerMove = GameObject.Find("Santi");
         child = playerMove.transform.GetChild(0).gameObject;
         playerCam = child.GetComponent<Transform>();
