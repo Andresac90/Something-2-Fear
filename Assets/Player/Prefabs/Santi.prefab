@@ -110,6 +110,7 @@ MonoBehaviour:
   SensitivityX: 80
   SensitivityY: 80
   InvertCamera: 0
+  PV: {fileID: 2380315495651059770}
 --- !u!1 &2043920906562670192
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,6 +278,7 @@ GameObject:
   - component: {fileID: 395162182169490362}
   - component: {fileID: 561089483934889455}
   - component: {fileID: 7758464723538168035}
+  - component: {fileID: 2380315495651059770}
   m_Layer: 7
   m_Name: Santi
   m_TagString: PlayerSanti
@@ -340,6 +342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aef25a0f41f5704383c284a44e2e323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Camera: {fileID: 2490933095253580234}
   Speed: 3.5
   Gravity: -9.81
   IsGrounded: 0
@@ -367,6 +370,28 @@ MonoBehaviour:
   PlayerCamera: {fileID: 4118181153985221479}
   RayLine: 2
   ThrowForce: 500
+--- !u!114 &2380315495651059770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8017623072165681613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &1735155144270965893
 PrefabInstance:
   m_ObjectHideFlags: 0
