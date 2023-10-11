@@ -24,7 +24,7 @@ public class SpawnPlayers : MonoBehaviour
 
         if(playerNumber == 1)
         {
-            PhotonNetwork.Instantiate(josePrefab.name, new Vector3(6, 1.04f, 5), Quaternion.identity);
+            PhotonNetwork.Instantiate(josePrefab.name, new Vector3(-0.589999974f, 2.30900002f, -10.75f), Quaternion.identity);
         }
         else
         {
