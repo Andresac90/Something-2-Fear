@@ -42,7 +42,7 @@ public class PlayerLook : MonoBehaviour
 
     void Update()
     {
-        if (!PV.IsMine) return;
+        // if (!PV.IsMine) return;
         Look();
     }
 

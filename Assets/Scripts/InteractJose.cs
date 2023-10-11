@@ -28,7 +28,7 @@ public class InteractJose : MonoBehaviour
 
     public void OnTriggerEnter(Collider collision)
     {
-        if (collision.CompareTag("PlayerJose"))
+        if (collision.CompareTag("PlayerJose") || collision.CompareTag("PlayerSanti"))
         {
             PlayerNear = true;
         }
@@ -36,7 +36,7 @@ public class InteractJose : MonoBehaviour
 
     public void OnTriggerExit(Collider collision)
     {
-        if (collision.CompareTag("PlayerJose"))
+        if (collision.CompareTag("PlayerJose") || collision.CompareTag("PlayerSanti"))
         {
             PlayerNear = false;
         }
