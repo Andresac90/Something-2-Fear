@@ -366,8 +366,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectRightCamera: {fileID: 6493715969387195652}
   ObjectLeftCamera: {fileID: 1098111588169949984}
-  ObjectRightHand: {fileID: 0}
-  ObjectLeftHand: {fileID: 0}
+  ObjectRightHand: {fileID: 1857429155178334786}
+  ObjectLeftHand: {fileID: 7932041050098583834}
   PlayerCamera: {fileID: 4118181153985221479}
   RayLine: 2
   ThrowForce: 500
