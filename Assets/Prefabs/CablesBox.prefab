@@ -969,7 +969,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a6049e4ecbd65842bcdc4798cafed37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  finalCableCol: {fileID: 0}
   lightCable: {fileID: 5641811339055140873}
 --- !u!4 &1495150050964757665 stripped
 Transform:
@@ -1060,6 +1059,14 @@ PrefabInstance:
     - target: {fileID: 1321014229867549054, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1396210385298825714, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 1396210385298825714, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 1396210385298825714, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1244,7 +1251,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a6049e4ecbd65842bcdc4798cafed37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  finalCableCol: {fileID: 4352023259557551008}
   lightCable: {fileID: 1433440580383002122}
 --- !u!114 &7541815654082606900 stripped
 MonoBehaviour:
@@ -1496,7 +1502,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a6049e4ecbd65842bcdc4798cafed37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  finalCableCol: {fileID: 0}
   lightCable: {fileID: 0}
 --- !u!1001 &6594296134513218764
 PrefabInstance:
@@ -1737,7 +1742,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a6049e4ecbd65842bcdc4798cafed37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  finalCableCol: {fileID: 0}
   lightCable: {fileID: 0}
 --- !u!1001 &6694398257663470152
 PrefabInstance:
@@ -2000,7 +2004,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a6049e4ecbd65842bcdc4798cafed37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  finalCableCol: {fileID: 0}
   lightCable: {fileID: 4383311260898665361}
 --- !u!224 &7102692547708987483 stripped
 RectTransform:
@@ -2112,12 +2115,20 @@ PrefabInstance:
       value: 18.530308
       objectReference: {fileID: 0}
     - target: {fileID: 1414020232948983976, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1414020232948983976, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
       propertyPath: m_Offset.x
       value: 5.419774
       objectReference: {fileID: 0}
     - target: {fileID: 1414020232948983976, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
       propertyPath: m_Offset.y
       value: -1.4867992
+      objectReference: {fileID: 0}
+    - target: {fileID: 1414020232948983976, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1443475751779849293, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
       propertyPath: m_CullTransparentMesh
@@ -2213,6 +2224,7 @@ PrefabInstance:
       objectReference: {fileID: 7541815654082606900}
     m_RemovedComponents:
     - {fileID: 8658546575712135693, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
+    - {fileID: 1414020232948983976, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -2220,17 +2232,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8911999479570471785}
   m_SourcePrefab: {fileID: 100100000, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
---- !u!114 &4352023259557551008 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6621203504703731764, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
-  m_PrefabInstance: {fileID: 7459724159263024020}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7334846145999027118 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 165744970822555706, guid: 71074a5cd1be9c04ab70682ae51f0959, type: 3}
@@ -2248,7 +2249,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a6049e4ecbd65842bcdc4798cafed37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  finalCableCol: {fileID: 7541815654082606900}
   lightCable: {fileID: 1433440580383002122}
 --- !u!4 &8490249466500641514 stripped
 Transform:

@@ -2,21 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Puzzle : MonoBehaviour
+public class Note : MonoBehaviour
 {
     private InputMaster controls;
 
     [SerializeField]
-    private GameObject task;
+    private GameObject noteObj;
     [SerializeField]
     private float rayLine;
     
-    private GameObject taskCopy;
+    private GameObject noteCopy;
     private GameObject playerMove;
     private GameObject child;
     private Transform playerCam;
     private bool playerNear;
-    private bool taskCreated = false;
+    private bool noteCreated = false;
     private RaycastHit hit;
     
 
@@ -35,57 +35,36 @@ public class Puzzle : MonoBehaviour
     void Update()
     {
         Physics.Raycast(playerCam.position, playerCam.TransformDirection(Vector3.forward), out hit, rayLine);
-        if(hit.transform != null && hit.transform.tag == "Puzzle")
+        if(hit.transform != null && hit.transform.tag == "Note")
         {
-            OpenPuzzle();
+            OpenNote();
         }
-        if(taskCreated)
+        if(noteCreated)
         {
-            ClosePuzzle();
+            CloseNote();
         }
     }
 
-    // public void OnTriggerEnter(Collider collision)
-    // {
-    //     if(collision.CompareTag("PlayerSanti"))
-    //     {
-    //         playerNear = true;
-    //     }
-    // }
-
-    // public void OnTriggerExit(Collider collision)
-    // {
-    //     if(collision.CompareTag("PlayerSanti"))
-    //     {
-    //         playerNear = false;
-    //     }
-    // }
-
-    // private bool isPuzzleActive()
-    // {
-    //     return playerNear;
-    // }
-
-    private void OpenPuzzle()
+    private void OpenNote()
     {
         bool IsInteractPressed = controls.Player.Interact.ReadValue<float>() > 0f;
-        if(IsInteractPressed && taskCreated == false)
+        if(IsInteractPressed && noteCreated == false)
         {
             PlayerMovement();
-            taskCopy = Instantiate(task);
-            taskCreated = true;
+            noteCopy = Instantiate(noteObj);
+            noteCreated = true;
         }
-        else if(IsInteractPressed && taskCopy.activeSelf == false)
+        else if(IsInteractPressed && noteCopy.activeSelf == false)
         {
             PlayerMovement();
-            taskCopy.SetActive (true);
+            noteCopy.SetActive (true);
         }
     }
 
-    private void ClosePuzzle()
+    private void CloseNote()
     {
         bool IsCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0f;
-        if(IsCancelPressed && taskCopy.activeSelf)
+        if(IsCancelPressed && noteCopy.activeSelf)
         {
             PlayerMovement();
         }
@@ -93,18 +72,18 @@ public class Puzzle : MonoBehaviour
 
     private void PlayerMovement()
     {
-        if(taskCreated == false || taskCopy.activeSelf == false)
+        if(noteCreated == false || noteCopy.activeSelf == false)
         {
             playerMove.GetComponent<SantiController>().enabled = false;
             playerMove.GetComponentInChildren<PlayerLook>().enabled = false;
             Cursor.lockState = CursorLockMode.None;
         }
-        else if(taskCopy.activeSelf)
+        else if(noteCopy.activeSelf)
         {
             playerMove.GetComponent<SantiController>().enabled = true;
             playerMove.GetComponentInChildren<PlayerLook>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
-            taskCopy.SetActive(false);
+            Destroy(noteCopy);
         }
     }
 
