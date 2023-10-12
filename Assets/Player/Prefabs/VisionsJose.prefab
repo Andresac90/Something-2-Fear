@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8780655508143183194}
   - component: {fileID: 3662580399946322443}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 448895128823308223}
   - component: {fileID: 3055993444563817421}
   - component: {fileID: 7138558590743489933}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: VisionsJose
   m_TagString: Untagged
   m_Icon: {fileID: 0}
