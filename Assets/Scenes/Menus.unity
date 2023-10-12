@@ -684,7 +684,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 731961562}
-  - component: {fileID: 731961563}
   m_Layer: 0
   m_Name: Options Menu
   m_TagString: Untagged
@@ -711,18 +710,6 @@ Transform:
   - {fileID: 767417980}
   m_Father: {fileID: 792313030}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &731961563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 731961561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cf24dcff64846045981ca71049e35e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &767417979
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,7 +1157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.98039216, g: 1, b: 0, a: 0.392}
+  m_Color: {r: 0.98039216, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

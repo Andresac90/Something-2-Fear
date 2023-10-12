@@ -354,6 +354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Camera: {fileID: 6880435584519348821}
+  AudioListener: {fileID: 2902850494592881921}
   Speed: 5
   JumpForce: 3
   Gravity: -50

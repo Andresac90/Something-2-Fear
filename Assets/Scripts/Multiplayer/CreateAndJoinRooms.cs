@@ -12,6 +12,9 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public TMP_InputField createInput;
     public TMP_InputField joinInput;
 
+    [SerializeField]
+    private PopUpManager PopUp;
+
     public void CreateRoom()
     {
         PhotonNetwork.CreateRoom(createInput.text);
@@ -26,5 +29,12 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LoadLevel("Main");
     }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        PopUp.SendPopUp();        
+    }
+
+
 
 }

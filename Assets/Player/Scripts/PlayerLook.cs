@@ -28,21 +28,31 @@ public class PlayerLook : MonoBehaviour
     [SerializeField]
     private PhotonView PV;
 
+    private MenuManager MenuManager;
+
+
     void Awake()
     {
         Controls = new InputMaster();
-
+        
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Start()
     {
         Character = transform.parent;
+
+        GameObject canvas = GameObject.Find("/Canvas");
+        Debug.Log(canvas);
+        MenuManager = canvas.GetComponent<MenuManager>();
+        Debug.Log(MenuManager);
     }
 
     void Update()
     {
         // if (!PV.IsMine) return;
+
+        if(MenuManager.OptionsMenuActive) return;
         Look();
     }
 

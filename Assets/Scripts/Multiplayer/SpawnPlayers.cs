@@ -16,19 +16,17 @@ public class SpawnPlayers : MonoBehaviour
 
     void Start()
     {
-        
-        Vector2 randomPosition = new Vector3(-53, 2, 4);
-
         int playerNumber = PhotonNetwork.CurrentRoom.PlayerCount;
-        Debug.Log(playerNumber);
 
         if(playerNumber == 1)
         {
-            PhotonNetwork.Instantiate(josePrefab.name, new Vector3(-0.589999974f, 2.30900002f, -10.75f), Quaternion.identity);
+            GameObject spawn = GameObject.FindGameObjectsWithTag("JoseSpawn")[0];
+            PhotonNetwork.Instantiate(josePrefab.name, spawn.transform.position, Quaternion.identity);
         }
         else
         {
-            PhotonNetwork.Instantiate(santiPrefab.name, new Vector3(6, 1.04f, 14), Quaternion.identity);
+            GameObject spawn = GameObject.FindGameObjectsWithTag("SantiSpawn")[0];
+            PhotonNetwork.Instantiate(santiPrefab.name, spawn.transform.position, Quaternion.identity);
         }
         
     }

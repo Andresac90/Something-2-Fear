@@ -10,6 +10,8 @@ public class JoseMovement : MonoBehaviour
 {
     [SerializeField]
     private Camera Camera;
+    [SerializeField]
+    private AudioListener AudioListener;
 
     private InputMaster Controls;
     private Vector2 Move;
@@ -57,9 +59,10 @@ public class JoseMovement : MonoBehaviour
     void Start()
     {
         PV = GetComponent<PhotonView>();
-        if(!PV.IsMine){
-            Camera.enabled = false;
-        }
+        
+        Camera.enabled = PV.IsMine;
+        AudioListener.enabled = PV.IsMine;
+
         CharController = GetComponent<CharacterController>();
         OriginalSpeed = Speed;
     }

@@ -11,6 +11,8 @@ public class SantiController : MonoBehaviour
 {   
     [SerializeField]
     private Camera Camera;
+    [SerializeField]
+    private AudioListener AudioListener;
     private Vector2 Move;
     private Vector2 YVel;
     public float Speed;
@@ -41,10 +43,10 @@ public class SantiController : MonoBehaviour
     void Start()
     {
         PV = GetComponent<PhotonView>();
-        if (!PV.IsMine)
-        {
-            Camera.enabled = false;
-        }
+        
+        Camera.enabled = PV.IsMine;
+        AudioListener.enabled = PV.IsMine;
+
         CharController = GetComponent<CharacterController>();
         OriginalSpeed = Speed;
     }
