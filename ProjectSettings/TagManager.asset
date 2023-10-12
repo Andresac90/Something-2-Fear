@@ -10,7 +10,7 @@ TagManager:
   - Bengal
   - PlayerJose
   - Obstacle
-  - Note
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -22,10 +22,10 @@ TagManager:
   - PlayerSanti
   - Objects
   - PlayerJose
-  - 
+  - Enemy
   - 
   - VisionsJose
-  - 
+  - Note
   - 
   - 
   - 

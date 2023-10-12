@@ -19,6 +19,7 @@ public class AIControl : MonoBehaviour
     public float viewAngle = 90;                    //  Angle of the enemy view
     public LayerMask playerMask;                    //  To detect the player with the raycast
     public LayerMask obstacleMask;                  //  To detect the obstacules with the raycast
+    public LayerMask enemyMask;
     public float meshResolution = 1.0f;             //  How many rays will cast per degree
     public int edgeIterations = 4;                  //  Number of iterations to get a better performance of the mesh filter when the raycast hit an obstacule
     public float edgeDistance = 0.5f;               //  Max distance to calcule the a minumun and a maximum raycast when hits something
@@ -42,7 +43,7 @@ public class AIControl : MonoBehaviour
 
     //Testing variables
     bool isSeen;  //Pascualita is being seen by player
-    int randNum; //Random val to randomize patrol pattern
+    //int randNum; //Random val to randomize patrol pattern
     public float catchDistance;
     public Animator aiAnimation; //for fuuture use in animations
 
@@ -57,7 +58,7 @@ public class AIControl : MonoBehaviour
         //Testing
         isSeen = false;
         //aiAgent.destination = waypoints[CurrentWaypointIndex].position;
-        randNum = 0;
+        //randNum = 0;
         minWaitTime = 1f;
         maxWiatTime = 3f;
         catchDistance = 3f;
@@ -76,7 +77,14 @@ public class AIControl : MonoBehaviour
 
     private void Update()
     {
-            EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
+        EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
+        if (Physics.Raycast(GameObject.FindGameObjectWithTag("PlayerJose").transform.position, transform.position, 100, enemyMask) && WaitTime <= 0) ; //Raycast from player to enemy
+        {
+            Debug.Log("Raycast from player");
+            isPatrol = false;
+            isSeen = true;
+
+        }
 
         if (!isPatrol && !isPlayerCaught)
         {
@@ -100,6 +108,7 @@ public class AIControl : MonoBehaviour
         else if(isSeen) // if Pascualita is seen stop (recibe valor de PlayerScript)
         {
             Debug.Log("Pascualita is being seen");
+            Seen();
         }
     }
 
@@ -255,6 +264,23 @@ private void Chasing()
                 Stop();
                 WaitTime -= Time.deltaTime;
             }
+        }
+    }
+
+    private void Seen() 
+    {
+        if (WaitTime <= 0)
+        {
+            isPatrol = true;
+            Move(walkSpeed);
+            aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
+            WaitTime = startWaitTime;
+            TimeToRotate = timeToRotate;
+        }
+        else
+        {
+            Stop();
+            WaitTime -= Time.deltaTime;
         }
     }
 
