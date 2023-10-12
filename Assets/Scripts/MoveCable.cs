@@ -16,6 +16,7 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     private RectTransform finalCable;
     private Vector2 fixedAnchor;
     private GameObject connector;
+    private bool conectado = false;
     
     public GameObject lightCable;
 
@@ -38,7 +39,6 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     void Update()
     {
-    
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -48,21 +48,27 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public void OnDrag(PointerEventData eventData)
     {
-        Vector2 currentMousePosition = eventData.position;
-        ChangeRotation(currentMousePosition);
-        ChangeSize(currentMousePosition);
-        ConnectionCheck();
+        if(!conectado)
+        {
+            Vector2 currentMousePosition = eventData.position;
+            ChangeRotation(currentMousePosition);
+            ChangeSize(currentMousePosition);
+            ConnectionCheck();
+        }
+        
     }
  
     public void OnEndDrag(PointerEventData eventData)
     {
-        
-        bool IsClickPressed = Controls.Player.Click.ReadValue<float>() > 0.1f;
-        if(IsClickPressed == false)
+        if(!conectado)
         {
-            Reset();
+            bool IsClickPressed = Controls.Player.Click.ReadValue<float>() > 0.1f;
+            if(IsClickPressed == false)
+            {
+                Reset();
+            }
+            Debug.Log("End Drag");
         }
-        Debug.Log("End Drag");
     }
 
     private void ChangeRotation(Vector2 currentMousePosition)
@@ -93,11 +99,12 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
         finalCable.sizeDelta = new Vector2(distance, finalCable.sizeDelta.y);
         connector.transform.position = finalCable.TransformPoint(new Vector3(finalCable.rect.width, 0f, 0f));
-        BoxCollider2D boxCollider = this.GetComponent<BoxCollider2D>();
-        boxCollider.offset = this.transform.position - connector.transform.position;
-        Vector2 currOffSet = boxCollider.offset;
-        currOffSet.y = -currOffSet.y;
-        boxCollider.offset = currOffSet;
+
+        // BoxCollider2D boxCollider = this.GetComponent<BoxCollider2D>();
+        // boxCollider.offset = this.transform.position - connector.transform.position;
+        // Vector2 currOffSet = boxCollider.offset;
+        // currOffSet.y = -currOffSet.y;
+        // boxCollider.offset = currOffSet;
     }
 
     private void Reset()
@@ -105,38 +112,64 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         connector.transform.position = oldPosCon;
         transform.position = oldPos;
         connector.transform.rotation = Quaternion.Euler(0, 0, 180);
-        transform.rotation = Quaternion.identity;
+        finalCable.transform.localRotation = Quaternion.Euler(0, 0, 180);
         finalCable.sizeDelta = originalSize;
         Debug.Log("Reset");
     }
 
     private void ConnectionCheck()
     {
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, new Vector2(1f, 1f), 1);
-
-        foreach (Collider2D col in colliders)
+        Collider2D colliders = Physics2D.OverlapBox(connector.transform.position, new Vector2(1f,1f), 0);
+        
+        //Don't check the collider of the cable we are using
+        if(colliders != null)
         {
-            Debug.Log("Check2");
-            Debug.Log(col.gameObject.name);
-            Debug.Log(gameObject.name);
-            //Don't check the collider of the cable we are using
-            if (col.gameObject != gameObject)
-            {
-                Debug.Log("Check3");
-                transform.position = col.transform.position;
-                
-                CablesGame connectorCable = col.gameObject.GetComponent<CablesGame>();
+            
 
-                if (finalCableCol.color == connectorCable.finalCableCol.color)
-                {
-                    Debug.Log("Check4");
-                    Connect();
-                    connectorCable.Connect();
-                }
+            if (colliders.gameObject != gameObject)
+            {
+
+               
+                Debug.Log("Check3");
+                
+                
+                CablesGame connectorCable = colliders.gameObject.GetComponent<CablesGame>();
+                
+                conectado = true;
+                Debug.Log("Check4");
+                Connect();
+                connectorCable.Connect();
+                // if (finalCableCol.color == connectorCable.finalCableCol.color)
+                // {
+                    
+                // }
+
             }
+        
         }
         
     }
+
+    // private void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     if(other.name == "Move")
+    //     {
+    //         this.transform.position = other.transform.position;
+    //         Debug.Log("Conectado");
+    //     }
+        
+    // }
+
+    // private void OnCollisionEnter2D(Collision2D other)
+    // {
+    //     if(other.transform.name == "Move")
+    //     {
+    //         this.transform.position = other.transform.position;
+            
+    //     }
+    //     Debug.Log("Conectado");
+    // }
+
 
     public void Connect()
     {

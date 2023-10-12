@@ -10,6 +10,7 @@ TagManager:
   - Bengal
   - PlayerJose
   - Obstacle
+  - Note
   layers:
   - Default
   - TransparentFX
