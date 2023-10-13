@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
+using Unity.VisualScripting;
 
 public class LockPick : MonoBehaviour
 {
@@ -8,9 +10,10 @@ public class LockPick : MonoBehaviour
     [SerializeField]
     private Camera Camera;
     [SerializeField]
-    private Transform innerLock;
+    private RectTransform innerLock;
     [SerializeField]
     private Transform pickPosition;
+    private GameObject Player;
 
     public float maxAngle = 90;
     public float lockSpeed = 10;
@@ -29,12 +32,15 @@ public class LockPick : MonoBehaviour
     void Awake()
     {
         Controls = new InputMaster();
+        Player = GameObject.Find("Santi");
+        Camera = Player.transform.GetChild(0).GetComponent<Camera>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         newLock();
+        
     }
 
     // Update is called once per frame
