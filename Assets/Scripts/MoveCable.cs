@@ -39,10 +39,6 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         oldPositionConnector = connector.transform.position;
     }
 
-    void Update()
-    {
-    }
-
     public void OnBeginDrag(PointerEventData eventData)
     {
         falseConnect = true;

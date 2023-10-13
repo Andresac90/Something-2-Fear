@@ -47,13 +47,13 @@ public class Puzzle : MonoBehaviour
     private void OpenPuzzle()
     {
         bool IsInteractPressed = controls.Player.Interact.ReadValue<float>() > 0f;
-        if(IsInteractPressed && puzzleCreated == false)
+        if(IsInteractPressed && !puzzleCreated)
         {
             PlayerMovement();
             puzzleCopy = Instantiate(puzzle);
             puzzleCreated = true;
         }
-        else if(IsInteractPressed && puzzleCopy.activeSelf == false)
+        else if(IsInteractPressed && !puzzleCopy.activeSelf)
         {
             PlayerMovement();
             puzzleCopy.SetActive (true);
@@ -71,7 +71,7 @@ public class Puzzle : MonoBehaviour
 
     private void PlayerMovement()
     {
-        if(puzzleCreated == false || puzzleCopy.activeSelf == false)
+        if(!puzzleCreated || !puzzleCopy.activeSelf)
         {
             playerMove.GetComponent<SantiController>().enabled = false;
             playerMove.GetComponentInChildren<PlayerLook>().enabled = false;

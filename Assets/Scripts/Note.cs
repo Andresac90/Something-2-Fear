@@ -5,33 +5,28 @@ using UnityEngine;
 public class Note : MonoBehaviour
 {
     private InputMaster controls;
+    private GameObject noteCopy;
+    private GameObject playerMove;
+    private Transform playerCam;
+    private bool noteCreated = false;
+    private RaycastHit hit;
 
     [SerializeField]
     private GameObject noteObj;
     [SerializeField]
     private float rayLine;
     
-    private GameObject noteCopy;
-    private GameObject playerMove;
-    private GameObject child;
-    private Transform playerCam;
-    private bool playerNear;
-    private bool noteCreated = false;
-    private RaycastHit hit;
-    
-
     public void Awake()
     {
         controls = new InputMaster();
     }
+
     void Start()
     {
         playerMove = GameObject.Find("Santi");
-        child = playerMove.transform.GetChild(0).gameObject;
-        playerCam = child.GetComponent<Transform>();
+        playerCam = playerMove.transform.GetChild(0).GetComponent<Transform>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         Physics.Raycast(playerCam.position, playerCam.TransformDirection(Vector3.forward), out hit, rayLine);
@@ -48,23 +43,18 @@ public class Note : MonoBehaviour
     private void OpenNote()
     {
         bool IsInteractPressed = controls.Player.Interact.ReadValue<float>() > 0f;
-        if(IsInteractPressed && noteCreated == false)
+        if(IsInteractPressed && !noteCreated)
         {
             PlayerMovement();
             noteCopy = Instantiate(noteObj);
             noteCreated = true;
-        }
-        else if(IsInteractPressed && noteCopy.activeSelf == false)
-        {
-            PlayerMovement();
-            noteCopy.SetActive (true);
         }
     }
 
     private void CloseNote()
     {
         bool IsCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0f;
-        if(IsCancelPressed && noteCopy.activeSelf)
+        if(IsCancelPressed)
         {
             PlayerMovement();
         }
@@ -72,17 +62,18 @@ public class Note : MonoBehaviour
 
     private void PlayerMovement()
     {
-        if(noteCreated == false || noteCopy.activeSelf == false)
+        if(!noteCreated)
         {
             playerMove.GetComponent<SantiController>().enabled = false;
             playerMove.GetComponentInChildren<PlayerLook>().enabled = false;
             Cursor.lockState = CursorLockMode.None;
         }
-        else if(noteCopy.activeSelf)
+        else if(noteCreated)
         {
             playerMove.GetComponent<SantiController>().enabled = true;
             playerMove.GetComponentInChildren<PlayerLook>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
+            noteCreated = false;
             Destroy(noteCopy);
         }
     }
