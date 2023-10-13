@@ -42,7 +42,7 @@ public class AIControl : MonoBehaviour
 
 
     //Testing variables
-    bool isSeen;  //Pascualita is being seen by player
+    public bool isSeen;  //Pascualita is being seen by player
     //int randNum; //Random val to randomize patrol pattern
     public float catchDistance;
     public Animator aiAnimation; //for fuuture use in animations
