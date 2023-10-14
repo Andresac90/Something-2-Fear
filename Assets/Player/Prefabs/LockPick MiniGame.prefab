@@ -122,5 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   puzzle: {fileID: 8072690544384710771, guid: 68e35d9642e685b41a348a8a02dc78b0, type: 3}
   rayLine: 2
+  door: {fileID: 0}
   comprobationsNeeded: 1
   comprobations: 0
+  password: 

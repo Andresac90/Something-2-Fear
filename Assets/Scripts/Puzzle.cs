@@ -18,6 +18,8 @@ public class Puzzle : MonoBehaviour
     [SerializeField]
     private Door door;
     [SerializeField]
+    private string puzzleIdentifier;
+    [SerializeField]
     private int comprobationsNeeded;
 
     public int comprobations;
@@ -37,9 +39,10 @@ public class Puzzle : MonoBehaviour
     void Update()
     {
         Physics.Raycast(playerCam.position, playerCam.TransformDirection(Vector3.forward), out hit, rayLine);
-        if(hit.transform != null && hit.transform.tag == "Puzzle")
+        if(hit.transform != null && hit.transform.tag == "Puzzle" && !puzzleCreated)
         {
             OpenPuzzle();
+
         }
         if(puzzleCreated)
         {
@@ -49,8 +52,9 @@ public class Puzzle : MonoBehaviour
 
     private void OpenPuzzle()
     {
-        bool IsInteractPressed = controls.Player.Interact.ReadValue<float>() > 0f;
-        if(IsInteractPressed && !puzzleCreated)
+        bool IsInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.1f;
+        string objectName = hit.collider.gameObject.name;
+        if(IsInteractPressed && !puzzleCreated && objectName == puzzleIdentifier)
         {
             PlayerMovement();
             puzzleCopy = Instantiate(puzzle);

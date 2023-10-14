@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Puzzle
   - Object
   - PlayerSanti
   - Bengal
@@ -12,6 +11,8 @@ TagManager:
   - Obstacle
   - JoseSpawn
   - SantiSpawn
+  - Note
+  - Puzzle
   layers:
   - Default
   - TransparentFX
