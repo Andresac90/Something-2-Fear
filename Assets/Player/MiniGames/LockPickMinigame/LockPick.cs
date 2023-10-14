@@ -13,7 +13,6 @@ public class LockPick : MonoBehaviour
     private RectTransform innerLock;
     [SerializeField]
     private Transform pickPosition;
-    private GameObject Player;
 
     public float maxAngle = 90;
     public float lockSpeed = 10;
@@ -29,23 +28,28 @@ public class LockPick : MonoBehaviour
 
     private bool movePick = true;
 
+    private GameObject Puzzle;
+    private Puzzle Comprobations;
+    private float Contador = 0;
+
     void Awake()
     {
         Controls = new InputMaster();
-        Player = GameObject.Find("Santi");
-        Camera = Player.transform.GetChild(0).GetComponent<Camera>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         newLock();
-        
+        Puzzle = GameObject.Find("LockPick MiniGame");
+        Comprobations = Puzzle.GetComponent<Puzzle>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        Contador += Time.deltaTime;
+
         transform.localPosition = pickPosition.position;
 
         if (movePick)
@@ -80,16 +84,20 @@ public class LockPick : MonoBehaviour
 
         float lockLerp = Mathf.LerpAngle(innerLock.eulerAngles.z, lockRotation, Time.deltaTime * lockSpeed);
         innerLock.eulerAngles = new Vector3(0, 0, lockLerp);
+        
 
         if (lockLerp >= maxRotation - 1)
         {
             if (eulerAngle < unlockRange.y && eulerAngle > unlockRange.x)
             {
+                Contador = 0;
                 Debug.Log("Unlocked!");
                 newLock();
-
                 movePick = true;
                 keyPressTime = 0;
+                Comprobations.comprobations++;
+                Comprobations.Completed();
+
             }
             else
             {
