@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Note : MonoBehaviour
 {
@@ -10,11 +12,17 @@ public class Note : MonoBehaviour
     private Transform playerCam;
     private bool noteCreated = false;
     private RaycastHit hit;
+    private TextMeshProUGUI textMesh;
+    private Image img;
 
     [SerializeField]
     private GameObject noteObj;
     [SerializeField]
     private float rayLine;
+    [SerializeField]
+    private string text;
+    [SerializeField]
+    private Image image;
     
     public void Awake()
     {
@@ -25,6 +33,12 @@ public class Note : MonoBehaviour
     {
         playerMove = GameObject.Find("Santi");
         playerCam = playerMove.transform.GetChild(0).GetComponent<Transform>();
+        GameObject child = noteObj.transform.GetChild(0).gameObject;
+        textMesh = child.GetComponentInChildren<TextMeshProUGUI>();
+        GameObject sonChild = child.transform.GetChild(1).gameObject;
+        img = sonChild.GetComponent<Image>();
+        img = image;
+        textMesh.text = text;
     }
 
     void Update()
