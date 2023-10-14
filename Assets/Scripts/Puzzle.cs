@@ -16,9 +16,12 @@ public class Puzzle : MonoBehaviour
     [SerializeField]
     private float rayLine;
     [SerializeField]
+    private Door door;
+    [SerializeField]
     private int comprobationsNeeded;
 
     public int comprobations;
+    public string password;
     
     public void Awake()
     {
@@ -90,6 +93,8 @@ public class Puzzle : MonoBehaviour
     {
         if(comprobations == comprobationsNeeded)
         {
+            door.doorState = true;
+            door.OpenDoor();
             Destroy(puzzleCopy.gameObject, 1f);
             PlayerMovement();
             Destroy(this);
