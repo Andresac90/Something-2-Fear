@@ -46,6 +46,7 @@ public class ObjectsSanti : MonoBehaviour
 
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
+    public bool noteCreated = false;
 
     public void Awake()
     {
@@ -60,6 +61,7 @@ public class ObjectsSanti : MonoBehaviour
     {
         Physics.Raycast(playerCamera.position, playerCamera.TransformDirection(Vector3.forward), out hit, rayLine);
         PuzzleManager();
+        NoteManager();
         Grab();
         Drop();
     }
@@ -68,28 +70,49 @@ public class ObjectsSanti : MonoBehaviour
     {
         if(hit.transform != null && hit.transform.tag == "Puzzle")
         {
-            Puzzle puzzleScript = hit.transform.GetComponent<Puzzle>();
+            Puzzle puzzle = hit.transform.GetComponent<Puzzle>();
             string objectName = hit.collider.gameObject.name;
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.2f;
-            if (puzzleScript != null && isInteractPressed && !puzzleCreated && !puzzleActive)
+            if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
             {
-                puzzleScript.OpenPuzzle(false, false, objectName);
+                puzzle.OpenPuzzle(false, false, objectName);
                 puzzleCreated = true;
                 puzzleActive = true;
             }
-            else if(puzzleScript != null && isInteractPressed && puzzleCreated && !puzzleActive)
+            else if(puzzle != null && isInteractPressed && puzzleCreated && !puzzleActive)
             {
-                puzzleScript.OpenPuzzle(true, false, objectName);
+                puzzle.OpenPuzzle(true, false, objectName);
                 puzzleActive = true;
             }
             else if(puzzleCreated && puzzleActive)
             {
-                bool IsCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0.2f;
-                if(IsCancelPressed && puzzleActive)
+                bool isCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0.2f;
+                if(isCancelPressed && puzzleActive)
                 {
-                    puzzleScript.ClosePuzzle(true);
+                    puzzle.ClosePuzzle(true);
                     puzzleActive = false;
                 }
+            }
+        }
+    }
+
+    public void NoteManager()
+    {
+        if(hit.transform != null && hit.transform.tag == "Note")
+        {
+            Note note = hit.transform.GetComponent<Note>();
+            string objectName = hit.collider.gameObject.name;
+            bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.2f;
+            bool isCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0.2f;
+            if (note != null && isInteractPressed && !noteCreated)
+            {
+                note.OpenNote(false);
+                noteCreated = true;
+            }
+            else if(isCancelPressed && noteCreated)
+            {
+                note.CloseNote(true);
+                noteCreated = false;
             }
         }
     }

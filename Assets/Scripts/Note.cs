@@ -6,75 +6,43 @@ using TMPro;
 
 public class Note : MonoBehaviour
 {
-    private InputMaster controls;
     private GameObject noteCopy;
     private GameObject playerMove;
-    private Transform playerCam;
-    private RaycastHit hit;
+    private ObjectsSanti objectsSanti;
     private TextMeshProUGUI textMesh;
     private Image img;
-    private bool noteCreated = false;
 
     [SerializeField]
-    private GameObject noteObj;
-    [SerializeField]
-    private float rayLine;
+    private GameObject note;
     [SerializeField]
     private string text;
     [SerializeField]
     private Image image;
-    
-    public void Awake()
-    {
-        controls = new InputMaster();
-    }
 
     void Start()
     {
         playerMove = GameObject.Find("Santi");
-        playerCam = playerMove.transform.GetChild(0).GetComponent<Transform>();
-        GameObject child = noteObj.transform.GetChild(0).gameObject;
+        objectsSanti = playerMove.GetComponent<ObjectsSanti>();
+        GameObject child = note.transform.GetChild(0).gameObject;
         textMesh = child.GetComponentInChildren<TextMeshProUGUI>();
         GameObject sonChild = child.transform.GetChild(1).gameObject;
         img = sonChild.GetComponent<Image>();
+    }
+
+    public void OpenNote(bool noteCreated)
+    {
         img = image;
         textMesh.text = text;
+        noteCopy = Instantiate(note);
+        PlayerMovement(noteCreated);
     }
 
-    void Update()
+    public void CloseNote(bool noteCreated)
     {
-        Physics.Raycast(playerCam.position, playerCam.TransformDirection(Vector3.forward), out hit, rayLine);
-        if(hit.transform != null && hit.transform.tag == "Note")
-        {
-            OpenNote();
-        }
-        if(noteCreated)
-        {
-            CloseNote();
-        }
+        PlayerMovement(noteCreated);
     }
 
-    private void OpenNote()
-    {
-        bool IsInteractPressed = controls.Player.Interact.ReadValue<float>() > 0f;
-        if(IsInteractPressed && !noteCreated)
-        {
-            PlayerMovement();
-            noteCopy = Instantiate(noteObj);
-            noteCreated = true;
-        }
-    }
-
-    private void CloseNote()
-    {
-        bool IsCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0f;
-        if(IsCancelPressed)
-        {
-            PlayerMovement();
-        }
-    }
-
-    private void PlayerMovement()
+    private void PlayerMovement(bool noteCreated)
     {
         if(!noteCreated)
         {
@@ -87,18 +55,7 @@ public class Note : MonoBehaviour
             playerMove.GetComponent<SantiController>().enabled = true;
             playerMove.GetComponentInChildren<PlayerLook>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
-            noteCreated = false;
             Destroy(noteCopy);
         }
-    }
-
-    private void OnEnable()
-    {
-        controls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        controls.Disable();
     }
 }
