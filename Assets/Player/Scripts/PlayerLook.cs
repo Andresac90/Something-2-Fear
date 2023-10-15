@@ -12,9 +12,9 @@ public class PlayerLook : MonoBehaviour
     private float LookY;
 
     [SerializeField]
-    private float SensitivityX = 80f;
+    private float SensitivityX = 1f;
     [SerializeField]
-    private float SensitivityY = 80f;
+    private float SensitivityY = 1f;
 
     [SerializeField]
     private bool InvertCamera;
@@ -52,7 +52,7 @@ public class PlayerLook : MonoBehaviour
     {
         // if (!PV.IsMine) return;
 
-        if(MenuManager.OptionsMenuActive) return;
+        //if(MenuManager.OptionsMenuActive) return;
         Look();
     }
 

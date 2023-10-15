@@ -4,87 +4,54 @@ using UnityEngine;
 
 public class Puzzle : MonoBehaviour
 {
-    private InputMaster controls;
     private GameObject puzzleCopy;
     private GameObject playerMove;
-    private Transform playerCam;
-    private bool puzzleCreated = false;
-    private RaycastHit hit;
+    private ObjectsSanti objectsSanti;
 
     [SerializeField]
     private GameObject puzzle;
     [SerializeField]
-    private float rayLine;
-    [SerializeField]
     private Door door;
-    [SerializeField]
-    private string puzzleIdentifier;
     [SerializeField]
     private int comprobationsNeeded;
 
     public int comprobations;
     public string password;
-    
-    public void Awake()
-    {
-        controls = new InputMaster();
-    }
 
     void Start()
     {
         playerMove = GameObject.Find("Santi");
-        playerCam = playerMove.transform.GetChild(0).GetComponent<Transform>();
+        objectsSanti = playerMove.GetComponent<ObjectsSanti>();
     }
 
-    void Update()
+    public void OpenPuzzle(bool puzzleCreated, bool puzzleActive, string objectName)
     {
-        Physics.Raycast(playerCam.position, playerCam.TransformDirection(Vector3.forward), out hit, rayLine);
-        if(hit.transform != null && hit.transform.tag == "Puzzle" && !puzzleCreated)
+        if(!puzzleActive && objectName == this.name && !puzzleCreated)
         {
-            OpenPuzzle();
-
-        }
-        if(puzzleCreated)
-        {
-            ClosePuzzle();
-        }
-    }
-
-    private void OpenPuzzle()
-    {
-        bool IsInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.1f;
-        string objectName = hit.collider.gameObject.name;
-        if(IsInteractPressed && !puzzleCreated && objectName == puzzleIdentifier)
-        {
-            PlayerMovement();
             puzzleCopy = Instantiate(puzzle);
-            puzzleCreated = true;
+            PlayerMovement(false);
         }
-        else if(IsInteractPressed && !puzzleCopy.activeSelf)
+        else if(!puzzleActive)
         {
-            PlayerMovement();
-            puzzleCopy.SetActive (true);
+            puzzleCopy.SetActive(true);
+            PlayerMovement(false);
         }
     }
 
-    private void ClosePuzzle()
+    public void ClosePuzzle(bool puzzleActive)
     {
-        bool IsCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0f;
-        if(IsCancelPressed && puzzleCopy.activeSelf)
-        {
-            PlayerMovement();
-        }
+        PlayerMovement(true);
     }
 
-    private void PlayerMovement()
+    public void PlayerMovement(bool puzzleActive)
     {
-        if(!puzzleCreated || !puzzleCopy.activeSelf)
+        if(!puzzleActive)
         {
             playerMove.GetComponent<SantiController>().enabled = false;
             playerMove.GetComponentInChildren<PlayerLook>().enabled = false;
             Cursor.lockState = CursorLockMode.None;
         }
-        else if(puzzleCopy.activeSelf)
+        else if(puzzleActive)
         {
             playerMove.GetComponent<SantiController>().enabled = true;
             playerMove.GetComponentInChildren<PlayerLook>().enabled = true;
@@ -100,18 +67,10 @@ public class Puzzle : MonoBehaviour
             door.doorState = true;
             door.OpenDoor();
             Destroy(puzzleCopy.gameObject, 1f);
-            PlayerMovement();
+            PlayerMovement(true);
+            objectsSanti.puzzleCreated = false;
+            objectsSanti.puzzleActive = false;
             Destroy(this);
         }
-    }
-
-    private void OnEnable()
-    {
-        controls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        controls.Disable();
     }
 }

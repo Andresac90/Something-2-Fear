@@ -10,10 +10,10 @@ public class Note : MonoBehaviour
     private GameObject noteCopy;
     private GameObject playerMove;
     private Transform playerCam;
-    private bool noteCreated = false;
     private RaycastHit hit;
     private TextMeshProUGUI textMesh;
     private Image img;
+    private bool noteCreated = false;
 
     [SerializeField]
     private GameObject noteObj;

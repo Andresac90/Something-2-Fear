@@ -29,7 +29,7 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public void Start()
     {
-        puzzle = GameObject.Find("Cables");
+        puzzle = GameObject.Find("Cables MiniGame");
         comprobations = puzzle.GetComponent<Puzzle>();
         pos = GetComponent<Transform>();
         oldPosition = transform.position;
@@ -83,16 +83,16 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     private void ChangeSize(Vector2 currentMousePosition)
     {
-        float estirar;
-        if(finalCable.rect.width <= 800)
-        {
-            estirar = 10f;
-        }
-        else
-        {
-            estirar = 7f;
-        }
-        float distance = Vector2.Distance(new Vector2(0f, 0.5f) * finalCable.rect.width, ((Vector2)pos.position - currentMousePosition)*estirar);
+        // float estirar;
+        // if(finalCable.rect.width <= 800)
+        // {
+        //     estirar = 1f;
+        // }
+        // else
+        // {
+        //     estirar = 4f;
+        // }
+        float distance = Vector2.Distance(new Vector2(0f, 0.5f) * finalCable.rect.width, ((Vector2)pos.position - currentMousePosition)*2f);
 
         finalCable.sizeDelta = new Vector2(distance, finalCable.sizeDelta.y);
         connector.transform.position = finalCable.TransformPoint(new Vector3(finalCable.rect.width, 0f, 0f));
