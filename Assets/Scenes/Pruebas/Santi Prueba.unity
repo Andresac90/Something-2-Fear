@@ -12315,10 +12315,6 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7758464723538168035, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
-      propertyPath: rayLine
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 8017623072165681613, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
       propertyPath: m_Name
       value: Santi
@@ -23718,7 +23714,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   puzzle: {fileID: 9188078891259749410, guid: dfe29192cbcb50042b0574bfb4f02a97, type: 3}
   door: {fileID: 1920762649}
-  comprobationsNeeded: 3
+  comprobationsNeeded: 4
   comprobations: 0
   password: 
 --- !u!23 &1839398004

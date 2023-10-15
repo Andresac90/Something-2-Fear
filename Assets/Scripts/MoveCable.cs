@@ -29,7 +29,7 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public void Start()
     {
-        puzzle = GameObject.Find("Cables MiniGame");
+        puzzle = GameObject.Find("Cables");
         comprobations = puzzle.GetComponent<Puzzle>();
         pos = GetComponent<Transform>();
         oldPosition = transform.position;
