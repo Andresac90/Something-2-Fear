@@ -31,7 +31,7 @@ public class Puzzle : MonoBehaviour
             puzzleCopy = Instantiate(puzzle);
             PlayerMovement(false);
         }
-        else if(!puzzleActive)
+        else if(!puzzleActive && puzzleCopy != null)
         {
             puzzleCopy.SetActive(true);
             PlayerMovement(false);
@@ -40,7 +40,10 @@ public class Puzzle : MonoBehaviour
 
     public void ClosePuzzle(bool puzzleActive)
     {
-        PlayerMovement(true);
+        if(puzzleCopy != null)
+        {
+            PlayerMovement(true);
+        }
     }
 
     public void PlayerMovement(bool puzzleActive)
