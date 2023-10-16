@@ -16,7 +16,7 @@ public class Puzzle : MonoBehaviour
     private int comprobationsNeeded;
 
     public int comprobations;
-    public string password;
+    public string PasswordRef;
 
     void Start()
     {

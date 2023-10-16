@@ -9,21 +9,22 @@ public class Numpad : MonoBehaviour
     [SerializeField] 
     private TextMeshProUGUI display;
 
-    public string password;
+    private string password;
 
     private GameObject Puzzle;
     private Puzzle Comprobations;
     // Start is called before the first frame update
     void Start()
     {
-        Puzzle = GameObject.Find("LockPick MiniGame");
+        Puzzle = GameObject.Find("Numpad MiniGame");
         Comprobations = Puzzle.GetComponent<Puzzle>();
+        password = Comprobations.PasswordRef;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        Debug.Log(password);
     }
 
     public void AddNumber(string number)
