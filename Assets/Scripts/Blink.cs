@@ -15,6 +15,8 @@ public class Blink : MonoBehaviour
     private bool Check = true;
     private float Contador = 0;
 
+    public bool IsBlinking = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +31,7 @@ public class Blink : MonoBehaviour
         {
             AboveEye.transform.localPosition += new Vector3(0, -7 * Time.deltaTime * 200, 0);
             BelowEye.transform.localPosition += new Vector3(0, 7 * Time.deltaTime * 200, 0);
+            IsBlinking = true;
             
         }
         if(Contador >= RandomNumber + 0.5f)
@@ -39,8 +42,9 @@ public class Blink : MonoBehaviour
         }
         if (Contador >= RandomNumber + 1.0f)
         {
-            AboveEye.transform.localPosition = new Vector3(0, 1100, 0);
-            BelowEye.transform.localPosition = new Vector3(0, -1100, 0);
+            IsBlinking = false;
+            AboveEye.transform.localPosition = new Vector3(0, 500, 0);
+            BelowEye.transform.localPosition = new Vector3(0, -500, 0);
             RandomNumber = Random.Range(5, 10);
             Contador = 0;
             Check = true;
