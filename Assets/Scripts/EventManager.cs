@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class EventManager : MonoBehaviour
     private bool Event1 = false;
     [SerializeField]
     private GameObject[] Objects;
+    private bool RunOnce = false;
 
     public bool PlayersNear = false;
     public bool PlayerNear = false;
@@ -36,7 +38,7 @@ public class EventManager : MonoBehaviour
             PlayersNear = true;
         }
 
-        if (collision.CompareTag("PlayerJose") && collision.CompareTag("PlayerSanti") && !TwoPlayers)
+        if (collision.CompareTag("PlayerJose") && !TwoPlayers)
         {
             PlayerNear = true;
         }
@@ -44,12 +46,12 @@ public class EventManager : MonoBehaviour
 
     public void OnTriggerExit(Collider collision)
     {
-        if (collision.CompareTag("PlayerJose") && collision.CompareTag("PlayerSanti") && TwoPlayers)
+        if (collision.CompareTag("PlayerJose") && TwoPlayers)
         {
             PlayersNear = false;
         }
         
-        if (collision.CompareTag("PlayerJose") && collision.CompareTag("PlayerSanti") && !TwoPlayers)
+        if (collision.CompareTag("PlayerJose") && !TwoPlayers)
         {
             PlayerNear = false;
         }
@@ -67,24 +69,28 @@ public class EventManager : MonoBehaviour
 
     void InteractPlayers()
     {
-        if (ArePlayersOnTrigger() && TwoPlayers)
+        if (ArePlayersOnTrigger() && TwoPlayers && !RunOnce)
         {
             for (int i = 0; i <= Objects.Length; i++)
             {
                 bool Value = Objects[i].activeInHierarchy;
+                Console.WriteLine(Objects.Length);
                 Objects[i].SetActive(!Value);
+                RunOnce = true;
             }
         }
     }
 
     void InteractPlayer()
     {
-        if (IsPlayerOnTrigger() && !TwoPlayers)
+        if (IsPlayerOnTrigger() && !TwoPlayers && !RunOnce)
         {
             for (int i = 0; i <= Objects.Length; i++)
             {
                 bool Value = Objects[i].activeInHierarchy;
+                Console.WriteLine(Objects.Length);
                 Objects[i].SetActive(!Value);
+                RunOnce = true;
             }
         }
     }
