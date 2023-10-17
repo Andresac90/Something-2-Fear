@@ -8,87 +8,144 @@ using UnityEditor;
 
 public class ObjectsSanti : MonoBehaviour
 {
-    private InputMaster Controls;
-
-    [SerializeField]
-    private Transform ObjectRightCamera;
-    [SerializeField]
-    private Transform ObjectLeftCamera;
-    [SerializeField]
-    private Transform ObjectRightHand;
-    [SerializeField]
-    private Transform ObjectLeftHand;
-    [SerializeField]
-    private Transform PlayerCamera;
-    [SerializeField]
-    private float RayLine;
-    [SerializeField]
-    private float ThrowForce;
-
+    private InputMaster controls;
     private GameObject playerL;
     private GameObject playerR;
     private GameObject cloneL;
     private GameObject cloneR;
-    private RaycastHit Hit;
-    private float ObjectScaleDataR;
-    private float ObjectOriginalScaleR;
-    private float ObjectScaleDataL;
-    private float ObjectOriginalScaleL;
-    private Rigidbody ObjectRightRb;
-    private Rigidbody ObjectLeftRb;
-    private Transform ObjectRightT;
-    private Transform ObjectLeftT;
-    private bool GrabObjR = false;
-    private bool ObjectGrabbedR = true;
-    private bool ThrowCheckR = true;
-    private bool GrabObjL = false;
-    private bool ObjectGrabbedL = true;
-    private bool ThrowCheckL = true;
+    private GameObject player;
+    private RaycastHit hit;
+    private Rigidbody objectRightRb;
+    private Rigidbody objectLeftRb;
+    private Transform objectRightT;
+    private Transform objectLeftT;
+    private Transform playerCamera;
+    private float objectScaleDataR;
+    private float objectOriginalScaleR;
+    private float objectScaleDataL;
+    private float objectOriginalScaleL;
+    private bool grabObjR = false;
+    private bool objectGrabbedR = true;
+    private bool throwCheckR = true;
+    private bool grabObjL = false;
+    private bool objectGrabbedL = true;
+    private bool throwCheckL = true;
+
+    [SerializeField]
+    private Transform objectRightCamera;
+    [SerializeField]
+    private Transform objectLeftCamera;
+    [SerializeField]
+    private Transform objectRightHand;
+    [SerializeField]
+    private Transform objectLeftHand;
+    [SerializeField]
+    private float rayLine;
+    [SerializeField]
+    private float throwForce;
+
+    public bool puzzleCreated = false;
+    public bool puzzleActive = false;
+    public bool noteCreated = false;
 
     public void Awake()
     {
-        Controls = new InputMaster();
+        controls = new InputMaster();
         playerL = GameObject.Find("LeftObject");
         playerR = GameObject.Find("RightObject");
-    }
-    public void Start()
-    {
+        player = GameObject.Find("Santi");
+        playerCamera = player.transform.GetChild(0).GetComponent<Transform>();
     }
 
-    // Update is called once per frame
     public void Update()
     {
+        Physics.Raycast(playerCamera.position, playerCamera.TransformDirection(Vector3.forward), out hit, rayLine);
+        PuzzleManager();
+        NoteManager();
         Grab();
         Drop();
     }
 
+    public void PuzzleManager()
+    {
+        if(hit.transform != null && hit.transform.tag == "Puzzle")
+        {
+            Puzzle puzzle = hit.transform.GetComponent<Puzzle>();
+            string objectName = hit.collider.gameObject.name;
+            bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.2f;
+            if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
+            {
+                puzzle.OpenPuzzle(false, false, objectName);
+                puzzleCreated = true;
+                puzzleActive = true;
+            }
+            else if(puzzle != null && isInteractPressed && puzzleCreated && !puzzleActive)
+            {
+                puzzle.OpenPuzzle(true, false, objectName);
+                puzzleActive = true;
+            }
+            else if(puzzleCreated && puzzleActive)
+            {
+                bool isCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0.2f;
+                if(isCancelPressed && puzzleActive)
+                {
+                    puzzle.ClosePuzzle(true);
+                    puzzleActive = false;
+                }
+            }
+        }
+    }
+
+    public void NoteManager()
+    {
+        if(hit.transform != null && hit.transform.tag == "Note")
+        {
+            Note note = hit.transform.GetComponent<Note>();
+            string objectName = hit.collider.gameObject.name;
+            bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.2f;
+            bool isCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0.2f;
+            if (note != null && isInteractPressed && !noteCreated)
+            {
+                note.OpenNote(false);
+                noteCreated = true;
+            }
+            else if(isCancelPressed && noteCreated)
+            {
+                note.CloseNote(true);
+                noteCreated = false;
+            }
+        }
+    }
+
     public void Grab()
     {
-        Physics.Raycast(PlayerCamera.position, PlayerCamera.TransformDirection(Vector3.forward), out Hit, RayLine);
-        if(Hit.transform != null && (Hit.transform.tag == "Object" || Hit.transform.tag == "Bengal"))
+        if(hit.transform != null && (hit.transform.tag == "Object" || hit.transform.tag == "Bengal"))
         {
-            bool IsRightPressed = Controls.Player.RightItem.ReadValue<float>() > 0.1f;
-            bool IsLeftPressed = Controls.Player.LeftItem.ReadValue<float>() > 0.1f;
-            if(IsRightPressed && !GrabObjR && ObjectGrabbedR && Hit.transform.tag == "Object")
+            bool isRightPressed = controls.Player.RightItem.ReadValue<float>() > 0.1f;
+            bool isLeftPressed = controls.Player.LeftItem.ReadValue<float>() > 0.1f;
+
+            if(isRightPressed && !grabObjR && objectGrabbedR && hit.transform.tag == "Object")
             {
                 StartCoroutine(RightGrab());
             }
-            else if(IsLeftPressed && !GrabObjL && ObjectGrabbedL && Hit.transform.tag == "Bengal")
+            else if(isLeftPressed && !grabObjL && objectGrabbedL && hit.transform.tag == "Bengal")
             {
                 StartCoroutine(LeftGrab());
             }
         }
     }
+    
 
     public void Drop()
     {
-        bool IsRightPressed = Controls.Player.RightThrow.ReadValue<float>() > 0.1f;
-        bool IsLeftPressed = Controls.Player.LeftThrow.ReadValue<float>() > 0.1f;
-        if(IsRightPressed && GrabObjR && ThrowCheckR)
+        bool isRightPressed = controls.Player.RightThrow.ReadValue<float>() > 0.1f;
+        bool isLeftPressed = controls.Player.LeftThrow.ReadValue<float>() > 0.1f;
+
+        if(isRightPressed && grabObjR && throwCheckR)
         {
             StartCoroutine(RightDrop());
         }
-        else if(IsLeftPressed && GrabObjL && ThrowCheckL)
+        else if(isLeftPressed && grabObjL && throwCheckL)
         {
             StartCoroutine(LeftDrop());
         }
@@ -96,111 +153,107 @@ public class ObjectsSanti : MonoBehaviour
 
     public IEnumerator LeftGrab()
     {
-        ObjectGrabbedL = false;
-        Hit.transform.position = ObjectLeftCamera.position;
-        Hit.rigidbody.isKinematic = true;
-        Hit.transform.parent = ObjectLeftCamera;
-        ObjectScaleDataL = Hit.transform.GetComponent<ObjectsData>().ObjectScale;
-        Hit.transform.localScale = new Vector3(ObjectScaleDataL, ObjectScaleDataL, ObjectScaleDataL);
-        Hit.transform.localPosition = new Vector3(0, 0, 0);
-        Hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
-        ObjectOriginalScaleL = Hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
-        ObjectLeftRb = Hit.rigidbody;
-        ObjectLeftT = Hit.transform;
+        objectGrabbedL = false;
+        hit.transform.position = objectLeftCamera.position;
+        hit.rigidbody.isKinematic = true;
+        hit.transform.parent = objectLeftCamera;
+        objectScaleDataL = hit.transform.GetComponent<ObjectsData>().ObjectScale;
+        hit.transform.localScale = new Vector3(objectScaleDataL, objectScaleDataL, objectScaleDataL);
+        hit.transform.localPosition = new Vector3(0, 0, 0);
+        hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
+        objectOriginalScaleL = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
+        objectLeftRb = hit.rigidbody;
+        objectLeftT = hit.transform;
+
         LeftGrabTwo();
         yield return new WaitForSeconds(0.5f);
-        GrabObjL = true;
-        ObjectGrabbedL = true;
+        grabObjL = true;
+        objectGrabbedL = true;
     }
 
     public void LeftGrabTwo()
     {   
-        int LayerIgnoreRaycast = LayerMask.NameToLayer("PlayerSanti");
-        // playerL.GetComponentInChildren<Transform>();
+        int layerIgnoreRaycast = LayerMask.NameToLayer("PlayerSanti");
+
         GameObject child = playerL.transform.GetChild(0).gameObject;
-        child.layer = LayerIgnoreRaycast;
-        cloneL = (GameObject)Instantiate(child, ObjectLeftHand.position, Quaternion.identity);
-        cloneL.transform.parent = ObjectLeftHand;
-        LayerIgnoreRaycast = LayerMask.NameToLayer("PlayerJose");
-        child.layer = LayerIgnoreRaycast;
+        child.layer = layerIgnoreRaycast;
+        cloneL = (GameObject)Instantiate(child, objectLeftHand.position, Quaternion.identity);
+        cloneL.transform.parent = objectLeftHand;
+        layerIgnoreRaycast = LayerMask.NameToLayer("PlayerJose");
+        child.layer = layerIgnoreRaycast;
     }
 
     public IEnumerator RightGrab()
     {
-        ObjectGrabbedR = false;
-        Hit.transform.position = ObjectRightCamera.position;
-        Hit.rigidbody.isKinematic = true;
-        Hit.transform.parent = ObjectRightCamera;
-        ObjectScaleDataR = Hit.transform.GetComponent<ObjectsData>().ObjectScale;
-        Hit.transform.localScale = new Vector3(ObjectScaleDataR, ObjectScaleDataR, ObjectScaleDataR);
-        Hit.transform.localPosition = new Vector3(0, 0, 0);
-        Hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
-        ObjectOriginalScaleR = Hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
-        ObjectRightRb = Hit.rigidbody;
-        ObjectRightT = Hit.transform;
+        objectGrabbedR = false;
+        hit.transform.position = objectRightCamera.position;
+        hit.rigidbody.isKinematic = true;
+        hit.transform.parent = objectRightCamera;
+        objectScaleDataR = hit.transform.GetComponent<ObjectsData>().ObjectScale;
+        hit.transform.localScale = new Vector3(objectScaleDataR, objectScaleDataR, objectScaleDataR);
+        hit.transform.localPosition = new Vector3(0, 0, 0);
+        hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
+        objectOriginalScaleR = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
+        objectRightRb = hit.rigidbody;
+        objectRightT = hit.transform;
+
         RightGrabTwo();
         yield return new WaitForSeconds(0.5f);
-        GrabObjR = true;
-        ObjectGrabbedR = true;
+        grabObjR = true;
+        objectGrabbedR = true;
     }
 
     public void RightGrabTwo()
     {
-        int LayerIgnoreRaycast = LayerMask.NameToLayer("PlayerSanti");
-        // playerL.GetComponentInChildren<Transform>();
+        int layerIgnoreRaycast = LayerMask.NameToLayer("PlayerSanti");
+
         GameObject child = playerR.transform.GetChild(0).gameObject;
-        child.layer = LayerIgnoreRaycast;
-        cloneR = (GameObject) Instantiate(child, ObjectRightHand.position, Quaternion.identity);
-        cloneR.transform.parent = ObjectRightHand;
-        LayerIgnoreRaycast = LayerMask.NameToLayer("PlayerJose");
-        child.layer = LayerIgnoreRaycast;
+        child.layer = layerIgnoreRaycast;
+        cloneR = (GameObject) Instantiate(child, objectRightHand.position, Quaternion.identity);
+        cloneR.transform.parent = objectRightHand;
+        layerIgnoreRaycast = LayerMask.NameToLayer("PlayerJose");
+        child.layer = layerIgnoreRaycast;
     }
 
     public IEnumerator LeftDrop()
     {
         GameObject child = playerL.transform.GetChild(0).gameObject;
         child.layer = 0;
-        ThrowCheckL = false;
-        ObjectLeftT.transform.localScale = new Vector3(ObjectOriginalScaleL, ObjectOriginalScaleL, ObjectOriginalScaleL);
-        Vector3 camerDirection = PlayerCamera.transform.forward;
-        ObjectLeftT.transform.parent = null;
-        ObjectLeftRb.isKinematic = false;
-        ObjectLeftRb.AddForce(camerDirection * ThrowForce);
+        throwCheckL = false;
+        objectLeftT.transform.localScale = new Vector3(objectOriginalScaleL, objectOriginalScaleL, objectOriginalScaleL);
+        Vector3 camerDirection = playerCamera.transform.forward;
+        objectLeftT.transform.parent = null;
+        objectLeftRb.isKinematic = false;
+        objectLeftRb.AddForce(camerDirection * throwForce);
         Destroy(cloneL);
         yield return new WaitForSeconds(0.5f);
-        GrabObjL = false;
-        ThrowCheckL = true;
+        grabObjL = false;
+        throwCheckL = true;
     }
 
     public IEnumerator RightDrop()
     {
         GameObject child = playerR.transform.GetChild(0).gameObject;
         child.layer = 0;
-        ThrowCheckR = false;
-        ObjectRightT.transform.localScale = new Vector3(ObjectOriginalScaleR, ObjectOriginalScaleR, ObjectOriginalScaleR);
-        Vector3 camerDirection = PlayerCamera.transform.forward;
-        ObjectRightT.transform.parent = null;
-        ObjectRightRb.isKinematic = false;
-        ObjectRightRb.AddForce(camerDirection * 0);
+        throwCheckR = false;
+        objectRightT.transform.localScale = new Vector3(objectOriginalScaleR, objectOriginalScaleR, objectOriginalScaleR);
+        Vector3 camerDirection = playerCamera.transform.forward;
+        objectRightT.transform.parent = null;
+        objectRightRb.isKinematic = false;
+        objectRightRb.AddForce(camerDirection * 0);
         Destroy(cloneR);
         yield return new WaitForSeconds(0.5f);
-        GrabObjR = false;
-        ThrowCheckR = true;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(PlayerCamera.position, PlayerCamera.TransformDirection(Vector3.forward) * RayLine);
+        grabObjR = false;
+        throwCheckR = true;
     }
 
     private void OnEnable()
     {
-        Controls.Enable();
+        controls.Enable();
     }
 
     private void OnDisable()
     {
-        Controls.Disable();
+        controls.Disable();
     }
 }

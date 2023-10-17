@@ -1,99 +1,61 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Note : MonoBehaviour
 {
-    private InputMaster controls;
-
-    [SerializeField]
-    private GameObject noteObj;
-    [SerializeField]
-    private float rayLine;
-    
     private GameObject noteCopy;
     private GameObject playerMove;
-    private GameObject child;
-    private Transform playerCam;
-    private bool playerNear;
-    private bool noteCreated = false;
-    private RaycastHit hit;
-    
+    private ObjectsSanti objectsSanti;
+    private TextMeshProUGUI textMesh;
+    private Image img;
 
-    public void Awake()
-    {
-        controls = new InputMaster();
-    }
+    [SerializeField]
+    private GameObject note;
+    [SerializeField]
+    private string text;
+    [SerializeField]
+    private Image image;
+
     void Start()
     {
         playerMove = GameObject.Find("Santi");
-        child = playerMove.transform.GetChild(0).gameObject;
-        playerCam = child.GetComponent<Transform>();
+        objectsSanti = playerMove.GetComponent<ObjectsSanti>();
+        GameObject child = note.transform.GetChild(0).gameObject;
+        textMesh = child.GetComponentInChildren<TextMeshProUGUI>();
+        GameObject sonChild = child.transform.GetChild(1).gameObject;
+        img = sonChild.GetComponent<Image>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OpenNote(bool noteCreated)
     {
-        Physics.Raycast(playerCam.position, playerCam.TransformDirection(Vector3.forward), out hit, rayLine);
-        if(hit.transform != null && hit.transform.tag == "Note")
-        {
-            OpenNote();
-        }
-        if(noteCreated)
-        {
-            CloseNote();
-        }
+        img = image;
+        textMesh.text = text;
+        noteCopy = Instantiate(note);
+        PlayerMovement(noteCreated);
     }
 
-    private void OpenNote()
+    public void CloseNote(bool noteCreated)
     {
-        bool IsInteractPressed = controls.Player.Interact.ReadValue<float>() > 0f;
-        if(IsInteractPressed && noteCreated == false)
-        {
-            PlayerMovement();
-            noteCopy = Instantiate(noteObj);
-            noteCreated = true;
-        }
-        else if(IsInteractPressed && noteCopy.activeSelf == false)
-        {
-            PlayerMovement();
-            noteCopy.SetActive (true);
-        }
+        PlayerMovement(noteCreated);
     }
 
-    private void CloseNote()
+    private void PlayerMovement(bool noteCreated)
     {
-        bool IsCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0f;
-        if(IsCancelPressed && noteCopy.activeSelf)
-        {
-            PlayerMovement();
-        }
-    }
-
-    private void PlayerMovement()
-    {
-        if(noteCreated == false || noteCopy.activeSelf == false)
+        if(!noteCreated)
         {
             playerMove.GetComponent<SantiController>().enabled = false;
             playerMove.GetComponentInChildren<PlayerLook>().enabled = false;
             Cursor.lockState = CursorLockMode.None;
         }
-        else if(noteCopy.activeSelf)
+        else if(noteCreated)
         {
             playerMove.GetComponent<SantiController>().enabled = true;
             playerMove.GetComponentInChildren<PlayerLook>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
             Destroy(noteCopy);
         }
-    }
-
-    private void OnEnable()
-    {
-        controls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        controls.Disable();
     }
 }
