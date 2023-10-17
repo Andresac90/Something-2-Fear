@@ -10,7 +10,7 @@ public class AIControl : MonoBehaviour
 {
     private GameObject player;
     public NavMeshAgent aiAgent;               //  Nav mesh agent component
-    public float startWaitTime = 4;                 //  Wait time of every action
+    static float startWaitTime = 4;                 //  Wait time of every action
     public float timeToRotate = 1;                  //  Wait time when the enemy detect near the player without seeing
     public float walkSpeed = 6;                     //  Walking speed, speed in the nav mesh agent
     public float chaseSpeed = 9;                      //  Running speed
@@ -30,7 +30,7 @@ public class AIControl : MonoBehaviour
     Vector3 playerLastPosition = Vector3.zero;      //  Last position of the player when was near the enemy
     Vector3 PlayerPosition;                       //  Last position of the player when the player is seen by the enemy
 
-    float WaitTime;                               //  Variable of the wait time that makes the delay
+    public float WaitTime;                               //  Variable of the wait time that makes the delay
     float minWaitTime;
     float maxWiatTime;
     float TimeToRotate;                           //  Variable of the wait time to rotate when the player is near that makes the delay
@@ -38,7 +38,8 @@ public class AIControl : MonoBehaviour
     //public bool isPlayerNear;                              //  If the player is near, state of hearing
     public bool isPatrol;                                //  If the enemy is patrol, state of patroling
     public bool isPlayerCaught;                            //  if the enemy has caught the player
-
+    public bool isChasing;
+    public bool isBlinking;
 
     //Testing variables
     public bool isSeen;  //Pascualita is being seen by player
@@ -46,6 +47,7 @@ public class AIControl : MonoBehaviour
     public float catchDistance;
     public Animator aiAnimation; //for fuuture use in animations
 
+    public float WaitTime2 = 0;
 
     void Start()
     {
@@ -56,7 +58,10 @@ public class AIControl : MonoBehaviour
 
 
         //Testing
+
+        isBlinking= false;
         isSeen = false;
+        isChasing = false;
         //aiAgent.destination = waypoints[CurrentWaypointIndex].position;
         //randNum = 0;
         minWaitTime = 1f;
@@ -78,13 +83,12 @@ public class AIControl : MonoBehaviour
     private void Update()
     {
         EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
-
-        if (isSeen) // if Pascualita is seen stop (recibe valor de PlayerScript)
+        if (isSeen && !isBlinking) // if Pascualita is seen stop (recibe valor de PlayerScript)
         {
-            Debug.Log("Pascualita is being seen");
+            //Debug.Log("Pascualita is being seen");
             Seen();
         }
-        else if (!isPatrol && !isPlayerCaught)
+        else if (isChasing && !isPlayerCaught)
         {
             aiAnimation.ResetTrigger("walk");
             aiAnimation.ResetTrigger("idle");
@@ -106,9 +110,7 @@ public class AIControl : MonoBehaviour
         
     }
 
-
-
-private void Chasing()
+    private void Chasing()
     {
         
         //  The enemy is chasing the player
@@ -148,24 +150,6 @@ private void Chasing()
 
     private void Patroling()
     {
-        //if (isPlayerNear)
-        //{
-        //    Debug.Log("One piece");
-        //    //  Check if the enemy detect near the player, so the enemy will move to that position
-        //    if (TimeToRotate <= 0)
-        //    {
-        //        Move(walkSpeed);
-        //        LookingPlayer(playerLastPosition);
-        //    }
-        //    else
-        //    {
-        //        //  The enemy wait for a moment and then go to the last player position
-        //        Stop();
-        //        TimeToRotate -= Time.deltaTime;
-        //    }
-        //}
-        //else
-        //{
                    //  The player is no near when the enemy is platroling
         playerLastPosition = Vector3.zero;
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);    //  Set the enemy destination to the next waypoint
@@ -187,7 +171,6 @@ private void Chasing()
                 WaitTime -= Time.deltaTime;
             }
         }
-        //}
     }
 
     private void Attacking()
@@ -209,6 +192,63 @@ private void Chasing()
         TimeToRotate = timeToRotate;
         WaitTime = startWaitTime;
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position); //return to patrol
+
+    }
+    private void Seen()
+    {
+        
+        //StartCoroutine(IsSeenTimer());
+        if (WaitTime > 0)
+        {
+            Stop();
+            WaitTime -= Time.deltaTime;
+            WaitTime2 = 4;
+        }
+        else
+        {   
+            if(WaitTime2 >= 0)
+            {
+                WaitTime2 -= Time.deltaTime;
+                isBlinking = false;
+            }
+            else
+            {
+                Debug.Log("Hallo");
+                isBlinking = true;
+                
+                Move(walkSpeed);
+                aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
+                WaitTime = startWaitTime;
+                TimeToRotate = timeToRotate;
+            }
+        }
+    }
+    public void Seen2(bool playerSeeing)
+    {
+        //StartCoroutine(IsSeenTimer());
+        if (WaitTime <= 0)
+        {
+            Debug.Log("Hallo");
+            isPatrol = true;
+            Move(walkSpeed);
+            aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
+            WaitTime = startWaitTime;
+            TimeToRotate = timeToRotate;
+        }
+        else
+        {
+            Stop();
+            WaitTime -= Time.deltaTime;
+        }
+    }
+    private IEnumerator IsSeenTimer()
+    {
+        Stop();
+        yield return new WaitForSeconds(4f);
+        Debug.Log("Hallo");
+        isPatrol = true;
+        Move(walkSpeed);
+        aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
 
     }
 
@@ -261,24 +301,6 @@ private void Chasing()
         }
     }
 
-    private void Seen() 
-    {
-        if (WaitTime <= 0)
-        {
-            Debug.Log("Hallo");
-            isPatrol = true;
-            Move(walkSpeed);
-            aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
-            WaitTime = startWaitTime;
-            TimeToRotate = timeToRotate;
-        }
-        else
-        {
-            Stop();
-            WaitTime -= Time.deltaTime;
-        }
-    }
-
     void EnviromentView()
     {
         Collider[] playerInRange = Physics.OverlapSphere(transform.position, viewRadius, playerMask);   //  Make an overlap sphere around the enemy to detect the playermask in the view radius
@@ -293,7 +315,8 @@ private void Chasing()
                 if (!Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, obstacleMask))
                 {
                     this.playerInRange = true;             //  The player has been seen by the enemy and then the enemy chases the player
-                    isPatrol = false;                 //  Change the state to chasing the player
+                    isChasing = true;                 //  Change the state to chasing the player
+                    isPatrol = false;
                 }
                 else
                 {

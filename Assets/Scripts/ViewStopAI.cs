@@ -9,6 +9,7 @@ public class ViewStopAI : MonoBehaviour
     public float radius;
     [Range(0, 360)]
     public float angle;
+    public bool timer;
 
     public GameObject enemyRef;
 
@@ -19,6 +20,7 @@ public class ViewStopAI : MonoBehaviour
     {
         radius = 15f;
         angle = 90f;
+        timer = true;
         enemyRef = GameObject.FindGameObjectWithTag("Enemy");
         StartCoroutine(FOVRoutine());
     }
@@ -47,7 +49,7 @@ public class ViewStopAI : MonoBehaviour
             {
                 float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
-                if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask))
+                if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask) && aiControlRef.WaitTime != 0)        
                     aiControlRef.SetIsSeen(true);
                 else
                     aiControlRef.SetIsSeen(false);
@@ -58,4 +60,15 @@ public class ViewStopAI : MonoBehaviour
         else if (aiControlRef)
             aiControlRef.SetIsSeen(false);
     }
+    private IEnumerator IsSeenTimer()
+    {
+        //timer = false;
+        StopCoroutine(FOVRoutine());
+        aiControlRef.SetIsSeen(true);
+        yield return new WaitForSeconds(4f);
+        aiControlRef.SetIsSeen(false);
+        StartCoroutine(FOVRoutine());
+        
+    }
 }
+
