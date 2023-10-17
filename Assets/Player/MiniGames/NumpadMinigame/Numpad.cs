@@ -24,7 +24,7 @@ public class Numpad : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(password);
+        
     }
 
     public void AddNumber(string number)
