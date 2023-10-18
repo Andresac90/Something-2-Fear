@@ -19,4 +19,8 @@ public class OptionsMenu : MonoBehaviour
         volume = Mathf.Log10(volume) * 20;
         audioMixer.SetFloat("volume", volume);
     }
+
+    public void QuitGame (){
+        Application.Quit();
+    }
 }
