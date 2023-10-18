@@ -9,11 +9,6 @@ public class SpawnPlayers : MonoBehaviour
     public GameObject josePrefab;
     public GameObject santiPrefab;
 
-    public float minX;
-    public float maxX;
-    public float minZ;
-    public float maxZ;
-
     void Start()
     {
         int playerNumber = PhotonNetwork.CurrentRoom.PlayerCount;
