@@ -321,6 +321,18 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1209219756545207354, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1209219756545207354, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1209219756545207354, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 3010966585971695501, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.24165058
@@ -3460,6 +3472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1143512849cb5984db3aed3644f38004, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioMixer: {fileID: 0}
 --- !u!4 &1379025202
 Transform:
   m_ObjectHideFlags: 0
