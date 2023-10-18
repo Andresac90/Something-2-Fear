@@ -50,9 +50,9 @@ public class PlayerLook : MonoBehaviour
 
     void Update()
     {
-        // if (!PV.IsMine) return;
+        if (!PV.IsMine) return;
 
-        //if(MenuManager.OptionsMenuActive) return;
+        if(MenuManager.OptionsMenuActive) return;
         Look();
     }
 
