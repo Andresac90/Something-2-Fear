@@ -6,16 +6,44 @@ public class CableRandomizer : MonoBehaviour
 {
     private void Awake()
     {
-        for (int i = 0; i < transform.childCount; i++)
+        List<Vector2> originalPositions = new List<Vector2>();
+
+        foreach (Transform child in transform)
         {
-            GameObject currentCable = transform.GetChild(i).gameObject;
-            GameObject connectorCable = transform.GetChild(Random.Range(0, transform.childCount)).gameObject;
+            RectTransform rectTransform = child.GetComponent<RectTransform>();
+            if (rectTransform != null)
+            {
+                originalPositions.Add(rectTransform.anchoredPosition);
+            }
+        }
+        RandomizePositions(originalPositions);
+    }
 
-            Vector2 newPosCurrentCable = connectorCable.transform.position;
-            Vector2 newPosConnectorCable = currentCable.transform.position;
+    private void RandomizePositions(List<Vector2> positions)
+    {
+        List<int> indices = new List<int>();
+        for (int i = 0; i < positions.Count; i++)
+        {
+            indices.Add(i);
+        }
 
-            currentCable.transform.position = newPosCurrentCable;
-            connectorCable.transform.position = newPosConnectorCable;
+        for (int i = 0; i < positions.Count; i++)
+        {
+            int randomIndex = Random.Range(i, positions.Count);
+            int temp = indices[i];
+            indices[i] = indices[randomIndex];
+            indices[randomIndex] = temp;
+        }
+
+        int index = 0;
+        foreach (Transform child in transform)
+        {
+            RectTransform rectTransform = child.GetComponent<RectTransform>();
+            if (rectTransform != null)
+            {
+                rectTransform.anchoredPosition = positions[indices[index]];
+                index++;
+            }
         }
     }
 }
