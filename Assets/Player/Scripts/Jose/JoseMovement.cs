@@ -75,7 +75,7 @@ public class JoseMovement : MonoBehaviour
         Jump();
         Crouch();
         Sprint();
-        Camera.transform.position = new Vector3(transform.position.x, Camera.transform.position.y, Camera.transform.position.z);
+        Camera.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
     }
     void Movement()
     {
