@@ -19,6 +19,7 @@ public class ObjectsSanti : MonoBehaviour
     private Rigidbody objectLeftRb;
     private Transform objectRightT;
     private Transform objectLeftT;
+    [SerializeField]
     private Transform playerCamera;
     private float objectScaleDataR;
     private float objectOriginalScaleR;
@@ -56,7 +57,7 @@ public class ObjectsSanti : MonoBehaviour
         playerL = GameObject.Find("LeftObject");
         playerR = GameObject.Find("RightObject");
         player = GameObject.Find("Santi");
-        playerCamera = player.transform.GetChild(0).GetComponent<Transform>();
+        // playerCamera = player.transform.GetChild(0).GetComponent<Transform>();
     }
 
     public void Update()
