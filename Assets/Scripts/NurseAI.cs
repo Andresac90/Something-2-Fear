@@ -42,10 +42,10 @@ public class NurseAI : MonoBehaviour
 
 
     //Testing variables
-    bool isSeen;  //Pascualita is being seen by player
+    //bool isSeen;  //Pascualita is being seen by player
     //int randNum; //Random val to randomize patrol pattern
     public float catchDistance;
-    public Animator aiAnimation; //for fuuture use in animations
+    //public Animator aiAnimation; //for fuuture use in animations
 
     void Start()
     {
@@ -56,7 +56,7 @@ public class NurseAI : MonoBehaviour
 
 
         //Testing
-        isSeen = false;
+        //isSeen = false;
         //aiAgent.destination = waypoints[CurrentWaypointIndex].position;
         //randNum = 0;
         minWaitTime = 1f;
@@ -81,16 +81,16 @@ public class NurseAI : MonoBehaviour
 
         if (!isPatrol && !isPlayerCaught)
         {
-            aiAnimation.ResetTrigger("walk");
+            /*aiAnimation.ResetTrigger("walk");
             aiAnimation.ResetTrigger("idle");
-            aiAnimation.SetTrigger("sprint");
+            aiAnimation.SetTrigger("sprint");*/
             Chasing();
         }
         else if (isPatrol && !isPlayerCaught)
         {
-            aiAnimation.ResetTrigger("sprint");
+            /*aiAnimation.ResetTrigger("sprint");
             aiAnimation.ResetTrigger("idle");
-            aiAnimation.SetTrigger("walk");
+            aiAnimation.SetTrigger("walk");*/
             Patroling();
         }
         else if (isPlayerCaught)
@@ -175,9 +175,9 @@ public class NurseAI : MonoBehaviour
             }
             else
             {
-                aiAnimation.ResetTrigger("sprint");
+                /*aiAnimation.ResetTrigger("sprint");
                 aiAnimation.ResetTrigger("walk");
-                aiAnimation.SetTrigger("idle");
+                aiAnimation.SetTrigger("idle");*/
                 Stop();
                 WaitTime -= Time.deltaTime;
             }
@@ -188,10 +188,10 @@ public class NurseAI : MonoBehaviour
     private void Attacking()
     {
         //llamar funcion de downeado de Jose/Santi y jumpscare
-        aiAnimation.ResetTrigger("walk");
+        /*aiAnimation.ResetTrigger("walk");
         aiAnimation.ResetTrigger("idle");
         aiAnimation.ResetTrigger("sprint");
-        aiAnimation.SetTrigger("jumpscare");
+        aiAnimation.SetTrigger("jumpscare");*/
         //StartCoroutine(deathRoutine());
         Debug.Log("Attack");
 
