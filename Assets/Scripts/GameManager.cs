@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public int numpadLevel = 1;
     public int lockpickLevel = 1;
+    public bool win = false;
 
     void Awake()
     {
