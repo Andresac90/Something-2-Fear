@@ -5,6 +5,8 @@ using UnityEngine;
 public class ViewStopAI : MonoBehaviour
 {
     public AIControl aiControlRef;
+    private GameObject enemy;
+    private bool isSeenRef;
 
     public float radius;
     [Range(0, 360)]
@@ -21,7 +23,8 @@ public class ViewStopAI : MonoBehaviour
         radius = 15f;
         angle = 90f;
         timer = true;
-        enemyRef = GameObject.FindGameObjectWithTag("Enemy");
+        enemy = GameObject.Find("Pascualita");
+        aiControlRef = enemy.GetComponent<AIControl>();
         StartCoroutine(FOVRoutine());
     }
 

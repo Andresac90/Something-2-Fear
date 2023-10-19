@@ -719,6 +719,7 @@ MonoBehaviour:
   aiControlRef: {fileID: 1249275631}
   radius: 7
   angle: 90
+  timer: 0
   enemyRef: {fileID: 1249275630}
   enemyMask:
     serializedVersion: 2
@@ -746,6 +747,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 1434596960898344613, guid: 9479c908f0f5f704aa3bdb69fafdf2dd, type: 3}
+      propertyPath: blinkRef
+      value: 
+      objectReference: {fileID: 1117550377}
     - target: {fileID: 1434596960898344613, guid: 9479c908f0f5f704aa3bdb69fafdf2dd, type: 3}
       propertyPath: enemyMask.m_Bits
       value: 1024
@@ -1236,6 +1241,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1717400833}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1117550377 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3212396164807832223, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
+  m_PrefabInstance: {fileID: 719463584}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16c8ed45abb23054d969eea0a2a9f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1148597439
 PrefabInstance:
   m_ObjectHideFlags: 0

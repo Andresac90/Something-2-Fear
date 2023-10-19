@@ -1,13 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
-using UnityEngine.UIElements.Experimental;
 
 public class AIControl : MonoBehaviour
 {
+    private Blink blinkRef;
+
     private GameObject player;
     public NavMeshAgent aiAgent;               //  Nav mesh agent component
     static float startWaitTime = 4;                 //  Wait time of every action
@@ -39,7 +37,7 @@ public class AIControl : MonoBehaviour
     public bool isPatrol;                                //  If the enemy is patrol, state of patroling
     public bool isPlayerCaught;                            //  if the enemy has caught the player
     public bool isChasing;
-    public bool isBlinking;
+    private bool blinking;
 
     //Testing variables
     public bool isSeen;  //Pascualita is being seen by player
@@ -48,10 +46,14 @@ public class AIControl : MonoBehaviour
     public Animator aiAnimation; //for fuuture use in animations
 
     public float WaitTime2 = 0;
+    public float timer;
+    public float cooldownTime = 10f;
 
     void Start()
     {
-        player = GameObject.Find("Player");
+        player = GameObject.Find("Jose");
+        blinkRef = player.GetComponentInChildren<Blink>();
+
         PlayerPosition = Vector3.zero;
         isPatrol = true;
         isPlayerCaught = false;
@@ -59,7 +61,6 @@ public class AIControl : MonoBehaviour
 
         //Testing
 
-        isBlinking= false;
         isSeen = false;
         isChasing = false;
         //aiAgent.destination = waypoints[CurrentWaypointIndex].position;
@@ -67,6 +68,8 @@ public class AIControl : MonoBehaviour
         minWaitTime = 1f;
         maxWiatTime = 3f;
         catchDistance = 3f;
+
+        timer = cooldownTime;
         //Testing
 
         WaitTime = startWaitTime;                 //  Set the wait time variable that will change
@@ -82,8 +85,10 @@ public class AIControl : MonoBehaviour
 
     private void Update()
     {
+        
         EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
-        if (isSeen && !isBlinking) // if Pascualita is seen stop (recibe valor de PlayerScript)
+        blinking = blinkRef.IsBlinking;
+        if (isSeen && !blinking) // if Pascualita is seen stop (recibe valor de PlayerScript)
         {
             //Debug.Log("Pascualita is being seen");
             Seen();
@@ -198,28 +203,26 @@ public class AIControl : MonoBehaviour
     {
         
         //StartCoroutine(IsSeenTimer());
-        if (WaitTime > 0)
+        if (timer != 0) // pascualita is stopped (cambiar wait time)
         {
             Stop();
-            WaitTime -= Time.deltaTime;
-            WaitTime2 = 4;
+            timer -= Time.deltaTime;
+            WaitTime2 = 10;
         }
-        else
+        else //is on cooldown from being seen
         {   
-            if(WaitTime2 >= 0)
+            if(WaitTime2 != 0) //
             {
                 WaitTime2 -= Time.deltaTime;
-                isBlinking = false;
+                isPatrol = true;
+                Move(walkSpeed);
+                aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
             }
             else
             {
                 Debug.Log("Hallo");
-                isBlinking = true;
-                
-                Move(walkSpeed);
-                aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
-                WaitTime = startWaitTime;
-                TimeToRotate = timeToRotate;
+                timer = cooldownTime;
+                //TimeToRotate = timeToRotate;
             }
         }
     }
