@@ -20,12 +20,15 @@ public class Puzzle : MonoBehaviour
 
     void Start()
     {
-        playerMove = GameObject.Find("Santi");
-        objectsSanti = playerMove.GetComponent<ObjectsSanti>();
+        
     }
 
     public void OpenPuzzle(bool puzzleCreated, bool puzzleActive, string objectName)
     {
+
+        playerMove = GameObject.Find("Santi(Clone)");
+        objectsSanti = playerMove.GetComponent<ObjectsSanti>();
+        
         if(!puzzleActive && objectName == this.name && !puzzleCreated)
         {
             puzzleCopy = Instantiate(puzzle);

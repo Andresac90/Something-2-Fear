@@ -27,8 +27,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        // PhotonNetwork.LoadLevel("Main");
-        PhotonNetwork.LoadLevel("Multijugador");
+        PhotonNetwork.LoadLevel("Main");
+        // PhotonNetwork.LoadLevel("Multijugador");
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
