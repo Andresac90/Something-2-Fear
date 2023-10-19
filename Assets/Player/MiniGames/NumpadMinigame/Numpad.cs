@@ -13,10 +13,14 @@ public class Numpad : MonoBehaviour
 
     private GameObject Puzzle;
     private Puzzle Comprobations;
+
+    public string minigameName;
     // Start is called before the first frame update
     void Start()
     {
-        Puzzle = GameObject.Find("Numpad MiniGame");
+        Puzzle = GameObject.Find("Numpad MiniGame" + GameManager.Instance.numpadLevel);
+        GameManager.Instance.numpadLevel += 1;
+
         Comprobations = Puzzle.GetComponent<Puzzle>();
         password = Comprobations.PasswordRef;
     }
