@@ -12,6 +12,8 @@ public class JoseMovement : MonoBehaviour
     private Camera Camera;
     [SerializeField]
     private AudioListener AudioListener;
+    [SerializeField]
+    private GameObject Canvas;
 
     private InputMaster Controls;
     private Vector2 Move;
@@ -62,6 +64,7 @@ public class JoseMovement : MonoBehaviour
         
         Camera.enabled = PV.IsMine;
         AudioListener.enabled = PV.IsMine;
+        Canvas.SetActive(PV.IsMine);
 
         CharController = GetComponent<CharacterController>();
         OriginalSpeed = Speed;
