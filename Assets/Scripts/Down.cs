@@ -7,6 +7,8 @@ public class Down : MonoBehaviour
     private Camera camera;
     private CharacterController CharController;
     private GameObject playerCam;
+    private GameObject pascualita;
+    private AIControl pascualitaScript;
     private bool wasDowned = false;
     private bool wasntDowned = true;
     private float currentTime = 0f;
@@ -21,10 +23,13 @@ public class Down : MonoBehaviour
         playerCam = this.transform.GetChild(0).gameObject;
         camera = playerCam.GetComponent<Camera>();
         CharController = GetComponent<CharacterController>();
+        pascualita = GameObject.Find("Pascualita");
+        pascualitaScript = pascualita.GetComponent<AIControl>();
     }
 
     public void Update()
     {
+        isPlayerDowned = pascualitaScript.isPlayerCaught;
         Downed();
     }
 

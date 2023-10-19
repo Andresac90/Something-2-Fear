@@ -550,6 +550,8 @@ GameObject:
   - component: {fileID: 7758464723538168035}
   - component: {fileID: 4948735220528498441}
   - component: {fileID: -7280666114099604731}
+  - component: {fileID: 4606215190708997962}
+  - component: {fileID: -321635984439366391}
   m_Layer: 7
   m_Name: Santi
   m_TagString: PlayerSanti
@@ -703,6 +705,35 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &4606215190708997962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8017623072165681613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07cb808c5118baf4db010082fe1639af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deadTime: 10
+  isPlayerDowned: 0
+--- !u!114 &-321635984439366391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8017623072165681613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7137e3d2c581d9544b31dc2cf00203c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectTime: 5
+  rayLine: 4
+  player: {fileID: 3676275686622208031, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
 --- !u!1 &8985306185378550655
 GameObject:
   m_ObjectHideFlags: 0

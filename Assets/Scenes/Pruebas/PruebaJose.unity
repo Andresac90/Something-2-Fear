@@ -4118,6 +4118,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2243345493294148953, guid: af85c590140d5f04e99e3e6e94d4167f, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2312344220139854998, guid: af85c590140d5f04e99e3e6e94d4167f, type: 3}
       propertyPath: m_Name
       value: GeneralDoor
