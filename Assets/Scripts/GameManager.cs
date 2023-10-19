@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Photon.Pun;
 
-public class GameManager : MonoBehaviour
+
+public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager Instance;
     public int numpadLevel = 1;
@@ -25,5 +28,10 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+    }
+
+    public override void OnLeftRoom()
+    {
+       SceneManager.LoadScene(0);
     }
 }

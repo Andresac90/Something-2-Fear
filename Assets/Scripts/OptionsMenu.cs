@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using Photon.Pun;
 
 public class OptionsMenu : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class OptionsMenu : MonoBehaviour
         Camera playerCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         PlayerLook playerLook = playerCamera.GetComponent<PlayerLook>();
         playerLook.SetSens(sensitivity);
+
     }
 
     public void SetVolume(float volume)
@@ -21,6 +23,6 @@ public class OptionsMenu : MonoBehaviour
     }
 
     public void QuitGame (){
-        Application.Quit();
+        PhotonNetwork.LeaveRoom();
     }
 }
