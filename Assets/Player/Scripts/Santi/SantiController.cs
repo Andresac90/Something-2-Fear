@@ -13,6 +13,8 @@ public class SantiController : MonoBehaviour
     private Camera Camera;
     [SerializeField]
     private AudioListener AudioListener;
+    [SerializeField]
+    private GameObject Canvas;
     private Vector2 Move;
     private Vector2 YVel;
     public float Speed;
@@ -47,6 +49,7 @@ public class SantiController : MonoBehaviour
         
         Camera.enabled = PV.IsMine;
         AudioListener.enabled = PV.IsMine;
+        Canvas.SetActive(PV.IsMine);
 
         CharController = GetComponent<CharacterController>();
         OriginalSpeed = Speed;

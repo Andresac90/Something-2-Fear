@@ -21,16 +21,18 @@ public class Note : MonoBehaviour
 
     void Start()
     {
-        playerMove = GameObject.Find("Santi");
+        
+    }
+
+    public void OpenNote(bool noteCreated)
+    {
+        playerMove = GameObject.Find("Santi(Clone)");
         objectsSanti = playerMove.GetComponent<ObjectsSanti>();
         GameObject child = note.transform.GetChild(0).gameObject;
         textMesh = child.GetComponentInChildren<TextMeshProUGUI>();
         GameObject sonChild = child.transform.GetChild(1).gameObject;
         img = sonChild.GetComponent<Image>();
-    }
 
-    public void OpenNote(bool noteCreated)
-    {
         img = image;
         textMesh.text = text;
         noteCopy = Instantiate(note);

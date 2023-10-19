@@ -356,6 +356,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Camera: {fileID: 6880435584519348821}
   AudioListener: {fileID: 2902850494592881921}
+  Canvas: {fileID: 1285301276022673778}
   Speed: 5
   JumpForce: 3
   Gravity: -50
