@@ -32,6 +32,7 @@ public class SantiController : MonoBehaviour
     private Transform GroundCheck;
     public float RadiusGround;
     public LayerMask GroundMask;
+    public bool isMovementActive = true;
 
     private PhotonView PV;
 
@@ -54,7 +55,11 @@ public class SantiController : MonoBehaviour
     void Update()
     {
         if (!PV.IsMine) return;
-        Movement();
+        if (isMovementActive)
+        {
+            Movement();
+        }
+        
         // Interact();
     }
 
