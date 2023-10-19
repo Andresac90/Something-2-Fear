@@ -42,6 +42,11 @@ public class EventManager : MonoBehaviour
         {
             PlayerNear = true;
         }
+
+        if (collision.CompareTag("PlayerSanti") && !TwoPlayers)
+        {
+            PlayerNear = true;
+        }
     }
 
     public void OnTriggerExit(Collider collision)
@@ -52,6 +57,16 @@ public class EventManager : MonoBehaviour
         }
         
         if (collision.CompareTag("PlayerJose") && !TwoPlayers)
+        {
+            PlayerNear = false;
+        }
+
+        if (collision.CompareTag("PlayerSanti") && TwoPlayers)
+        {
+            PlayersNear = false;
+        }
+
+        if (collision.CompareTag("PlayerSanti") && !TwoPlayers)
         {
             PlayerNear = false;
         }
@@ -71,7 +86,7 @@ public class EventManager : MonoBehaviour
     {
         if (ArePlayersOnTrigger() && TwoPlayers && !RunOnce)
         {
-            for (int i = 0; i <= Objects.Length; i++)
+            for (int i = 0; i < Objects.Length; i++)
             {
                 bool Value = Objects[i].activeInHierarchy;
                 Console.WriteLine(Objects.Length);
@@ -85,7 +100,7 @@ public class EventManager : MonoBehaviour
     {
         if (IsPlayerOnTrigger() && !TwoPlayers && !RunOnce)
         {
-            for (int i = 0; i <= Objects.Length; i++)
+            for (int i = 0; i < Objects.Length; i++)
             {
                 bool Value = Objects[i].activeInHierarchy;
                 Console.WriteLine(Objects.Length);
