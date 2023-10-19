@@ -11355,6 +11355,40 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 735988613061221446, guid: 0c95830dc71834408b7c4f0f68657e9f, type: 3}
   m_PrefabInstance: {fileID: 838914095}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &851077759 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8017623072165681613, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
+  m_PrefabInstance: {fileID: 923953253}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &851077760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851077759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07cb808c5118baf4db010082fe1639af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deadTime: 10
+  isPlayerDowned: 0
+--- !u!114 &851077761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851077759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7137e3d2c581d9544b31dc2cf00203c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectTime: 10
+  rayLine: 4
+  player: {fileID: 3676275686622208031, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
 --- !u!1001 &852142049
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12228,7 +12262,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8017623072165681613, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 851077760}
+    - targetCorrespondingSourceObject: {fileID: 8017623072165681613, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 851077761}
   m_SourcePrefab: {fileID: 100100000, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
 --- !u!1001 &931895750
 PrefabInstance:
@@ -27396,6 +27436,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 93363170773509748, guid: 51a2f77f9d36dcb438f498fbefda608b, type: 3}
+      propertyPath: sceneViewId
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2380674510424973911, guid: 51a2f77f9d36dcb438f498fbefda608b, type: 3}
       propertyPath: m_Name
       value: GeneralRejilla
@@ -27453,6 +27497,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2243345493294148953, guid: af85c590140d5f04e99e3e6e94d4167f, type: 3}
+      propertyPath: sceneViewId
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2312344220139854998, guid: af85c590140d5f04e99e3e6e94d4167f, type: 3}
       propertyPath: m_Name
       value: GeneralDoor
