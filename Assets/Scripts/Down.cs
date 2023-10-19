@@ -33,9 +33,12 @@ public class Down : MonoBehaviour
         if(isPlayerDowned && wasntDowned)
         {
             this.GetComponent<SantiController>().enabled = false;
-            CharController.height = 0.5f;
-            CharController.center = new Vector3(0, -0.7f, 0);
-            camera.transform.position = new Vector3(transform.position.x, transform.position.y - 0.43f, transform.position.z - 0.225f);
+            this.GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y - 0.879f, transform.position.z);
+            this.GetComponent<Transform>().rotation = Quaternion.Euler(Quaternion.identity.x - 90f, Quaternion.identity.y, Quaternion.identity.z);
+            CharController.stepOffset = 0;
+            CharController.height = 0.1f;
+            CharController.center = new Vector3(0, 0, 0);
+            camera.transform.rotation = Quaternion.Euler(Quaternion.identity.x + 70f, Quaternion.identity.y, Quaternion.identity.z);
             this.GetComponentInChildren<PlayerLook>().enabled = false;
             wasDowned = true;
             wasntDowned = false;
@@ -43,9 +46,12 @@ public class Down : MonoBehaviour
         else if(!isPlayerDowned && wasDowned)
         {
             this.GetComponent<SantiController>().enabled = true;
+            this.GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y + 0.879f, transform.position.z);
+            this.GetComponent<Transform>().rotation = Quaternion.Euler(Quaternion.identity.x, Quaternion.identity.y, Quaternion.identity.z);
             CharController.height = 2f;
             CharController.center = new Vector3(0, 0, 0);
-            camera.transform.position = new Vector3(transform.position.x, transform.position.y + 1.014f, transform.position.z + 0.096f);
+            CharController.stepOffset = 0.3f;
+            camera.transform.rotation = Quaternion.Euler(Quaternion.identity.x, Quaternion.identity.y, Quaternion.identity.z);
             this.GetComponentInChildren<PlayerLook>().enabled = true;
             wasDowned = false;
             wasntDowned = true;
