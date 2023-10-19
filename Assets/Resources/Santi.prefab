@@ -616,6 +616,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Camera: {fileID: 2490933095253580234}
   AudioListener: {fileID: 5894979599201347971}
+  Canvas: {fileID: 1131350227747810395}
   Speed: 3.5
   Gravity: -9.81
   IsGrounded: 0
@@ -636,6 +637,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecaca93d0f410034fba79557d42c3f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCamera: {fileID: 4118181153985221479}
   objectRightCamera: {fileID: 6493715969387195652}
   objectLeftCamera: {fileID: 1098111588169949984}
   objectRightHand: {fileID: 1857429155178334786}
