@@ -109,7 +109,7 @@ public class MoveCable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     private void ConnectionCheck()
     {
-        Collider2D colliders = Physics2D.OverlapBox(connector.transform.position, new Vector2(4f,4f), 0);
+        Collider2D colliders = Physics2D.OverlapBox(connector.transform.position, new Vector2(20f,20f), 0);
         
         if(colliders != null)
         {

@@ -13,6 +13,7 @@ TagManager:
   - SantiSpawn
   - Note
   - Puzzle
+  - Button
   layers:
   - Default
   - TransparentFX

@@ -43,15 +43,11 @@ public class PlayerLook : MonoBehaviour
         Character = transform.parent;
 
         GameObject canvas = GameObject.Find("/Canvas");
-        Debug.Log(canvas);
         MenuManager = canvas.GetComponent<MenuManager>();
-        Debug.Log(MenuManager);
     }
 
     void Update()
     {
-        if (!PV.IsMine) return;
-
         if(MenuManager.OptionsMenuActive) return;
         Look();
     }

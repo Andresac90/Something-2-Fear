@@ -19,6 +19,7 @@ public class ObjectsSanti : MonoBehaviour
     private Rigidbody objectLeftRb;
     private Transform objectRightT;
     private Transform objectLeftT;
+    [SerializeField]
     private Transform playerCamera;
     private float objectScaleDataR;
     private float objectOriginalScaleR;
@@ -30,6 +31,8 @@ public class ObjectsSanti : MonoBehaviour
     private bool grabObjL = false;
     private bool objectGrabbedL = true;
     private bool throwCheckL = true;
+    private bool activated = false;
+    private Button activeButton = null;
 
     [SerializeField]
     private Transform objectRightCamera;
@@ -54,21 +57,55 @@ public class ObjectsSanti : MonoBehaviour
         playerL = GameObject.Find("LeftObject");
         playerR = GameObject.Find("RightObject");
         player = GameObject.Find("Santi");
-        playerCamera = player.transform.GetChild(0).GetComponent<Transform>();
+        // playerCamera = player.transform.GetChild(0).GetComponent<Transform>();
     }
 
     public void Update()
     {
         Physics.Raycast(playerCamera.position, playerCamera.TransformDirection(Vector3.forward), out hit, rayLine);
-        PuzzleManager();
-        NoteManager();
-        Grab();
+        Activation();
+        if(hit.transform != null)
+        {
+            PuzzleManager();
+            NoteManager();
+            Grab();
+        }
         Drop();
+    }
+
+    private void Activation()
+    {
+        if (hit.transform != null && hit.transform.tag == "Button")
+        {
+            Button button = hit.transform.GetComponent<Button>();
+            bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
+
+            if (button != null)
+            {
+                if (isInteractPressed)
+                {
+                    button.Activation(true);
+                    activeButton = button;
+                    activated = true;
+                }
+                else if (activeButton != null)
+                {
+                    activeButton.Activation(false);
+                    activeButton = null;
+                    activated = false;
+                }
+            }
+        }
+        else if (activeButton != null && activated)
+        {
+            activeButton.Activation(false);
+            activated = false;
+        }
     }
 
     public void PuzzleManager()
     {
-        if(hit.transform != null && hit.transform.tag == "Puzzle")
+        if(hit.transform.tag == "Puzzle")
         {
             Puzzle puzzle = hit.transform.GetComponent<Puzzle>();
             string objectName = hit.collider.gameObject.name;
@@ -98,7 +135,7 @@ public class ObjectsSanti : MonoBehaviour
 
     public void NoteManager()
     {
-        if(hit.transform != null && hit.transform.tag == "Note")
+        if(hit.transform.tag == "Note")
         {
             Note note = hit.transform.GetComponent<Note>();
             string objectName = hit.collider.gameObject.name;
@@ -117,9 +154,9 @@ public class ObjectsSanti : MonoBehaviour
         }
     }
 
-    public void Grab()
+    private void Grab()
     {
-        if(hit.transform != null && (hit.transform.tag == "Object" || hit.transform.tag == "Bengal"))
+        if(hit.transform.tag == "Object" || hit.transform.tag == "Bengal")
         {
             bool isRightPressed = controls.Player.RightItem.ReadValue<float>() > 0.1f;
             bool isLeftPressed = controls.Player.LeftItem.ReadValue<float>() > 0.1f;
@@ -136,7 +173,7 @@ public class ObjectsSanti : MonoBehaviour
     }
     
 
-    public void Drop()
+    private void Drop()
     {
         bool isRightPressed = controls.Player.RightThrow.ReadValue<float>() > 0.1f;
         bool isLeftPressed = controls.Player.LeftThrow.ReadValue<float>() > 0.1f;
@@ -151,7 +188,7 @@ public class ObjectsSanti : MonoBehaviour
         }
     }
 
-    public IEnumerator LeftGrab()
+    private IEnumerator LeftGrab()
     {
         objectGrabbedL = false;
         hit.transform.position = objectLeftCamera.position;
@@ -171,7 +208,7 @@ public class ObjectsSanti : MonoBehaviour
         objectGrabbedL = true;
     }
 
-    public void LeftGrabTwo()
+    private void LeftGrabTwo()
     {   
         int layerIgnoreRaycast = LayerMask.NameToLayer("PlayerSanti");
 
@@ -183,7 +220,7 @@ public class ObjectsSanti : MonoBehaviour
         child.layer = layerIgnoreRaycast;
     }
 
-    public IEnumerator RightGrab()
+    private IEnumerator RightGrab()
     {
         objectGrabbedR = false;
         hit.transform.position = objectRightCamera.position;
@@ -203,7 +240,7 @@ public class ObjectsSanti : MonoBehaviour
         objectGrabbedR = true;
     }
 
-    public void RightGrabTwo()
+    private void RightGrabTwo()
     {
         int layerIgnoreRaycast = LayerMask.NameToLayer("PlayerSanti");
 
@@ -215,7 +252,7 @@ public class ObjectsSanti : MonoBehaviour
         child.layer = layerIgnoreRaycast;
     }
 
-    public IEnumerator LeftDrop()
+    private IEnumerator LeftDrop()
     {
         GameObject child = playerL.transform.GetChild(0).gameObject;
         child.layer = 0;
@@ -231,7 +268,7 @@ public class ObjectsSanti : MonoBehaviour
         throwCheckL = true;
     }
 
-    public IEnumerator RightDrop()
+    private IEnumerator RightDrop()
     {
         GameObject child = playerR.transform.GetChild(0).gameObject;
         child.layer = 0;
