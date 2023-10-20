@@ -1,18 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 public class HidingSystem : MonoBehaviour
 {
     private InputMaster Controls;
     public GameObject hideText, stopHideText;
-    public GameObject normalPlayer;
+    private GameObject player;
     private SantiController santicontroller;
+    private CharacterController characterController;
+
+    [SerializeField]
+    private float rayLine;
+    private RaycastHit hit;
+    private GameObject santicamera;
     public Transform HidePosition;
     public Transform OutPosition;
-    private GameObject enemy;
-    private AIControl enemyAI;
-    bool interactable, hiding;
+    //private GameObject enemy;
+    //private AIControl enemyAI;
+    public bool hiding;
+    public bool hidinggg = false;
     public float loseDistance;
 
     void Awake()
@@ -21,66 +29,81 @@ public class HidingSystem : MonoBehaviour
     }
     void Start()
     {
-        enemy = GameObject.Find("Pascualita");
-        enemyAI = enemy.GetComponent<AIControl>();
-        interactable = false;
+        //enemy = GameObject.Find("Pascualita");
+        //enemyAI = enemy.GetComponent<AIControl>();
+        player = GameObject.Find("Santi");
+        santicamera =  player.transform.GetChild(0).gameObject;
         hiding = false;
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if(other.CompareTag("MainCamera"))
-        {
-            hideText.SetActive(true);
-            interactable = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("MainCamera"))
-        {
-            hideText.SetActive(false);
-            interactable = false;
-        }
     }
 
     void Update()
     {
-        bool IsClickPressed = Controls.Player.Interact.ReadValue<float>() > 0.1f;
-        if (interactable)
+        Physics.Raycast(santicamera.GetComponent<Camera>().transform.position, santicamera.GetComponent<Camera>().transform.TransformDirection(Vector3.forward), out hit, rayLine);
+        StartCoroutine(Hide());
+        //StartCoroutine(UnHide());
+        if (hit.transform != null && hit.transform.tag == ("Hide"))
         {
-            if (IsClickPressed)
-            {
-                hideText.SetActive(false);
-                normalPlayer.transform.position.Set(HidePosition.position.x,HidePosition.position.y,HidePosition.position.z);
-                float distance = Vector3.Distance(enemy.transform.position, normalPlayer.transform.position);
-                if(distance > loseDistance)
-                {
-                    if(enemyAI.playerInRange)
-                    {
-                        enemyAI.playerInRange = false;
-                    }
-                }
-                stopHideText.SetActive(true);
-                hiding = true;
-                santicontroller = normalPlayer.GetComponent<SantiController>();
-                santicontroller.isMovementActive = false;
-                interactable = false;
-            }
+            hideText.SetActive(true);
+            
         }
-        if (hiding)
+        else
         {
-            if (IsClickPressed)
+            hideText.SetActive(false);
+        }
+    }
+
+    IEnumerator Hide()
+    {
+        bool IsClickPressed = Controls.Player.Interact.ReadValue<float>() > 0.1f;
+        if (IsClickPressed && !hiding && hit.transform != null && hit.transform.tag == ("Hide"))
+        {
+            player.GetComponent<CharacterController>().enabled = false;
+            player.GetComponent<SantiController>().enabled = false;
+            hideText.SetActive(false);
+            stopHideText.SetActive(true);
+            player.transform.localPosition = new Vector3(HidePosition.position.x, HidePosition.position.y, HidePosition.position.z);
+            Debug.Log("hide");
+            //float distance = Vector3.Distance(enemy.transform.position, normalPlayer.transform.position);
+            //if(distance > loseDistance)
+            //{
+            //    if(enemyAI.playerInRange)
+            //    {
+            //        enemyAI.playerInRange = false;
+            //    }
+            //}
+            yield return new WaitForSeconds(3f);
+            hiding = true;
+        }
+        else
+        {
+            if (IsClickPressed && hiding)
             {
                 stopHideText.SetActive(false);
-                santicontroller.isMovementActive = true;
-                normalPlayer.transform.position.Set(OutPosition.position.x, OutPosition.position.y, OutPosition.position.z);
+                player.GetComponent<CharacterController>().enabled = true;
+                player.GetComponent<SantiController>().enabled = true;
+                player.transform.localPosition = new Vector3(OutPosition.position.x, OutPosition.position.y, OutPosition.position.z);
+                Debug.Log("show");
+                yield return new WaitForSeconds(3f);
                 hiding = false;
             }
         }
+
         
     }
+
+    //IEnumerator UnHide()
+    //{
+    //    bool IsClickPressed = Controls.Player.Interact.ReadValue<float>() > 0.1f;
+    //    if (IsClickPressed && hiding && hit.transform != null && hit.transform.tag == ("Hide"))
+    //    {
+    //        hiding = false;
+    //        stopHideText.SetActive(false);
+    //        player.GetComponent<CharacterController>().enabled = true;
+    //        player.GetComponent<SantiController>().enabled = true;
+    //        player.transform.position = new Vector3(OutPosition.position.x, OutPosition.position.y, OutPosition.position.z);
+    //    }
+    //    yield return new WaitForSeconds(2.0f);
+    //}
 
     private void OnEnable()
     {
