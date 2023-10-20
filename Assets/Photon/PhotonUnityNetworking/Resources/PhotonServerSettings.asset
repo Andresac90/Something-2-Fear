@@ -42,6 +42,9 @@ MonoBehaviour:
   - updateBlinkingJose
   - updateBlinkingSanti
   - BlinkRPC
+  - SyncItemPosition
+  - SyncItemParent
+  - SyncItemForce
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

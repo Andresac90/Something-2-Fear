@@ -33,7 +33,6 @@ public class ObjectsJose : MonoBehaviour
     private GameObject ThrowLeftUI;
     [SerializeField]
     private GameObject ThrowRightUI;
-
     private RaycastHit hit;
     private float ObjectRScaleData;
     private float ObjectROriginalScale;
@@ -70,7 +69,6 @@ public class ObjectsJose : MonoBehaviour
             StartCoroutine(Grab());
             
         }
-
         //UI Grab
         if (hit.transform != null && hit.transform.tag == "Object" && !HasObjectRight)
         {
@@ -121,16 +119,19 @@ public class ObjectsJose : MonoBehaviour
             bool IsRightPressed = Controls.Player.RightItem.ReadValue<float>() > 0.1f;
             if(IsRightPressed && HasObjectRight == false)
             {
-                hit.transform.position = ObjectRightCamera.position;
-                hit.rigidbody.isKinematic = true;
-                hit.transform.parent = ObjectRightCamera;
-                ObjectRScaleData = hit.transform.GetComponent<ObjectsData>().ObjectScale;
-                hit.transform.localScale = new Vector3(ObjectRScaleData, ObjectRScaleData, ObjectRScaleData);
-                hit.transform.localPosition = new Vector3(0, 0, 0);
-                hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
-                ObjectROriginalScale = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
+                // hit.transform.position = ObjectRightCamera.position;
+                // hit.rigidbody.isKinematic = true;
+                // hit.transform.parent = ObjectRightCamera;
+                // ObjectRScaleData = hit.transform.GetComponent<ObjectsData>().ObjectScale;
+                // hit.transform.localScale = new Vector3(ObjectRScaleData, ObjectRScaleData, ObjectRScaleData);
+                // hit.transform.localPosition = new Vector3(0, 0, 0);
+                // hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
+                // ObjectROriginalScale = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
+                
+                hit.transform.GetComponent<ObjectsData>().OnGrab(ObjectRightCamera);
                 ObjectRightRb = hit.rigidbody;
                 ObjectRightT = hit.transform;
+                ObjectRightUI.SetActive(false);
                 yield return new WaitForSeconds(0.5f);
                 HasObjectRight = true;
                 ThrowCheckR = true;
@@ -140,16 +141,19 @@ public class ObjectsJose : MonoBehaviour
             bool IsLeftPressed = Controls.Player.LeftItem.ReadValue<float>() > 0.1f;
             if (IsLeftPressed && HasObjectLeft == false)
             {
-                hit.transform.position = ObjectRightCamera.position;
-                hit.rigidbody.isKinematic = true;
-                hit.transform.parent = ObjectLeftCamera;
-                ObjectLScaleData = hit.transform.GetComponent<ObjectsData>().ObjectScale;
-                hit.transform.localScale = new Vector3(ObjectLScaleData, ObjectLScaleData, ObjectLScaleData);
-                hit.transform.localPosition = new Vector3(0, 0, 0);
-                hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
-                ObjectLOriginalScale = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
+                // hit.transform.position = ObjectRightCamera.position;
+                // hit.rigidbody.isKinematic = true;
+                // hit.transform.parent = ObjectLeftCamera;
+                // ObjectLScaleData = hit.transform.GetComponent<ObjectsData>().ObjectScale;
+                // hit.transform.localScale = new Vector3(ObjectLScaleData, ObjectLScaleData, ObjectLScaleData);
+                // hit.transform.localPosition = new Vector3(0, 0, 0);
+                // hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
+                // ObjectLOriginalScale = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
+                
+                hit.transform.GetComponent<ObjectsData>().OnGrab(ObjectLeftCamera);
                 ObjectLeftRb = hit.rigidbody;
                 ObjectLeftT = hit.transform;
+                ObjectLeftUI.SetActive(false);
                 yield return new WaitForSeconds(0.5f);
                 HasObjectLeft = true;
                 ThrowCheckL = true;
@@ -164,11 +168,13 @@ public class ObjectsJose : MonoBehaviour
         bool IsRightTPressed = Controls.Player.RightThrow.ReadValue<float>() > 0.1f;
         if(IsRightTPressed && HasObjectRight == true && ThrowCheckR)
         {
-            ObjectRightT.transform.localScale = new Vector3(ObjectROriginalScale, ObjectROriginalScale, ObjectROriginalScale);
-            Vector3 camerDirection = PlayerCamera.transform.forward;
-            ObjectRightT.transform.parent = null;
-            ObjectRightRb.isKinematic = false;
-            ObjectRightRb.AddForce(camerDirection * ThrowForce);
+            // ObjectRightT.transform.localScale = new Vector3(ObjectROriginalScale, ObjectROriginalScale, ObjectROriginalScale);
+            // Vector3 camerDirection = PlayerCamera.transform.forward;
+            // ObjectRightT.transform.parent = null;
+            // ObjectRightRb.isKinematic = false;
+            // ObjectRightRb.AddForce(camerDirection * ThrowForce);
+            Debug.Log("Throwing");
+            ObjectRightRb.GetComponent<ObjectsData>().onThrow(PlayerCamera.transform.forward, ThrowForce);
             ThrowCheckR = false;
             yield return new WaitForSeconds(0.5f);
             HasObjectRight = false;
@@ -178,11 +184,13 @@ public class ObjectsJose : MonoBehaviour
         bool IsLeftPressed = Controls.Player.LeftThrow.ReadValue<float>() > 0.1f;
         if (IsLeftPressed && HasObjectLeft == true && ThrowCheckL)
         {
-            ObjectLeftT.transform.localScale = new Vector3(ObjectLOriginalScale, ObjectLOriginalScale, ObjectLOriginalScale);
-            Vector3 camerDirection = PlayerCamera.transform.forward;
-            ObjectLeftT.transform.parent = null;
-            ObjectLeftRb.isKinematic = false;
-            ObjectLeftRb.AddForce(camerDirection * ThrowForce);
+            // ObjectLeftT.transform.localScale = new Vector3(ObjectLOriginalScale, ObjectLOriginalScale, ObjectLOriginalScale);
+            // Vector3 camerDirection = PlayerCamera.transform.forward;
+            // ObjectLeftT.transform.parent = null;
+            // ObjectLeftRb.isKinematic = false;
+            // ObjectLeftRb.AddForce(camerDirection * ThrowForce);
+            Debug.Log("Throwing");
+            ObjectLeftRb.GetComponent<ObjectsData>().onThrow(PlayerCamera.transform.forward, ThrowForce);
             ThrowCheckL = false;
             yield return new WaitForSeconds(0.5f);
             HasObjectLeft = false;
@@ -195,23 +203,25 @@ public class ObjectsJose : MonoBehaviour
         IsCrouched = Player.transform.GetComponent<JoseMovement>().IsCrouched;
         if (IsCrouched && HasObjectRight)
         {
-            ObjectRightT.transform.localScale = new Vector3(ObjectROriginalScale, ObjectROriginalScale, ObjectROriginalScale);
-            Vector3 camerDirection = PlayerCamera.transform.forward;
-            camerDirection += new Vector3(0, 1.2f, 0);
-            ObjectRightT.transform.parent = null;
-            ObjectRightRb.isKinematic = false;
-            ObjectRightRb.AddForce(camerDirection * 1);
+            // ObjectRightT.transform.localScale = new Vector3(ObjectROriginalScale, ObjectROriginalScale, ObjectROriginalScale);
+            // Vector3 camerDirection = PlayerCamera.transform.forward;
+            // camerDirection += new Vector3(0, 1.2f, 0);
+            // ObjectRightT.transform.parent = null;
+            // ObjectRightRb.isKinematic = false;
+            // ObjectRightRb.AddForce(camerDirection * 1);
+            ObjectRightRb.GetComponent<ObjectsData>().OnRelease();
             HasObjectRight = false;
         }
 
         if (IsCrouched && HasObjectLeft)
         {
-            ObjectLeftT.transform.localScale = new Vector3(ObjectLOriginalScale, ObjectLOriginalScale, ObjectLOriginalScale);
-            Vector3 camerDirection = PlayerCamera.transform.forward;
-            camerDirection +=  new Vector3(0, 1.2f, 0);
-            ObjectLeftT.transform.parent = null;
-            ObjectLeftRb.isKinematic = false;
-            ObjectLeftRb.AddForce(camerDirection * 1);
+            // ObjectLeftT.transform.localScale = new Vector3(ObjectLOriginalScale, ObjectLOriginalScale, ObjectLOriginalScale);
+            // Vector3 camerDirection = PlayerCamera.transform.forward;
+            // camerDirection +=  new Vector3(0, 1.2f, 0);
+            // ObjectLeftT.transform.parent = null;
+            // ObjectLeftRb.isKinematic = false;
+            // ObjectLeftRb.AddForce(camerDirection * 1);
+            ObjectLeftRb.GetComponent<ObjectsData>().OnRelease();
             HasObjectLeft = false;
         }
     }
