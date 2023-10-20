@@ -8,12 +8,12 @@ TagManager:
   - PlayerSanti
   - Bengal
   - PlayerJose
-  - Obstacle
   - JoseSpawn
   - SantiSpawn
   - Note
   - Puzzle
   - Button
+  - Enemy
   layers:
   - Default
   - TransparentFX

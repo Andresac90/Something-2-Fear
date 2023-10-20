@@ -101,8 +101,6 @@ public class NurseAI : MonoBehaviour
 
     }
 
-
-
     private void Chasing()
     {
 

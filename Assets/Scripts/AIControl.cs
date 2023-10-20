@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,6 +8,8 @@ public class AIControl : MonoBehaviour
     private Blink blinkRef;
 
     private GameObject player;
+    private GameObject[] players;
+    private GameObject closerPlayer;
     public NavMeshAgent aiAgent;               //  Nav mesh agent component
     static float startWaitTime = 4;                 //  Wait time of every action
     public float timeToRotate = 1;                  //  Wait time when the enemy detect near the player without seeing
@@ -45,13 +48,16 @@ public class AIControl : MonoBehaviour
     public float catchDistance;
     public Animator aiAnimation; //for fuuture use in animations
 
-    public float WaitTime2 = 0;
-    public float timer;
-    public float cooldownTime = 10f;
+    public float seenCooldownTimer;
+    public float stoppedTimer;
+    public float defaultCooldownTime = 5f;
 
     void Start()
     {
-        player = GameObject.Find("Jose");
+        players = new GameObject[2];
+        players[0] = GameObject.Find("Santi");
+        players[1] = GameObject.Find("Jose");
+        //player = GameObject.Find("Jose");
         blinkRef = player.GetComponentInChildren<Blink>();
 
         PlayerPosition = Vector3.zero;
@@ -69,7 +75,8 @@ public class AIControl : MonoBehaviour
         maxWiatTime = 3f;
         catchDistance = 3f;
 
-        timer = cooldownTime;
+        stoppedTimer = defaultCooldownTime;
+        seenCooldownTimer = defaultCooldownTime;
         //Testing
 
         WaitTime = startWaitTime;                 //  Set the wait time variable that will change
@@ -87,8 +94,12 @@ public class AIControl : MonoBehaviour
     {
         
         EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
+
+        closerPlayer = GetCloserPlayer(); //relevant player
         blinking = blinkRef.IsBlinking;
-        if (isSeen && !blinking) // if Pascualita is seen stop (recibe valor de PlayerScript)
+
+
+        if (isSeen && !blinking) //&& seenCooldownTimer >= 0) // if Pascualita is seen stop (recibe valor de PlayerScript)
         {
             //Debug.Log("Pascualita is being seen");
             Seen();
@@ -129,11 +140,11 @@ public class AIControl : MonoBehaviour
         }
         if (aiAgent.remainingDistance <= aiAgent.stoppingDistance)    //  Control if the enemy arrive to the player location
         {
-                if (WaitTime <= 0 && !isPlayerCaught && Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerJose").transform.position) >= 6f) //|| Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerSanti").transform.position) >= 6f//)
+            if (WaitTime <= 0 && !isPlayerCaught && Vector3.Distance(transform.position, closerPlayer.transform.position) >= 6f)
             {
                 //  Check if the enemy is not near to the player, returns to patrol after the wait time delay
                 isPatrol = true;
-                
+                isChasing = false;
                 Move(walkSpeed);
                 TimeToRotate = timeToRotate;
                 WaitTime = startWaitTime;
@@ -141,12 +152,12 @@ public class AIControl : MonoBehaviour
             }
             else
             {
-                if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerJose").transform.position) >= 2.5f)// || Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerSanti").transform.position) >= 2.5f)
+                if (Vector3.Distance(transform.position, closerPlayer.transform.position) >= 2.5f)
                     //  Wait if the current position is not the player position
                     Stop();
                 WaitTime -= Time.deltaTime;
             }
-            if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerJose").transform.position)  < catchDistance)// || Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerSanti").transform.position) < catchDistance)
+            if (Vector3.Distance(transform.position, closerPlayer.transform.position)  < catchDistance)
             {   
                 CaughtPlayer();
             }
@@ -157,6 +168,7 @@ public class AIControl : MonoBehaviour
     {
                    //  The player is no near when the enemy is platroling
         playerLastPosition = Vector3.zero;
+        Move(walkSpeed);
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);    //  Set the enemy destination to the next waypoint
         if (aiAgent.remainingDistance <= aiAgent.stoppingDistance)
         {
@@ -203,26 +215,27 @@ public class AIControl : MonoBehaviour
     {
         
         //StartCoroutine(IsSeenTimer());
-        if (timer != 0) // pascualita is stopped (cambiar wait time)
+        if (stoppedTimer >= 0) // pascualita is stopped (cambiar wait time)
         {
             Stop();
-            timer -= Time.deltaTime;
-            WaitTime2 = 10;
+            stoppedTimer -= Time.deltaTime;
+            seenCooldownTimer = defaultCooldownTime;
         }
         else //is on cooldown from being seen
         {   
-            if(WaitTime2 != 0) //
+            if(seenCooldownTimer >= 0) //
             {
-                WaitTime2 -= Time.deltaTime;
-                isPatrol = true;
+                Debug.Log("Player is controlled");
+                seenCooldownTimer -= Time.deltaTime;
                 Move(walkSpeed);
-                aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
+                //isPatrol = true;
+                //aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
             }
             else
             {
-                Debug.Log("Hallo");
-                timer = cooldownTime;
-                //TimeToRotate = timeToRotate;
+                Debug.Log("Undo ivnecible pascuala");
+                stoppedTimer = defaultCooldownTime;
+                //TimeToRotate = timeToRotate;  
             }
         }
     }
@@ -232,11 +245,11 @@ public class AIControl : MonoBehaviour
         if (WaitTime <= 0)
         {
             Debug.Log("Hallo");
-            isPatrol = true;
-            Move(walkSpeed);
-            aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
-            WaitTime = startWaitTime;
-            TimeToRotate = timeToRotate;
+            //isPatrol = true;
+            //Move(walkSpeed);
+            //aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
+            //WaitTime = startWaitTime;
+            //TimeToRotate = timeToRotate;
         }
         else
         {
@@ -304,6 +317,14 @@ public class AIControl : MonoBehaviour
         }
     }
 
+    private GameObject GetCloserPlayer() 
+    {
+        float distanceToSanti = Vector3.Distance(transform.position, players[0].transform.position);
+        float distanceToJose = Vector3.Distance(transform.position, players[1].transform.position);
+
+        return (distanceToSanti < distanceToJose) ? players[0] : players[1];
+    }
+
     void EnviromentView()
     {
         Collider[] playerInRange = Physics.OverlapSphere(transform.position, viewRadius, playerMask);   //  Make an overlap sphere around the enemy to detect the playermask in the view radius
@@ -320,6 +341,7 @@ public class AIControl : MonoBehaviour
                     this.playerInRange = true;             //  The player has been seen by the enemy and then the enemy chases the player
                     isChasing = true;                 //  Change the state to chasing the player
                     isPatrol = false;
+                    
                 }
                 else
                 {
