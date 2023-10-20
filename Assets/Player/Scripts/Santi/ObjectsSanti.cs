@@ -51,10 +51,6 @@ public class ObjectsSanti : MonoBehaviour
     private float throwForce;
     [SerializeField]
     private GameObject ObjectRightUI;
-    [SerializeField]
-    private GameObject DropRightUI;
-    [SerializeField]
-    private GameObject InteractUI;
 
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
@@ -87,8 +83,6 @@ public class ObjectsSanti : MonoBehaviour
             NoteManager();
             Grab();
         }
-        
-        //Grab UI
         if (hit.transform != null && hit.transform.tag == "Object" && !grabObjR)
         {
             ObjectRightUI.SetActive(true);
@@ -96,30 +90,6 @@ public class ObjectsSanti : MonoBehaviour
         else
         {
             ObjectRightUI.SetActive(false);
-        }
-
-        //Drop UI
-        if (grabObjR && throwCheckR)
-        {
-            DropRightUI.SetActive(true);
-        }
-        else
-        {
-            DropRightUI.SetActive(false);
-        }
-
-        //Interact UI
-        if (hit.transform != null && hit.transform.tag == "Puzzle")
-        {
-            InteractUI.SetActive(true);
-        }
-        else
-        {
-            InteractUI.SetActive(false);
-        }
-        if (puzzleActive)
-        {
-            InteractUI.SetActive(false);
         }
         Drop();
     }
@@ -242,78 +212,121 @@ public class ObjectsSanti : MonoBehaviour
     private IEnumerator LeftGrab()
     {
         objectGrabbedL = false;
-        hit.transform.position = objectLeftCamera.position;
-        hit.rigidbody.isKinematic = true;
-        hit.transform.parent = objectLeftCamera;
-        objectScaleDataL = hit.transform.GetComponent<ObjectsData>().ObjectScale;
-        hit.transform.localScale = new Vector3(objectScaleDataL, objectScaleDataL, objectScaleDataL);
-        hit.transform.localPosition = new Vector3(0, 0, 0);
-        hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
-        objectOriginalScaleL = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
+        // hit.transform.position = objectLeftCamera.position;
+        // hit.rigidbody.isKinematic = true;
+        // hit.transform.parent = objectLeftCamera;
+        // objectScaleDataL = hit.transform.GetComponent<ObjectsData>().ObjectScale;
+        // hit.transform.localScale = new Vector3(objectScaleDataL, objectScaleDataL, objectScaleDataL);
+        // hit.transform.localPosition = new Vector3(0, 0, 0);
+        // hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
+        // objectOriginalScaleL = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
+
+        hit.transform.GetComponent<ObjectsData>().OnGrab(objectLeftHand);
+
         objectLeftRb = hit.rigidbody;
         objectLeftT = hit.transform;
 
-        LeftGrabTwo();
+        // LeftGrabTwo();
         yield return new WaitForSeconds(0.5f);
         grabObjL = true;
         objectGrabbedL = true;
+    }
+
+    private IEnumerator RightGrab()
+    {
+        objectGrabbedR = false;
+
+        // hit.transform.position = objectRightCamera.position;
+        // hit.rigidbody.isKinematic = true;
+        // hit.transform.parent = objectRightCamera;
+
+        // objectScaleDataR = hit.transform.GetComponent<ObjectsData>().ObjectScale;
+        // hit.transform.localScale = new Vector3(objectScaleDataR, objectScaleDataR, objectScaleDataR);
+        // hit.transform.localPosition = new Vector3(0, 0, 0);
+        // hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
+        // objectOriginalScaleR = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
+        
+        hit.transform.GetComponent<ObjectsData>().OnGrab(objectRightHand);
+        
+        objectRightRb = hit.rigidbody;
+        objectRightT = hit.transform;
+        ObjectRightUI.SetActive(false);
+        
+        
+        // RightGrabTwo();
+        yield return new WaitForSeconds(0.5f);
+        grabObjR = true;
+        objectGrabbedR = true;
     }
 
     private void LeftGrabTwo()
     {   
         int layerIgnoreRaycast = LayerMask.NameToLayer("PlayerSanti");
 
-        GameObject child = playerL.transform.GetChild(0).gameObject;
-        child.layer = layerIgnoreRaycast;
-        cloneL = (GameObject)Instantiate(child, objectLeftHand.position, Quaternion.identity);
-        cloneL.transform.parent = objectLeftHand;
-        layerIgnoreRaycast = LayerMask.NameToLayer("PlayerJose");
-        child.layer = layerIgnoreRaycast;
-    }
+        // GameObject child = playerL.transform.GetChild(0).gameObject;
+        // child.layer = layerIgnoreRaycast;
+        // cloneL = (GameObject)Instantiate(child, objectLeftHand.position, Quaternion.identity);
+        // cloneL.transform.parent = objectLeftHand;
+        // layerIgnoreRaycast = LayerMask.NameToLayer("PlayerJose");
+        // child.layer = layerIgnoreRaycast;
 
-    private IEnumerator RightGrab()
-    {
-        objectGrabbedR = false;
-        hit.transform.position = objectRightCamera.position;
-        hit.rigidbody.isKinematic = true;
-        hit.transform.parent = objectRightCamera;
-        objectScaleDataR = hit.transform.GetComponent<ObjectsData>().ObjectScale;
-        hit.transform.localScale = new Vector3(objectScaleDataR, objectScaleDataR, objectScaleDataR);
-        hit.transform.localPosition = new Vector3(0, 0, 0);
-        hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
-        objectOriginalScaleR = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
-        objectRightRb = hit.rigidbody;
-        objectRightT = hit.transform;
-        ObjectRightUI.SetActive(false);
-        RightGrabTwo();
-        yield return new WaitForSeconds(0.5f);
-        grabObjR = true;
-        objectGrabbedR = true;
+        GameObject grabbedObject = objectLeftT.gameObject;
+        grabbedObject.layer = layerIgnoreRaycast;
+
+        cloneL = (GameObject)Instantiate(grabbedObject, objectLeftCamera.position, Quaternion.identity);
+        // remove photonview
+        cloneL.GetComponent<PhotonView>().enabled = false;
+        cloneL.GetComponent<PhotonTransformView>().enabled = false;
+        cloneL.transform.parent = objectLeftCamera;
+
+        objectScaleDataL = hit.transform.GetComponent<ObjectsData>().ObjectScale;
+        cloneL.transform.localScale = new Vector3(objectScaleDataL, objectScaleDataL, objectScaleDataL);
+        cloneL.transform.localPosition = new Vector3(0, 0, 0);
+        cloneL.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
+        objectOriginalScaleL = cloneL.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
     }
 
     private void RightGrabTwo()
     {
         int layerIgnoreRaycast = LayerMask.NameToLayer("PlayerSanti");
 
-        GameObject child = playerR.transform.GetChild(0).gameObject;
-        child.layer = layerIgnoreRaycast;
-        cloneR = (GameObject) Instantiate(child, objectRightHand.position, Quaternion.identity);
-        cloneR.transform.parent = objectRightHand;
-        layerIgnoreRaycast = LayerMask.NameToLayer("PlayerJose");
-        child.layer = layerIgnoreRaycast;
+        // GameObject child = playerR.transform.GetChild(0).gameObject;
+        // child.layer = layerIgnoreRaycast;
+        // cloneR = (GameObject) Instantiate(child, objectRightHand.position, Quaternion.identity);
+        // cloneR.transform.parent = objectRightHand;
+        // layerIgnoreRaycast = LayerMask.NameToLayer("PlayerJose");
+        // child.layer = layerIgnoreRaycast;
+
+        GameObject grabbedObject = objectRightT.gameObject;
+        grabbedObject.layer = layerIgnoreRaycast;
+
+        cloneR = (GameObject)Instantiate(grabbedObject, objectRightCamera.position, Quaternion.identity);
+        cloneR.GetComponent<PhotonView>().enabled = false;
+        cloneR.GetComponent<PhotonTransformView>().enabled = false;
+        cloneR.transform.parent = objectRightCamera;
+
+        objectScaleDataR = hit.transform.GetComponent<ObjectsData>().ObjectScale;
+        cloneR.transform.localScale = new Vector3(objectScaleDataR, objectScaleDataR, objectScaleDataR);
+        cloneR.transform.localPosition = new Vector3(0, 0, 0);
+        cloneR.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
+        objectOriginalScaleR = cloneR.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
+        
     }
+
+    
 
     private IEnumerator LeftDrop()
     {
-        GameObject child = playerL.transform.GetChild(0).gameObject;
-        child.layer = 0;
-        throwCheckL = false;
-        objectLeftT.transform.localScale = new Vector3(objectOriginalScaleL, objectOriginalScaleL, objectOriginalScaleL);
-        Vector3 camerDirection = playerCamera.transform.forward;
-        objectLeftT.transform.parent = null;
-        objectLeftRb.isKinematic = false;
-        objectLeftRb.AddForce(camerDirection * throwForce);
-        Destroy(cloneL);
+        // GameObject child = playerL.transform.GetChild(0).gameObject;
+        // child.layer = 0;
+        // throwCheckL = false;
+        // objectLeftT.transform.localScale = new Vector3(objectOriginalScaleL, objectOriginalScaleL, objectOriginalScaleL);
+        // Vector3 camerDirection = playerCamera.transform.forward;
+        // objectLeftT.transform.parent = null;
+        // objectLeftRb.isKinematic = false;
+        // objectLeftRb.AddForce(camerDirection * throwForce);
+        // Destroy(cloneL);
+        objectLeftT.GetComponent<ObjectsData>().OnRelease();
         yield return new WaitForSeconds(0.5f);
         grabObjL = false;
         throwCheckL = true;
@@ -321,15 +334,16 @@ public class ObjectsSanti : MonoBehaviour
 
     private IEnumerator RightDrop()
     {
-        GameObject child = playerR.transform.GetChild(0).gameObject;
-        child.layer = 0;
-        throwCheckR = false;
-        objectRightT.transform.localScale = new Vector3(objectOriginalScaleR, objectOriginalScaleR, objectOriginalScaleR);
-        Vector3 camerDirection = playerCamera.transform.forward;
-        objectRightT.transform.parent = null;
-        objectRightRb.isKinematic = false;
-        objectRightRb.AddForce(camerDirection * 0);
-        Destroy(cloneR);
+        // GameObject child = playerR.transform.GetChild(0).gameObject;
+        // child.layer = 0;
+        // throwCheckR = false;
+        // objectRightT.transform.localScale = new Vector3(objectOriginalScaleR, objectOriginalScaleR, objectOriginalScaleR);
+        // Vector3 camerDirection = playerCamera.transform.forward;
+        // objectRightT.transform.parent = null;
+        // objectRightRb.isKinematic = false;
+        // objectRightRb.AddForce(camerDirection * 0);
+        // Destroy(cloneR);
+        objectRightT.GetComponent<ObjectsData>().OnRelease();
         yield return new WaitForSeconds(0.5f);
         grabObjR = false;
         throwCheckR = true;
