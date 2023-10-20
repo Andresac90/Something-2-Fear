@@ -42,13 +42,10 @@ MonoBehaviour:
   - updateBlinkingJose
   - updateBlinkingSanti
   - BlinkRPC
-<<<<<<< Updated upstream
   - SyncItemPosition
   - SyncItemParent
   - SyncItemForce
-=======
   - SyncInRange
->>>>>>> Stashed changes
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
