@@ -22,8 +22,11 @@ public class MenuManager : MonoBehaviour
             OptionsMenuActive = !OptionsMenuActive;
             OptionsMenuUI.SetActive(OptionsMenuActive);
 
-            Cursor.visible = OptionsMenuActive;
-            Cursor.lockState = OptionsMenuActive ? CursorLockMode.None : CursorLockMode.Locked;
+            if (!GameManager.Instance.puzzle){
+                Cursor.visible = OptionsMenuActive;
+                Cursor.lockState = OptionsMenuActive ? CursorLockMode.None : CursorLockMode.Locked;
+            }
+            
         }
     }      
 

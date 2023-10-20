@@ -1,13 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Photon.Pun;
 
-public class GameManager : MonoBehaviour
+
+public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager Instance;
     public int numpadLevel = 1;
     public int lockpickLevel = 1;
     public bool win = false;
+
+    public bool puzzle = false;
 
     void Awake()
     {
@@ -25,5 +30,10 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+    }
+
+    public override void OnLeftRoom()
+    {
+       SceneManager.LoadScene(0);
     }
 }
