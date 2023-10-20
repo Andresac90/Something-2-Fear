@@ -52,6 +52,8 @@ public class AIControl : MonoBehaviourPun
     private bool blinkingSanti;
     [SerializeField]
     private bool blinkingJose;
+    private PhotonView josePV;
+    private PhotonView santiPV;
 
     //Testing variables
     public bool isSeen;  //Pascualita is being seen by player
@@ -107,6 +109,12 @@ public class AIControl : MonoBehaviourPun
         {
             blinkingSanti = !blinkingSanti;
         }
+    }
+
+    [PunRPC]
+    private void SyncInRange(bool inRange)
+    {
+        playerInRange = inRange;
     }
 
     private void Update()
@@ -184,12 +192,14 @@ public class AIControl : MonoBehaviourPun
     public void santiActivation()
     {
         players[0] = GameObject.FindGameObjectWithTag("PlayerSanti");
+        santiPV = players[0].GetComponent<PhotonView>();
         isSantiActive = true;
     }
 
     public void joseActivation()
     {
         players[1] = GameObject.FindGameObjectWithTag("PlayerJose");
+        josePV = players[1].GetComponent<PhotonView>();
         isJoseActive = true;
     }
 
@@ -228,9 +238,10 @@ public class AIControl : MonoBehaviourPun
         //aiAnimation.SetTrigger("jumpscare");
         //StartCoroutine(deathRoutine());
         Debug.Log("Attack");
-
+    
         isPlayerCaught = false;
-        photonView.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+        santiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+        josePV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
         isPatrol = false;
 
         Move(walkSpeed);
@@ -322,7 +333,8 @@ public class AIControl : MonoBehaviourPun
     void CaughtPlayer()
     {
         isPlayerCaught = true;
-        photonView.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+        santiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+        josePV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
     }
 
     void LookingPlayer(Vector3 player)
