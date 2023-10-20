@@ -53,7 +53,7 @@ public class Down : MonoBehaviourPun
             this.GetComponentInChildren<PlayerLook>().enabled = false;
             wasDowned = true;
             wasntDowned = false;
-            ChangeDowned();
+            updateDowned(true);
         }
         else if(!isPlayerDowned && wasDowned)
         {

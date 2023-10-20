@@ -52,6 +52,11 @@ public class ObjectsSanti : MonoBehaviour
     [SerializeField]
     private GameObject ObjectRightUI;
 
+    [SerializeField]
+    private GameObject DropRightUI;
+    [SerializeField]
+    private GameObject InteractUI;
+
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
     public bool noteCreated = false;
@@ -90,6 +95,30 @@ public class ObjectsSanti : MonoBehaviour
         else
         {
             ObjectRightUI.SetActive(false);
+        }
+
+        //Drop UI
+        if (grabObjR && throwCheckR)
+        {
+            DropRightUI.SetActive(true);
+        }
+        else
+        {
+            DropRightUI.SetActive(false);
+        }
+
+        //Interact UI
+        if (hit.transform != null && hit.transform.tag == "Puzzle")
+        {
+            InteractUI.SetActive(true);
+        }
+        else
+        {
+            InteractUI.SetActive(false);
+        }
+        if (puzzleActive)
+        {
+            InteractUI.SetActive(false);
         }
         Drop();
     }

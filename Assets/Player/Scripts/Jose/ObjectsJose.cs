@@ -29,7 +29,10 @@ public class ObjectsJose : MonoBehaviour
     private GameObject ObjectLeftUI;
     [SerializeField]
     private GameObject ObjectRightUI;
-
+    [SerializeField]
+    private GameObject ThrowLeftUI;
+    [SerializeField]
+    private GameObject ThrowRightUI;
     private RaycastHit hit;
     private float ObjectRScaleData;
     private float ObjectROriginalScale;
@@ -66,10 +69,15 @@ public class ObjectsJose : MonoBehaviour
             StartCoroutine(Grab());
             
         }
+        //UI Grab
         if (hit.transform != null && hit.transform.tag == "Object" && !HasObjectRight)
         {
             ObjectRightUI.SetActive(true);
 
+        }
+        else
+        {
+            ObjectRightUI.SetActive(false);
         }
         if (hit.transform != null && hit.transform.tag == "Object" && !HasObjectLeft)
         {
@@ -77,8 +85,25 @@ public class ObjectsJose : MonoBehaviour
         }
         else
         {
-            ObjectRightUI.SetActive(false);
             ObjectLeftUI.SetActive(false);
+        }
+
+        //UI Throw
+        if (HasObjectRight == true && ThrowCheckR)
+        {
+            ThrowRightUI.SetActive(true);
+        }
+        else
+        {
+            ThrowRightUI.SetActive(false);
+        }
+        if (HasObjectLeft == true && ThrowCheckL)
+        {
+            ThrowLeftUI.SetActive(true);
+        }
+        else
+        {
+            ThrowLeftUI.SetActive(false);
         }
         StartCoroutine(Throw());
         ThrowGrounded();
