@@ -15,6 +15,8 @@ public class EventManager : MonoBehaviour
     private bool WinScreen = false;
     [SerializeField]
     private GameObject[] Objects;
+    [SerializeField]
+    private GameObject AI;
     private bool RunOnce = false;
 
     public bool PlayersNear = false;
@@ -94,6 +96,7 @@ public class EventManager : MonoBehaviour
                 Objects[i].SetActive(!Value);
                 RunOnce = true;
             }
+            AI.SetActive(true);
             Destroy(this);
         }
         else if (ArePlayersOnTrigger() && TwoPlayers && !RunOnce && WinScreen)
