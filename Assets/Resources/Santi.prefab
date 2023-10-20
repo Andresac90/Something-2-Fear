@@ -136,7 +136,6 @@ GameObject:
   - component: {fileID: 5061532409630288172}
   - component: {fileID: 1810210482103456310}
   - component: {fileID: 6149727713103006601}
-  - component: {fileID: 6690261429472512605}
   m_Layer: 7
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -281,19 +280,6 @@ MonoBehaviour:
   _PostProcessShaderAccurate: {fileID: 4800000, guid: 2ebed186567d3c244a87538744a62920, type: 3}
   _PixelationShader: {fileID: 4800000, guid: f2da0e2a14a532548b5db043244b3df1, type: 3}
   _InterlacingShader: {fileID: 4800000, guid: 03ebd34214b41ef459d7ee6753b062be, type: 3}
---- !u!114 &6690261429472512605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1476826899415972688}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: faf4171cb4dee5249b6795e3b9f35ff4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 0.5
 --- !u!1 &2043920906562670192
 GameObject:
   m_ObjectHideFlags: 0
