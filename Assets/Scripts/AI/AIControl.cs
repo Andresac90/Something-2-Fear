@@ -5,11 +5,13 @@ using UnityEngine.AI;
 
 public class AIControl : MonoBehaviour
 {
-    private Blink blinkRef;
+    private Blink blinkRefSanti;
+    private Blink blinkRefJose;
 
     private GameObject player;
     private GameObject[] players;
     private GameObject closerPlayer;
+
     public NavMeshAgent aiAgent;               //  Nav mesh agent component
     static float startWaitTime = 4;                 //  Wait time of every action
     public float timeToRotate = 1;                  //  Wait time when the enemy detect near the player without seeing
@@ -40,7 +42,8 @@ public class AIControl : MonoBehaviour
     public bool isPatrol;                                //  If the enemy is patrol, state of patroling
     public bool isPlayerCaught;                            //  if the enemy has caught the player
     public bool isChasing;
-    private bool blinking;
+    private bool blinkingSanti;
+    private bool blinkingJose;
 
     //Testing variables
     public bool isSeen;  //Pascualita is being seen by player
@@ -55,10 +58,11 @@ public class AIControl : MonoBehaviour
     void Start()
     {
         players = new GameObject[2];
-        players[0] = GameObject.Find("Santi(Clone)");
-        players[1] = GameObject.Find("Jose(Clone)");
+        players[0] = GameObject.FindGameObjectWithTag("PlayerSanti");
+        players[1] = GameObject.FindGameObjectWithTag("PlayerJose");
         //player = GameObject.Find("Jose");
-        blinkRef = player.GetComponentInChildren<Blink>();
+        blinkRefSanti = players[0].GetComponentInChildren<Blink>();
+        blinkRefJose = players[1].GetComponentInChildren<Blink>();
 
         PlayerPosition = Vector3.zero;
         isPatrol = true;
@@ -96,10 +100,11 @@ public class AIControl : MonoBehaviour
         EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
 
         closerPlayer = GetCloserPlayer(); //relevant player
-        blinking = blinkRef.IsBlinking;
+        blinkingSanti = blinkRefSanti.IsBlinking;
+        blinkingJose = blinkRefSanti.IsBlinking;
 
 
-        if (isSeen && !blinking) //&& seenCooldownTimer >= 0) // if Pascualita is seen stop (recibe valor de PlayerScript)
+        if (isSeen && (!blinkingSanti || !blinkingJose)) //&& seenCooldownTimer >= 0) // if Pascualita is seen stop (recibe valor de PlayerScript)
         {
             //Debug.Log("Pascualita is being seen");
             Seen();
