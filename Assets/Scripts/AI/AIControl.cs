@@ -230,6 +230,7 @@ public class AIControl : MonoBehaviourPun
         Debug.Log("Attack");
 
         isPlayerCaught = false;
+        photonView.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
         isPatrol = false;
 
         Stop();
@@ -323,6 +324,7 @@ public class AIControl : MonoBehaviourPun
     void CaughtPlayer()
     {
         isPlayerCaught = true;
+        photonView.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
     }
 
     void LookingPlayer(Vector3 player)
