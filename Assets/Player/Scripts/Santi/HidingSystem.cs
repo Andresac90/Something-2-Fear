@@ -37,8 +37,9 @@ public class HidingSystem : MonoBehaviour
 
     void Update()
     {
-        Physics.Raycast(santicamera.GetComponent<Camera>().transform.position, santicamera.GetComponent<Camera>().transform.TransformDirection(Vector3.forward), out hit, rayLine);
+        //Physics.Raycast(santicamera.GetComponent<Camera>().transform.position, santicamera.GetComponent<Camera>().transform.TransformDirection(Vector3.forward), out hit, rayLine);
         StartCoroutine(Hide());
+        StartCoroutine(Raycast());
         if (hit.transform != null && hit.transform.tag == ("Hide"))
         {
             hideText.SetActive(true);
@@ -49,7 +50,11 @@ public class HidingSystem : MonoBehaviour
             hideText.SetActive(false);
         }
     }
-
+    IEnumerator Raycast()
+    {
+        yield return new WaitForSeconds(3.0f);
+        Physics.Raycast(santicamera.GetComponent<Camera>().transform.position, santicamera.GetComponent<Camera>().transform.TransformDirection(Vector3.forward), out hit, rayLine);
+    }
     IEnumerator Hide()
     {
         bool IsClickPressed = Controls.Player.Interact.ReadValue<float>() > 0.1f;
@@ -82,8 +87,7 @@ public class HidingSystem : MonoBehaviour
                 player.transform.localPosition = new Vector3(OutPosition.position.x, OutPosition.position.y, OutPosition.position.z);
                 //Debug.Log("show");
                 yield return new WaitForSeconds(1.5f);
-                hiding = false;
-            }
+                hiding = false;            }
         }   
     }
 
