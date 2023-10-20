@@ -118,12 +118,18 @@ public class Down : MonoBehaviourPun
                 Die();
             }
         }
+        if(joseDown && santiDown)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            SceneManager.LoadScene("LoseScreen");
+        }
     }
     
     private void Die()
     {
         if(currentTime >= deadTime)
         {
+            Cursor.lockState = CursorLockMode.None;
             SceneManager.LoadScene("LoseScreen");
             // gameObject.SetActive(false);
         }
