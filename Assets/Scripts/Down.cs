@@ -34,6 +34,14 @@ public class Down : MonoBehaviourPun
         photonView.RPC("updateDowned", RpcTarget.All, true);
     }
 
+    void Update()
+    {
+        if (isPlayerDowned)
+        {
+            Downed(isPlayerDowned);
+        }
+    }
+
     public void Downed(bool isPlayerCaught)
     {
         isPlayerDowned = isPlayerCaught;
