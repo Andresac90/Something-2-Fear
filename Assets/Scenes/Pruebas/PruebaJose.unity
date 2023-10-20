@@ -5600,10 +5600,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5495569974816554137, guid: cfab29fa9aa3d4844a55c21df21ef3ea, type: 3}
-      propertyPath: rayLine
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5495569974816554137, guid: cfab29fa9aa3d4844a55c21df21ef3ea, type: 3}
       propertyPath: hideText
       value: 
       objectReference: {fileID: 1030913515}
