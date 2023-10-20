@@ -348,10 +348,25 @@ public class AIControl : MonoBehaviourPun
 
     private GameObject GetCloserPlayer() 
     {
-        float distanceToSanti = Vector3.Distance(transform.position, players[0].transform.position);
-        float distanceToJose = Vector3.Distance(transform.position, players[1].transform.position);
+        GameObject close;
+        float distanceToSanti;
+        float distanceToJose;
+        if(players[0] != null && players[1] != null)
+        {
+            distanceToSanti = Vector3.Distance(transform.position, players[0].transform.position);
+            distanceToJose = Vector3.Distance(transform.position, players[1].transform.position);
+            close = (distanceToSanti < distanceToJose) ? players[0] : players[1];
+        }
+        else if(players[1] != null)
+        {
+            close = players[1];
+        }
+        else
+        {
+            close = players[0];
+        }
 
-        return (distanceToSanti < distanceToJose) ? players[0] : players[1];
+        return close;
     }
 
     void EnviromentView()
