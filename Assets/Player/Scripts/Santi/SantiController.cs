@@ -58,6 +58,7 @@ public class SantiController : MonoBehaviour
     {
         if (!PV.IsMine) return;
         Movement();
+        
         // Interact();
     }
 
