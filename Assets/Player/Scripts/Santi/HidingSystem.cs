@@ -28,8 +28,8 @@ public class HidingSystem : MonoBehaviour
     }
     void Start()
     {
-        enemy = GameObject.Find("Pascualita");
-        enemyAI = enemy.GetComponent<AIControl>();
+        //enemy = GameObject.Find("Pascualita");
+        //enemyAI = enemy.GetComponent<AIControl>();
         player = GameObject.Find("Santi(Clone)");
         santicamera =  player.transform.GetChild(0).gameObject;
         hiding = false;
@@ -61,14 +61,14 @@ public class HidingSystem : MonoBehaviour
             stopHideText.SetActive(true);
             player.transform.localPosition = new Vector3(HidePosition.position.x, HidePosition.position.y, HidePosition.position.z);
             //Debug.Log("hide");
-            float distance = Vector3.Distance(enemy.transform.position, player.transform.position);
-            if (distance > loseDistance)
-            {
-                if (enemyAI.playerInRange)
-                {
-                    enemyAI.playerInRange = false;
-                }
-            }
+            //float distance = Vector3.Distance(enemy.transform.position, player.transform.position);
+            //if (distance > loseDistance)
+            //{
+            //    if (enemyAI.playerInRange)
+            //    {
+            //        enemyAI.playerInRange = false;
+            //    }
+            //}
             yield return new WaitForSeconds(1.5f);
             hiding = true;
         }
