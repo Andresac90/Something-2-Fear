@@ -7,10 +7,6 @@ using UnityEngine.AI;
 
 public class AIControl : MonoBehaviourPun
 {
-    // public Blink blinkRefSanti;
-    // public Blink blinkRefJose;
-
-    private GameObject player;
     public GameObject[] players;
     private GameObject closerPlayer;
 
@@ -232,12 +228,12 @@ public class AIControl : MonoBehaviourPun
         //aiAnimation.SetTrigger("jumpscare");
         //StartCoroutine(deathRoutine());
         Debug.Log("Attack");
-        if(closerPlayer == player[0])
+        if(closerPlayer == players[0])
         {
             isPlayerCaught = false;
             SantiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
         }
-        else if(closerPlayer == player[1])
+        else if(closerPlayer == players[1])
         {
             isPlayerCaught = false;
             JosePV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
@@ -334,13 +330,13 @@ public class AIControl : MonoBehaviourPun
     void CaughtPlayer()
     {
         isPlayerCaught = true;
-        if(closerPlayer == player[0])
+        if(closerPlayer == players[0])
         {
             SantiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
             isPlayerCaught = false;
             
         }
-        else if(closerPlayer == player[1])
+        else if(closerPlayer == players[1])
         {
             JosePV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
             isPlayerCaught = false;

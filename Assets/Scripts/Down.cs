@@ -13,8 +13,8 @@ public class Down : MonoBehaviourPun
     private bool wasDowned = false;
     private bool wasntDowned = true;
     private float currentTime = 0f;
-    private float santiDown = false;
-    private float joseDown = false;
+    private bool santiDown = false;
+    private bool joseDown = false;
     
     [SerializeField]
     private float deadTime = 10f;
