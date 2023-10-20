@@ -12,6 +12,9 @@ public class AIControl : MonoBehaviour
     private GameObject[] players;
     private GameObject closerPlayer;
 
+    private bool isSantiActive = false;
+    private bool isJoseActive = false;
+
     public NavMeshAgent aiAgent;               //  Nav mesh agent component
     static float startWaitTime = 4;                 //  Wait time of every action
     public float timeToRotate = 1;                  //  Wait time when the enemy detect near the player without seeing
@@ -58,11 +61,11 @@ public class AIControl : MonoBehaviour
     void Start()
     {
         players = new GameObject[2];
-        players[0] = GameObject.FindGameObjectWithTag("PlayerSanti");
-        players[1] = GameObject.FindGameObjectWithTag("PlayerJose");
+        //players[0] = GameObject.FindGameObjectWithTag("PlayerSanti");
+        
         //player = GameObject.Find("Jose");
-        blinkRefSanti = players[0].GetComponentInChildren<Blink>();
-        blinkRefJose = players[1].GetComponentInChildren<Blink>();
+        //blinkRefSanti = players[0].GetComponentInChildren<Blink>();
+   
 
         PlayerPosition = Vector3.zero;
         isPatrol = true;
@@ -96,39 +99,40 @@ public class AIControl : MonoBehaviour
 
     private void Update()
     {
-        
-        EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
+        if (isJoseActive && isSantiActive) 
+        {
+            EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
 
-        closerPlayer = GetCloserPlayer(); //relevant player
-        blinkingSanti = blinkRefSanti.IsBlinking;
-        blinkingJose = blinkRefSanti.IsBlinking;
+            closerPlayer = GetCloserPlayer(); //relevant player
+            blinkingSanti = blinkRefSanti.IsBlinking;
+            blinkingJose = blinkRefJose.IsBlinking;
 
 
-        if (isSeen && (!blinkingSanti || !blinkingJose)) //&& seenCooldownTimer >= 0) // if Pascualita is seen stop (recibe valor de PlayerScript)
-        {
-            //Debug.Log("Pascualita is being seen");
-            Seen();
+            if (isSeen && (!blinkingSanti || !blinkingJose)) //&& seenCooldownTimer >= 0) // if Pascualita is seen stop (recibe valor de PlayerScript)
+            {
+                //Debug.Log("Pascualita is being seen");
+                Seen();
+            }
+            else if (isChasing && !isPlayerCaught)
+            {
+                aiAnimation.ResetTrigger("walk");
+                aiAnimation.ResetTrigger("idle");
+                aiAnimation.SetTrigger("sprint");
+                Chasing();
+            }
+            else if (isPatrol && !isPlayerCaught)
+            {
+                aiAnimation.ResetTrigger("sprint");
+                aiAnimation.ResetTrigger("idle");
+                aiAnimation.SetTrigger("walk");
+                Patroling();
+            }
+            else if (isPlayerCaught)
+            {
+                Debug.Log("Attacking");
+                Attacking();
+            }
         }
-        else if (isChasing && !isPlayerCaught)
-        {
-            aiAnimation.ResetTrigger("walk");
-            aiAnimation.ResetTrigger("idle");
-            aiAnimation.SetTrigger("sprint");
-            Chasing();
-        }
-        else if(isPatrol && !isPlayerCaught)
-        {
-            aiAnimation.ResetTrigger("sprint");
-            aiAnimation.ResetTrigger("idle");
-            aiAnimation.SetTrigger("walk");
-            Patroling();
-        }
-        else if (isPlayerCaught)
-        {
-            Debug.Log("Attacking");
-            Attacking();
-        }
-        
     }
 
     private void Chasing()
@@ -167,6 +171,19 @@ public class AIControl : MonoBehaviour
                 CaughtPlayer();
             }
         }
+    }
+    public void santiActivation()
+    {
+        players[0] = GameObject.FindGameObjectWithTag("PlayerSanti");
+        blinkRefSanti = players[0].GetComponentInChildren<Blink>();
+        isSantiActive = true;
+    }
+
+    public void joseActivation()
+    {
+        players[1] = GameObject.FindGameObjectWithTag("PlayerJose");
+        blinkRefJose = players[1].GetComponentInChildren<Blink>();
+        isJoseActive = true;
     }
 
     private void Patroling()
