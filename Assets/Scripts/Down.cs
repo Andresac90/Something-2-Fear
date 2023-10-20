@@ -16,18 +16,13 @@ public class Down : MonoBehaviourPun
     [SerializeField]
     private float deadTime = 10f;
 
-    public bool isPlayerDowned = false;
+    public bool isPlayerDowned;
 
     public void Start()
     {
         playerCam = this.transform.GetChild(0).gameObject;
         camera = playerCam.GetComponent<Camera>();
         CharController = GetComponent<CharacterController>();
-    }
-
-    public void Update()
-    {
-        Downed();
     }
     [PunRPC]
     void updateDowned(bool status)
@@ -39,8 +34,10 @@ public class Down : MonoBehaviourPun
         photonView.RPC("updateDowned", RpcTarget.All, true);
     }
 
-    private void Downed()
+    public void Downed(bool isPlayerCaught)
     {
+        isPlayerDowned = isPlayerCaught;
+        ChangeDowned();
         if(isPlayerDowned && wasntDowned)
         {
             this.GetComponent<SantiController>().enabled = false;
