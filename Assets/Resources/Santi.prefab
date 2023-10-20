@@ -134,6 +134,9 @@ GameObject:
   - component: {fileID: 2490933095253580234}
   - component: {fileID: 5894979599201347971}
   - component: {fileID: 5061532409630288172}
+  - component: {fileID: 1810210482103456310}
+  - component: {fileID: 6149727713103006601}
+  - component: {fileID: 6690261429472512605}
   m_Layer: 7
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -168,7 +171,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -229,10 +232,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea00958796f53da42a02f50ba5ba69d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SensitivityX: 80
-  SensitivityY: 80
+  SensitivityX: 30
+  SensitivityY: 30
   InvertCamera: 0
   PV: {fileID: 4948735220528498441}
+--- !u!114 &1810210482103456310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476826899415972688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1a4c69f7a9d3ea43907b5765229dc85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _TextureWarpingFactor: 1
+  _TextureWarpingMode: 0
+  _VertexGridResolution: 50
+  _VertexWobbleMode: 1
+  _UseRetroVertexLighting: 1
+  _RetroLightingNormalFactor: 0.5
+  _RetroLightFalloffStart: 0.75
+  _FlatShadingMode: 0
+  _TriangleSortMode: 3
+  _DepthDebugView: 0
+--- !u!114 &6149727713103006601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476826899415972688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 433faa8b758afed4f9295b193c697276, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _PixelationFactor: 0.2
+  _ColorEmulationMode: 2
+  _FullscreenColorDepth: {x: 256, y: 256, z: 256}
+  _FullscreenDitherDepth: {x: 32, y: 32, z: 32}
+  _DitheringMatrixSize: 2
+  _DitheringScale: 0.2
+  _InterlacingSize: 1
+  _PostProcessShader: {fileID: 4800000, guid: 56d52fd5b7c6911468179e5a7359ce0e, type: 3}
+  _PostProcessShaderAccurate: {fileID: 4800000, guid: 2ebed186567d3c244a87538744a62920, type: 3}
+  _PixelationShader: {fileID: 4800000, guid: f2da0e2a14a532548b5db043244b3df1, type: 3}
+  _InterlacingShader: {fileID: 4800000, guid: 03ebd34214b41ef459d7ee6753b062be, type: 3}
+--- !u!114 &6690261429472512605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476826899415972688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faf4171cb4dee5249b6795e3b9f35ff4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0.5
 --- !u!1 &2043920906562670192
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,8 +881,7 @@ GameObject:
   - component: {fileID: 7758464723538168035}
   - component: {fileID: 4948735220528498441}
   - component: {fileID: -7280666114099604731}
-  - component: {fileID: 4606215190708997962}
-  - component: {fileID: -321635984439366391}
+  - component: {fileID: 1182960674549572770}
   m_Layer: 7
   m_Name: Santi
   m_TagString: PlayerSanti
@@ -975,35 +1035,14 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
---- !u!114 &4606215190708997962
-MonoBehaviour:
+--- !u!81 &1182960674549572770
+AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8017623072165681613}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07cb808c5118baf4db010082fe1639af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deadTime: 10
-  isPlayerDowned: 0
---- !u!114 &-321635984439366391
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8017623072165681613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7137e3d2c581d9544b31dc2cf00203c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectTime: 5
-  rayLine: 4
-  player: {fileID: 3676275686622208031, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
 --- !u!1 &8985306185378550655
 GameObject:
   m_ObjectHideFlags: 0
