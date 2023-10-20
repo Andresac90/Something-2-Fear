@@ -551,9 +551,11 @@ MonoBehaviour:
   ObjectRightCamera: {fileID: 4770480782155888035}
   ObjectLeftCamera: {fileID: 3228622001852438667}
   PlayerCamera: {fileID: 7266502030151178295}
-  rayline: 0
+  rayline: 3
   ThrowForce: 500
   Player: {fileID: 3676275686622208031}
+  ObjectLeftUI: {fileID: 5372583996868480398}
+  ObjectRightUI: {fileID: 2471746697219547144}
 --- !u!114 &-1153828020552127956
 MonoBehaviour:
   m_ObjectHideFlags: 0

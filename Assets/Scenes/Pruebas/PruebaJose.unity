@@ -2300,7 +2300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3010966585971695501, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000023841858
+      value: 1.291
       objectReference: {fileID: 0}
     - target: {fileID: 3010966585971695501, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2337,10 +2337,6 @@ PrefabInstance:
     - target: {fileID: 3676275686622208031, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
       propertyPath: m_Name
       value: Jose
-      objectReference: {fileID: 0}
-    - target: {fileID: 8188187505780959538, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

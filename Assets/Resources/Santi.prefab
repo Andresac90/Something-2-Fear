@@ -1445,6 +1445,7 @@ MonoBehaviour:
   objectLeftHand: {fileID: 7932041050098583834}
   rayLine: 3
   throwForce: 10
+  ObjectRightUI: {fileID: 5450255875206467538}
   puzzleCreated: 0
   puzzleActive: 0
   noteCreated: 0
