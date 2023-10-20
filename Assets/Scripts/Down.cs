@@ -13,6 +13,8 @@ public class Down : MonoBehaviourPun
     private bool wasDowned = false;
     private bool wasntDowned = true;
     private float currentTime = 0f;
+    private float santiDown = false;
+    private float joseDown = false;
     
     [SerializeField]
     private float deadTime = 10f;
@@ -56,6 +58,7 @@ public class Down : MonoBehaviourPun
                 this.GetComponentInChildren<PlayerLook>().enabled = false;
                 wasDowned = true;
                 wasntDowned = false;
+                santiDown = true
             }
             else if(!isPlayerDowned && wasDowned)
             {
@@ -91,6 +94,7 @@ public class Down : MonoBehaviourPun
                 this.GetComponentInChildren<PlayerLook>().enabled = false;
                 wasDowned = true;
                 wasntDowned = false;
+                joseDown = true;
             }
             else if(!isPlayerDowned && wasDowned)
             {
@@ -104,6 +108,7 @@ public class Down : MonoBehaviourPun
                 this.GetComponentInChildren<PlayerLook>().enabled = true;
                 wasDowned = false;
                 wasntDowned = true;
+                joseDown = false;
                 currentTime = 0f;
             }
             else if(!wasntDowned)

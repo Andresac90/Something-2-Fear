@@ -232,10 +232,17 @@ public class AIControl : MonoBehaviourPun
         //aiAnimation.SetTrigger("jumpscare");
         //StartCoroutine(deathRoutine());
         Debug.Log("Attack");
+        if(closerPlayer == player[0])
+        {
+            isPlayerCaught = false;
+            SantiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+        }
+        else if(closerPlayer == player[1])
+        {
+            isPlayerCaught = false;
+            JosePV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+        }
 
-        isPlayerCaught = false;
-        SantiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
-        JosePV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
         isPatrol = false;
 
         Move(walkSpeed);
@@ -327,8 +334,17 @@ public class AIControl : MonoBehaviourPun
     void CaughtPlayer()
     {
         isPlayerCaught = true;
-        SantiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
-        JosePV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+        if(closerPlayer == player[0])
+        {
+            SantiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+            isPlayerCaught = false;
+            
+        }
+        else if(closerPlayer == player[1])
+        {
+            JosePV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+            isPlayerCaught = false;
+        }
     }
 
     void LookingPlayer(Vector3 player)
