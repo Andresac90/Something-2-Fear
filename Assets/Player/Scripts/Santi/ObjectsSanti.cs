@@ -5,6 +5,8 @@ using UnityEngine;
 using Unity.VisualScripting;
 using System.Runtime.CompilerServices;
 using UnityEditor;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class ObjectsSanti : MonoBehaviour
 {

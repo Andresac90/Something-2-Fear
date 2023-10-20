@@ -2,6 +2,8 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class AIControl : MonoBehaviour
 {
@@ -102,9 +104,10 @@ public class AIControl : MonoBehaviour
         if (isJoseActive && isSantiActive) 
         {
             EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
-
             closerPlayer = GetCloserPlayer(); //relevant player
+            Debug.Log(blinkRefSanti.IsBlinking);
             blinkingSanti = blinkRefSanti.IsBlinking;
+            Debug.Log(blinkingSanti);
             blinkingJose = blinkRefJose.IsBlinking;
 
 

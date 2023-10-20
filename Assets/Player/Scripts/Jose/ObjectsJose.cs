@@ -6,6 +6,8 @@ using Unity.VisualScripting;
 using System.Runtime.CompilerServices;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class ObjectsJose : MonoBehaviour
 {
