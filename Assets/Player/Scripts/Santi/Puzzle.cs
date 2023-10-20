@@ -5,6 +5,7 @@ using UnityEngine;
 public class Puzzle : MonoBehaviour
 {
     private GameObject puzzleCopy;
+    [SerializeField]
     private GameObject playerMove;
     private ObjectsSanti objectsSanti;
 
@@ -18,16 +19,10 @@ public class Puzzle : MonoBehaviour
     public int comprobations;
     public string PasswordRef;
 
-    void Start()
-    {
-        
-    }
-
     public void OpenPuzzle(bool puzzleCreated, bool puzzleActive, string objectName)
     {
         
         GameManager.Instance.puzzle = true;
-        playerMove = GameObject.Find("Santi(Clone)");
         objectsSanti = playerMove.GetComponent<ObjectsSanti>();
         
         if(!puzzleActive && objectName == this.name && !puzzleCreated)

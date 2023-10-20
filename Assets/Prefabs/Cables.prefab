@@ -118,8 +118,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc3d715c8e78c7a4782b72bab82215d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMove: {fileID: 8017623072165681613, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
   puzzle: {fileID: 9188078891259749410, guid: dfe29192cbcb50042b0574bfb4f02a97, type: 3}
   door: {fileID: 0}
   comprobationsNeeded: 4
   comprobations: 0
-  password: 
+  PasswordRef: 
