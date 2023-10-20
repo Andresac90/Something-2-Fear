@@ -41,20 +41,6 @@ public class Down : MonoBehaviourPun
     public void Downed(bool isPlayerCaught)
     {
         isPlayerDowned = isPlayerCaught;
-<<<<<<< Updated upstream
-        if(isPlayerDowned && wasntDowned)
-        {
-            this.GetComponent<SantiController>().enabled = false;
-            this.GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y - 0.879f, transform.position.z);
-            this.GetComponent<Transform>().rotation = Quaternion.Euler(Quaternion.identity.x - 90f, Quaternion.identity.y, Quaternion.identity.z);
-            CharController.stepOffset = 0;
-            CharController.height = 0.1f;
-            CharController.center = new Vector3(0, 0, 0);
-            camera.transform.rotation = Quaternion.Euler(Quaternion.identity.x + 70f, Quaternion.identity.y, Quaternion.identity.z);
-            this.GetComponentInChildren<PlayerLook>().enabled = false;
-            wasDowned = true;
-            wasntDowned = false;
-=======
         if(this.name == "Santi(Clone)")
         {    
             if(isPlayerDowned && wasntDowned)
@@ -89,7 +75,6 @@ public class Down : MonoBehaviourPun
                 currentTime += Time.deltaTime;
                 Die();
             }
->>>>>>> Stashed changes
         }
         else if(this.name == "Jose(Clone)")
         {
