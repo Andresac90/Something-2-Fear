@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EventManager : MonoBehaviour
 {
@@ -9,9 +10,9 @@ public class EventManager : MonoBehaviour
     private bool TwoPlayers = true;
 
     [SerializeField]
-    private bool Event0 = false;
+    private bool Event = false;
     [SerializeField]
-    private bool Event1 = false;
+    private bool WinScreen = false;
     [SerializeField]
     private GameObject[] Objects;
     private bool RunOnce = false;
@@ -84,7 +85,7 @@ public class EventManager : MonoBehaviour
 
     void InteractPlayers()
     {
-        if (ArePlayersOnTrigger() && TwoPlayers && !RunOnce)
+        if (ArePlayersOnTrigger() && TwoPlayers && !RunOnce && Event)
         {
             for (int i = 0; i < Objects.Length; i++)
             {
@@ -93,12 +94,17 @@ public class EventManager : MonoBehaviour
                 Objects[i].SetActive(!Value);
                 RunOnce = true;
             }
+            Destroy(this);
+        }
+        else if (ArePlayersOnTrigger() && TwoPlayers && !RunOnce && WinScreen)
+        {
+            SceneManager.LoadScene("WinScreen");
         }
     }
 
     void InteractPlayer()
     {
-        if (IsPlayerOnTrigger() && !TwoPlayers && !RunOnce)
+        if (IsPlayerOnTrigger() && !TwoPlayers && !RunOnce && Event)
         {
             for (int i = 0; i < Objects.Length; i++)
             {
@@ -107,6 +113,8 @@ public class EventManager : MonoBehaviour
                 Objects[i].SetActive(!Value);
                 RunOnce = true;
             }
+            Destroy(this);
         }
+        
     }
 }
