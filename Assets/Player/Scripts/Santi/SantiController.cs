@@ -52,6 +52,7 @@ public class SantiController : MonoBehaviour
 
         CharController = GetComponent<CharacterController>();
         OriginalSpeed = Speed;
+        GameObject.Find("Hiding System").GetComponent<HidingSystem>().ActivateSanti();
     }
     // Update is called once per frame
     void Update()

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,10 +29,9 @@ public class HidingSystem : MonoBehaviour
     }
     void Start()
     {
-        //enemy = GameObject.Find("Pascualita");
-        //enemyAI = enemy.GetComponent<AIControl>();
-        player = GameObject.Find("Santi(Clone)");
-        santicamera =  player.transform.GetChild(0).gameObject;
+        enemy = GameObject.Find("Pascualita");
+        enemyAI = enemy.GetComponent<AIControl>();
+        
         hiding = false;
     }
 
@@ -60,15 +60,15 @@ public class HidingSystem : MonoBehaviour
             hideText.SetActive(false);
             stopHideText.SetActive(true);
             player.transform.localPosition = new Vector3(HidePosition.position.x, HidePosition.position.y, HidePosition.position.z);
-            //Debug.Log("hide");
-            //float distance = Vector3.Distance(enemy.transform.position, player.transform.position);
-            //if (distance > loseDistance)
-            //{
-            //    if (enemyAI.playerInRange)
-            //    {
-            //        enemyAI.playerInRange = false;
-            //    }
-            //}
+            Debug.Log("hide");
+            float distance = Vector3.Distance(enemy.transform.position, player.transform.position);
+            if (distance > loseDistance)
+            {
+                if (enemyAI.playerInRange)
+                {
+                    InRange(false);
+                }
+            }
             yield return new WaitForSeconds(1.5f);
             hiding = true;
         }
@@ -86,6 +86,19 @@ public class HidingSystem : MonoBehaviour
             }
         }   
     }
+
+    public void ActivateSanti()
+    {
+        player = GameObject.Find("Santi(Clone)");
+        santicamera = player.transform.GetChild(0).gameObject;
+        hideText = player.transform.GetChild(3).GetChild(3).gameObject;
+        stopHideText = player.transform.GetChild(3).GetChild(8).gameObject;
+    }
+
+    public void InRange(bool inRange)
+    {
+        enemy.GetComponent<PhotonView>().RPC("SyncInRange", RpcTarget.All, inRange);
+    }    
 
     private void OnEnable()
     {
