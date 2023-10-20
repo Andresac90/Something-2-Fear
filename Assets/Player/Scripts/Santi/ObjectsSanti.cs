@@ -72,9 +72,9 @@ public class ObjectsSanti : MonoBehaviour
 
     public void Start()
     {
-        // pascualita = GameObject.Find("Pascualita");
-        // AIControl aicontrol = pascualita.GetComponent<AIControl>();
-        // aicontrol.santiActivation();
+        pascualita = GameObject.Find("Pascualita");
+        AIControl aicontrol = pascualita.GetComponent<AIControl>();
+        aicontrol.santiActivation();
     }
 
     public void Update()

@@ -184,7 +184,6 @@ public class AIControl : MonoBehaviourPun
     public void santiActivation()
     {
         players[0] = GameObject.FindGameObjectWithTag("PlayerSanti");
-        Debug.Log(players[0].GetComponentInChildren<Blink>());
         isSantiActive = true;
     }
 
