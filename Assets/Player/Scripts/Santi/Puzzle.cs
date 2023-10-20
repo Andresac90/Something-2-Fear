@@ -21,7 +21,7 @@ public class Puzzle : MonoBehaviour
 
     public void OpenPuzzle(bool puzzleCreated, bool puzzleActive, string objectName)
     {
-        
+        Debug.Log(playerMove);
         GameManager.Instance.puzzle = true;
         objectsSanti = playerMove.GetComponent<ObjectsSanti>();
         
