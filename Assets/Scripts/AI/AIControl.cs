@@ -222,10 +222,10 @@ public class AIControl : MonoBehaviourPun
     private void Attacking()
     {
         //llamar funcion de downeado de Jose/Santi y jumpscare
-        aiAnimation.ResetTrigger("walk");
-        aiAnimation.ResetTrigger("idle");
-        aiAnimation.ResetTrigger("sprint");
-        aiAnimation.SetTrigger("jumpscare");
+        //aiAnimation.ResetTrigger("walk");
+        //aiAnimation.ResetTrigger("idle");
+        //aiAnimation.ResetTrigger("sprint");
+        //aiAnimation.SetTrigger("jumpscare");
         //StartCoroutine(deathRoutine());
         Debug.Log("Attack");
 
@@ -233,10 +233,8 @@ public class AIControl : MonoBehaviourPun
         photonView.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
         isPatrol = false;
 
-        Stop();
-        WaitTime -= Time.deltaTime;
         Move(walkSpeed);
-        TimeToRotate = timeToRotate;
+        //TimeToRotate = timeToRotate;
         WaitTime = startWaitTime;
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position); //return to patrol
 
