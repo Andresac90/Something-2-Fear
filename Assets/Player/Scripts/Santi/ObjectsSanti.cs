@@ -14,6 +14,7 @@ public class ObjectsSanti : MonoBehaviour
     private GameObject cloneL;
     private GameObject cloneR;
     private GameObject player;
+    private GameObject pascualita;
     private RaycastHit hit;
     private Rigidbody objectRightRb;
     private Rigidbody objectLeftRb;
@@ -59,7 +60,15 @@ public class ObjectsSanti : MonoBehaviour
         playerL = GameObject.Find("LeftObject");
         playerR = GameObject.Find("RightObject");
         player = GameObject.Find("Santi");
+        
         // playerCamera = player.transform.GetChild(0).GetComponent<Transform>();
+    }
+
+    public void Start()
+    {
+        pascualita = GameObject.Find("Pascualita");
+        AIControl aicontrol = pascualita.GetComponent<AIControl>();
+        aicontrol.santiActivation();
     }
 
     public void Update()

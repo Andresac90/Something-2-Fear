@@ -34,6 +34,7 @@ public class ObjectsJose : MonoBehaviour
     private float ObjectLScaleData;
     private float ObjectLOriginalScale;
     private Rigidbody ObjectRightRb;
+    private GameObject pascualita;
     private Rigidbody ObjectLeftRb;
     private Transform ObjectRightT;
     private Transform ObjectLeftT;
@@ -47,9 +48,11 @@ public class ObjectsJose : MonoBehaviour
     {
         Controls = new InputMaster();
     }
-    void Start()
+    public void Start()
     {
-
+        pascualita = GameObject.Find("Pascualita");
+        AIControl aicontrol = pascualita.GetComponent<AIControl>();
+        aicontrol.joseActivation();
     }
 
     // Update is called once per frame
