@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
+using Photon.Realtime;
 
-public class Down : MonoBehaviour
+public class Down : MonoBehaviourPun
 {
     private Camera camera;
     private CharacterController CharController;
     private GameObject playerCam;
-    private GameObject pascualita;
-    private AIControl pascualitaScript;
     private bool wasDowned = false;
     private bool wasntDowned = true;
     private float currentTime = 0f;
@@ -25,9 +25,22 @@ public class Down : MonoBehaviour
         CharController = GetComponent<CharacterController>();
     }
 
-    public void Downed(bool isPlayerCaught)
+    public void Update()
     {
-        isPlayerDowned = isPlayerCaught;
+        Downed();
+    }
+    [PunRPC]
+    void updateDowned(bool status)
+    {
+        isPlayerDowned = status;
+    }
+    public void ChangeDowned()
+    {
+        photonView.RPC("updateDowned", RpcTarget.All, true);
+    }
+
+    private void Downed()
+    {
         if(isPlayerDowned && wasntDowned)
         {
             this.GetComponent<SantiController>().enabled = false;
@@ -40,6 +53,7 @@ public class Down : MonoBehaviour
             this.GetComponentInChildren<PlayerLook>().enabled = false;
             wasDowned = true;
             wasntDowned = false;
+            ChangeDowned();
         }
         else if(!isPlayerDowned && wasDowned)
         {
