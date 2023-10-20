@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3859850115586518198}
   - component: {fileID: 4394037029898767507}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,9 +108,9 @@ GameObject:
   - component: {fileID: 3770454729637743104}
   - component: {fileID: 1800526804373852870}
   - component: {fileID: 7637204637757273554}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bengala
-  m_TagString: Bengal
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

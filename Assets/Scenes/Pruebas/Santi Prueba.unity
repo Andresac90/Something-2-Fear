@@ -12253,7 +12253,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8017623072165681613, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
       propertyPath: m_Name
-      value: Santi
+      value: Santi(Clone)
       objectReference: {fileID: 0}
     - target: {fileID: 8985306185378550655, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
       propertyPath: m_IsActive
@@ -27383,6 +27383,10 @@ PrefabInstance:
       propertyPath: door
       value: 
       objectReference: {fileID: 1920762649}
+    - target: {fileID: 3115608032622709452, guid: 2a8eba54a474be54284d54c596f3df81, type: 3}
+      propertyPath: playerMove
+      value: 
+      objectReference: {fileID: 8017623072165681613, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
     - target: {fileID: 5856627949181188845, guid: 2a8eba54a474be54284d54c596f3df81, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.94

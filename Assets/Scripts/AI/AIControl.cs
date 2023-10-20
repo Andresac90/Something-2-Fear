@@ -1,16 +1,21 @@
 using System.Collections;
 using Unity.VisualScripting;
+using Photon.Pun;
 using UnityEngine;
+using Photon.Realtime;
 using UnityEngine.AI;
 
-public class AIControl : MonoBehaviour
+public class AIControl : MonoBehaviourPun
 {
-    private Blink blinkRefSanti;
-    private Blink blinkRefJose;
+    // public Blink blinkRefSanti;
+    // public Blink blinkRefJose;
 
     private GameObject player;
-    private GameObject[] players;
+    public GameObject[] players;
     private GameObject closerPlayer;
+
+    private bool isSantiActive = false;
+    private bool isJoseActive = false;
 
     public NavMeshAgent aiAgent;               //  Nav mesh agent component
     static float startWaitTime = 4;                 //  Wait time of every action
@@ -42,7 +47,10 @@ public class AIControl : MonoBehaviour
     public bool isPatrol;                                //  If the enemy is patrol, state of patroling
     public bool isPlayerCaught;                            //  if the enemy has caught the player
     public bool isChasing;
+
+    [SerializeField]
     private bool blinkingSanti;
+    [SerializeField]
     private bool blinkingJose;
 
     //Testing variables
@@ -57,14 +65,7 @@ public class AIControl : MonoBehaviour
 
     void Start()
     {
-        players = new GameObject[2];
-        /*players[0] = GameObject.FindGameObjectWithTag("PlayerSanti");
-        players[1] = GameObject.FindGameObjectWithTag("PlayerJose");*/
-        players[0] = GameObject.Find("Santi(Clone)");
-        players[1] = GameObject.Find("Jose(Clone)");
-        //player = GameObject.Find("Jose");
-        blinkRefSanti = players[0].GetComponentInChildren<Blink>();
-        blinkRefJose = players[1].GetComponentInChildren<Blink>();
+        players = new GameObject[2];   
 
         PlayerPosition = Vector3.zero;
         isPatrol = true;
@@ -96,41 +97,51 @@ public class AIControl : MonoBehaviour
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);    //  Set the destination to the first waypoint
     }
 
+    [PunRPC]
+    public void BlinkRPC(string name){
+        if (name == "Jose(Clone)")
+        {
+            blinkingJose = !blinkingJose;
+        }
+        else
+        {
+            blinkingSanti = !blinkingSanti;
+        }
+    }
+
     private void Update()
     {
-        
-        EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
+        if (isJoseActive && isSantiActive) 
+        {
+            EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
 
-        closerPlayer = GetCloserPlayer(); //relevant player
-        blinkingSanti = blinkRefSanti.IsBlinking;
-        blinkingJose = blinkRefSanti.IsBlinking;
+            closerPlayer = GetCloserPlayer(); //relevant player
 
-
-        if (isSeen && (!blinkingSanti || !blinkingJose)) //&& seenCooldownTimer >= 0) // if Pascualita is seen stop (recibe valor de PlayerScript)
-        {
-            //Debug.Log("Pascualita is being seen");
-            Seen();
+            if (isSeen && (!blinkingSanti || !blinkingJose)) //&& seenCooldownTimer >= 0) // if Pascualita is seen stop (recibe valor de PlayerScript)
+            {
+                //Debug.Log("Pascualita is being seen");
+                Seen();
+            }
+            else if (isChasing && !isPlayerCaught)
+            {
+                aiAnimation.ResetTrigger("walk");
+                aiAnimation.ResetTrigger("idle");
+                aiAnimation.SetTrigger("sprint");
+                Chasing();
+            }
+            else if (isPatrol && !isPlayerCaught)
+            {
+                aiAnimation.ResetTrigger("sprint");
+                aiAnimation.ResetTrigger("idle");
+                aiAnimation.SetTrigger("walk");
+                Patroling();
+            }
+            else if (isPlayerCaught)
+            {
+                Debug.Log("Attacking");
+                Attacking();
+            }
         }
-        else if (isChasing && !isPlayerCaught)
-        {
-            aiAnimation.ResetTrigger("walk");
-            aiAnimation.ResetTrigger("idle");
-            aiAnimation.SetTrigger("sprint");
-            Chasing();
-        }
-        else if(isPatrol && !isPlayerCaught)
-        {
-            aiAnimation.ResetTrigger("sprint");
-            aiAnimation.ResetTrigger("idle");
-            aiAnimation.SetTrigger("walk");
-            Patroling();
-        }
-        else if (isPlayerCaught)
-        {
-            Debug.Log("Attacking");
-            Attacking();
-        }
-        
     }
 
     private void Chasing()
@@ -169,6 +180,18 @@ public class AIControl : MonoBehaviour
                 CaughtPlayer();
             }
         }
+    }
+    public void santiActivation()
+    {
+        players[0] = GameObject.FindGameObjectWithTag("PlayerSanti");
+        Debug.Log(players[0].GetComponentInChildren<Blink>());
+        isSantiActive = true;
+    }
+
+    public void joseActivation()
+    {
+        players[1] = GameObject.FindGameObjectWithTag("PlayerJose");
+        isJoseActive = true;
     }
 
     private void Patroling()

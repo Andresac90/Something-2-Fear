@@ -4,6 +4,10 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 using Unity.VisualScripting;
 using System.Runtime.CompilerServices;
+using UnityEngine.UI;
+using TMPro;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class ObjectsJose : MonoBehaviour
 {
@@ -21,6 +25,14 @@ public class ObjectsJose : MonoBehaviour
     private float ThrowForce;
     [SerializeField]
     private GameObject Player;
+    [SerializeField]
+    private GameObject ObjectLeftUI;
+    [SerializeField]
+    private GameObject ObjectRightUI;
+    [SerializeField]
+    private GameObject ThrowLeftUI;
+    [SerializeField]
+    private GameObject ThrowRightUI;
 
     private RaycastHit hit;
     private float ObjectRScaleData;
@@ -28,6 +40,7 @@ public class ObjectsJose : MonoBehaviour
     private float ObjectLScaleData;
     private float ObjectLOriginalScale;
     private Rigidbody ObjectRightRb;
+    private GameObject pascualita;
     private Rigidbody ObjectLeftRb;
     private Transform ObjectRightT;
     private Transform ObjectLeftT;
@@ -41,9 +54,11 @@ public class ObjectsJose : MonoBehaviour
     {
         Controls = new InputMaster();
     }
-    void Start()
+    public void Start()
     {
-
+        // pascualita = GameObject.Find("Pascualita");
+        // AIControl aicontrol = pascualita.GetComponent<AIControl>();
+        // aicontrol.joseActivation();
     }
 
     // Update is called once per frame
@@ -53,6 +68,44 @@ public class ObjectsJose : MonoBehaviour
         if (hit.transform != null)
         {
             StartCoroutine(Grab());
+            
+        }
+
+        //UI Grab
+        if (hit.transform != null && hit.transform.tag == "Object" && !HasObjectRight)
+        {
+            ObjectRightUI.SetActive(true);
+
+        }
+        else
+        {
+            ObjectRightUI.SetActive(false);
+        }
+        if (hit.transform != null && hit.transform.tag == "Object" && !HasObjectLeft)
+        {
+            ObjectLeftUI.SetActive(true);
+        }
+        else
+        {
+            ObjectLeftUI.SetActive(false);
+        }
+
+        //UI Throw
+        if (HasObjectRight == true && ThrowCheckR)
+        {
+            ThrowRightUI.SetActive(true);
+        }
+        else
+        {
+            ThrowRightUI.SetActive(false);
+        }
+        if (HasObjectLeft == true && ThrowCheckL)
+        {
+            ThrowLeftUI.SetActive(true);
+        }
+        else
+        {
+            ThrowLeftUI.SetActive(false);
         }
         StartCoroutine(Throw());
         ThrowGrounded();
@@ -64,6 +117,7 @@ public class ObjectsJose : MonoBehaviour
         
         if(hit.transform.tag == "Object")
         {
+            
             bool IsRightPressed = Controls.Player.RightItem.ReadValue<float>() > 0.1f;
             if(IsRightPressed && HasObjectRight == false)
             {
@@ -80,6 +134,7 @@ public class ObjectsJose : MonoBehaviour
                 yield return new WaitForSeconds(0.5f);
                 HasObjectRight = true;
                 ThrowCheckR = true;
+                
             }
 
             bool IsLeftPressed = Controls.Player.LeftItem.ReadValue<float>() > 0.1f;
@@ -101,6 +156,7 @@ public class ObjectsJose : MonoBehaviour
             }
 
         }
+        
     }
 
     IEnumerator Throw()
