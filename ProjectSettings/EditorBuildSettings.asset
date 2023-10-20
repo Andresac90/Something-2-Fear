@@ -29,4 +29,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LockPick.unity
     guid: 095c5e6687d74f54e9137074153213ec
+  - enabled: 1
+    path: Assets/Scenes/MainGame/WinScreen.unity
+    guid: a60838ccfedce6445bb986c7fe43db7d
+  - enabled: 1
+    path: Assets/Scenes/MainGame/LoseScreen.unity
+    guid: d65d420d4cf9045489ad4dfda25a78db
   m_configObjects: {}
