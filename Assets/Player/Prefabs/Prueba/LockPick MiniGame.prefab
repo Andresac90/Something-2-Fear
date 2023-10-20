@@ -120,9 +120,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc3d715c8e78c7a4782b72bab82215d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMove: {fileID: 8017623072165681613, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
   puzzle: {fileID: 8072690544384710771, guid: 68e35d9642e685b41a348a8a02dc78b0, type: 3}
-  rayLine: 2
   door: {fileID: 0}
   comprobationsNeeded: 1
   comprobations: 0
-  password: 
+  PasswordRef: 

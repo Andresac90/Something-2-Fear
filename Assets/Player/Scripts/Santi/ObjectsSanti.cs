@@ -5,6 +5,8 @@ using UnityEngine;
 using Unity.VisualScripting;
 using System.Runtime.CompilerServices;
 using UnityEditor;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class ObjectsSanti : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class ObjectsSanti : MonoBehaviour
     private GameObject cloneL;
     private GameObject cloneR;
     private GameObject player;
+    private GameObject pascualita;
     private RaycastHit hit;
     private Rigidbody objectRightRb;
     private Rigidbody objectLeftRb;
@@ -46,6 +49,8 @@ public class ObjectsSanti : MonoBehaviour
     private float rayLine;
     [SerializeField]
     private float throwForce;
+    [SerializeField]
+    private GameObject ObjectRightUI;
 
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
@@ -57,7 +62,15 @@ public class ObjectsSanti : MonoBehaviour
         playerL = GameObject.Find("LeftObject");
         playerR = GameObject.Find("RightObject");
         player = GameObject.Find("Santi");
+        
         // playerCamera = player.transform.GetChild(0).GetComponent<Transform>();
+    }
+
+    public void Start()
+    {
+        pascualita = GameObject.Find("Pascualita");
+        AIControl aicontrol = pascualita.GetComponent<AIControl>();
+        aicontrol.santiActivation();
     }
 
     public void Update()
@@ -69,6 +82,14 @@ public class ObjectsSanti : MonoBehaviour
             PuzzleManager();
             NoteManager();
             Grab();
+        }
+        if (hit.transform != null && hit.transform.tag == "Object" && !grabObjR)
+        {
+            ObjectRightUI.SetActive(true);
+        }
+        else
+        {
+            ObjectRightUI.SetActive(false);
         }
         Drop();
     }
@@ -233,7 +254,7 @@ public class ObjectsSanti : MonoBehaviour
         objectOriginalScaleR = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
         objectRightRb = hit.rigidbody;
         objectRightT = hit.transform;
-
+        ObjectRightUI.SetActive(false);
         RightGrabTwo();
         yield return new WaitForSeconds(0.5f);
         grabObjR = true;

@@ -209,11 +209,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hideText: {fileID: 0}
   stopHideText: {fileID: 0}
-  rayLine: 1
+  rayLine: 2
   HidePosition: {fileID: 3668259438517986091}
   OutPosition: {fileID: 1180821363274889242}
   hiding: 0
-  hidinggg: 0
   loseDistance: 10
 --- !u!65 &6898838922693075815
 BoxCollider:

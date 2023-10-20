@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public bool win = false;
 
     public bool puzzle = false;
+    public bool blinkJose;
+    public bool blinkSanti;
 
     void Awake()
     {

@@ -58,7 +58,7 @@ public class SantiController : MonoBehaviour
     {
         if (!PV.IsMine) return;
         Movement();
-        
+        // Camera.transform.position = new Vector3(transform.position.x, Camera.transform.position.y, transform.position.z);
         // Interact();
     }
 

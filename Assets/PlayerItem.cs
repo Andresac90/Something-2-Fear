@@ -58,7 +58,6 @@ public class PlayerItem : MonoBehaviourPunCallbacks
     }
 
     void UpdatePlayerItem(Player player){
-        Debug.Log("UpdatePlayerItem");
         if (player.CustomProperties.ContainsKey("Player")){
             playerName = (string)player.CustomProperties["Player"];
             if (playerName == "Jose"){
