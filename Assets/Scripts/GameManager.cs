@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public int lockpickLevel = 1;
     public bool win = false;
 
+    public bool puzzle = false;
+
     void Awake()
     {
         MakeSingleton();   

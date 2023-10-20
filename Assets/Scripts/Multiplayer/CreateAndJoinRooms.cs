@@ -8,6 +8,7 @@ using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
 using Unity.VisualScripting;
+using JetBrains.Annotations;
 
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
@@ -28,11 +29,16 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public PlayerItem playerItemPrefab;
     public Transform playerItemParent;
 
+    public ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable();
+    
+    public GameObject playButton;
+
     public void CreateRoom()
     {
         if (createInput.text != ""){
             PhotonNetwork.CreateRoom(createInput.text, new RoomOptions(){
-                MaxPlayers = 2
+                MaxPlayers = 2,
+                BroadcastPropsChangeToAll = true,
             });
         }  
     }
@@ -85,19 +91,21 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         int i = 0;
         foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
         {
+            Vector3 pos = new Vector3(0, 0, 0);
             if (i == 0){
-                PlayerItem newPlayerItem = Instantiate(playerItemPrefab, playerItemParent);
-                newPlayerItem.transform.localPosition = player1pos;
-                items.Add(newPlayerItem);
+                pos = player1pos;
             }
             else{
-                PlayerItem newPlayerItem = Instantiate(playerItemPrefab, playerItemParent);
-                newPlayerItem.transform.localPosition = player2pos;
-                items.Add(newPlayerItem);
+                pos = player2pos;
             }
+            PlayerItem item = Instantiate(playerItemPrefab, playerItemParent);
+            item.transform.localPosition = pos;
+            item.SetPlayerInfo(player.Value);
+            items.Add(item);
+
             if (player.Value == PhotonNetwork.LocalPlayer)
             {
-                items[i].SetUp();
+                item.SetUp();
             }
 
             i++;
@@ -105,4 +113,41 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         }
     }
 
+    private void Update()
+    {
+        if (PhotonNetwork.InRoom == false) return;
+        PlayerItem[] playerItems = GameObject.FindObjectsOfType<PlayerItem>();
+
+        bool playerIsJose = false;
+        bool playerIsSanti = false;
+
+        foreach (PlayerItem item in playerItems)
+        {
+            if (item.playerName == "Jose")
+            {
+                playerIsJose = true;
+            }
+            if (item.playerName == "Santi")
+            {
+                playerIsSanti = true;
+            }
+        }
+
+        bool roomIsFull = PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers;
+        bool gameIsReady = playerIsJose && playerIsSanti && roomIsFull;
+
+        if (PhotonNetwork.IsMasterClient && gameIsReady)
+        {
+            playButton.SetActive(true);
+        }
+        else
+        {
+            playButton.SetActive(false);
+        }
+    }
+
+    public void Play()
+    {
+        PhotonNetwork.LoadLevel("Main");
+    }
 }

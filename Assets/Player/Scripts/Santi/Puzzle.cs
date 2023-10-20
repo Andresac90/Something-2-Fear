@@ -25,7 +25,8 @@ public class Puzzle : MonoBehaviour
 
     public void OpenPuzzle(bool puzzleCreated, bool puzzleActive, string objectName)
     {
-
+        
+        GameManager.Instance.puzzle = true;
         playerMove = GameObject.Find("Santi(Clone)");
         objectsSanti = playerMove.GetComponent<ObjectsSanti>();
         
@@ -43,6 +44,8 @@ public class Puzzle : MonoBehaviour
 
     public void ClosePuzzle(bool puzzleActive)
     {
+
+        GameManager.Instance.puzzle = false;
         if(puzzleCopy != null)
         {
             PlayerMovement(true);
