@@ -116,8 +116,13 @@ public class EventManager : MonoBehaviour
                 Objects[i].SetActive(!Value);
                 RunOnce = true;
             }
+            AI.SetActive(true);
             Destroy(this);
         }
-        
+        else if (ArePlayersOnTrigger() && TwoPlayers && !RunOnce && WinScreen)
+        {
+            SceneManager.LoadScene("WinScreen");
+        }
+
     }
 }
