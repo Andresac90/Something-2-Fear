@@ -37,6 +37,10 @@ MonoBehaviour:
   - ClickRpc
   - DestroyRpc
   - updateDowned
+  - updateBlinking
+  - updateBlinkingBoolJose
+  - updateBlinkingJose
+  - updateBlinkingSanti
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

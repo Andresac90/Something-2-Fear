@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AIControl : MonoBehaviour
+public class AIControl : MonoBehaviourPun
 {
     private Blink blinkRefSanti;
     private Blink blinkRefJose;
@@ -96,6 +96,36 @@ public class AIControl : MonoBehaviour
         aiAgent.speed = walkSpeed;             //  Set the navemesh speed with the normal speed of the enemy
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);    //  Set the destination to the first waypoint
     }
+    [PunRPC]
+    void updateBlinkingBoolJose(bool status)
+    {
+        blinkingJose = status;
+    }
+    [PunRPC]
+    void updateBlinkingJose(Blink status)
+    {
+        blinkRefJose = status;
+    }
+    void updateBlinkingBoolSanti(bool status)
+    {
+        blinkingSanti = status;
+    }
+    [PunRPC]
+    void updateBlinkingSanti(Blink status)
+    {
+        blinkRefSanti = status;
+    }
+    public void ChangeBlinkingJose()
+    {
+        photonView.RPC("updateBlinkingJose", RpcTarget.All, players[1].GetComponentInChildren<Blink>());
+        photonView.RPC("updateBlinkingBoolJose", RpcTarget.All, blinkRefJose.IsBlinking);
+    }
+
+    public void ChangeBlinkingSanti()
+    {
+        photonView.RPC("updateBlinkingSanti", RpcTarget.All, players[0].GetComponentInChildren<Blink>());
+        photonView.RPC("updateBlinkingBoolSanti", RpcTarget.All, blinkRefSanti.IsBlinking);
+    }
 
     private void Update()
     {
@@ -104,9 +134,14 @@ public class AIControl : MonoBehaviour
             EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
 
             closerPlayer = GetCloserPlayer(); //relevant player
+<<<<<<< Updated upstream
             blinkingSanti = blinkRefSanti.IsBlinking;
             blinkingJose = blinkRefJose.IsBlinking;
 
+=======
+            ChangeBlinkingSanti();
+            ChangeBlinkingJose();
+>>>>>>> Stashed changes
 
             if (isSeen && (!blinkingSanti || !blinkingJose)) //&& seenCooldownTimer >= 0) // if Pascualita is seen stop (recibe valor de PlayerScript)
             {
@@ -175,14 +210,14 @@ public class AIControl : MonoBehaviour
     public void santiActivation()
     {
         players[0] = GameObject.FindGameObjectWithTag("PlayerSanti");
-        blinkRefSanti = players[0].GetComponentInChildren<Blink>();
+        ChangeBlinkingSanti();
         isSantiActive = true;
     }
 
     public void joseActivation()
     {
         players[1] = GameObject.FindGameObjectWithTag("PlayerJose");
-        blinkRefJose = players[1].GetComponentInChildren<Blink>();
+        ChangeBlinkingJose();
         isJoseActive = true;
     }
 

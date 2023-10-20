@@ -1,7 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+<<<<<<< Updated upstream
 using UnityEngine;
+=======
+using Photon.Pun;
+using UnityEngine;
+using Photon.Realtime;
+>>>>>>> Stashed changes
 using UnityEngine.UI;
 
 public class Blink : MonoBehaviour
