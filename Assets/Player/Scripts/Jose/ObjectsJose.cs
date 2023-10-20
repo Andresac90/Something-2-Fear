@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 using Unity.VisualScripting;
 using System.Runtime.CompilerServices;
+using UnityEngine.UI;
+using TMPro;
 
 public class ObjectsJose : MonoBehaviour
 {
@@ -21,6 +23,10 @@ public class ObjectsJose : MonoBehaviour
     private float ThrowForce;
     [SerializeField]
     private GameObject Player;
+    [SerializeField]
+    private GameObject ObjectLeftUI;
+    [SerializeField]
+    private GameObject ObjectRightUI;
 
     private RaycastHit hit;
     private float ObjectRScaleData;
@@ -53,6 +59,21 @@ public class ObjectsJose : MonoBehaviour
         if (hit.transform != null)
         {
             StartCoroutine(Grab());
+            
+        }
+        if (hit.transform != null && hit.transform.tag == "Object" && !HasObjectRight)
+        {
+            ObjectRightUI.SetActive(true);
+
+        }
+        if (hit.transform != null && hit.transform.tag == "Object" && !HasObjectLeft)
+        {
+            ObjectLeftUI.SetActive(true);
+        }
+        else
+        {
+            ObjectRightUI.SetActive(false);
+            ObjectLeftUI.SetActive(false);
         }
         StartCoroutine(Throw());
         ThrowGrounded();
@@ -64,6 +85,7 @@ public class ObjectsJose : MonoBehaviour
         
         if(hit.transform.tag == "Object")
         {
+            
             bool IsRightPressed = Controls.Player.RightItem.ReadValue<float>() > 0.1f;
             if(IsRightPressed && HasObjectRight == false)
             {
@@ -77,9 +99,11 @@ public class ObjectsJose : MonoBehaviour
                 ObjectROriginalScale = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
                 ObjectRightRb = hit.rigidbody;
                 ObjectRightT = hit.transform;
+                ObjectRightUI.SetActive(false);
                 yield return new WaitForSeconds(0.5f);
                 HasObjectRight = true;
                 ThrowCheckR = true;
+                
             }
 
             bool IsLeftPressed = Controls.Player.LeftItem.ReadValue<float>() > 0.1f;
@@ -95,12 +119,14 @@ public class ObjectsJose : MonoBehaviour
                 ObjectLOriginalScale = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
                 ObjectLeftRb = hit.rigidbody;
                 ObjectLeftT = hit.transform;
+                ObjectLeftUI.SetActive(false);
                 yield return new WaitForSeconds(0.5f);
                 HasObjectLeft = true;
                 ThrowCheckL = true;
             }
 
         }
+        
     }
 
     IEnumerator Throw()

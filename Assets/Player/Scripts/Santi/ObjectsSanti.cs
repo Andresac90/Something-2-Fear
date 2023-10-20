@@ -46,6 +46,8 @@ public class ObjectsSanti : MonoBehaviour
     private float rayLine;
     [SerializeField]
     private float throwForce;
+    [SerializeField]
+    private GameObject ObjectRightUI;
 
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
@@ -69,6 +71,14 @@ public class ObjectsSanti : MonoBehaviour
             PuzzleManager();
             NoteManager();
             Grab();
+        }
+        if (hit.transform != null && hit.transform.tag == "Object" && !grabObjR)
+        {
+            ObjectRightUI.SetActive(true);
+        }
+        else
+        {
+            ObjectRightUI.SetActive(false);
         }
         Drop();
     }
@@ -233,7 +243,7 @@ public class ObjectsSanti : MonoBehaviour
         objectOriginalScaleR = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
         objectRightRb = hit.rigidbody;
         objectRightT = hit.transform;
-
+        ObjectRightUI.SetActive(false);
         RightGrabTwo();
         yield return new WaitForSeconds(0.5f);
         grabObjR = true;
