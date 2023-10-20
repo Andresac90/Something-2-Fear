@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Photon.Pun;
 using UnityEngine;
+using Photon.Realtime;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class Blink : MonoBehaviour
+public class Blink : MonoBehaviourPun
 {
     private float RandomNumber;
     [SerializeField]
