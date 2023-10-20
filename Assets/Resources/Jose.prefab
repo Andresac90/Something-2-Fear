@@ -316,6 +316,8 @@ GameObject:
   - component: {fileID: -1153828020552127956}
   - component: {fileID: 5414063578607251343}
   - component: {fileID: 3611455091854494185}
+  - component: {fileID: -4234860115109826470}
+  - component: {fileID: -5500400414091018079}
   m_Layer: 9
   m_Name: Jose
   m_TagString: PlayerJose
@@ -480,6 +482,35 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3676275686622208031}
   m_Enabled: 0
+--- !u!114 &-4234860115109826470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3676275686622208031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07cb808c5118baf4db010082fe1639af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deadTime: 10
+  isPlayerDowned: 0
+--- !u!114 &-5500400414091018079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3676275686622208031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7137e3d2c581d9544b31dc2cf00203c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectTime: 10
+  rayLine: 0
+  player: {fileID: 8017623072165681613, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
 --- !u!1 &5933293721237601498
 GameObject:
   m_ObjectHideFlags: 0
