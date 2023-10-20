@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class Down : MonoBehaviourPun
 {
@@ -117,7 +118,8 @@ public class Down : MonoBehaviourPun
     {
         if(currentTime >= deadTime)
         {
-            gameObject.SetActive(false);
+            SceneManager.LoadScene("LoseScreen");
+            // gameObject.SetActive(false);
         }
     }
 }
