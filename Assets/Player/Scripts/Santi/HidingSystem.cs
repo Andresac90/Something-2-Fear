@@ -40,20 +40,29 @@ public class HidingSystem : MonoBehaviour
         //Physics.Raycast(santicamera.GetComponent<Camera>().transform.position, santicamera.GetComponent<Camera>().transform.TransformDirection(Vector3.forward), out hit, rayLine);
         StartCoroutine(Hide());
         StartCoroutine(Raycast());
-        if (hit.transform != null && hit.transform.tag == ("Hide"))
-        {
-            hideText.SetActive(true);
+        //if (hit.transform != null && hit.transform.tag == ("Hide"))
+        //{
+        //    hideText.SetActive(true);
             
-        }
-        else
-        {
-            hideText.SetActive(false);
-        }
+        //}
+        //else
+        //{
+        //    hideText.SetActive(false);
+        //}
     }
     IEnumerator Raycast()
     {
         yield return new WaitForSeconds(3.0f);
         Physics.Raycast(santicamera.GetComponent<Camera>().transform.position, santicamera.GetComponent<Camera>().transform.TransformDirection(Vector3.forward), out hit, rayLine);
+        if (hit.transform != null && hit.transform.tag == ("Hide"))
+        {
+            hideText.SetActive(true);
+
+        }
+        else
+        {
+            hideText.SetActive(false);
+        }
     }
     IEnumerator Hide()
     {
