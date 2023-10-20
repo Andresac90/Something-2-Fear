@@ -29,6 +29,10 @@ public class ObjectsJose : MonoBehaviour
     private GameObject ObjectLeftUI;
     [SerializeField]
     private GameObject ObjectRightUI;
+    [SerializeField]
+    private GameObject ThrowLeftUI;
+    [SerializeField]
+    private GameObject ThrowRightUI;
 
     private RaycastHit hit;
     private float ObjectRScaleData;
@@ -66,10 +70,16 @@ public class ObjectsJose : MonoBehaviour
             StartCoroutine(Grab());
             
         }
+
+        //UI Grab
         if (hit.transform != null && hit.transform.tag == "Object" && !HasObjectRight)
         {
             ObjectRightUI.SetActive(true);
 
+        }
+        else
+        {
+            ObjectRightUI.SetActive(false);
         }
         if (hit.transform != null && hit.transform.tag == "Object" && !HasObjectLeft)
         {
@@ -77,8 +87,25 @@ public class ObjectsJose : MonoBehaviour
         }
         else
         {
-            ObjectRightUI.SetActive(false);
             ObjectLeftUI.SetActive(false);
+        }
+
+        //UI Throw
+        if (HasObjectRight == true && ThrowCheckR)
+        {
+            ThrowRightUI.SetActive(true);
+        }
+        else
+        {
+            ThrowRightUI.SetActive(false);
+        }
+        if (HasObjectLeft == true && ThrowCheckL)
+        {
+            ThrowLeftUI.SetActive(true);
+        }
+        else
+        {
+            ThrowLeftUI.SetActive(false);
         }
         StartCoroutine(Throw());
         ThrowGrounded();
@@ -104,7 +131,6 @@ public class ObjectsJose : MonoBehaviour
                 ObjectROriginalScale = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
                 ObjectRightRb = hit.rigidbody;
                 ObjectRightT = hit.transform;
-                ObjectRightUI.SetActive(false);
                 yield return new WaitForSeconds(0.5f);
                 HasObjectRight = true;
                 ThrowCheckR = true;
@@ -124,7 +150,6 @@ public class ObjectsJose : MonoBehaviour
                 ObjectLOriginalScale = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
                 ObjectLeftRb = hit.rigidbody;
                 ObjectLeftT = hit.transform;
-                ObjectLeftUI.SetActive(false);
                 yield return new WaitForSeconds(0.5f);
                 HasObjectLeft = true;
                 ThrowCheckL = true;
