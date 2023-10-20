@@ -29,9 +29,9 @@ public class Down : MonoBehaviourPun
     {
         isPlayerDowned = status;
     }
-    public void ChangeDowned()
+    public void ChangeDowned(bool isPlayerCaught)
     {
-        photonView.RPC("updateDowned", RpcTarget.All, true);
+        photonView.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
     }
 
     void Update()
@@ -45,7 +45,7 @@ public class Down : MonoBehaviourPun
     public void Downed(bool isPlayerCaught)
     {
         isPlayerDowned = isPlayerCaught;
-        ChangeDowned();
+        ChangeDowned(bool isPlayerCaught);
         if(isPlayerDowned && wasntDowned)
         {
             this.GetComponent<SantiController>().enabled = false;
