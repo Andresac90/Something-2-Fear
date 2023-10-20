@@ -51,6 +51,8 @@ public class ObjectsSanti : MonoBehaviour
     private float throwForce;
     [SerializeField]
     private GameObject ObjectRightUI;
+    [SerializeField]
+    private GameObject DropRightUI;
 
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
@@ -83,6 +85,8 @@ public class ObjectsSanti : MonoBehaviour
             NoteManager();
             Grab();
         }
+        
+        //Grab UI
         if (hit.transform != null && hit.transform.tag == "Object" && !grabObjR)
         {
             ObjectRightUI.SetActive(true);
@@ -90,6 +94,16 @@ public class ObjectsSanti : MonoBehaviour
         else
         {
             ObjectRightUI.SetActive(false);
+        }
+
+        //Drop UI
+        if (grabObjR && throwCheckR)
+        {
+            DropRightUI.SetActive(true);
+        }
+        else
+        {
+            DropRightUI.SetActive(false);
         }
         Drop();
     }
