@@ -55,8 +55,8 @@ public class AIControl : MonoBehaviour
     void Start()
     {
         players = new GameObject[2];
-        players[0] = GameObject.Find("Santi");
-        players[1] = GameObject.Find("Jose");
+        players[0] = GameObject.Find("Santi(Clone)");
+        players[1] = GameObject.Find("Jose(Clone)");
         //player = GameObject.Find("Jose");
         blinkRef = player.GetComponentInChildren<Blink>();
 
