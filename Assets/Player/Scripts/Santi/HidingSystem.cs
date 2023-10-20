@@ -17,8 +17,8 @@ public class HidingSystem : MonoBehaviour
     private GameObject santicamera;
     public Transform HidePosition;
     public Transform OutPosition;
-    //private GameObject enemy;
-    //private AIControl enemyAI;
+    private GameObject enemy;
+    private AIControl enemyAI;
     public bool hiding;
     public bool hidinggg = false;
     public float loseDistance;
@@ -29,8 +29,8 @@ public class HidingSystem : MonoBehaviour
     }
     void Start()
     {
-        //enemy = GameObject.Find("Pascualita");
-        //enemyAI = enemy.GetComponent<AIControl>();
+        enemy = GameObject.Find("Pascualita");
+        enemyAI = enemy.GetComponent<AIControl>();
         player = GameObject.Find("Santi");
         santicamera =  player.transform.GetChild(0).gameObject;
         hiding = false;
@@ -63,15 +63,15 @@ public class HidingSystem : MonoBehaviour
             stopHideText.SetActive(true);
             player.transform.localPosition = new Vector3(HidePosition.position.x, HidePosition.position.y, HidePosition.position.z);
             Debug.Log("hide");
-            //float distance = Vector3.Distance(enemy.transform.position, normalPlayer.transform.position);
-            //if(distance > loseDistance)
-            //{
-            //    if(enemyAI.playerInRange)
-            //    {
-            //        enemyAI.playerInRange = false;
-            //    }
-            //}
-            yield return new WaitForSeconds(3f);
+            float distance = Vector3.Distance(enemy.transform.position, player.transform.position);
+            if (distance > loseDistance)
+            {
+                if (enemyAI.playerInRange)
+                {
+                    enemyAI.playerInRange = false;
+                }
+            }
+            yield return new WaitForSeconds(1.5f);
             hiding = true;
         }
         else
@@ -83,27 +83,13 @@ public class HidingSystem : MonoBehaviour
                 player.GetComponent<SantiController>().enabled = true;
                 player.transform.localPosition = new Vector3(OutPosition.position.x, OutPosition.position.y, OutPosition.position.z);
                 Debug.Log("show");
-                yield return new WaitForSeconds(3f);
+                yield return new WaitForSeconds(1.5f);
                 hiding = false;
             }
         }
 
         
     }
-
-    //IEnumerator UnHide()
-    //{
-    //    bool IsClickPressed = Controls.Player.Interact.ReadValue<float>() > 0.1f;
-    //    if (IsClickPressed && hiding && hit.transform != null && hit.transform.tag == ("Hide"))
-    //    {
-    //        hiding = false;
-    //        stopHideText.SetActive(false);
-    //        player.GetComponent<CharacterController>().enabled = true;
-    //        player.GetComponent<SantiController>().enabled = true;
-    //        player.transform.position = new Vector3(OutPosition.position.x, OutPosition.position.y, OutPosition.position.z);
-    //    }
-    //    yield return new WaitForSeconds(2.0f);
-    //}
 
     private void OnEnable()
     {
