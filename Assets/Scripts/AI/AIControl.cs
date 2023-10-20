@@ -7,8 +7,8 @@ using UnityEngine.AI;
 
 public class AIControl : MonoBehaviourPun
 {
-    public Blink blinkRefSanti;
-    public Blink blinkRefJose;
+    // public Blink blinkRefSanti;
+    // public Blink blinkRefJose;
 
     private GameObject player;
     public GameObject[] players;
@@ -47,7 +47,10 @@ public class AIControl : MonoBehaviourPun
     public bool isPatrol;                                //  If the enemy is patrol, state of patroling
     public bool isPlayerCaught;                            //  if the enemy has caught the player
     public bool isChasing;
+
+    [SerializeField]
     private bool blinkingSanti;
+    [SerializeField]
     private bool blinkingJose;
 
     //Testing variables
@@ -62,12 +65,7 @@ public class AIControl : MonoBehaviourPun
 
     void Start()
     {
-        players = new GameObject[2];
-        //players[0] = GameObject.FindGameObjectWithTag("PlayerSanti");
-        
-        //player = GameObject.Find("Jose");
-        //blinkRefSanti = players[0].GetComponentInChildren<Blink>();
-   
+        players = new GameObject[2];   
 
         PlayerPosition = Vector3.zero;
         isPatrol = true;
@@ -98,36 +96,17 @@ public class AIControl : MonoBehaviourPun
         aiAgent.speed = walkSpeed;             //  Set the navemesh speed with the normal speed of the enemy
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);    //  Set the destination to the first waypoint
     }
-    [PunRPC]
-    void updateBlinkingBoolJose(bool status)
-    {
-        blinkingJose = status;
-    }
-    [PunRPC]
-    void updateBlinkingJose(Blink status)
-    {
-        blinkRefJose = status;
-    }
-    void updateBlinkingBoolSanti(bool status)
-    {
-        blinkingSanti = status;
-    }
-    [PunRPC]
-    void updateBlinkingSanti(Blink status)
-    {
-        blinkRefSanti = status;
-    }
 
-    public void ChangeBlinkingSanti()
-    {
-        photonView.RPC("updateBlinkingSanti", RpcTarget.All, players[0].GetComponentInChildren<Blink>());
-        photonView.RPC("updateBlinkingBoolSanti", RpcTarget.All, blinkRefSanti.IsBlinking);
-    }
-    
-    public void ChangeBlinkingJose()
-    {
-        photonView.RPC("updateBlinkingJose", RpcTarget.All, players[1].GetComponentInChildren<Blink>());
-        photonView.RPC("updateBlinkingBoolJose", RpcTarget.All, blinkRefJose.IsBlinking);
+    [PunRPC]
+    public void BlinkRPC(string name){
+        if (name == "Jose(Clone)")
+        {
+            blinkingJose = !blinkingJose;
+        }
+        else
+        {
+            blinkingSanti = !blinkingSanti;
+        }
     }
 
     private void Update()
@@ -137,8 +116,6 @@ public class AIControl : MonoBehaviourPun
             EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
 
             closerPlayer = GetCloserPlayer(); //relevant player
-            ChangeBlinkingSanti();
-            ChangeBlinkingJose();
 
             if (isSeen && (!blinkingSanti || !blinkingJose)) //&& seenCooldownTimer >= 0) // if Pascualita is seen stop (recibe valor de PlayerScript)
             {
@@ -208,14 +185,12 @@ public class AIControl : MonoBehaviourPun
     {
         players[0] = GameObject.FindGameObjectWithTag("PlayerSanti");
         Debug.Log(players[0].GetComponentInChildren<Blink>());
-        ChangeBlinkingSanti();
         isSantiActive = true;
     }
 
     public void joseActivation()
     {
         players[1] = GameObject.FindGameObjectWithTag("PlayerJose");
-        ChangeBlinkingJose();
         isJoseActive = true;
     }
 

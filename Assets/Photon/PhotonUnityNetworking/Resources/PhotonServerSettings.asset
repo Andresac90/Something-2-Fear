@@ -41,6 +41,7 @@ MonoBehaviour:
   - updateBlinkingBoolJose
   - updateBlinkingJose
   - updateBlinkingSanti
+  - BlinkRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

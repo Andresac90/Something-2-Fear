@@ -52,9 +52,9 @@ public class ObjectsJose : MonoBehaviour
     }
     public void Start()
     {
-        pascualita = GameObject.Find("Pascualita");
-        AIControl aicontrol = pascualita.GetComponent<AIControl>();
-        aicontrol.joseActivation();
+        // pascualita = GameObject.Find("Pascualita");
+        // AIControl aicontrol = pascualita.GetComponent<AIControl>();
+        // aicontrol.joseActivation();
     }
 
     // Update is called once per frame
