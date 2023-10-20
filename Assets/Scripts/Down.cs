@@ -58,7 +58,7 @@ public class Down : MonoBehaviourPun
                 this.GetComponentInChildren<PlayerLook>().enabled = false;
                 wasDowned = true;
                 wasntDowned = false;
-                santiDown = true
+                santiDown = true;
             }
             else if(!isPlayerDowned && wasDowned)
             {
@@ -72,6 +72,7 @@ public class Down : MonoBehaviourPun
                 this.GetComponentInChildren<PlayerLook>().enabled = true;
                 wasDowned = false;
                 wasntDowned = true;
+                santiDown = false;
                 currentTime = 0f;
             }
             else if(!wasntDowned)
