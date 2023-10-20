@@ -315,6 +315,7 @@ GameObject:
   - component: {fileID: 3848050428572517201}
   - component: {fileID: -1153828020552127956}
   - component: {fileID: 5414063578607251343}
+  - component: {fileID: 3611455091854494185}
   m_Layer: 9
   m_Name: Jose
   m_TagString: PlayerJose
@@ -412,7 +413,7 @@ MonoBehaviour:
   ObjectRightCamera: {fileID: 4770480782155888035}
   ObjectLeftCamera: {fileID: 3228622001852438667}
   PlayerCamera: {fileID: 7266502030151178295}
-  RayLine: 5
+  rayline: 0
   ThrowForce: 500
   Player: {fileID: 3676275686622208031}
 --- !u!114 &-1153828020552127956
@@ -471,6 +472,14 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!81 &3611455091854494185
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3676275686622208031}
+  m_Enabled: 0
 --- !u!1 &5933293721237601498
 GameObject:
   m_ObjectHideFlags: 0
@@ -720,7 +729,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -768,7 +777,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8388354743301379402}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!114 &2898569815038820283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -781,8 +790,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea00958796f53da42a02f50ba5ba69d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SensitivityX: 80
-  SensitivityY: 80
+  SensitivityX: 30
+  SensitivityY: 30
   InvertCamera: 0
   PV: {fileID: -1153828020552127956}
 --- !u!114 &6471830483022702382
