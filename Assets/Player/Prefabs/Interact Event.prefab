@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 69723477268051604}
   - component: {fileID: 7277181940767671121}
   - component: {fileID: 8951943288793894008}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Interact Event
-  m_TagString: Object
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74,10 +74,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TwoPlayers: 1
-  Event0: 0
-  Event1: 0
-  Task: {fileID: 0}
+  Event: 0
+  WinScreen: 0
+  Objects: []
+  AI: {fileID: 0}
   PlayersNear: 0
+  PlayerNear: 0
 --- !u!65 &8951943288793894008
 BoxCollider:
   m_ObjectHideFlags: 0
