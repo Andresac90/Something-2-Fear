@@ -35,7 +35,7 @@ public class AIControl : MonoBehaviour
     float minWaitTime;
     float maxWiatTime;
     float TimeToRotate;                           //  Variable of the wait time to rotate when the player is near that makes the delay
-    bool playerInRange;                           //  If the player is in range of vision, state of chasing
+    public bool playerInRange;                           //  If the player is in range of vision, state of chasing
     //public bool isPlayerNear;                              //  If the player is near, state of hearing
     public bool isPatrol;                                //  If the enemy is patrol, state of patroling
     public bool isPlayerCaught;                            //  if the enemy has caught the player

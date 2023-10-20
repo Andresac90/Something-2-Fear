@@ -13,12 +13,14 @@ public class SpawnPlayers : MonoBehaviour
     {
         int playerNumber = PhotonNetwork.CurrentRoom.PlayerCount;
 
-        if(playerNumber == 1)
+        string player = (string)PhotonNetwork.LocalPlayer.CustomProperties["Player"];
+
+        if(player == "Santi")
         {
             GameObject spawn = GameObject.FindGameObjectsWithTag("SantiSpawn")[0];
             PhotonNetwork.Instantiate(santiPrefab.name, spawn.transform.position, Quaternion.identity);
         }
-        else
+        if(player == "Jose")
         {
             GameObject spawn = GameObject.FindGameObjectsWithTag("JoseSpawn")[0];
             PhotonNetwork.Instantiate(josePrefab.name, spawn.transform.position, Quaternion.identity);

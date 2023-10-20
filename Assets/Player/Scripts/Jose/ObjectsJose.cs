@@ -16,13 +16,13 @@ public class ObjectsJose : MonoBehaviour
     [SerializeField]
     private Transform PlayerCamera;
     [SerializeField]
-    private float RayLine;
+    private float rayline;
     [SerializeField]
     private float ThrowForce;
     [SerializeField]
     private GameObject Player;
 
-    private RaycastHit Hit;
+    private RaycastHit hit;
     private float ObjectRScaleData;
     private float ObjectROriginalScale;
     private float ObjectLScaleData;
@@ -49,29 +49,34 @@ public class ObjectsJose : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        StartCoroutine(Grab());
+        Physics.Raycast(PlayerCamera.position, PlayerCamera.TransformDirection(Vector3.forward), out hit, rayline);
+        if (hit.transform != null)
+        {
+            StartCoroutine(Grab());
+        }
         StartCoroutine(Throw());
         ThrowGrounded();
+
     }
 
     IEnumerator Grab()
     {
-        Physics.Raycast(PlayerCamera.position, PlayerCamera.TransformDirection(Vector3.forward), out Hit, RayLine);
-        if(Hit.transform != null && Hit.transform.tag == "Object")
+        
+        if(hit.transform.tag == "Object")
         {
             bool IsRightPressed = Controls.Player.RightItem.ReadValue<float>() > 0.1f;
             if(IsRightPressed && HasObjectRight == false)
             {
-                Hit.transform.position = ObjectRightCamera.position;
-                Hit.rigidbody.isKinematic = true;
-                Hit.transform.parent = ObjectRightCamera;
-                ObjectRScaleData = Hit.transform.GetComponent<ObjectsData>().ObjectScale;
-                Hit.transform.localScale = new Vector3(ObjectRScaleData, ObjectRScaleData, ObjectRScaleData);
-                Hit.transform.localPosition = new Vector3(0, 0, 0);
-                Hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
-                ObjectROriginalScale = Hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
-                ObjectRightRb = Hit.rigidbody;
-                ObjectRightT = Hit.transform;
+                hit.transform.position = ObjectRightCamera.position;
+                hit.rigidbody.isKinematic = true;
+                hit.transform.parent = ObjectRightCamera;
+                ObjectRScaleData = hit.transform.GetComponent<ObjectsData>().ObjectScale;
+                hit.transform.localScale = new Vector3(ObjectRScaleData, ObjectRScaleData, ObjectRScaleData);
+                hit.transform.localPosition = new Vector3(0, 0, 0);
+                hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
+                ObjectROriginalScale = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
+                ObjectRightRb = hit.rigidbody;
+                ObjectRightT = hit.transform;
                 yield return new WaitForSeconds(0.5f);
                 HasObjectRight = true;
                 ThrowCheckR = true;
@@ -80,16 +85,16 @@ public class ObjectsJose : MonoBehaviour
             bool IsLeftPressed = Controls.Player.LeftItem.ReadValue<float>() > 0.1f;
             if (IsLeftPressed && HasObjectLeft == false)
             {
-                Hit.transform.position = ObjectRightCamera.position;
-                Hit.rigidbody.isKinematic = true;
-                Hit.transform.parent = ObjectLeftCamera;
-                ObjectLScaleData = Hit.transform.GetComponent<ObjectsData>().ObjectScale;
-                Hit.transform.localScale = new Vector3(ObjectLScaleData, ObjectLScaleData, ObjectLScaleData);
-                Hit.transform.localPosition = new Vector3(0, 0, 0);
-                Hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
-                ObjectLOriginalScale = Hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
-                ObjectLeftRb = Hit.rigidbody;
-                ObjectLeftT = Hit.transform;
+                hit.transform.position = ObjectRightCamera.position;
+                hit.rigidbody.isKinematic = true;
+                hit.transform.parent = ObjectLeftCamera;
+                ObjectLScaleData = hit.transform.GetComponent<ObjectsData>().ObjectScale;
+                hit.transform.localScale = new Vector3(ObjectLScaleData, ObjectLScaleData, ObjectLScaleData);
+                hit.transform.localPosition = new Vector3(0, 0, 0);
+                hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
+                ObjectLOriginalScale = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
+                ObjectLeftRb = hit.rigidbody;
+                ObjectLeftT = hit.transform;
                 yield return new WaitForSeconds(0.5f);
                 HasObjectLeft = true;
                 ThrowCheckL = true;
@@ -158,7 +163,7 @@ public class ObjectsJose : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(PlayerCamera.position, PlayerCamera.TransformDirection(Vector3.forward) * RayLine);
+        Gizmos.DrawLine(PlayerCamera.position, PlayerCamera.TransformDirection(Vector3.forward) * rayline);
     }
 
     private void OnEnable()
