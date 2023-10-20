@@ -4997,7 +4997,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8017623072165681613, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
       propertyPath: m_Name
-      value: Santi(Clone)
+      value: Santi(Clon)
       objectReference: {fileID: 0}
     - target: {fileID: 8176915414618576730, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
       propertyPath: m_fontAsset
