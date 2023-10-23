@@ -1,16 +1,20 @@
 using System.Collections;
-using System.Collections.Generic;
 using Unity.VisualScripting;
+using Photon.Pun;
 using UnityEngine;
+using Photon.Realtime;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
-using UnityEngine.UIElements.Experimental;
 
 public class NurseAI : MonoBehaviour
 {
-    private GameObject player;
+    public GameObject[] players;
+    private GameObject closerPlayer;
+
+    private bool isSantiActive = false;
+    private bool isJoseActive = false;
+
     public NavMeshAgent aiAgent;               //  Nav mesh agent component
-    public float startWaitTime = 4;                 //  Wait time of every action
+    static float startWaitTime = 4;                 //  Wait time of every action
     public float timeToRotate = 1;                  //  Wait time when the enemy detect near the player without seeing
     public float walkSpeed = 6;                     //  Walking speed, speed in the nav mesh agent
     public float chaseSpeed = 9;                      //  Running speed
@@ -19,7 +23,6 @@ public class NurseAI : MonoBehaviour
     public float viewAngle = 90;                    //  Angle of the enemy view
     public LayerMask playerMask;                    //  To detect the player with the raycast
     public LayerMask obstacleMask;                  //  To detect the obstacules with the raycast
-    public LayerMask enemyMask;
     public float meshResolution = 1.0f;             //  How many rays will cast per degree
     public int edgeIterations = 4;                  //  Number of iterations to get a better performance of the mesh filter when the raycast hit an obstacule
     public float edgeDistance = 0.5f;               //  Max distance to calcule the a minumun and a maximum raycast when hits something
@@ -31,37 +34,46 @@ public class NurseAI : MonoBehaviour
     Vector3 playerLastPosition = Vector3.zero;      //  Last position of the player when was near the enemy
     Vector3 PlayerPosition;                       //  Last position of the player when the player is seen by the enemy
 
-    float WaitTime;                               //  Variable of the wait time that makes the delay
+    public float WaitTime;                               //  Variable of the wait time that makes the delay
     float minWaitTime;
     float maxWiatTime;
     float TimeToRotate;                           //  Variable of the wait time to rotate when the player is near that makes the delay
-    bool playerInRange;                           //  If the player is in range of vision, state of chasing
+    public bool playerInRange;                           //  If the player is in range of vision, state of chasing
     //public bool isPlayerNear;                              //  If the player is near, state of hearing
     public bool isPatrol;                                //  If the enemy is patrol, state of patroling
     public bool isPlayerCaught;                            //  if the enemy has caught the player
+    public bool isChasing;
 
+    [SerializeField]
+    private PhotonView JosePV;
+    private PhotonView SantiPV;
 
-    //Testing variables
-    //bool isSeen;  //Pascualita is being seen by player
-    //int randNum; //Random val to randomize patrol pattern
     public float catchDistance;
-    //public Animator aiAnimation; //for fuuture use in animations
+    public Animator aiAnimation; //for fuuture use in animations
+
+    public float seenCooldownTimer;
+    public float stoppedTimer;
+    public float defaultCooldownTime = 5f;
 
     void Start()
     {
-        player = GameObject.Find("Player");
+        players = new GameObject[2];
+
         PlayerPosition = Vector3.zero;
         isPatrol = true;
         isPlayerCaught = false;
 
 
         //Testing
-        //isSeen = false;
+        isChasing = false;
         //aiAgent.destination = waypoints[CurrentWaypointIndex].position;
         //randNum = 0;
         minWaitTime = 1f;
         maxWiatTime = 3f;
         catchDistance = 3f;
+
+        stoppedTimer = defaultCooldownTime;
+        seenCooldownTimer = defaultCooldownTime;
         //Testing
 
         WaitTime = startWaitTime;                 //  Set the wait time variable that will change
@@ -77,26 +89,31 @@ public class NurseAI : MonoBehaviour
 
     private void Update()
     {
-        EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
+        if (isJoseActive && isSantiActive)
+        {
+            EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
 
-        if (!isPatrol && !isPlayerCaught)
-        {
-            /*aiAnimation.ResetTrigger("walk");
-            aiAnimation.ResetTrigger("idle");
-            aiAnimation.SetTrigger("sprint");*/
-            Chasing();
-        }
-        else if (isPatrol && !isPlayerCaught)
-        {
-            /*aiAnimation.ResetTrigger("sprint");
-            aiAnimation.ResetTrigger("idle");
-            aiAnimation.SetTrigger("walk");*/
-            Patroling();
-        }
-        else if (isPlayerCaught)
-        {
-            Debug.Log("Attacking");
-            Attacking();
+            closerPlayer = GetCloserPlayer(); //relevant player
+
+            if (isChasing && !isPlayerCaught)
+            {
+                aiAnimation.ResetTrigger("walk");
+                aiAnimation.ResetTrigger("idle");
+                aiAnimation.SetTrigger("sprint");
+                Chasing();
+            }
+            else if (isPatrol && !isPlayerCaught)
+            {
+                aiAnimation.ResetTrigger("sprint");
+                aiAnimation.ResetTrigger("idle");
+                aiAnimation.SetTrigger("walk");
+                Patroling();
+            }
+            else if (isPlayerCaught)
+            {
+                Debug.Log("Attacking");
+                Attacking();
+            }
         }
 
     }
@@ -115,11 +132,11 @@ public class NurseAI : MonoBehaviour
         }
         if (aiAgent.remainingDistance <= aiAgent.stoppingDistance)    //  Control if the enemy arrive to the player location
         {
-            if (WaitTime <= 0 && !isPlayerCaught && Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerJose").transform.position) >= 6f) //|| Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerSanti").transform.position) >= 6f//)
+            if (WaitTime <= 0 && !isPlayerCaught && Vector3.Distance(transform.position, closerPlayer.transform.position) >= 6f)
             {
                 //  Check if the enemy is not near to the player, returns to patrol after the wait time delay
                 isPatrol = true;
-
+                isChasing = false;
                 Move(walkSpeed);
                 TimeToRotate = timeToRotate;
                 WaitTime = startWaitTime;
@@ -127,40 +144,36 @@ public class NurseAI : MonoBehaviour
             }
             else
             {
-                if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerJose").transform.position) >= 2.5f)// || Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerSanti").transform.position) >= 2.5f)
+                if (Vector3.Distance(transform.position, closerPlayer.transform.position) >= 2.5f)
                     //  Wait if the current position is not the player position
                     Stop();
                 WaitTime -= Time.deltaTime;
             }
-            if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerJose").transform.position) < catchDistance)// || Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("PlayerSanti").transform.position) < catchDistance)
+            if (Vector3.Distance(transform.position, closerPlayer.transform.position) < catchDistance)
             {
                 CaughtPlayer();
             }
         }
     }
 
+    public void santiActivation()
+    {
+        players[0] = GameObject.FindGameObjectWithTag("PlayerSanti");
+        isSantiActive = true;
+        SantiPV = players[0].GetComponent<PhotonView>();
+    }
+
+    public void joseActivation()
+    {
+        players[1] = GameObject.FindGameObjectWithTag("PlayerJose");
+        isJoseActive = true;
+        JosePV = players[1].GetComponent<PhotonView>();
+    }
+
     private void Patroling()
     {
-        //if (isPlayerNear)
-        //{
-        //    Debug.Log("One piece");
-        //    //  Check if the enemy detect near the player, so the enemy will move to that position
-        //    if (TimeToRotate <= 0)
-        //    {
-        //        Move(walkSpeed);
-        //        LookingPlayer(playerLastPosition);
-        //    }
-        //    else
-        //    {
-        //        //  The enemy wait for a moment and then go to the last player position
-        //        Stop();
-        //        TimeToRotate -= Time.deltaTime;
-        //    }
-        //}
-        //else
-        //{
-        //  The player is no near when the enemy is platroling
         playerLastPosition = Vector3.zero;
+        Move(walkSpeed);
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);    //  Set the enemy destination to the next waypoint
         if (aiAgent.remainingDistance <= aiAgent.stoppingDistance)
         {
@@ -173,33 +186,33 @@ public class NurseAI : MonoBehaviour
             }
             else
             {
-                /*aiAnimation.ResetTrigger("sprint");
+                aiAnimation.ResetTrigger("sprint");
                 aiAnimation.ResetTrigger("walk");
-                aiAnimation.SetTrigger("idle");*/
+                aiAnimation.SetTrigger("idle");
                 Stop();
                 WaitTime -= Time.deltaTime;
             }
         }
-        //}
     }
 
     private void Attacking()
     {
-        //llamar funcion de downeado de Jose/Santi y jumpscare
-        /*aiAnimation.ResetTrigger("walk");
-        aiAnimation.ResetTrigger("idle");
-        aiAnimation.ResetTrigger("sprint");
-        aiAnimation.SetTrigger("jumpscare");*/
-        //StartCoroutine(deathRoutine());
         Debug.Log("Attack");
+        if (closerPlayer == players[0])
+        {
+            isPlayerCaught = false;
+            SantiPV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
+        }
+        else if (closerPlayer == players[1])
+        {
+            isPlayerCaught = false;
+            JosePV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
+        }
 
-        isPlayerCaught = false;
         isPatrol = false;
 
-        Stop();
-        WaitTime -= Time.deltaTime;
         Move(walkSpeed);
-        TimeToRotate = timeToRotate;
+        //TimeToRotate = timeToRotate;
         WaitTime = startWaitTime;
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position); //return to patrol
 
@@ -268,7 +281,9 @@ public class NurseAI : MonoBehaviour
                 if (!Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, obstacleMask))
                 {
                     this.playerInRange = true;             //  The player has been seen by the enemy and then the enemy chases the player
-                    isPatrol = false;                 //  Change the state to chasing the player
+                    isChasing = true;                 //  Change the state to chasing the player
+                    isPatrol = false;
+
                 }
                 else
                 {
@@ -295,29 +310,33 @@ public class NurseAI : MonoBehaviour
             }
         }
     }
-    //IEnumerator stayIdle()
-    //{
-    //    WaitTime = Random.Range(minWaitTime, maxWiatTime);
-    //    yield return new WaitForSeconds(WaitTime);
-    //    isPatrol = true;
-    //    CurrentWaypointIndex = Random.Range(0, waypoints.Length);
-    //    aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
-    //}
-    //IEnumerator chaseRoutine()
-    //{
-    //    chaseTime = Random.Range(minChaseTime, maxChaseTime);
-    //    yield return new WaitForSeconds(chaseTime);
-    //    isPatrol = true;
-    //    chasing = false;
-    //    CurrentWaypointIndex = Random.Range(0, waypoints.Length);
-    //    aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
-    //}
-    //IEnumerator deathRoutine()
-    //{
-    //    Debug.Log("deathroutine");
 
-    //    yield return new WaitForSeconds(1);//jumpscare time
-    //    //SceneManager.LoadScene(deathScene);
-    //}
+    private GameObject GetCloserPlayer()
+    {
+        GameObject close;
+        float distanceToSanti;
+        float distanceToJose;
+        if (players[0] != null && players[1] != null)
+        {
+            distanceToSanti = Vector3.Distance(transform.position, players[0].transform.position);
+            distanceToJose = Vector3.Distance(transform.position, players[1].transform.position);
+            close = (distanceToSanti < distanceToJose) ? players[0] : players[1];
+        }
+        else if (players[1] != null)
+        {
+            close = players[1];
+        }
+        else if (players[0] != null)
+        {
+            close = players[0];
+        }
+        else
+        {
+            close = null;
+        }
+
+        return close;
+    }
+ 
 }
 
