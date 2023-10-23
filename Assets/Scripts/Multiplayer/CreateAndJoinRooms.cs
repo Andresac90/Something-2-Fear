@@ -98,7 +98,10 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             else{
                 pos = player2pos;
             }
-            PlayerItem item = Instantiate(playerItemPrefab, playerItemParent);
+            // PlayerItem item = Instantiate(playerItemPrefab, playerItemParent);
+            GameObject itemGameObject = PhotonNetwork.Instantiate(playerItemPrefab.name, pos, Quaternion.identity);
+            itemGameObject.transform.SetParent(playerItemParent);
+            PlayerItem item = itemGameObject.GetComponent<PlayerItem>();
             item.transform.localPosition = pos;
             item.SetPlayerInfo(player.Value);
             items.Add(item);
