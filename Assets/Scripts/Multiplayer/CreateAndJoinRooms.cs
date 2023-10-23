@@ -116,7 +116,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     private void Update()
     {
         if (PhotonNetwork.InRoom == false) return;
-        PlayerItem[] playerItems = GameObject.FindObjectsOfType<PlayerItem>();
+        PlayerItem[] playerItems = FindObjectsOfType<PlayerItem>();
 
         bool playerIsJose = false;
         bool playerIsSanti = false;
