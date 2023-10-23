@@ -47,6 +47,8 @@ MonoBehaviour:
   - SyncItemForce
   - SyncInRange
   - SyncCharacterSelection
+  - updateInjected
+  - ChangeObject
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
