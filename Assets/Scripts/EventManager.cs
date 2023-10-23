@@ -15,8 +15,8 @@ public class EventManager : MonoBehaviour
     private bool WinScreen = false;
     [SerializeField]
     private GameObject[] Objects;
-    [SerializeField]
-    private GameObject AI;
+    //[SerializeField]
+    //private GameObject AI;
     private bool RunOnce = false;
 
     public bool PlayersNear = false;
@@ -38,10 +38,11 @@ public class EventManager : MonoBehaviour
     {
         if (collision.CompareTag("PlayerJose") && collision.CompareTag("PlayerSanti") && TwoPlayers)
         {
+            Console.WriteLine("PlayersNear True");
             PlayersNear = true;
         }
 
-        if (collision.CompareTag("PlayerJose") && !TwoPlayers)
+        /*if (collision.CompareTag("PlayerJose") && !TwoPlayers)
         {
             PlayerNear = true;
         }
@@ -49,10 +50,10 @@ public class EventManager : MonoBehaviour
         if (collision.CompareTag("PlayerSanti") && !TwoPlayers)
         {
             PlayerNear = true;
-        }
+        }*/
     }
 
-    public void OnTriggerExit(Collider collision)
+    /*public void OnTriggerExit(Collider collision)
     {
         if (collision.CompareTag("PlayerJose") && TwoPlayers)
         {
@@ -73,7 +74,7 @@ public class EventManager : MonoBehaviour
         {
             PlayerNear = false;
         }
-    }
+    }*/
 
     private bool ArePlayersOnTrigger()
     {
@@ -89,6 +90,7 @@ public class EventManager : MonoBehaviour
     {
         if (ArePlayersOnTrigger() && TwoPlayers && !RunOnce && Event)
         {
+            Console.WriteLine("Players IN");
             for (int i = 0; i < Objects.Length; i++)
             {
                 bool Value = Objects[i].activeInHierarchy;
@@ -96,7 +98,7 @@ public class EventManager : MonoBehaviour
                 Objects[i].SetActive(!Value);
                 RunOnce = true;
             }
-            AI.SetActive(true);
+            //AI.SetActive(true);
             Destroy(this);
         }
         else if (ArePlayersOnTrigger() && TwoPlayers && !RunOnce && WinScreen)
@@ -116,7 +118,7 @@ public class EventManager : MonoBehaviour
                 Objects[i].SetActive(!Value);
                 RunOnce = true;
             }
-            AI.SetActive(true);
+            //AI.SetActive(true);
             Destroy(this);
         }
         else if (ArePlayersOnTrigger() && TwoPlayers && !RunOnce && WinScreen)
