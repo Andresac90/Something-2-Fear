@@ -37,6 +37,15 @@ MonoBehaviour:
   - ClickRpc
   - DestroyRpc
   - updateDowned
+  - updateBlinking
+  - updateBlinkingBoolJose
+  - updateBlinkingJose
+  - updateBlinkingSanti
+  - BlinkRPC
+  - SyncItemPosition
+  - SyncItemParent
+  - SyncItemForce
+  - SyncInRange
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

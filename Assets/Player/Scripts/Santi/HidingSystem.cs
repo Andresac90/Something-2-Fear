@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,28 +29,41 @@ public class HidingSystem : MonoBehaviour
     }
     void Start()
     {
-        //enemy = GameObject.Find("Pascualita");
-        //enemyAI = enemy.GetComponent<AIControl>();
-        player = GameObject.Find("Santi(Clone)");
-        santicamera =  player.transform.GetChild(0).gameObject;
+        enemy = GameObject.Find("Pascualita");
+        enemyAI = enemy.GetComponent<AIControl>();
+        
         hiding = false;
     }
 
     void Update()
     {
-        Physics.Raycast(santicamera.GetComponent<Camera>().transform.position, santicamera.GetComponent<Camera>().transform.TransformDirection(Vector3.forward), out hit, rayLine);
+        //Physics.Raycast(santicamera.GetComponent<Camera>().transform.position, santicamera.GetComponent<Camera>().transform.TransformDirection(Vector3.forward), out hit, rayLine);
         StartCoroutine(Hide());
+        StartCoroutine(Raycast());
+        //if (hit.transform != null && hit.transform.tag == ("Hide"))
+        //{
+        //    hideText.SetActive(true);
+            
+        //}
+        //else
+        //{
+        //    hideText.SetActive(false);
+        //}
+    }
+    IEnumerator Raycast()
+    {
+        yield return new WaitForSeconds(3.0f);
+        Physics.Raycast(santicamera.GetComponent<Camera>().transform.position, santicamera.GetComponent<Camera>().transform.TransformDirection(Vector3.forward), out hit, rayLine);
         if (hit.transform != null && hit.transform.tag == ("Hide"))
         {
             hideText.SetActive(true);
-            
+
         }
         else
         {
             hideText.SetActive(false);
         }
     }
-
     IEnumerator Hide()
     {
         bool IsClickPressed = Controls.Player.Interact.ReadValue<float>() > 0.1f;
@@ -60,15 +74,15 @@ public class HidingSystem : MonoBehaviour
             hideText.SetActive(false);
             stopHideText.SetActive(true);
             player.transform.localPosition = new Vector3(HidePosition.position.x, HidePosition.position.y, HidePosition.position.z);
-            //Debug.Log("hide");
-            //float distance = Vector3.Distance(enemy.transform.position, player.transform.position);
-            //if (distance > loseDistance)
-            //{
-            //    if (enemyAI.playerInRange)
-            //    {
-            //        enemyAI.playerInRange = false;
-            //    }
-            //}
+            Debug.Log("hide");
+            float distance = Vector3.Distance(enemy.transform.position, player.transform.position);
+            if (distance > loseDistance)
+            {
+                if (enemyAI.playerInRange)
+                {
+                    InRange(false);
+                }
+            }
             yield return new WaitForSeconds(1.5f);
             hiding = true;
         }
@@ -82,10 +96,22 @@ public class HidingSystem : MonoBehaviour
                 player.transform.localPosition = new Vector3(OutPosition.position.x, OutPosition.position.y, OutPosition.position.z);
                 //Debug.Log("show");
                 yield return new WaitForSeconds(1.5f);
-                hiding = false;
-            }
+                hiding = false;            }
         }   
     }
+
+    public void ActivateSanti()
+    {
+        player = GameObject.Find("Santi(Clone)");
+        santicamera = player.transform.GetChild(0).gameObject;
+        hideText = player.transform.GetChild(3).GetChild(3).gameObject;
+        stopHideText = player.transform.GetChild(3).GetChild(8).gameObject;
+    }
+
+    public void InRange(bool inRange)
+    {
+        enemy.GetComponent<PhotonView>().RPC("SyncInRange", RpcTarget.All, inRange);
+    }    
 
     private void OnEnable()
     {

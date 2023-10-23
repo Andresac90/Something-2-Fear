@@ -1,17 +1,13 @@
 using System.Collections;
 using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.AI;
 using Photon.Pun;
+using UnityEngine;
 using Photon.Realtime;
+using UnityEngine.AI;
 
-public class AIControl : MonoBehaviour
+public class AIControl : MonoBehaviourPun
 {
-    private Blink blinkRefSanti;
-    private Blink blinkRefJose;
-
-    private GameObject player;
-    private GameObject[] players;
+    public GameObject[] players;
     private GameObject closerPlayer;
 
     private bool isSantiActive = false;
@@ -47,8 +43,13 @@ public class AIControl : MonoBehaviour
     public bool isPatrol;                                //  If the enemy is patrol, state of patroling
     public bool isPlayerCaught;                            //  if the enemy has caught the player
     public bool isChasing;
+
+    [SerializeField]
     private bool blinkingSanti;
+    [SerializeField]
     private bool blinkingJose;
+    private PhotonView JosePV;
+    private PhotonView SantiPV;
 
     //Testing variables
     public bool isSeen;  //Pascualita is being seen by player
@@ -62,12 +63,7 @@ public class AIControl : MonoBehaviour
 
     void Start()
     {
-        players = new GameObject[2];
-        //players[0] = GameObject.FindGameObjectWithTag("PlayerSanti");
-        
-        //player = GameObject.Find("Jose");
-        //blinkRefSanti = players[0].GetComponentInChildren<Blink>();
-   
+        players = new GameObject[2];   
 
         PlayerPosition = Vector3.zero;
         isPatrol = true;
@@ -99,17 +95,25 @@ public class AIControl : MonoBehaviour
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);    //  Set the destination to the first waypoint
     }
 
+    [PunRPC]
+    public void BlinkRPC(string name){
+        if (name == "Jose(Clone)")
+        {
+            blinkingJose = !blinkingJose;
+        }
+        else
+        {
+            blinkingSanti = !blinkingSanti;
+        }
+    }
+
     private void Update()
     {
         if (isJoseActive && isSantiActive) 
         {
             EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
-            closerPlayer = GetCloserPlayer(); //relevant player
-            Debug.Log(blinkRefSanti.IsBlinking);
-            blinkingSanti = blinkRefSanti.IsBlinking;
-            Debug.Log(blinkingSanti);
-            blinkingJose = blinkRefJose.IsBlinking;
 
+            closerPlayer = GetCloserPlayer(); //relevant player
 
             if (isSeen && (!blinkingSanti || !blinkingJose)) //&& seenCooldownTimer >= 0) // if Pascualita is seen stop (recibe valor de PlayerScript)
             {
@@ -178,15 +182,15 @@ public class AIControl : MonoBehaviour
     public void santiActivation()
     {
         players[0] = GameObject.FindGameObjectWithTag("PlayerSanti");
-        blinkRefSanti = players[0].GetComponentInChildren<Blink>();
         isSantiActive = true;
+        SantiPV = players[0].GetComponent<PhotonView>();
     }
 
     public void joseActivation()
     {
         players[1] = GameObject.FindGameObjectWithTag("PlayerJose");
-        blinkRefJose = players[1].GetComponentInChildren<Blink>();
         isJoseActive = true;
+        JosePV = players[1].GetComponent<PhotonView>();
     }
 
     private void Patroling()
@@ -218,20 +222,27 @@ public class AIControl : MonoBehaviour
     private void Attacking()
     {
         //llamar funcion de downeado de Jose/Santi y jumpscare
-        aiAnimation.ResetTrigger("walk");
-        aiAnimation.ResetTrigger("idle");
-        aiAnimation.ResetTrigger("sprint");
-        aiAnimation.SetTrigger("jumpscare");
+        //aiAnimation.ResetTrigger("walk");
+        //aiAnimation.ResetTrigger("idle");
+        //aiAnimation.ResetTrigger("sprint");
+        //aiAnimation.SetTrigger("jumpscare");
         //StartCoroutine(deathRoutine());
         Debug.Log("Attack");
+        if(closerPlayer == players[0])
+        {
+            isPlayerCaught = false;
+            SantiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+        }
+        else if(closerPlayer == players[1])
+        {
+            isPlayerCaught = false;
+            JosePV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+        }
 
-        isPlayerCaught = false;
         isPatrol = false;
 
-        Stop();
-        WaitTime -= Time.deltaTime;
         Move(walkSpeed);
-        TimeToRotate = timeToRotate;
+        //TimeToRotate = timeToRotate;
         WaitTime = startWaitTime;
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position); //return to patrol
 
@@ -319,6 +330,17 @@ public class AIControl : MonoBehaviour
     void CaughtPlayer()
     {
         isPlayerCaught = true;
+        if(closerPlayer == players[0])
+        {
+            SantiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+            isPlayerCaught = false;
+            
+        }
+        else if(closerPlayer == players[1])
+        {
+            JosePV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+            isPlayerCaught = false;
+        }
     }
 
     void LookingPlayer(Vector3 player)
@@ -344,10 +366,29 @@ public class AIControl : MonoBehaviour
 
     private GameObject GetCloserPlayer() 
     {
-        float distanceToSanti = Vector3.Distance(transform.position, players[0].transform.position);
-        float distanceToJose = Vector3.Distance(transform.position, players[1].transform.position);
+        GameObject close;
+        float distanceToSanti;
+        float distanceToJose;
+        if(players[0] != null && players[1] != null)
+        {
+            distanceToSanti = Vector3.Distance(transform.position, players[0].transform.position);
+            distanceToJose = Vector3.Distance(transform.position, players[1].transform.position);
+            close = (distanceToSanti < distanceToJose) ? players[0] : players[1];
+        }
+        else if(players[1] != null)
+        {
+            close = players[1];
+        }
+        else if(players[0] != null)
+        {
+            close = players[0];
+        }
+        else
+        {
+            close = null;
+        }
 
-        return (distanceToSanti < distanceToJose) ? players[0] : players[1];
+        return close;
     }
 
     void EnviromentView()

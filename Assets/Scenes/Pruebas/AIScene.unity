@@ -206,6 +206,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5596037341370202149, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
+      propertyPath: sceneViewId
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8017623072165681613, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
       propertyPath: m_Name
       value: Santi
@@ -683,6 +687,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Jose
       objectReference: {fileID: 0}
+    - target: {fileID: 4056204279236469553, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
+      propertyPath: sceneViewId
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6880435584519348821, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 5623
@@ -731,6 +739,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5284873917076410413, guid: 9479c908f0f5f704aa3bdb69fafdf2dd, type: 3}
+      propertyPath: sceneViewId
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 128497969652419338, guid: 9479c908f0f5f704aa3bdb69fafdf2dd, type: 3}
       propertyPath: m_Layer
       value: 10
@@ -829,7 +841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3849951602125989407, guid: 9479c908f0f5f704aa3bdb69fafdf2dd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.01446511
+      value: 0.81
       objectReference: {fileID: 0}
     - target: {fileID: 3849951602125989407, guid: 9479c908f0f5f704aa3bdb69fafdf2dd, type: 3}
       propertyPath: m_LocalPosition.z
