@@ -44,7 +44,6 @@ public class NurseAI : MonoBehaviour
     public bool isPlayerCaught;                            //  if the enemy has caught the player
     public bool isChasing;
 
-    [SerializeField]
     private PhotonView JosePV;
     private PhotonView SantiPV;
 
@@ -97,16 +96,16 @@ public class NurseAI : MonoBehaviour
 
             if (isChasing && !isPlayerCaught)
             {
-                aiAnimation.ResetTrigger("walk");
-                aiAnimation.ResetTrigger("idle");
-                aiAnimation.SetTrigger("sprint");
+                //aiAnimation.ResetTrigger("walk");
+                //aiAnimation.ResetTrigger("idle");
+                //aiAnimation.SetTrigger("sprint");
                 Chasing();
             }
             else if (isPatrol && !isPlayerCaught)
             {
-                aiAnimation.ResetTrigger("sprint");
-                aiAnimation.ResetTrigger("idle");
-                aiAnimation.SetTrigger("walk");
+                //aiAnimation.ResetTrigger("sprint");
+                //aiAnimation.ResetTrigger("idle");
+                //aiAnimation.SetTrigger("walk");
                 Patroling();
             }
             else if (isPlayerCaught)
@@ -144,9 +143,6 @@ public class NurseAI : MonoBehaviour
             }
             else
             {
-                if (Vector3.Distance(transform.position, closerPlayer.transform.position) >= 2.5f)
-                    //  Wait if the current position is not the player position
-                    Stop();
                 WaitTime -= Time.deltaTime;
             }
             if (Vector3.Distance(transform.position, closerPlayer.transform.position) < catchDistance)
@@ -186,10 +182,9 @@ public class NurseAI : MonoBehaviour
             }
             else
             {
-                aiAnimation.ResetTrigger("sprint");
-                aiAnimation.ResetTrigger("walk");
-                aiAnimation.SetTrigger("idle");
-                Stop();
+                //aiAnimation.ResetTrigger("sprint");
+                //aiAnimation.ResetTrigger("walk");
+                //aiAnimation.SetTrigger("idle");
                 WaitTime -= Time.deltaTime;
             }
         }
@@ -229,12 +224,6 @@ public class NurseAI : MonoBehaviour
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
     }
 
-    void Stop()
-    {
-        aiAgent.isStopped = true;
-        aiAgent.speed = 0;
-    }
-
     void Move(float speed)
     {
         aiAgent.isStopped = false;
@@ -261,7 +250,6 @@ public class NurseAI : MonoBehaviour
             }
             else
             {
-                Stop();
                 WaitTime -= Time.deltaTime;
             }
         }

@@ -19,7 +19,6 @@ public class Injection : MonoBehaviour
     [SerializeField]
     private float downTime = 20f;
 
-    [SerializeField]
     private PhotonView JosePV;
     private PhotonView SantiPV;
 
@@ -30,10 +29,10 @@ public class Injection : MonoBehaviour
     public bool invertCameraX = false;
     public bool invertCameraY = false;
 
-    float horizontalInput = Input.GetAxis("Horizontal");
-    float verticalInput = Input.GetAxis("Vertical");
-    float mouseX = Input.GetAxis("Mouse X");
-    float mouseY = Input.GetAxis("Mouse Y");
+    float horizontalInput;
+    float verticalInput;
+    float mouseX;
+    float mouseY;
 
     public float moveSpeed = 3.0f;
     // Start is called before the first frame update
@@ -42,6 +41,11 @@ public class Injection : MonoBehaviour
         playerCam = this.transform.GetChild(0).gameObject;
         camera = playerCam.GetComponent<Camera>();
         CharController = GetComponent<CharacterController>();
+
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
+        mouseX = Input.GetAxis("Mouse X");
+        mouseY = Input.GetAxis("Mouse Y");
     }
 
     [PunRPC]
