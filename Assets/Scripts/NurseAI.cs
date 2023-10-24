@@ -152,14 +152,14 @@ public class NurseAI : MonoBehaviour
         }
     }
 
-    public void santiActivation()
+    public void SantiActivation()
     {
         players[0] = GameObject.FindGameObjectWithTag("PlayerSanti");
         isSantiActive = true;
         SantiPV = players[0].GetComponent<PhotonView>();
     }
 
-    public void joseActivation()
+    public void JoseActivation()
     {
         players[1] = GameObject.FindGameObjectWithTag("PlayerJose");
         isJoseActive = true;
@@ -192,7 +192,6 @@ public class NurseAI : MonoBehaviour
 
     private void Attacking()
     {
-        Debug.Log("Attack");
         if (closerPlayer == players[0])
         {
             isPlayerCaught = false;
@@ -233,6 +232,17 @@ public class NurseAI : MonoBehaviour
     void CaughtPlayer()
     {
         isPlayerCaught = true;
+        if (closerPlayer == players[0])
+        {
+            SantiPV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
+            isPlayerCaught = false;
+
+        }
+        else if (closerPlayer == players[1])
+        {
+            JosePV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
+            isPlayerCaught = false;
+        }
     }
 
     void LookingPlayer(Vector3 player)

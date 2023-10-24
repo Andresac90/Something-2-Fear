@@ -27,7 +27,13 @@ public class JoseMovement : MonoBehaviour
     [SerializeField]
     private float Gravity = -9.81f;
 
+    private Transform playerCam;
+    public float moveSpeed = 5.0f;
+    public float lookSensitivity = 2.0f;
+    public bool isPlayerInjected = false;
+    private float rotationX = 0;
     private CharacterController CharController;
+    private PlayerLook look;
 
     public bool HasRun = false;
 
@@ -65,20 +71,32 @@ public class JoseMovement : MonoBehaviour
         Camera.enabled = PV.IsMine;
         AudioListener.enabled = PV.IsMine;
         Canvas.SetActive(PV.IsMine);
-
+        look = GetComponent<PlayerLook>();
         CharController = GetComponent<CharacterController>();
         OriginalSpeed = Speed;
     }
-
+    public void SetInjected(bool injected)
+    {
+        isPlayerInjected = injected;
+        Debug.Log(isPlayerInjected);
+    }
     void Update()
     {
         if (!PV.IsMine) return;
 
-        Movement();
-        Jump();
-        Crouch();
-        Sprint();
-        Camera.transform.position = new Vector3(transform.position.x, Camera.transform.position.y, transform.position.z);
+        if (isPlayerInjected)
+        {
+            Debug.Log("Update works");
+            InvertControls();
+        }
+        else
+        {
+            Movement();
+            Jump();
+            Crouch();
+            Sprint();
+            Camera.transform.position = new Vector3(transform.position.x, Camera.transform.position.y, transform.position.z);
+        }
     }
     void Movement()
     {
@@ -161,5 +179,18 @@ public class JoseMovement : MonoBehaviour
     private void OnDisable()
     {
         Controls.Disable();
+    }
+
+    private void InvertControls()
+    {
+        Vector2 invertedMovementInput = Controls.Player.Movement.ReadValue<Vector2>() * -1;
+        Vector2 invertedLookInput = Controls.Player.Look.ReadValue<Vector2>() * -1;
+
+        // Move the player with inverted controls
+        Vector3 moveDirection = transform.TransformDirection(new Vector3(invertedMovementInput.x, 0, invertedMovementInput.y));
+        CharController.Move(moveDirection * moveSpeed * Time.deltaTime);
+
+        // Rotate the camera with inverted controls
+        //look.SetInvert(true);
     }
 }
