@@ -30,8 +30,16 @@ public class Puzzle : MonoBehaviourPun
         
         if(!puzzleActive && objectName == this.name && !puzzleCreated)
         {
-            puzzleCopy = Instantiate(puzzle);
-            PlayerMovement(false);
+            if(objectsSanti.objectName == "Key" && puzzle.name == "LockPick")
+            {
+                puzzleCopy = Instantiate(puzzle);
+                PlayerMovement(false);
+            }
+            else if (puzzle.name != "LockPick")
+            {
+                puzzleCopy = Instantiate(puzzle);
+                PlayerMovement(false);
+            }
         }
         else if(!puzzleActive && puzzleCopy != null)
         {
@@ -77,11 +85,20 @@ public class Puzzle : MonoBehaviourPun
 
             photonView.RPC("SyncDoor", RpcTarget.All, true);
             // door.OpenDoor();
+            if (objectsSanti.objectName == "Key" && puzzle.name == "LockPick")
+            {
+                Destroy(objectsSanti.gameObject);
+                
+            }
+
+            door.doorState = true;
+            door.OpenDoor();
             Destroy(puzzleCopy.gameObject, 1f);
             PlayerMovement(true);
             objectsSanti.puzzleCreated = false;
             objectsSanti.puzzleActive = false;
             Destroy(this);
+
         }
     }
 }

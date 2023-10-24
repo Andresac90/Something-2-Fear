@@ -36,6 +36,7 @@ public class ObjectsSanti : MonoBehaviour
     private bool throwCheckL = true;
     private bool activated = false;
     private Button activeButton = null;
+    
 
     [SerializeField]
     private Transform objectRightCamera;
@@ -60,6 +61,7 @@ public class ObjectsSanti : MonoBehaviour
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
     public bool noteCreated = false;
+    public string objectName;
 
     public void Awake()
     {
@@ -280,7 +282,7 @@ public class ObjectsSanti : MonoBehaviour
         objectRightRb = hit.rigidbody;
         objectRightT = hit.transform;
         ObjectRightUI.SetActive(false);
-        
+        objectName = hit.transform.GetComponent<ObjectsData>().ObjectName;
         
         // RightGrabTwo();
         yield return new WaitForSeconds(0.5f);
