@@ -46,6 +46,10 @@ public class Puzzle : MonoBehaviourPun
             puzzleCopy.SetActive(true);
             PlayerMovement(false);
         }
+        else
+        {
+            GameManager.Instance.puzzle = false;    
+        }
     }
 
     public void ClosePuzzle(bool puzzleActive)
@@ -87,7 +91,7 @@ public class Puzzle : MonoBehaviourPun
             // door.OpenDoor();
             if (objectsSanti.objectName == "Key" && puzzle.name == "LockPick")
             {
-                Destroy(objectsSanti.gameObject);
+                Destroy(objectsSanti);
                 
             }
 
