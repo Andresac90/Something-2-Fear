@@ -19,7 +19,7 @@ public class Numpad : MonoBehaviour
     void Start()
     {
         Puzzle = GameObject.Find("Numpad MiniGame" + GameManager.Instance.numpadLevel);
-        GameManager.Instance.numpadLevel += 1;
+        
 
         Comprobations = Puzzle.GetComponent<Puzzle>();
         password = Comprobations.PasswordRef;
@@ -53,6 +53,7 @@ public class Numpad : MonoBehaviour
             display.color = Color.green;
             display.text = "Granted";
             Destroy(gameObject, 1.0f);
+            GameManager.Instance.numpadLevel += 1;
             Comprobations.comprobations++;
             Comprobations.Completed();
         }

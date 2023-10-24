@@ -46,6 +46,8 @@ MonoBehaviour:
   - SyncItemParent
   - SyncItemForce
   - SyncInRange
+  - SyncResetTrigger
+  - SyncSetTrigger
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
