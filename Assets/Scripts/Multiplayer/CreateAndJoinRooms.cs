@@ -26,7 +26,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     private PopUpManager PopUp;
 
     public List<PlayerItem> items = new List<PlayerItem>();
-    public PlayerItem playerItemPrefab;
     public Transform playerItemParent;
 
     public ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable();
@@ -75,6 +74,12 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         UpdatePlayerList();
     }
 
+    private void Update()
+    {
+        if (PhotonNetwork.InRoom == false) return;
+        checkCharacters();
+    }
+
     void UpdatePlayerList(){
         foreach (PlayerItem item in items)
         {
@@ -83,42 +88,28 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
         items.Clear();
 
-        if (PhotonNetwork.InRoom == false) return;
-
-
-        Vector3 player1pos = new Vector3(0, 60, 0);
-        Vector3 player2pos = new Vector3(0, -340, 0);
-        int i = 0;
-        foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
+        foreach (PlayerItem item in items)
         {
-            Vector3 pos = new Vector3(0, 0, 0);
-            if (i == 0){
-                pos = player1pos;
-            }
-            else{
-                pos = player2pos;
-            }
-            // PlayerItem item = Instantiate(playerItemPrefab, playerItemParent);
-            GameObject itemGameObject = PhotonNetwork.Instantiate(playerItemPrefab.name, pos, Quaternion.identity);
-            itemGameObject.transform.SetParent(playerItemParent);
-            PlayerItem item = itemGameObject.GetComponent<PlayerItem>();
-            item.transform.localPosition = pos;
-            item.SetPlayerInfo(player.Value);
-            items.Add(item);
-
-            if (player.Value == PhotonNetwork.LocalPlayer)
-            {
-                item.SetUp();
-            }
-
-            i++;
-            
+            Destroy(item.gameObject);
         }
-    }
 
-    private void Update()
+        GameObject playerObject;
+
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 1){
+            playerObject = PhotonNetwork.Instantiate("PlayerItem", Vector3.zero, Quaternion.identity);
+            playerObject.GetComponent<PhotonView>().RPC("SyncParent", RpcTarget.All, false);
+        }
+        else{
+            playerObject = PhotonNetwork.Instantiate("PlayerItem", Vector3.zero, Quaternion.identity);
+            playerObject.GetComponent<PhotonView>().RPC("SyncParent", RpcTarget.All, true);
+        }
+
+        items.Add(playerObject.GetComponent<PlayerItem>());
+    }
+    
+
+    public void checkCharacters()
     {
-        if (PhotonNetwork.InRoom == false) return;
         PlayerItem[] playerItems = FindObjectsOfType<PlayerItem>();
 
         bool playerIsJose = false;
