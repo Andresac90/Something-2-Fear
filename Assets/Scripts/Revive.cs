@@ -1,17 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
-public class Revive : MonoBehaviour
+public class Revive : MonoBehaviourPun
 {
     private InputMaster controls;
     private RaycastHit hit;
     private float currentTime = 0f;
     private Transform playerCamera;
-    private GameObject player;
+    private PhotonView playerPV;
+    private PhotonView objectivePlayerPV;
+    private int playersJoined = 0;
     
     [SerializeField]
-    private float objectTime = 5f;
+    private float objectTime;
     [SerializeField]
     private float rayLine;
     
@@ -22,7 +26,8 @@ public class Revive : MonoBehaviour
     public void Start()
     {
         playerCamera = this.transform.GetChild(0).GetComponent<Transform>();
-        // PlayerManager.OnPlayerJoined += HandlePlayerJoined;
+        playerPV = GetComponent<PhotonView>();
+        GameManager.OnPlayersJoined += HandlePlayersJoined;
     }
 
     public void Update()
@@ -34,19 +39,11 @@ public class Revive : MonoBehaviour
         }
     }
 
-    // private void OnDestroy()
-    // {
-    //     PlayerManager.OnPlayerJoined -= HandlePlayerJoined;
-    // }
-
-    // private void HandlePlayerJoined(GameObject playerObject)
-    // {
-    //     if (playerObject != this.gameObject)
-    //     {
-    //         player = playerObject;
-    //         playerPV = GameObject.Find(player).GetComponent<PhotonView>();
-    //     }
-    // }
+    private void HandlePlayersJoined(PhotonView player1PV, PhotonView player2PV)
+    {
+        playerPV = player1PV;
+        objectivePlayerPV = player2PV;
+    }
 
     private void Reviving()
     {
@@ -54,6 +51,7 @@ public class Revive : MonoBehaviour
         if(isInteractPressed)
         {
             currentTime += Time.deltaTime;
+            Debug.Log("Presionado");
             if(currentTime >= objectTime)
             {
                 Cured();
@@ -67,7 +65,8 @@ public class Revive : MonoBehaviour
 
     private void Cured()
     {
-        // playerPV.RPC("updateDowned", RpcTarget.All, false);
+        Debug.Log("curado");
+        objectivePlayerPV.RPC("updateDowned", RpcTarget.All, false);
     }
 
     private void OnEnable()
