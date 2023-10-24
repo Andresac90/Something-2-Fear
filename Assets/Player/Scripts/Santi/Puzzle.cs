@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class Puzzle : MonoBehaviour
+public class Puzzle : MonoBehaviourPun
 {
     private GameObject puzzleCopy;
     [SerializeField]
@@ -18,11 +19,7 @@ public class Puzzle : MonoBehaviour
 
     public int comprobations;
     public string PasswordRef;
-
-    void Start()
-    {
-        
-    }
+    
 
     public void OpenPuzzle(bool puzzleCreated, bool puzzleActive, string objectName)
     {
@@ -77,8 +74,9 @@ public class Puzzle : MonoBehaviour
     {
         if(comprobations == comprobationsNeeded)
         {
-            door.doorState = true;
-            door.OpenDoor();
+
+            photonView.RPC("SyncDoor", RpcTarget.All, true);
+            // door.OpenDoor();
             Destroy(puzzleCopy.gameObject, 1f);
             PlayerMovement(true);
             objectsSanti.puzzleCreated = false;

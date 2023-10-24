@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class Door : MonoBehaviour
+public class Door : MonoBehaviourPun
 {
     [SerializeField]
     private Animator door;
@@ -22,5 +23,12 @@ public class Door : MonoBehaviour
             door.SetBool("doorActive", false);
             doorState = true;
         }
+    }
+
+    [PunRPC]
+    public void SyncDoor(bool state)
+    {
+        doorState = state;
+        OpenDoor();
     }
 }
