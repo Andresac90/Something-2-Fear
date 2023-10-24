@@ -29,7 +29,7 @@ public class Puzzle : MonoBehaviour
         
         if(!puzzleActive && objectName == this.name && !puzzleCreated)
         {
-            if(objectsSanti.objectName == "key" && puzzle.name == "LockPick")
+            if(objectsSanti.objectName == "Key" && puzzle.name == "LockPick")
             {
                 puzzleCopy = Instantiate(puzzle);
                 PlayerMovement(false);
@@ -78,7 +78,7 @@ public class Puzzle : MonoBehaviour
     {
         if(comprobations == comprobationsNeeded)
         {
-            if (objectsSanti.objectName == "key" && puzzle.name == "LockPick")
+            if (objectsSanti.objectName == "Key" && puzzle.name == "LockPick")
             {
                 Destroy(objectsSanti.gameObject);
                 
