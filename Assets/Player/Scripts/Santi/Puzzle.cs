@@ -46,6 +46,9 @@ public class Puzzle : MonoBehaviourPun
         GameManager.Instance.puzzle = false;
         if(puzzleCopy != null)
         {
+            Destroy(puzzleCopy.gameObject, 1f);
+            objectsSanti.puzzleCreated = false;
+            objectsSanti.puzzleActive = false;
             PlayerMovement(true);
         }
     }

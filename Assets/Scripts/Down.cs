@@ -17,7 +17,7 @@ public class Down : MonoBehaviourPun
     private bool joseDown = false;
     
     [SerializeField]
-    private float deadTime = 10f;
+    private float deadTime = 30f;
 
     public bool isPlayerDowned;
 

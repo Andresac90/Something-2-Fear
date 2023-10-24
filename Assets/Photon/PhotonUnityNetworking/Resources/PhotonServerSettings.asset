@@ -46,6 +46,8 @@ MonoBehaviour:
   - SyncItemParent
   - SyncItemForce
   - SyncInRange
+  - SyncResetTrigger
+  - SyncSetTrigger
   - updateInjected
   - ChangeObject
   - SyncDoor

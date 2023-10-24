@@ -8,13 +8,12 @@ public class Revive : MonoBehaviour
     private RaycastHit hit;
     private float currentTime = 0f;
     private Transform playerCamera;
+    private GameObject player;
     
     [SerializeField]
-    private float objectTime = 10f;
+    private float objectTime = 5f;
     [SerializeField]
     private float rayLine;
-    [SerializeField]
-    private GameObject player;
     
     public void Awake()
     {
@@ -22,7 +21,8 @@ public class Revive : MonoBehaviour
     }
     public void Start()
     {
-        playerCamera = player.transform.GetChild(0).GetComponent<Transform>();
+        playerCamera = this.transform.GetChild(0).GetComponent<Transform>();
+        // PlayerManager.OnPlayerJoined += HandlePlayerJoined;
     }
 
     public void Update()
@@ -33,6 +33,20 @@ public class Revive : MonoBehaviour
             Reviving();
         }
     }
+
+    // private void OnDestroy()
+    // {
+    //     PlayerManager.OnPlayerJoined -= HandlePlayerJoined;
+    // }
+
+    // private void HandlePlayerJoined(GameObject playerObject)
+    // {
+    //     if (playerObject != this.gameObject)
+    //     {
+    //         player = playerObject;
+    //         playerPV = GameObject.Find(player).GetComponent<PhotonView>();
+    //     }
+    // }
 
     private void Reviving()
     {
@@ -53,8 +67,7 @@ public class Revive : MonoBehaviour
 
     private void Cured()
     {
-        Down down = player.GetComponent<Down>();
-        down.isPlayerDowned = false;
+        // playerPV.RPC("updateDowned", RpcTarget.All, false);
     }
 
     private void OnEnable()
