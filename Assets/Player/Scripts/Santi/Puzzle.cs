@@ -18,11 +18,7 @@ public class Puzzle : MonoBehaviour
 
     public int comprobations;
     public string PasswordRef;
-
-    void Start()
-    {
-        
-    }
+    
 
     public void OpenPuzzle(bool puzzleCreated, bool puzzleActive, string objectName)
     {
