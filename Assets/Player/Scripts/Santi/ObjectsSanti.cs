@@ -122,6 +122,16 @@ public class ObjectsSanti : MonoBehaviour
         {
             InteractUI.SetActive(false);
         }
+
+        if (hit.transform != null && hit.transform.tag == "Box")
+        {
+            InteractUI.SetActive(true);
+        }
+        else
+        {
+            InteractUI.SetActive(false);
+        }
+
         if (puzzleActive)
         {
             InteractUI.SetActive(false);
@@ -156,6 +166,18 @@ public class ObjectsSanti : MonoBehaviour
         {
             activeButton.Activation(false);
             activated = false;
+        }
+        
+        if (hit.transform != null && hit.transform.tag == "Box")
+        {
+            Electricity box = hit.transform.GetComponent<Electricity>();
+            bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
+            
+            if (isInteractPressed)
+            {
+                //box.Activation(true);
+                box.GetComponent<PhotonView>().RPC("Activation", RpcTarget.All, true);
+            }
         }
     }
 

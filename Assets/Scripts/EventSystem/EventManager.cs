@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +19,9 @@ public class EventManager : MonoBehaviour
     [SerializeField]
     private bool WinScreen = false;
     [SerializeField]
-    private GameObject[] Objects;
+    private GameObject Pascuala;
+    [SerializeField]
+    private GameObject Lights;
     private bool RunOnce = false;
 
     public bool santiNear = false;
@@ -58,18 +61,14 @@ public class EventManager : MonoBehaviour
 
     void Interact()
     {
-        if (joseNear && santiNear && TwoPlayers && !RunOnce && Event)
+        if (joseNear && santiNear && TwoPlayers && !RunOnce && Event && Pascuala.activeSelf && Lights.activeSelf)
         {
-            Console.WriteLine("Players IN");
-            for (int i = 0; i < Objects.Length; i++)
-            {
-                //bool Value = Objects[i].activeInHierarchy;
-                Console.WriteLine(Objects.Length);
-                Objects[i].GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Objects[i]);
-                RunOnce = true;
-            }
+            Pascuala.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Pascuala.name);
+            Lights.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Lights.name);
+            RunOnce = true;
+            
             //AI.SetActive(true);
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         else if (joseNear && santiNear && TwoPlayers && !RunOnce && WinScreen)
         {
@@ -81,13 +80,9 @@ public class EventManager : MonoBehaviour
     {
         if (joseNear && !TwoPlayers && JoseEvent && !SantiEvent && !RunOnce && Event)
         {
-            for (int i = 0; i < Objects.Length; i++)
-            {
-                //bool Value = Objects[i].activeInHierarchy;
-                Console.WriteLine(Objects.Length);
-                Objects[i].GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Objects[i]);
-                RunOnce = true;
-            }
+            Pascuala.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Pascuala.name);
+            Lights.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Lights.name);
+            RunOnce = true;
             //AI.SetActive(true);
             Destroy(this);
         }
@@ -101,13 +96,9 @@ public class EventManager : MonoBehaviour
     {
         if (santiNear && !TwoPlayers && !JoseEvent && SantiEvent && !RunOnce && Event)
         {
-            for (int i = 0; i < Objects.Length; i++)
-            {
-                //bool Value = Objects[i].activeInHierarchy;
-                Console.WriteLine(Objects.Length);
-                Objects[i].GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Objects[i]);
-                RunOnce = true;
-            }
+            Pascuala.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Pascuala.name);
+            Lights.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Lights.name);
+            RunOnce = true;
             //AI.SetActive(true);
             Destroy(this);
         }

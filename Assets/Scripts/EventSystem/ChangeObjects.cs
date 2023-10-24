@@ -6,8 +6,9 @@ using UnityEngine;
 public class ChangeObjects : MonoBehaviourPun
 {
     [PunRPC]
-    public void ChangeObject(GameObject Objects)
+    public void ChangeObject(string name)
     {
+        GameObject Objects = GameObject.Find(name);
         bool Value = Objects.activeInHierarchy;
         Objects.SetActive(!Value);
     }

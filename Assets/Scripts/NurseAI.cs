@@ -243,6 +243,7 @@ public class NurseAI : MonoBehaviour
             JosePV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
             isPlayerCaught = false;
         }
+        NextPoint();
     }
 
     void LookingPlayer(Vector3 player)
