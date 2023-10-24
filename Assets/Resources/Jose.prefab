@@ -543,6 +543,9 @@ MonoBehaviour:
   Speed: 5
   JumpForce: 3
   Gravity: -50
+  moveSpeed: 5
+  lookSensitivity: 2
+  isPlayerInjected: 0
   HasRun: 0
   IsGrounded: 0
   GroundCheck: {fileID: 3109496370201296591}
@@ -709,10 +712,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   downTime: 20
   isPlayerInjected: 0
-  invertHorizontalInput: 0
-  invertVerticalInput: 0
-  invertCameraX: 0
-  invertCameraY: 0
   moveSpeed: 5
 --- !u!1 &3721035067046737618
 GameObject:

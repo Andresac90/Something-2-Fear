@@ -17,6 +17,7 @@ public class ObjectsSanti : MonoBehaviour
     private GameObject cloneR;
     private GameObject player;
     private GameObject pascualita;
+    private GameObject nurse;
     private RaycastHit hit;
     private Rigidbody objectRightRb;
     private Rigidbody objectLeftRb;
@@ -76,8 +77,11 @@ public class ObjectsSanti : MonoBehaviour
     public void Start()
     {
         pascualita = GameObject.Find("Pascualita");
-        AIControl aicontrol = pascualita.GetComponent<AIControl>();
-        aicontrol.santiActivation();
+        nurse = GameObject.Find("nurse");
+        AIControl aicontrolP = pascualita.GetComponent<AIControl>();
+        NurseAI aicontrolN = nurse.GetComponent<NurseAI>();
+        aicontrolP.santiActivation();
+        aicontrolN.SantiActivation();
     }
 
     public void Update()

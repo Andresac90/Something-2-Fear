@@ -1731,6 +1731,9 @@ MonoBehaviour:
   AudioListener: {fileID: 5894979599201347971}
   Canvas: {fileID: 1131350227747810395}
   Speed: 5
+  moveSpeed: 5
+  lookSensitivity: 2
+  isPlayerInjected: 0
   Gravity: -9.81
   IsGrounded: 0
   GroundCheck: {fileID: 8549641747801193850}
@@ -1862,10 +1865,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   downTime: 20
   isPlayerInjected: 0
-  invertHorizontalInput: 0
-  invertVerticalInput: 0
-  invertCameraX: 0
-  invertCameraY: 0
   moveSpeed: 5
 --- !u!1 &8673144922680235202
 GameObject:
