@@ -132,6 +132,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient && gameIsReady)
         {
+            SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Pause();
             playButton.SetActive(true);
         }
         else
