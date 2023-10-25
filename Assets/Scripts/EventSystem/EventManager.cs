@@ -84,10 +84,10 @@ public class EventManager : MonoBehaviour
         if (joseNear && !TwoPlayers && JoseEvent && !SantiEvent && !RunOnce && Event)
         {
             Pascuala.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Pascuala.name);
-            Lights.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Lights.name);
+            //Lights.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Lights.name);
             RunOnce = true;
             //AI.SetActive(true);
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         else if (joseNear && TwoPlayers && JoseEvent && !SantiEvent && !RunOnce && WinScreen)
         {
@@ -100,10 +100,10 @@ public class EventManager : MonoBehaviour
         if (santiNear && !TwoPlayers && !JoseEvent && SantiEvent && !RunOnce && Event)
         {
             Pascuala.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Pascuala.name);
-            Lights.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Lights.name);
+            //Lights.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Lights.name);
             RunOnce = true;
             //AI.SetActive(true);
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         else if (santiNear && TwoPlayers && !JoseEvent && SantiEvent && !RunOnce && WinScreen)
         {
