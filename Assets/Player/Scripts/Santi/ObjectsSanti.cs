@@ -20,7 +20,7 @@ public class ObjectsSanti : MonoBehaviour
     private GameObject pascualita;
     private GameObject nurse;
     private GameObject LightBox;
-    private GameObject puertaPrinicipal;
+    private GameObject puertaPrinicipal; 
     private RaycastHit hit;
     private Rigidbody objectRightRb;
     private Rigidbody objectLeftRb;
@@ -99,6 +99,7 @@ public class ObjectsSanti : MonoBehaviour
         NurseAI aicontrolN = nurse.GetComponent<NurseAI>();
         aicontrolP.santiActivation();
         aicontrolN.SantiActivation();
+        puertaPrinicipal = GameObject.Find("PuertaPrincipal");
     }
 
     public void Update()
