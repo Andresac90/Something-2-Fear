@@ -54,10 +54,11 @@ public class ObjectsSanti : MonoBehaviour
     [SerializeField]
     private GameObject ObjectRightUI;
 
-    [SerializeField]
-    private GameObject DropRightUI;
+    public GameObject DropRightUI;
     [SerializeField]
     private GameObject InteractUI;
+
+    private GameManager GameManager;
 
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
@@ -104,7 +105,7 @@ public class ObjectsSanti : MonoBehaviour
         }
 
         //Drop UI
-        if (grabObjR && throwCheckR)
+        if (grabObjR && throwCheckR && hit.transform.tag != "Puzzle")
         {
             DropRightUI.SetActive(true);
         }
@@ -118,12 +119,7 @@ public class ObjectsSanti : MonoBehaviour
         {
             InteractUI.SetActive(true);
         }
-        else
-        {
-            InteractUI.SetActive(false);
-        }
-
-        if (hit.transform != null && hit.transform.tag == "Box")
+        else if (hit.transform != null && hit.transform.tag == "Box")
         {
             InteractUI.SetActive(true);
         }
@@ -175,8 +171,8 @@ public class ObjectsSanti : MonoBehaviour
             
             if (isInteractPressed)
             {
-                //box.Activation(true);
-                box.GetComponent<PhotonView>().RPC("Activation", RpcTarget.All, true);
+                box.Activation(true);
+                GameManager.Lights.GetComponent<PhotonView>().RPC("Activation", RpcTarget.All, true);
             }
         }
     }
@@ -389,7 +385,7 @@ public class ObjectsSanti : MonoBehaviour
         throwCheckL = true;
     }
 
-    private IEnumerator RightDrop()
+    public IEnumerator RightDrop()
     {
         // GameObject child = playerR.transform.GetChild(0).gameObject;
         // child.layer = 0;

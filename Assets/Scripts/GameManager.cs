@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public bool blinkJose;
     public bool blinkSanti;
 
+    public GameObject Lights;
+
     void Awake()
     {
         MakeSingleton();   
