@@ -10,63 +10,70 @@ public class Revive : MonoBehaviourPun
     private RaycastHit hit;
     private float currentTime = 0f;
     private Transform playerCamera;
-    private PhotonView playerPV;
-    private PhotonView objectivePlayerPV;
     private int playersJoined = 0;
-    
+
     [SerializeField]
     private float objectTime;
     [SerializeField]
     private float rayLine;
-    
+
+    [SerializeField]
+    private LayerMask layerMask;
+
     public void Awake()
     {
         controls = new InputMaster();
     }
     public void Start()
     {
-        playerCamera = this.transform.GetChild(0).GetComponent<Transform>();
-        playerPV = GetComponent<PhotonView>();
-        GameManager.OnPlayersJoined += HandlePlayersJoined;
+        playerCamera = transform.GetComponentInChildren<Camera>().gameObject.transform;
+        // GameManager.OnPlayersJoined += HandlePlayersJoined;
+        if (name == "Santi(Clone)")
+        {
+            layerMask = LayerMask.GetMask("PlayerJose");
+        }
+        else if (name == "Jose(Clone)")
+        {
+            layerMask = LayerMask.GetMask("PlayerSanti");
+        }
     }
 
     public void Update()
     {
-        Physics.Raycast(playerCamera.position, playerCamera.TransformDirection(Vector3.forward), out hit, rayLine);
-        if (hit.transform != null && (hit.transform.tag == "PlayerSanti" || hit.transform.tag == "PlayerJose"))
-        {
-            Reviving();
-        }
+        if (!photonView.IsMine) return;
+        
+        CheckRevive();
     }
 
-    private void HandlePlayersJoined(PhotonView player1PV, PhotonView player2PV)
-    {
-        playerPV = player1PV;
-        objectivePlayerPV = player2PV;
-    }
-
-    private void Reviving()
+    private void CheckRevive()
     {
         bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0f;
         if(isInteractPressed)
         {
-            currentTime += Time.deltaTime;
-            Debug.Log("Presionado");
-            if(currentTime >= objectTime)
+            Physics.Raycast(playerCamera.position, playerCamera.TransformDirection(Vector3.forward), out hit, rayLine, layerMask);
+            if (hit.transform != null && (hit.transform.tag == "PlayerSanti" || hit.transform.tag == "PlayerJose"))
             {
-                Cured();
+                currentTime += Time.deltaTime;
+                if (currentTime >= objectTime)
+                {
+                    RevivePlayer(hit.transform.gameObject);
+                    currentTime = 0f;
+                }
             }
         }
         else
-        {
-            currentTime = 0f;
-        }
+            {
+                currentTime = 0f;
+            }
     }
 
-    private void Cured()
+    private void RevivePlayer(GameObject playerObject)
     {
-        Debug.Log("curado");
-        objectivePlayerPV.RPC("updateDowned", RpcTarget.All, false);
+        PhotonView playerPV = playerObject.GetComponent<PhotonView>();
+        if (playerPV == null) return;
+        if (playerPV.IsMine) return;
+        
+        playerPV.RPC("SyncRevive", RpcTarget.All);
     }
 
     private void OnEnable()
