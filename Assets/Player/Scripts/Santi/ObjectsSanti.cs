@@ -20,6 +20,7 @@ public class ObjectsSanti : MonoBehaviour
     private GameObject pascualita;
     private GameObject nurse;
     private GameObject LightBox;
+    private GameObject puertaPrinicipal;
     private RaycastHit hit;
     private Rigidbody objectRightRb;
     private Rigidbody objectLeftRb;
@@ -106,6 +107,7 @@ public class ObjectsSanti : MonoBehaviour
         Activation();
         if(hit.transform != null)
         {
+            OpenFinalDoor();
             PuzzleManager();
             NoteManager();
             if (objectNameString == "KeyMaster1" || objectNameString == "KeyMaster2" || objectNameString == "KeyMaster3")
@@ -185,6 +187,20 @@ public class ObjectsSanti : MonoBehaviour
             InteractUI.SetActive(false);
         }
         Drop();
+    }
+
+    private void OpenFinalDoor()
+    {
+        if(hit.transform.tag == "FinalDoor")
+        {
+            bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
+            if(isInteractPressed && GameManager.Instance.Key1 && GameManager.Instance.Key2 && GameManager.Instance.Key3)
+            {
+                puertaPrinicipal.GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, true);
+                puertaPrinicipal.GetComponent<Door>().doorState = true;
+                puertaPrinicipal.GetComponent<Door>().OpenDoor();
+            }
+        }
     }
 
     private void Activation()
