@@ -270,7 +270,7 @@ public class AIControl : MonoBehaviourPun
             StartCoroutine(EndJoseJumpscare());
         }
 
-        isPatrol = true;
+        
         Patroling();
 
     }
@@ -418,6 +418,7 @@ public class AIControl : MonoBehaviourPun
             {
                 Debug.Log(playerInRange[i]);
                 isChasing = false;
+                isPatrol = true;
                 break;
             }
             Vector3 dirToPlayer = (player.position - transform.position).normalized;
