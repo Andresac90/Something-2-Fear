@@ -57,6 +57,8 @@ public class ObjectsSanti : MonoBehaviour
     [SerializeField]
     private GameObject InteractUI;
 
+    private GameManager GameManager;
+
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
     public bool noteCreated = false;
@@ -151,6 +153,21 @@ public class ObjectsSanti : MonoBehaviour
             activeButton.Activation(false);
             activated = false;
         }
+<<<<<<< Updated upstream
+=======
+        
+        if (hit.transform != null && hit.transform.tag == "Box")
+        {
+            Electricity box = hit.transform.GetComponent<Electricity>();
+            bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
+            
+            if (isInteractPressed)
+            {
+                box.Activation(true);
+                GameManager.Lights.GetComponent<PhotonView>().RPC("Activation", RpcTarget.All, true);
+            }
+        }
+>>>>>>> Stashed changes
     }
 
     public void PuzzleManager()

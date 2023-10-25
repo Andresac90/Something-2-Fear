@@ -1762,6 +1762,7 @@ MonoBehaviour:
   puzzleCreated: 0
   puzzleActive: 0
   noteCreated: 0
+  objectName: 
 --- !u!114 &4948735220528498441
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,6 +15,12 @@ TagManager:
   - Button
   - Hide
   - Enemy
+<<<<<<< Updated upstream
+=======
+  - Obstacle
+  - Box
+  - Key
+>>>>>>> Stashed changes
   layers:
   - Default
   - TransparentFX
