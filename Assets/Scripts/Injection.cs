@@ -60,6 +60,8 @@ public class Injection : MonoBehaviour
             if (isPlayerInjected && wasntInjected)
             {
                 santiController.SetInjected(true);
+                camera.fieldOfView = 100;
+                camera.GetComponent<PlayerLook>().SetInvert(true);
                 wasInjected = true;
                 wasntInjected = false;
                 santiInjected = true;
@@ -67,7 +69,8 @@ public class Injection : MonoBehaviour
             else if (!isPlayerInjected && wasInjected)
             {
                 santiController.SetInjected(false);
-
+                camera.fieldOfView = 60;
+                camera.GetComponent<PlayerLook>().SetInvert(false);
                 wasInjected = false;
                 wasntInjected = true;
                 santiInjected = false;
@@ -83,9 +86,9 @@ public class Injection : MonoBehaviour
         {
             if (isPlayerInjected && wasntInjected)
             {
-                Debug.Log("Jose injected");
-                Debug.Log(isPlayerCaught);
                 joseController.SetInjected(isPlayerCaught);
+                camera.fieldOfView = 100;
+                camera.GetComponent<PlayerLook>().SetInvert(true);
 
                 wasInjected = true;
                 wasntInjected = false;
@@ -94,6 +97,8 @@ public class Injection : MonoBehaviour
             else if (!isPlayerInjected && wasInjected)
             {
                 joseController.SetInjected(false);
+                camera.fieldOfView = 60;
+                camera.GetComponent<PlayerLook>().SetInvert(false);
 
                 wasInjected = false;
                 wasntInjected = true;

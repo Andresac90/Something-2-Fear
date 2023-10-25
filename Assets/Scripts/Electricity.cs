@@ -33,7 +33,7 @@ public class Electricity : MonoBehaviour
 
         if (currentTime > lightsTime)
         {
-            Lights.GetComponent<PhotonView>().RPC("Activation", RpcTarget.All, false);
+            this.GetComponent<PhotonView>().RPC("Activation", RpcTarget.All, false);
         }
     }
 }

@@ -18,6 +18,7 @@ public class ObjectsSanti : MonoBehaviour
     private GameObject player;
     private GameObject pascualita;
     private GameObject nurse;
+    private GameObject LightBox;
     private RaycastHit hit;
     private Rigidbody objectRightRb;
     private Rigidbody objectLeftRb;
@@ -37,7 +38,6 @@ public class ObjectsSanti : MonoBehaviour
     private bool throwCheckL = true;
     private bool activated = false;
     private Button activeButton = null;
-    
 
     [SerializeField]
     private Transform objectRightCamera;
@@ -79,6 +79,7 @@ public class ObjectsSanti : MonoBehaviour
     {
         pascualita = GameObject.Find("Pascualita");
         nurse = GameObject.Find("nurse");
+        LightBox = GameObject.Find("LightBox");
         AIControl aicontrolP = pascualita.GetComponent<AIControl>();
         NurseAI aicontrolN = nurse.GetComponent<NurseAI>();
         aicontrolP.santiActivation();
@@ -171,8 +172,7 @@ public class ObjectsSanti : MonoBehaviour
             
             if (isInteractPressed)
             {
-                box.Activation(true);
-                GameManager.Lights.GetComponent<PhotonView>().RPC("Activation", RpcTarget.All, true);
+                LightBox.GetComponent<PhotonView>().RPC("Activation", RpcTarget.All, true);
             }
         }
     }
