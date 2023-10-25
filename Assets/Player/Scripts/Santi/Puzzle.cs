@@ -13,7 +13,7 @@ public class Puzzle : MonoBehaviourPun
     [SerializeField]
     private GameObject puzzle;
     [SerializeField]
-    private Door door;
+    private GameObject door;
     [SerializeField]
     private int comprobationsNeeded;
     private int keylevel = 1;
@@ -84,10 +84,10 @@ public class Puzzle : MonoBehaviourPun
         if(comprobations == comprobationsNeeded)
         {
 
-            photonView.RPC("SyncDoor", RpcTarget.All, true);
+            door.GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, true);
             // door.OpenDoor();
-            door.doorState = true;
-            door.OpenDoor();
+            door.GetComponent<Door>().doorState = true;
+            door.GetComponent<Door>().OpenDoor();
             PlayerMovement(true);
             objectsSanti.puzzleCreated = false;
             objectsSanti.puzzleActive = false;
