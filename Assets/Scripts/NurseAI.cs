@@ -203,7 +203,7 @@ public class NurseAI : MonoBehaviour
             JosePV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
         }
 
-        isPatrol = false;
+        isPatrol = true;
 
         Patroling();
     }
@@ -269,11 +269,15 @@ public class NurseAI : MonoBehaviour
         for (int i = 0; i < playerInRange.Length; i++)
         {
             Transform player = playerInRange[i].transform;
+            if (player.GetComponent<Injection>().isPlayerInjected || player.GetComponent<Down>().isPlayerDowned)
+            {
+                break;
+            }
             Vector3 dirToPlayer = (player.position - transform.position).normalized;
             if (Vector3.Angle(transform.forward, dirToPlayer) < viewAngle / 2)
             {
                 float dstToPlayer = Vector3.Distance(transform.position, player.position);          //  Distance of the enmy and the player
-                if (!Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, obstacleMask))
+                if (!Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, obstacleMask) && !isPlayerCaught)
                 {
                     this.playerInRange = true;             //  The player has been seen by the enemy and then the enemy chases the player
                     isChasing = true;                 //  Change the state to chasing the player
