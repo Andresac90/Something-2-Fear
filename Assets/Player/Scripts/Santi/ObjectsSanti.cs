@@ -106,7 +106,7 @@ public class ObjectsSanti : MonoBehaviour
         }
 
         //Drop UI
-        if (grabObjR && throwCheckR && hit.transform.tag != "Puzzle")
+        if (grabObjR && throwCheckR && hit.transform != null && hit.transform.tag != "Puzzle")
         {
             DropRightUI.SetActive(true);
         }
