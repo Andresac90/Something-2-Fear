@@ -1,78 +1,73 @@
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
-using Unity.VisualScripting;
+
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class PlayerItem : MonoBehaviourPunCallbacks
 {
     public string playerName;
     private bool isLocalPlayer = false;
     ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable();
-    Player player;
 
 
     void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!photonView.IsMine) return;
         Movement();
-    }
-
-    public void SetPlayerInfo(Player _player)
-    {
-        player = _player;
-        UpdatePlayerItem(player);
     }
 
     private void Movement (){
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)){
             if (playerName == ""){
-                playerProperties["Player"] = "Jose";
+                SetCharacterSelection("Jose");
             } 
             if (playerName == "Santi"){
-                playerProperties["Player"] = "";
+                SetCharacterSelection("");
             }
+            photonView.RPC("SyncCharacterSelection", RpcTarget.All, (string)playerProperties["Player"]);
         }
         if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)){
             if (playerName == ""){
-                playerProperties["Player"] = "Santi";
+                SetCharacterSelection("Santi");
             } 
             if (playerName == "Jose"){
-                playerProperties["Player"] = "";
+                SetCharacterSelection("");
             }
-        }
-        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
-    }
-    public void SetUp()
-    {
-        isLocalPlayer = true;
-        player = PhotonNetwork.LocalPlayer;
-    }
-
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
-    {
-        if (player == targetPlayer){
-            UpdatePlayerItem(targetPlayer);
+            photonView.RPC("SyncCharacterSelection", RpcTarget.All, (string)playerProperties["Player"]);
         }
     }
 
-    void UpdatePlayerItem(Player player){
-        if (player.CustomProperties.ContainsKey("Player")){
-            playerName = (string)player.CustomProperties["Player"];
-            if (playerName == "Jose"){
-                transform.localPosition = new Vector3(-500, transform.localPosition.y, transform.localPosition.z);
-            }
-            if (playerName == ""){
-                transform.localPosition = new Vector3(0, transform.localPosition.y, transform.localPosition.z);
-            }
-            if (playerName == "Santi"){
-                transform.localPosition = new Vector3(500, transform.localPosition.y, transform.localPosition.z);
-            }
-            playerProperties["Player"] = playerName;
+    private void SetCharacterSelection(string characterName)
+    {
+        playerName = characterName;
+        playerProperties["Player"] = playerName;
+        photonView.RPC("SyncCharacterSelection", RpcTarget.All, characterName);
+    }
+
+    [PunRPC]
+    public void SyncCharacterSelection(string _playerName){
+        playerName = _playerName;
+        if (playerName == "Jose"){
+            transform.localPosition = new Vector3(-500, transform.localPosition.y, transform.localPosition.z);
+        }
+        if (playerName == ""){
+            transform.localPosition = new Vector3(0, transform.localPosition.y, transform.localPosition.z);
+        }
+        if (playerName == "Santi"){
+            transform.localPosition = new Vector3(500, transform.localPosition.y, transform.localPosition.z);
+        }
+    }
+
+    [PunRPC]
+    public void SyncParent(bool playerNumber){
+        transform.SetParent(GameObject.Find("LobbyPanel").transform);
+
+        if (playerNumber == true){
+            transform.localPosition = new Vector3(0, -340, 0);
         }
         else{
-            playerProperties["Player"] = "";
+            transform.localPosition = new Vector3(0, 60, 0);
         }
     }
 }

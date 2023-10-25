@@ -72,7 +72,10 @@ public class EventManager : MonoBehaviour
         }
         else if (joseNear && santiNear && TwoPlayers && !RunOnce && WinScreen)
         {
-            PhotonNetwork.LoadLevel("WinScreen");
+            //PhotonNetwork.AutomaticallySyncScene = true;
+            //PhotonNetwork.LoadLevel("WinScreen");
+            SceneManager.LoadScene("WinScreen");
+            RunOnce = true;
         }
     }
 

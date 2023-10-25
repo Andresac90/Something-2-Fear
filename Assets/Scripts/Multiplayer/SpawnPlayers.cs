@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 using Photon.Pun;
@@ -11,8 +9,6 @@ public class SpawnPlayers : MonoBehaviour
 
     void Start()
     {
-        int playerNumber = PhotonNetwork.CurrentRoom.PlayerCount;
-
         string player = (string)PhotonNetwork.LocalPlayer.CustomProperties["Player"];
 
         if(player == "Santi")
