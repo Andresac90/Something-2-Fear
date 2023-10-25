@@ -63,7 +63,7 @@ public class ObjectsSanti : MonoBehaviour
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
     public bool noteCreated = false;
-    public string objectName;
+    public string objectNameString;
 
     public void Awake()
     {
@@ -184,7 +184,12 @@ public class ObjectsSanti : MonoBehaviour
             Puzzle puzzle = hit.transform.GetComponent<Puzzle>();
             string objectName = hit.collider.gameObject.name;
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.2f;
-            if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
+            if(objectNameString != "Key" && puzzle.puzzle.name == "LockPick")
+            {
+                Debug.Log("You need a key");
+                //UI You need a key
+            }
+            else if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
             {
                 puzzle.OpenPuzzle(false, false, objectName);
                 puzzleCreated = true;
@@ -304,7 +309,7 @@ public class ObjectsSanti : MonoBehaviour
         objectRightRb = hit.rigidbody;
         objectRightT = hit.transform;
         ObjectRightUI.SetActive(false);
-        objectName = hit.transform.GetComponent<ObjectsData>().ObjectName;
+        objectNameString = hit.transform.GetComponent<ObjectsData>().ObjectName;
         
         // RightGrabTwo();
         yield return new WaitForSeconds(0.5f);
