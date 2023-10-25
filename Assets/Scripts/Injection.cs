@@ -15,6 +15,7 @@ public class Injection : MonoBehaviour
     public float currentTime = 0f;
     private bool santiInjected = false;
     private bool joseInjected = false;
+    private bool timeOver = false;
 
     [SerializeField]
     private float downTime = 20f;
@@ -63,6 +64,7 @@ public class Injection : MonoBehaviour
                 santiController.SetInjected(true);
                 camera.fieldOfView = 120;
                 camera.GetComponent<PlayerLook>().SetInvert(true);
+                currentTime = 0f;
 
                 wasInjected = true;
                 wasntInjected = false;
@@ -82,7 +84,7 @@ public class Injection : MonoBehaviour
             else if (!wasntInjected)
             {
                 currentTime += Time.deltaTime;
-                SantiPV.RPC("syncDowned", RpcTarget.All, isPlayerCaught);
+                //SantiPV.RPC("syncDowned", RpcTarget.All, isPlayerCaught);
             }
         }
         else if (this.name == "Jose(Clone)")
@@ -92,6 +94,7 @@ public class Injection : MonoBehaviour
                 joseController.SetInjected(isPlayerCaught);
                 camera.fieldOfView = 120;
                 camera.GetComponent<PlayerLook>().SetInvert(true);
+                currentTime = 0f;
 
                 wasInjected = true;
                 wasntInjected = false;
@@ -111,7 +114,7 @@ public class Injection : MonoBehaviour
             else if (!wasntInjected)
             {
                 currentTime += Time.deltaTime;
-                JosePV.RPC("syncDowned", RpcTarget.All, isPlayerCaught);
+                //JosePV.RPC("syncDowned", RpcTarget.All, isPlayerCaught);
             }
         }
     }
@@ -120,7 +123,7 @@ public class Injection : MonoBehaviour
     {
         if (currentTime > downTime)
         {
-
+            timeOver = true;
         }
     }
 }

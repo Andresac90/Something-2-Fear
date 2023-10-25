@@ -239,10 +239,7 @@ public class NurseAI : MonoBehaviour
             JosePV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
             isPlayerCaught = false;
         }
-        Move(walkSpeed);
-        //TimeToRotate = timeToRotate;
-        WaitTime = startWaitTime;
-        aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position); //return to patrol
+        Patroling();
     }
 
     void LookingPlayer(Vector3 player)
