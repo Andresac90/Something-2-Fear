@@ -49,6 +49,7 @@ public class Injection : MonoBehaviour
         {
             Injected(isPlayerInjected);
         }
+        checkInjection();
     }
 
     public void Injected(bool isPlayerCaught)
@@ -81,7 +82,7 @@ public class Injection : MonoBehaviour
             else if (!wasntInjected)
             {
                 currentTime += Time.deltaTime;
-                //SantiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+                SantiPV.RPC("syncDowned", RpcTarget.All, isPlayerCaught);
             }
         }
         else if (this.name == "Jose(Clone)")
@@ -110,8 +111,16 @@ public class Injection : MonoBehaviour
             else if (!wasntInjected)
             {
                 currentTime += Time.deltaTime;
-                //JosePV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+                JosePV.RPC("syncDowned", RpcTarget.All, isPlayerCaught);
             }
+        }
+    }
+
+    public void checkInjection()
+    {
+        if (currentTime > downTime)
+        {
+
         }
     }
 }

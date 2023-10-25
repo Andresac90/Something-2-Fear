@@ -18,6 +18,7 @@ TagManager:
   - Obstacle
   - Box
   - Key
+  - Health
   layers:
   - Default
   - TransparentFX
