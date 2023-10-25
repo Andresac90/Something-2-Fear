@@ -229,6 +229,9 @@ PrefabInstance:
     - {fileID: 7758464723538168035, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
     - {fileID: 4948735220528498441, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
     - {fileID: -7280666114099604731, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
+    - {fileID: -1339560007807122216, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
+    - {fileID: -5941515275681577200, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
+    - {fileID: -3681220690550547108, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
     m_RemovedGameObjects:
     - {fileID: 7834666143535201277, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
     - {fileID: 1131350227747810395, guid: 3e70831768bfaa24ea9fd4baf91ed28c, type: 3}
@@ -2610,6 +2613,9 @@ PrefabInstance:
     - {fileID: 4575259579555685261, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
     - {fileID: 3848050428572517201, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
     - {fileID: 5414063578607251343, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
+    - {fileID: -5500400414091018079, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
+    - {fileID: -4234860115109826470, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
+    - {fileID: 7004039161926669386, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
     m_RemovedGameObjects:
     - {fileID: 8388354743301379402, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
     - {fileID: 6115386676729576291, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
