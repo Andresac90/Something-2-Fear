@@ -907,6 +907,7 @@ MonoBehaviour:
   ObjectRightUI: {fileID: 2471746697219547144}
   ThrowLeftUI: {fileID: 8861753751187627903}
   ThrowRightUI: {fileID: 3721035067046737618}
+  Timer: {fileID: 4640754014430920160}
 --- !u!114 &-1153828020552127956
 MonoBehaviour:
   m_ObjectHideFlags: 0

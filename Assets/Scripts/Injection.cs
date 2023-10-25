@@ -16,9 +16,7 @@ public class Injection : MonoBehaviour
     private bool santiInjected = false;
     private bool joseInjected = false;
     private bool timeOver = false;
-
-    [SerializeField]
-    private float downTime = 20f;
+    public float downTime = 20f;
 
     private PhotonView JosePV;
     private PhotonView SantiPV;
@@ -36,6 +34,14 @@ public class Injection : MonoBehaviour
         CharController = GetComponent<CharacterController>();
         santiController = GetComponent<SantiController>();
         joseController = GetComponent<JoseMovement>();
+        if(santiController != null)
+        {
+            SantiPV = gameObject.GetComponent<PhotonView>();
+        } 
+        else
+        {
+            JosePV = gameObject.GetComponent<PhotonView>();
+        }
     }
 
     [PunRPC]
@@ -84,7 +90,6 @@ public class Injection : MonoBehaviour
             else if (!wasntInjected)
             {
                 currentTime += Time.deltaTime;
-                //SantiPV.RPC("syncDowned", RpcTarget.All, isPlayerCaught);
             }
         }
         else if (this.name == "Jose(Clone)")
@@ -114,7 +119,6 @@ public class Injection : MonoBehaviour
             else if (!wasntInjected)
             {
                 currentTime += Time.deltaTime;
-                //JosePV.RPC("syncDowned", RpcTarget.All, isPlayerCaught);
             }
         }
     }
@@ -123,7 +127,14 @@ public class Injection : MonoBehaviour
     {
         if (currentTime > downTime)
         {
-            timeOver = true;
+            if(this.name == "Santi(Clone)")
+            {
+                SantiPV.RPC("syncDowned", RpcTarget.All, true);
+            }
+            else
+            {
+                JosePV.RPC("syncDowned", RpcTarget.All, true);
+            }
         }
     }
 }

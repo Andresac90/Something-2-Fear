@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using UnityEditor;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 
 public class ObjectsSanti : MonoBehaviour
 {
@@ -60,6 +61,8 @@ public class ObjectsSanti : MonoBehaviour
 
     [SerializeField]
     private GameObject Timer;
+
+    private TextMeshProUGUI textMeshProText;
 
     private GameManager GameManager;
 
@@ -136,7 +139,14 @@ public class ObjectsSanti : MonoBehaviour
         if (this.GetComponent<Injection>().isPlayerInjected)
         {
             Timer.SetActive(true);
-            //Timer. = this.GetComponent<Injection>().currentTime;
+            textMeshProText = Timer.GetComponent<TextMeshProUGUI>();
+            textMeshProText.text = ((int)this.GetComponent<Injection>().downTime - (int)this.GetComponent<Injection>().currentTime).ToString();
+        }
+        else
+        {
+            Timer.SetActive(false);
+            textMeshProText = Timer.GetComponent<TextMeshProUGUI>();
+            textMeshProText.text = ((int)this.GetComponent<Injection>().currentTime).ToString();
         }
 
         if (puzzleActive)
