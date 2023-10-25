@@ -697,6 +697,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectTime: 5
   rayLine: 3
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &7004039161926669386
 MonoBehaviour:
   m_ObjectHideFlags: 0

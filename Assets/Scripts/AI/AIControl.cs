@@ -454,14 +454,14 @@ public class AIControl : MonoBehaviourPun
         if (!courutineRinning)
         {
             courutineRinning= true;
-            yield return new WaitForSeconds(15f);
+            yield return new WaitForSeconds(2f);
             Debug.Log("pING IENUM");
             aiAnimation.ResetTrigger("walk");
             aiAnimation.ResetTrigger("idle");
             aiAnimation.ResetTrigger("sprint");
             santiAnimation.ResetTrigger("SantiJumpscareTrigger");
             santiAnimation.SetTrigger("SantiDownedTrigger");
-            SantiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+            SantiPV.RPC("SyncDowned", RpcTarget.All);
             courutineRinning = false;
         }
         
