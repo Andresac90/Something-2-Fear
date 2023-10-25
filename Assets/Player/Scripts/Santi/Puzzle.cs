@@ -95,7 +95,7 @@ public class Puzzle : MonoBehaviourPun
             {
                 StartCoroutine(objectsSanti.RightDrop());
                 objectsSanti.objectNameString = "";
-                GameObject.Find("SmallKey_Item" + keylevel).SetActive(false);
+                GameObject.Find("SmallKey_Item" + keylevel).GetComponent<PhotonView>().RPC("DestroyKeyOnline", RpcTarget.All, GameObject.Find("SmallKey_Item" + keylevel).name);
                 keylevel += 1;
             }
 
