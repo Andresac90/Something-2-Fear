@@ -66,7 +66,6 @@ public class Injection : MonoBehaviour
             if (isPlayerInjected && cured)
             {
                 santiController.SetInjected(true);
-                camera.fieldOfView = 110;
                 camera.GetComponent<PlayerLook>().SetInvert(true);
                 currentTime = 0f;
 
@@ -75,6 +74,7 @@ public class Injection : MonoBehaviour
             }
             else if (!cured)
             {
+                camera.fieldOfView++;
                 currentTime += Time.deltaTime;
             }
         }
@@ -83,7 +83,6 @@ public class Injection : MonoBehaviour
             if (isPlayerInjected && cured)
             {
                 joseController.SetInjected(isPlayerCaught);
-                camera.fieldOfView = 110;
                 camera.GetComponent<PlayerLook>().SetInvert(true);
                 currentTime = 0f;
 
@@ -92,6 +91,7 @@ public class Injection : MonoBehaviour
             }
             else if (!cured)
             {
+                camera.fieldOfView++;
                 currentTime += Time.deltaTime;
             }
         }
