@@ -10,13 +10,12 @@ public class Injection : MonoBehaviour
     private Camera camera;
     private CharacterController CharController;
     private GameObject playerCam;
-    private bool wasInjected = false;
-    private bool wasntInjected = true;
+    public bool cured = true;
     public float currentTime = 0f;
     private bool santiInjected = false;
     private bool joseInjected = false;
     private bool timeOver = false;
-    public float downTime = 20f;
+    public float downTime = 35f;
 
     private PhotonView JosePV;
     private PhotonView SantiPV;
@@ -25,7 +24,6 @@ public class Injection : MonoBehaviour
     private JoseMovement joseController;
     public bool isPlayerInjected;
 
-    public float moveSpeed = 3.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -65,61 +63,57 @@ public class Injection : MonoBehaviour
 
         if (this.name == "Santi(Clone)")
         {
-            if (isPlayerInjected && wasntInjected)
+            if (isPlayerInjected && cured)
             {
                 santiController.SetInjected(true);
-                camera.fieldOfView = 120;
+                camera.fieldOfView = 110;
                 camera.GetComponent<PlayerLook>().SetInvert(true);
                 currentTime = 0f;
 
-                wasInjected = true;
-                wasntInjected = false;
+                cured = false;
                 santiInjected = true;
             }
-            else if (!isPlayerInjected && wasInjected)
-            {
-                santiController.SetInjected(false);
-                camera.fieldOfView = 60;
-                camera.GetComponent<PlayerLook>().SetInvert(false);
-
-                wasInjected = false;
-                wasntInjected = true;
-                santiInjected = false;
-                currentTime = 0f;
-            }
-            else if (!wasntInjected)
+            else if (!cured)
             {
                 currentTime += Time.deltaTime;
             }
         }
         else if (this.name == "Jose(Clone)")
         {
-            if (isPlayerInjected && wasntInjected)
+            if (isPlayerInjected && cured)
             {
                 joseController.SetInjected(isPlayerCaught);
-                camera.fieldOfView = 120;
+                camera.fieldOfView = 110;
                 camera.GetComponent<PlayerLook>().SetInvert(true);
                 currentTime = 0f;
 
-                wasInjected = true;
-                wasntInjected = false;
+                cured = false;
                 joseInjected = true;
             }
-            else if (!isPlayerInjected && wasInjected)
-            {
-                joseController.SetInjected(false);
-                camera.fieldOfView = 60;
-                camera.GetComponent<PlayerLook>().SetInvert(false);
-
-                wasInjected = false;
-                wasntInjected = true;
-                joseInjected = false;
-                currentTime = 0f;
-            }
-            else if (!wasntInjected)
+            else if (!cured)
             {
                 currentTime += Time.deltaTime;
             }
+        }
+    }
+
+    public void Cured()
+    {
+        if (this.name == "Santi(Clone)")
+        {
+            santiController.SetInjected(false);
+            camera.fieldOfView = 60;
+            camera.GetComponent<PlayerLook>().SetInvert(false);
+            currentTime = 0f;
+            cured = true;
+        }
+        else if (this.name == "Jose(Clone)")
+        {
+            joseController.SetInjected(false);
+            camera.fieldOfView = 60;
+            camera.GetComponent<PlayerLook>().SetInvert(false);
+            currentTime = 0f;
+            cured = true;
         }
     }
 
@@ -129,11 +123,15 @@ public class Injection : MonoBehaviour
         {
             if(this.name == "Santi(Clone)")
             {
-                SantiPV.RPC("syncDowned", RpcTarget.All, true);
+                isPlayerInjected = false;
+                Cured();
+                SantiPV.RPC("SyncDowned", RpcTarget.All);
             }
             else
             {
-                JosePV.RPC("syncDowned", RpcTarget.All, true);
+                isPlayerInjected = false;
+                Cured();
+                JosePV.RPC("SyncDowned", RpcTarget.All);
             }
         }
     }

@@ -2446,10 +2446,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b71d92a408a506429a29b1d83c3cdc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cured: 1
   currentTime: 0
-  downTime: 20
+  downTime: 35
   isPlayerInjected: 0
-  moveSpeed: 5
 --- !u!95 &4869968867936912613
 Animator:
   serializedVersion: 5
