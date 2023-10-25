@@ -64,9 +64,8 @@ public class Down : MonoBehaviourPun
         }
         GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y - 0.879f, transform.position.z);
         GetComponent<Transform>().rotation = Quaternion.Euler(Quaternion.identity.x - 90f, Quaternion.identity.y, Quaternion.identity.z);
-        CharController.stepOffset = 0;
-        CharController.height = 0.1f;
-        CharController.center = new Vector3(0, 0, 0);
+        GetComponent<BoxCollider>().enabled = true;
+        CharController.enabled = false;
         Camera.transform.rotation = Quaternion.Euler(Quaternion.identity.x + 70f, Quaternion.identity.y, Quaternion.identity.z);
         GetComponentInChildren<PlayerLook>().enabled = false;
         isPlayerDowned = true;
@@ -91,9 +90,8 @@ public class Down : MonoBehaviourPun
         }
         GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y + 0.879f, transform.position.z);
         GetComponent<Transform>().rotation = Quaternion.Euler(Quaternion.identity.x, Quaternion.identity.y, Quaternion.identity.z);
-        CharController.height = 2f;
-        CharController.center = new Vector3(0, 0, 0);
-        CharController.stepOffset = 0.3f;
+        CharController.enabled = true;
+        GetComponent<BoxCollider>().enabled = false;
         Camera.transform.rotation = Quaternion.Euler(Quaternion.identity.x, Quaternion.identity.y, Quaternion.identity.z);
         GetComponentInChildren<PlayerLook>().enabled = true;
         isPlayerDowned = false;

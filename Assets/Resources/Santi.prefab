@@ -2241,6 +2241,7 @@ GameObject:
   - component: {fileID: -5941515275681577200}
   - component: {fileID: -3681220690550547108}
   - component: {fileID: 4869968867936912613}
+  - component: {fileID: 5621719121509610571}
   m_Layer: 7
   m_Name: Santi
   m_TagString: PlayerSanti
@@ -2474,6 +2475,27 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!65 &5621719121509610571
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8017623072165681613}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 0.39181757, y: 2.2058504, z: 1}
+  m_Center: {x: 0.0047910735, y: 0.10143244, z: 0}
 --- !u!1 &8673144922680235202
 GameObject:
   m_ObjectHideFlags: 0
