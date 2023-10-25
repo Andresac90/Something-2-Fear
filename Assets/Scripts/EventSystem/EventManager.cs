@@ -74,6 +74,7 @@ public class EventManager : MonoBehaviour
         {
             //PhotonNetwork.AutomaticallySyncScene = true;
             //PhotonNetwork.LoadLevel("WinScreen");
+            SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Play();
             SceneManager.LoadScene("WinScreen");
             RunOnce = true;
         }
@@ -91,6 +92,7 @@ public class EventManager : MonoBehaviour
         }
         else if (joseNear && TwoPlayers && JoseEvent && !SantiEvent && !RunOnce && WinScreen)
         {
+            SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Play();
             SceneManager.LoadScene("WinScreen");
         }
 
@@ -107,6 +109,7 @@ public class EventManager : MonoBehaviour
         }
         else if (santiNear && TwoPlayers && !JoseEvent && SantiEvent && !RunOnce && WinScreen)
         {
+            SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Play();
             SceneManager.LoadScene("WinScreen");
         }
 

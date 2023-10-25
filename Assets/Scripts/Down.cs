@@ -14,6 +14,8 @@ public class Down : MonoBehaviourPun
     private float currentTime = 0f;
     [SerializeField]
     private float deadTime;
+    private bool joseDown = false;
+    private bool santiDown = false;
 
     public bool isPlayerDowned;
 
@@ -26,7 +28,20 @@ public class Down : MonoBehaviourPun
 
     void Update()
     {
-      
+        Die();
+    }
+
+    [PunRPC]
+    public void playerDown(bool down)
+    {
+        if (name == "Santi(Clone)")
+        {
+            santiDown = down;   
+        }
+        else if (name == "Jose(Clone)")
+        {
+            joseDown = down;
+        }
     }
 
     [PunRPC]
@@ -38,11 +53,13 @@ public class Down : MonoBehaviourPun
         // look for santiController or JoseMovement
         if (name == "Santi(Clone)")
         {
+            photonView.RPC("playerDown", RpcTarget.All, true);
             GetComponent<SantiController>().enabled = false;
             
         }
         else if (name == "Jose(Clone)")
         {
+            photonView.RPC("playerDown", RpcTarget.All, true);
             GetComponent<JoseMovement>().enabled = false;
         }
         GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y - 0.879f, transform.position.z);
@@ -62,11 +79,13 @@ public class Down : MonoBehaviourPun
         Debug.Log("reviving");
         if (name == "Santi(Clone)")
         {
+            photonView.RPC("playerDown", RpcTarget.All, false);
             GetComponent<SantiController>().enabled = true;
             
         }
         else if (name == "Jose(Clone)")
         {
+            photonView.RPC("playerDown", RpcTarget.All, false);
             GetComponent<JoseMovement>().enabled = true;
             
         }
@@ -81,11 +100,13 @@ public class Down : MonoBehaviourPun
     }
     private void Die()
     {
-        if(currentTime >= deadTime)
+        if((currentTime >= deadTime) || (joseDown && santiDown))
         {
             Debug.Log("eliminado");
             Cursor.lockState = CursorLockMode.None;
-            SceneManager.LoadScene("LoseScreen"); // change to PhotonNetwork.LoadLevel("LoseScreen");
+            SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Play();
+            //SceneManager.LoadScene("LoseScreen"); // change to 
+            PhotonNetwork.LoadLevel("LoseScreen");
             // gameObject.SetActive(false);
         }
     }
