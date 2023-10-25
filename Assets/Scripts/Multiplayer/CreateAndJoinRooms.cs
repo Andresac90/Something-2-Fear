@@ -95,14 +95,14 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
         GameObject playerObject;
 
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 1){
-            playerObject = PhotonNetwork.Instantiate("PlayerItem", Vector3.zero, Quaternion.identity);
-            playerObject.GetComponent<PhotonView>().RPC("SyncParent", RpcTarget.All, false);
-        }
-        else{
-            playerObject = PhotonNetwork.Instantiate("PlayerItem", Vector3.zero, Quaternion.identity);
-            playerObject.GetComponent<PhotonView>().RPC("SyncParent", RpcTarget.All, true);
-        }
+        playerObject = PhotonNetwork.Instantiate("PlayerItem", Vector3.zero, Quaternion.identity);
+
+        PhotonView playerPV = playerObject.GetComponent<PhotonView>();
+        
+        if (playerPV.ViewID % 2 == 1)
+            playerPV.RPC("SyncParent", RpcTarget.All, false);
+        else
+            playerPV.RPC("SyncParent", RpcTarget.All, true);
 
         items.Add(playerObject.GetComponent<PlayerItem>());
     }
