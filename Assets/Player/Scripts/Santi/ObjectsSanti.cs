@@ -58,6 +58,8 @@ public class ObjectsSanti : MonoBehaviour
     [SerializeField]
     private GameObject InteractUI;
 
+    private GameManager GameManager;
+
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
     public bool noteCreated = false;
@@ -169,8 +171,8 @@ public class ObjectsSanti : MonoBehaviour
             
             if (isInteractPressed)
             {
-                //box.Activation(true);
-                box.GetComponent<PhotonView>().RPC("Activation", RpcTarget.All, true);
+                box.Activation(true);
+                GameManager.Lights.GetComponent<PhotonView>().RPC("Activation", RpcTarget.All, true);
             }
         }
     }
