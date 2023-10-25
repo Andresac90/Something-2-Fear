@@ -16,6 +16,7 @@ public class Puzzle : MonoBehaviourPun
     private Door door;
     [SerializeField]
     private int comprobationsNeeded;
+    private int keylevel = 1;
 
     public int comprobations;
     public string PasswordRef;
@@ -35,7 +36,7 @@ public class Puzzle : MonoBehaviourPun
                 puzzleCopy = Instantiate(puzzle);
                 PlayerMovement(false);
             }
-            else if (puzzle.name != "LockPick")
+            if (puzzle.name != "LockPick")
             {
                 puzzleCopy = Instantiate(puzzle);
                 PlayerMovement(false);
@@ -46,10 +47,6 @@ public class Puzzle : MonoBehaviourPun
             puzzleCopy.SetActive(true);
             PlayerMovement(false);
         }
-        else
-        {
-            GameManager.Instance.puzzle = false;    
-        }
     }
 
     public void ClosePuzzle(bool puzzleActive)
@@ -58,10 +55,10 @@ public class Puzzle : MonoBehaviourPun
         GameManager.Instance.puzzle = false;
         if(puzzleCopy != null)
         {
-            Destroy(puzzleCopy.gameObject, 1f);
             objectsSanti.puzzleCreated = false;
             objectsSanti.puzzleActive = false;
             PlayerMovement(true);
+            Destroy(puzzleCopy.gameObject, 1f);
         }
     }
 
@@ -89,19 +86,19 @@ public class Puzzle : MonoBehaviourPun
 
             photonView.RPC("SyncDoor", RpcTarget.All, true);
             // door.OpenDoor();
-            if (objectsSanti.objectName == "Key" && puzzle.name == "LockPick")
-            {
-                Destroy(objectsSanti);
-                
-            }
-
             door.doorState = true;
             door.OpenDoor();
-            Destroy(puzzleCopy.gameObject, 1f);
             PlayerMovement(true);
             objectsSanti.puzzleCreated = false;
             objectsSanti.puzzleActive = false;
+            Destroy(puzzleCopy.gameObject, 1f);
             Destroy(this);
+            if (objectsSanti.objectName == "Key" && puzzle.name == "LockPick")
+            {
+                StartCoroutine(objectsSanti.RightDrop());
+                GameObject.Find("SmallKey_Item" + keylevel).SetActive(false);
+                keylevel += 1;
+            }
 
         }
     }

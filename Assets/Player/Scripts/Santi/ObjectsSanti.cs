@@ -54,8 +54,7 @@ public class ObjectsSanti : MonoBehaviour
     [SerializeField]
     private GameObject ObjectRightUI;
 
-    [SerializeField]
-    private GameObject DropRightUI;
+    public GameObject DropRightUI;
     [SerializeField]
     private GameObject InteractUI;
 
@@ -104,7 +103,7 @@ public class ObjectsSanti : MonoBehaviour
         }
 
         //Drop UI
-        if (grabObjR && throwCheckR)
+        if (grabObjR && throwCheckR && hit.transform.tag != "Puzzle")
         {
             DropRightUI.SetActive(true);
         }
@@ -118,12 +117,7 @@ public class ObjectsSanti : MonoBehaviour
         {
             InteractUI.SetActive(true);
         }
-        else
-        {
-            InteractUI.SetActive(false);
-        }
-
-        if (hit.transform != null && hit.transform.tag == "Box")
+        else if (hit.transform != null && hit.transform.tag == "Box")
         {
             InteractUI.SetActive(true);
         }
@@ -389,7 +383,7 @@ public class ObjectsSanti : MonoBehaviour
         throwCheckL = true;
     }
 
-    private IEnumerator RightDrop()
+    public IEnumerator RightDrop()
     {
         // GameObject child = playerR.transform.GetChild(0).gameObject;
         // child.layer = 0;
