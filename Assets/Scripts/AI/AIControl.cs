@@ -57,6 +57,8 @@ public class AIControl : MonoBehaviourPun
     public float catchDistance;
     public Animator aiAnimation; //for fuuture use in animations
     public Animator santiAnimation; //change for santi's animation in other script (temporarily here)
+    public Animator joseAnimation; //change for santi's animation in other script (temporarily here)
+
 
     public float seenCooldownTimer;
     public float stoppedTimer;
@@ -196,6 +198,7 @@ public class AIControl : MonoBehaviourPun
         players[1] = GameObject.FindGameObjectWithTag("PlayerJose");
         isJoseActive = true;
         JosePV = players[1].GetComponent<PhotonView>();
+        joseAnimation = players[1].GetComponent<Animator>();
     }
 
     private void Patroling()
@@ -255,7 +258,9 @@ public class AIControl : MonoBehaviourPun
             //aiAnimation.ResetTrigger("idle");
             //aiAnimation.ResetTrigger("sprint");
             //aiAnimation.SetTrigger("jumpscare"); //jumpscare especifico JOSE
-            JosePV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+            Debug.Log("Ping attack JOSE");
+            joseAnimation.SetTrigger("JoseJumpscareTrigger");
+            StartCoroutine(EndJoseJumpscare());
         }
 
         isPatrol = false;
@@ -455,7 +460,7 @@ public class AIControl : MonoBehaviourPun
         {
             courutineRinning= true;
             yield return new WaitForSeconds(2f);
-            Debug.Log("pING IENUM");
+            
             aiAnimation.ResetTrigger("walk");
             aiAnimation.ResetTrigger("idle");
             aiAnimation.ResetTrigger("sprint");
@@ -464,9 +469,25 @@ public class AIControl : MonoBehaviourPun
             SantiPV.RPC("SyncDowned", RpcTarget.All);
             courutineRinning = false;
         }
-        
-
     }
+
+    IEnumerator EndJoseJumpscare()
+    {
+        if (!courutineRinning)
+        {
+            courutineRinning = true;
+            yield return new WaitForSeconds(2f);
+            
+            aiAnimation.ResetTrigger("walk");
+            aiAnimation.ResetTrigger("idle");
+            aiAnimation.ResetTrigger("sprint");
+            joseAnimation.ResetTrigger("JoseJumpscareTrigger");
+            joseAnimation.SetTrigger("JoseDownedTrigger");
+            JosePV.RPC("SyncDowned", RpcTarget.All);
+            courutineRinning = false;
+        }
+    }
+
     //IEnumerator stayIdle()
     //{
     //    WaitTime = Random.Range(minWaitTime, maxWiatTime);
@@ -487,7 +508,7 @@ public class AIControl : MonoBehaviourPun
     //IEnumerator deathRoutine()
     //{
     //    Debug.Log("deathroutine");
-      
+
     //    yield return new WaitForSeconds(1);//jumpscare time
     //    //SceneManager.LoadScene(deathScene);
     //}
