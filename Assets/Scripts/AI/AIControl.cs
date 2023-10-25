@@ -56,10 +56,13 @@ public class AIControl : MonoBehaviourPun
     //int randNum; //Random val to randomize patrol pattern
     public float catchDistance;
     public Animator aiAnimation; //for fuuture use in animations
+    public Animator santiAnimation; //change for santi's animation in other script (temporarily here)
 
     public float seenCooldownTimer;
     public float stoppedTimer;
     public float defaultCooldownTime = 5f;
+
+    private bool courutineRinning = false;
 
     void Start()
     {
@@ -184,6 +187,8 @@ public class AIControl : MonoBehaviourPun
         players[0] = GameObject.FindGameObjectWithTag("PlayerSanti");
         isSantiActive = true;
         SantiPV = players[0].GetComponent<PhotonView>();
+        santiAnimation = players[0].GetComponent<Animator>();
+        //santiCamera = GameObject.Find("JumpscareCamera").GetComponent<Camera>();
     }
 
     public void joseActivation()
@@ -227,15 +232,29 @@ public class AIControl : MonoBehaviourPun
         //aiAnimation.ResetTrigger("sprint");
         //aiAnimation.SetTrigger("jumpscare");
         //StartCoroutine(deathRoutine());
-        Debug.Log("Attack");
+        
         if(closerPlayer == players[0])
         {
             isPlayerCaught = false;
-            SantiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
+            //aiAnimation.ResetTrigger("walk"); 
+            //aiAnimation.ResetTrigger("idle");
+            //aiAnimation.ResetTrigger("sprint");
+            //aiAnimation.SetTrigger("jumpscare"); //jumpscare especifico SANTI
+            Debug.Log("Ping attack SANTI");
+            santiAnimation.SetTrigger("SantiJumpscareTrigger");
+            StartCoroutine(EndSantiJumpscare());
+            
+
+            //SantiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught)
+            //SantPV.RPC("SyncDowned", RpcTarget.All);
         }
         else if(closerPlayer == players[1])
         {
             isPlayerCaught = false;
+            //aiAnimation.ResetTrigger("walk"); 
+            //aiAnimation.ResetTrigger("idle");
+            //aiAnimation.ResetTrigger("sprint");
+            //aiAnimation.SetTrigger("jumpscare"); //jumpscare especifico JOSE
             JosePV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
         }
 
@@ -330,17 +349,6 @@ public class AIControl : MonoBehaviourPun
     void CaughtPlayer()
     {
         isPlayerCaught = true;
-        if(closerPlayer == players[0])
-        {
-            SantiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
-            isPlayerCaught = false;
-            
-        }
-        else if(closerPlayer == players[1])
-        {
-            JosePV.RPC("updateDowned", RpcTarget.All, isPlayerCaught);
-            isPlayerCaught = false;
-        }
     }
 
     void LookingPlayer(Vector3 player)
@@ -440,6 +448,25 @@ public class AIControl : MonoBehaviourPun
 
     public bool GetIsSeen()
     { return isSeen; }
+
+    IEnumerator EndSantiJumpscare()
+    {
+        if (!courutineRinning)
+        {
+            courutineRinning= true;
+            yield return new WaitForSeconds(2f);
+            Debug.Log("pING IENUM");
+            aiAnimation.ResetTrigger("walk");
+            aiAnimation.ResetTrigger("idle");
+            aiAnimation.ResetTrigger("sprint");
+            santiAnimation.ResetTrigger("SantiJumpscareTrigger");
+            santiAnimation.SetTrigger("SantiDownedTrigger");
+            SantiPV.RPC("SyncDowned", RpcTarget.All);
+            courutineRinning = false;
+        }
+        
+
+    }
     //IEnumerator stayIdle()
     //{
     //    WaitTime = Random.Range(minWaitTime, maxWiatTime);
