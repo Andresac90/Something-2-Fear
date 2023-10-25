@@ -60,6 +60,8 @@ public class Injection : MonoBehaviour
             if (isPlayerInjected && wasntInjected)
             {
                 santiController.SetInjected(true);
+                camera.fieldOfView = 100;
+
                 wasInjected = true;
                 wasntInjected = false;
                 santiInjected = true;
@@ -83,9 +85,8 @@ public class Injection : MonoBehaviour
         {
             if (isPlayerInjected && wasntInjected)
             {
-                Debug.Log("Jose injected");
-                Debug.Log(isPlayerCaught);
                 joseController.SetInjected(isPlayerCaught);
+                camera.fieldOfView = 100;
 
                 wasInjected = true;
                 wasntInjected = false;
