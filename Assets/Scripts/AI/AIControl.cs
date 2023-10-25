@@ -43,6 +43,8 @@ public class AIControl : MonoBehaviourPun
     public bool isPatrol;                                //  If the enemy is patrol, state of patroling
     public bool isPlayerCaught;                            //  if the enemy has caught the player
     public bool isChasing;
+    private bool santiDowned;
+    private bool joseDowned;
 
     [SerializeField]
     private bool blinkingSanti;
@@ -119,6 +121,9 @@ public class AIControl : MonoBehaviourPun
             EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
 
             closerPlayer = GetCloserPlayer(); //relevant player
+
+            //santiDowned = players[0].GetComponent<Down>().isPlayerDowned;
+            //joseDowned = players[1].GetComponent<Down>().isPlayerDowned;
 
             if (isSeen && (!blinkingSanti || !blinkingJose)) //&& seenCooldownTimer >= 0) // if Pascualita is seen stop (recibe valor de PlayerScript)
             {
@@ -243,7 +248,7 @@ public class AIControl : MonoBehaviourPun
             //aiAnimation.ResetTrigger("idle");
             //aiAnimation.ResetTrigger("sprint");
             //aiAnimation.SetTrigger("jumpscare"); //jumpscare especifico SANTI
-            Debug.Log("Ping attack SANTI");
+            Debug.Log("Pinga attack SANTI");
             santiAnimation.SetTrigger("SantiJumpscareTrigger");
             StartCoroutine(EndSantiJumpscare());
             
@@ -258,12 +263,12 @@ public class AIControl : MonoBehaviourPun
             //aiAnimation.ResetTrigger("idle");
             //aiAnimation.ResetTrigger("sprint");
             //aiAnimation.SetTrigger("jumpscare"); //jumpscare especifico JOSE
-            Debug.Log("Ping attack JOSE");
+            Debug.Log("Pinga attack JOSE");
             joseAnimation.SetTrigger("JoseJumpscareTrigger");
             StartCoroutine(EndJoseJumpscare());
         }
 
-        isPatrol = false;
+        isPatrol = true;
 
         Move(walkSpeed);
         //TimeToRotate = timeToRotate;
@@ -411,11 +416,15 @@ public class AIControl : MonoBehaviourPun
         for (int i = 0; i < playerInRange.Length; i++)
         {
             Transform player = playerInRange[i].transform;
+            if (player.GetComponent<Down>().isPlayerDowned)
+            {
+                break;
+            }
             Vector3 dirToPlayer = (player.position - transform.position).normalized;
             if (Vector3.Angle(transform.forward, dirToPlayer) < viewAngle / 2)
             {
                 float dstToPlayer = Vector3.Distance(transform.position, player.position);          //  Distance of the enmy and the player
-                if (!Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, obstacleMask))
+                if (!Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, obstacleMask) && !isPlayerCaught)
                 {
                     this.playerInRange = true;             //  The player has been seen by the enemy and then the enemy chases the player
                     isChasing = true;                 //  Change the state to chasing the player

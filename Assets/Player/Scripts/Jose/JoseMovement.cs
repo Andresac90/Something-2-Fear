@@ -86,7 +86,6 @@ public class JoseMovement : MonoBehaviour
 
         if (isPlayerInjected)
         {
-            Debug.Log("Update works");
             InvertControls();
         }
         else

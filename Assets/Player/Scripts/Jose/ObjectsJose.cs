@@ -33,6 +33,9 @@ public class ObjectsJose : MonoBehaviour
     private GameObject ThrowLeftUI;
     [SerializeField]
     private GameObject ThrowRightUI;
+    [SerializeField]
+    private GameObject Timer;
+    private TextMeshProUGUI textMeshProText;
     private RaycastHit hit;
     private float ObjectRScaleData;
     private float ObjectROriginalScale;
@@ -90,6 +93,20 @@ public class ObjectsJose : MonoBehaviour
         else
         {
             ObjectLeftUI.SetActive(false);
+        }
+
+        //Timer UI
+        if (this.GetComponent<Injection>().isPlayerInjected)
+        {
+            Timer.SetActive(true);
+            textMeshProText = Timer.GetComponent<TextMeshProUGUI>();
+            textMeshProText.text = ((int)this.GetComponent<Injection>().downTime - (int)this.GetComponent<Injection>().currentTime).ToString();
+        }
+        else
+        {
+            Timer.SetActive(false);
+            textMeshProText = Timer.GetComponent<TextMeshProUGUI>();
+            textMeshProText.text = ((int)this.GetComponent<Injection>().currentTime).ToString();
         }
 
         //UI Throw
