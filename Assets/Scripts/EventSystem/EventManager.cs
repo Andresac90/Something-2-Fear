@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,83 +11,101 @@ public class EventManager : MonoBehaviour
     [SerializeField]
     private bool TwoPlayers = true;
     [SerializeField]
+    private bool JoseEvent = false;
+    [SerializeField]
+    private bool SantiEvent = false;
+    [SerializeField]
     private bool Event = false;
     [SerializeField]
     private bool WinScreen = false;
     [SerializeField]
-    private GameObject[] Objects;
+    private GameObject Pascuala;
+    [SerializeField]
+    private GameObject Lights;
     private bool RunOnce = false;
 
-    public bool PlayersNear = false;
-    public bool PlayerNear = false;
+    public bool santiNear = false;
+    public bool joseNear = false;
 
     // Update is called once per frame
     void Update()
     {
-        InteractPlayers();
-        InteractPlayer();
+        Interact();
+        JoseInteract();
+        SantiInteract();
     }
 
     public void OnTriggerEnter(Collider collision)
     {
-        if (collision.CompareTag("PlayerJose") && collision.CompareTag("PlayerSanti") && TwoPlayers)
+        if (collision.CompareTag("PlayerJose"))
         {
-            Console.WriteLine("PlayersNear True");
-            PlayersNear = true;
+            joseNear = true;
         }
-        if (collision.CompareTag("PlayerJose") || collision.CompareTag("PlayerSanti") && !TwoPlayers)
+        if(collision.CompareTag("PlayerSanti"))
         {
-            Console.WriteLine("PlayerNear True");
-            PlayerNear = true;
+            santiNear = true;
         }
     }
 
-    private bool ArePlayersOnTrigger()
+    public void OnTriggerExit(Collider other)
     {
-        return PlayersNear;
-    }
-
-    private bool IsPlayerOnTrigger()
-    {
-        return PlayerNear;
-    }
-
-    void InteractPlayers()
-    {
-        if (ArePlayersOnTrigger() && TwoPlayers && !RunOnce && Event)
+        if (other.CompareTag("PlayerJose"))
         {
-            Console.WriteLine("Players IN");
-            for (int i = 0; i < Objects.Length; i++)
-            {
-                //bool Value = Objects[i].activeInHierarchy;
-                Console.WriteLine(Objects.Length);
-                Objects[i].GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Objects[i]);
-                RunOnce = true;
-            }
+            joseNear = false;
+        }
+        if (other.CompareTag("PlayerSanti"))
+        {
+            santiNear = false;
+        }
+    }
+
+    void Interact()
+    {
+        if (joseNear && santiNear && TwoPlayers && !RunOnce && Event && Pascuala.activeSelf && Lights.activeSelf)
+        {
+            Pascuala.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Pascuala.name);
+            Lights.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Lights.name);
+            RunOnce = true;
+            
+            //AI.SetActive(true);
+            Destroy(this.gameObject);
+        }
+        else if (joseNear && santiNear && TwoPlayers && !RunOnce && WinScreen)
+        {
+            //PhotonNetwork.AutomaticallySyncScene = true;
+            //PhotonNetwork.LoadLevel("WinScreen");
+            SceneManager.LoadScene("WinScreen");
+            RunOnce = true;
+        }
+    }
+
+    void JoseInteract()
+    {
+        if (joseNear && !TwoPlayers && JoseEvent && !SantiEvent && !RunOnce && Event)
+        {
+            Pascuala.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Pascuala.name);
+            Lights.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Lights.name);
+            RunOnce = true;
             //AI.SetActive(true);
             Destroy(this);
         }
-        else if (ArePlayersOnTrigger() && TwoPlayers && !RunOnce && WinScreen)
+        else if (joseNear && TwoPlayers && JoseEvent && !SantiEvent && !RunOnce && WinScreen)
         {
-            PhotonNetwork.LoadLevel("WinScreen");
+            SceneManager.LoadScene("WinScreen");
         }
-    }
 
-    void InteractPlayer()
+    }
+    void SantiInteract()
     {
-        if (IsPlayerOnTrigger() && !TwoPlayers && !RunOnce && Event)
+        if (santiNear && !TwoPlayers && !JoseEvent && SantiEvent && !RunOnce && Event)
         {
-            for (int i = 0; i < Objects.Length; i++)
-            {
-                //bool Value = Objects[i].activeInHierarchy;
-                Console.WriteLine(Objects.Length);
-                Objects[i].GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Objects[i]);
-                RunOnce = true;
-            }
+            Pascuala.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Pascuala.name);
+            Lights.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Lights.name);
+            RunOnce = true;
             //AI.SetActive(true);
             Destroy(this);
         }
-        else if (ArePlayersOnTrigger() && TwoPlayers && !RunOnce && WinScreen)
+        else if (santiNear && TwoPlayers && !JoseEvent && SantiEvent && !RunOnce && WinScreen)
         {
             SceneManager.LoadScene("WinScreen");
         }

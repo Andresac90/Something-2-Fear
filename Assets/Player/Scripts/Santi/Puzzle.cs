@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class Puzzle : MonoBehaviour
+public class Puzzle : MonoBehaviourPun
 {
     private GameObject puzzleCopy;
     [SerializeField]
@@ -15,6 +16,7 @@ public class Puzzle : MonoBehaviour
     private Door door;
     [SerializeField]
     private int comprobationsNeeded;
+    private int keylevel = 1;
 
     public int comprobations;
     public string PasswordRef;
@@ -29,8 +31,16 @@ public class Puzzle : MonoBehaviour
         
         if(!puzzleActive && objectName == this.name && !puzzleCreated)
         {
-            puzzleCopy = Instantiate(puzzle);
-            PlayerMovement(false);
+            if(objectsSanti.objectName == "Key" && puzzle.name == "LockPick")
+            {
+                puzzleCopy = Instantiate(puzzle);
+                PlayerMovement(false);
+            }
+            if (puzzle.name != "LockPick")
+            {
+                puzzleCopy = Instantiate(puzzle);
+                PlayerMovement(false);
+            }
         }
         else if(!puzzleActive && puzzleCopy != null)
         {
@@ -45,7 +55,10 @@ public class Puzzle : MonoBehaviour
         GameManager.Instance.puzzle = false;
         if(puzzleCopy != null)
         {
+            objectsSanti.puzzleCreated = false;
+            objectsSanti.puzzleActive = false;
             PlayerMovement(true);
+            Destroy(puzzleCopy.gameObject, 1f);
         }
     }
 
@@ -70,13 +83,23 @@ public class Puzzle : MonoBehaviour
     {
         if(comprobations == comprobationsNeeded)
         {
+
+            photonView.RPC("SyncDoor", RpcTarget.All, true);
+            // door.OpenDoor();
             door.doorState = true;
             door.OpenDoor();
-            Destroy(puzzleCopy.gameObject, 1f);
             PlayerMovement(true);
             objectsSanti.puzzleCreated = false;
             objectsSanti.puzzleActive = false;
+            Destroy(puzzleCopy.gameObject, 1f);
             Destroy(this);
+            if (objectsSanti.objectName == "Key" && puzzle.name == "LockPick")
+            {
+                StartCoroutine(objectsSanti.RightDrop());
+                GameObject.Find("SmallKey_Item" + keylevel).SetActive(false);
+                keylevel += 1;
+            }
+
         }
     }
 }

@@ -42,7 +42,6 @@ public class LockPick : MonoBehaviour
     {
         newLock();
         Puzzle = GameObject.Find("LockPick MiniGame" + GameManager.Instance.lockpickLevel);
-        GameManager.Instance.lockpickLevel += 1;
         Comprobations = Puzzle.GetComponent<Puzzle>();
     }
 
@@ -96,6 +95,7 @@ public class LockPick : MonoBehaviour
                 newLock();
                 movePick = true;
                 keyPressTime = 0;
+                GameManager.Instance.lockpickLevel += 1;
                 Comprobations.comprobations++;
                 Comprobations.Completed();
 

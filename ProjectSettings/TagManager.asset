@@ -15,6 +15,9 @@ TagManager:
   - Button
   - Hide
   - Enemy
+  - Obstacle
+  - Box
+  - Key
   layers:
   - Default
   - TransparentFX
