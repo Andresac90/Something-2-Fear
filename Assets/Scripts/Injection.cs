@@ -20,6 +20,8 @@ public class Injection : MonoBehaviour
     private PhotonView JosePV;
     private PhotonView SantiPV;
 
+    public AudioSource AudioInjection;
+
     private SantiController santiController;
     private JoseMovement joseController;
     public bool isPlayerInjected;
@@ -32,6 +34,7 @@ public class Injection : MonoBehaviour
         CharController = GetComponent<CharacterController>();
         santiController = GetComponent<SantiController>();
         joseController = GetComponent<JoseMovement>();
+        AudioInjection = GameObject.Find("AudioInjection").GetComponent<AudioSource>();
         if(santiController != null)
         {
             SantiPV = gameObject.GetComponent<PhotonView>();
@@ -65,6 +68,7 @@ public class Injection : MonoBehaviour
         {
             if (isPlayerInjected && cured)
             {
+                AudioInjection.Play();
                 santiController.SetInjected(true);
                 camera.GetComponent<PlayerLook>().SetInvert(true);
                 currentTime = 0f;
@@ -82,6 +86,7 @@ public class Injection : MonoBehaviour
         {
             if (isPlayerInjected && cured)
             {
+                AudioInjection.Play();
                 joseController.SetInjected(isPlayerCaught);
                 camera.GetComponent<PlayerLook>().SetInvert(true);
                 currentTime = 0f;
