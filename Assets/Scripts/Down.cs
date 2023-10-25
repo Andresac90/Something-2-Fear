@@ -14,6 +14,8 @@ public class Down : MonoBehaviourPun
     private float currentTime = 0f;
     [SerializeField]
     private float deadTime;
+    private bool joseDown = false;
+    private bool santiDown = false;
 
     public bool isPlayerDowned;
 
@@ -26,7 +28,20 @@ public class Down : MonoBehaviourPun
 
     void Update()
     {
-      
+        Die();
+    }
+
+    [PunRPC]
+    public void playerDown(bool down)
+    {
+        if (name == "Santi(Clone)")
+        {
+            santiDown = down;   
+        }
+        else if (name == "Jose(Clone)")
+        {
+            joseDown = down;
+        }
     }
 
     [PunRPC]
@@ -38,18 +53,19 @@ public class Down : MonoBehaviourPun
         // look for santiController or JoseMovement
         if (name == "Santi(Clone)")
         {
+            photonView.RPC("playerDown", RpcTarget.All, true);
             GetComponent<SantiController>().enabled = false;
             
         }
         else if (name == "Jose(Clone)")
         {
+            photonView.RPC("playerDown", RpcTarget.All, true);
             GetComponent<JoseMovement>().enabled = false;
         }
         GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y - 0.879f, transform.position.z);
         GetComponent<Transform>().rotation = Quaternion.Euler(Quaternion.identity.x - 90f, Quaternion.identity.y, Quaternion.identity.z);
-        CharController.stepOffset = 0;
-        CharController.height = 0.1f;
-        CharController.center = new Vector3(0, 0, 0);
+        GetComponent<BoxCollider>().enabled = true;
+        CharController.enabled = false;
         Camera.transform.rotation = Quaternion.Euler(Quaternion.identity.x + 70f, Quaternion.identity.y, Quaternion.identity.z);
         GetComponentInChildren<PlayerLook>().enabled = false;
         isPlayerDowned = true;
@@ -62,30 +78,33 @@ public class Down : MonoBehaviourPun
         Debug.Log("reviving");
         if (name == "Santi(Clone)")
         {
+            photonView.RPC("playerDown", RpcTarget.All, false);
             GetComponent<SantiController>().enabled = true;
             
         }
         else if (name == "Jose(Clone)")
         {
+            photonView.RPC("playerDown", RpcTarget.All, false);
             GetComponent<JoseMovement>().enabled = true;
             
         }
         GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y + 0.879f, transform.position.z);
         GetComponent<Transform>().rotation = Quaternion.Euler(Quaternion.identity.x, Quaternion.identity.y, Quaternion.identity.z);
-        CharController.height = 2f;
-        CharController.center = new Vector3(0, 0, 0);
-        CharController.stepOffset = 0.3f;
+        CharController.enabled = true;
+        GetComponent<BoxCollider>().enabled = false;
         Camera.transform.rotation = Quaternion.Euler(Quaternion.identity.x, Quaternion.identity.y, Quaternion.identity.z);
         GetComponentInChildren<PlayerLook>().enabled = true;
         isPlayerDowned = false;
     }
     private void Die()
     {
-        if(currentTime >= deadTime)
+        if((currentTime >= deadTime) || (joseDown && santiDown))
         {
             Debug.Log("eliminado");
             Cursor.lockState = CursorLockMode.None;
-            SceneManager.LoadScene("LoseScreen"); // change to PhotonNetwork.LoadLevel("LoseScreen");
+            SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Play();
+            SceneManager.LoadScene("LoseScreen"); // change to 
+            //PhotonNetwork.LoadLevel("LoseScreen");
             // gameObject.SetActive(false);
         }
     }

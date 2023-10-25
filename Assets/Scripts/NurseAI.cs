@@ -43,6 +43,7 @@ public class NurseAI : MonoBehaviour
     public bool isPatrol;                                //  If the enemy is patrol, state of patroling
     public bool isPlayerCaught;                            //  if the enemy has caught the player
     public bool isChasing;
+    public bool isSeen;
 
     private PhotonView JosePV;
     private PhotonView SantiPV;
@@ -84,6 +85,12 @@ public class NurseAI : MonoBehaviour
         aiAgent.isStopped = false;
         aiAgent.speed = walkSpeed;             //  Set the navemesh speed with the normal speed of the enemy
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);    //  Set the destination to the first waypoint
+    }
+
+    [PunRPC]
+    public void SyncInRange(bool InRange)
+    {
+        
     }
 
     private void Update()
@@ -269,7 +276,7 @@ public class NurseAI : MonoBehaviour
         for (int i = 0; i < playerInRange.Length; i++)
         {
             Transform player = playerInRange[i].transform;
-            if (player.GetComponent<Injection>().isPlayerInjected)
+            if (player.GetComponent<Injection>().isPlayerInjected || player.GetComponent<Down>().isPlayerDowned)
             {
                 break;
             }

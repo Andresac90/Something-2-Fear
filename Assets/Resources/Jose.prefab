@@ -799,6 +799,7 @@ GameObject:
   - component: {fileID: -5500400414091018079}
   - component: {fileID: 7004039161926669386}
   - component: {fileID: 1300117991072718322}
+  - component: {fileID: 9041468969258766003}
   m_Layer: 9
   m_Name: Jose
   m_TagString: PlayerJose
@@ -908,6 +909,9 @@ MonoBehaviour:
   ThrowLeftUI: {fileID: 8861753751187627903}
   ThrowRightUI: {fileID: 3721035067046737618}
   Timer: {fileID: 4640754014430920160}
+  Key1UI: {fileID: 1624291427850069111}
+  Key2UI: {fileID: 3318680133951633854}
+  Key3UI: {fileID: 3402025573036037691}
 --- !u!114 &-1153828020552127956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1040,6 +1044,27 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!65 &9041468969258766003
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3676275686622208031}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 0.71909124, y: 2.0166059, z: 0.4175057}
+  m_Center: {x: 0.014493912, y: -0.031064987, z: 0.022256047}
 --- !u!1 &3721035067046737618
 GameObject:
   m_ObjectHideFlags: 0

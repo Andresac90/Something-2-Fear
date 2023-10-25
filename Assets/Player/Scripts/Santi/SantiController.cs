@@ -63,6 +63,7 @@ public class SantiController : MonoBehaviour
         OriginalSpeed = Speed;
         GameObject.Find("Locker").GetComponent<HidingSystem>().ActivateSanti();
         GameObject.Find("Locker2").GetComponent<HidingSystem>().ActivateSanti();
+        GameObject.Find("Locker3").GetComponent<HidingSystem>().ActivateSanti();
     }
     public void SetInjected(bool injected)
     {

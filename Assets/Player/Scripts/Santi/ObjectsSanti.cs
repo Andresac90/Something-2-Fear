@@ -20,6 +20,7 @@ public class ObjectsSanti : MonoBehaviour
     private GameObject pascualita;
     private GameObject nurse;
     private GameObject LightBox;
+    private GameObject puertaPrinicipal;
     private RaycastHit hit;
     private Rigidbody objectRightRb;
     private Rigidbody objectLeftRb;
@@ -59,17 +60,25 @@ public class ObjectsSanti : MonoBehaviour
     [SerializeField]
     private GameObject InteractUI;
 
+    //MasterKeys
+    [SerializeField]
+    private GameObject Key1UI;
+    [SerializeField]
+    private GameObject Key2UI;
+    [SerializeField]
+    private GameObject Key3UI;
+
     [SerializeField]
     private GameObject Timer;
 
     private TextMeshProUGUI textMeshProText;
 
-    private GameManager GameManager;
-
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
     public bool noteCreated = false;
     public string objectNameString;
+
+    
 
     public void Awake()
     {
@@ -98,9 +107,19 @@ public class ObjectsSanti : MonoBehaviour
         Activation();
         if(hit.transform != null)
         {
+            OpenFinalDoor();
             PuzzleManager();
             NoteManager();
-            Grab();
+            if (objectNameString == "KeyMaster1" || objectNameString == "KeyMaster2" || objectNameString == "KeyMaster3")
+            {
+                hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
+                objectNameString = "";
+            }
+            else
+            {
+                Grab();
+            }
+            
         }
         if (hit.transform != null && hit.transform.tag == "Object" && !grabObjR)
         {
@@ -135,6 +154,20 @@ public class ObjectsSanti : MonoBehaviour
             InteractUI.SetActive(false);
         }
 
+        //MasterKeys
+        if (GameManager.Instance.Key1)
+        {
+            Key1UI.SetActive(true);
+        }
+        if (GameManager.Instance.Key2)
+        {
+            Key2UI.SetActive(true);
+        }
+        if (GameManager.Instance.Key3)
+        {
+            Key3UI.SetActive(true);
+        }
+
         //Timer UI
         if (this.GetComponent<Injection>().isPlayerInjected)
         {
@@ -154,6 +187,20 @@ public class ObjectsSanti : MonoBehaviour
             InteractUI.SetActive(false);
         }
         Drop();
+    }
+
+    private void OpenFinalDoor()
+    {
+        if(hit.transform.tag == "FinalDoor")
+        {
+            bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
+            if(isInteractPressed && GameManager.Instance.Key1 && GameManager.Instance.Key2 && GameManager.Instance.Key3)
+            {
+                puertaPrinicipal.GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, true);
+                puertaPrinicipal.GetComponent<Door>().doorState = true;
+                puertaPrinicipal.GetComponent<Door>().OpenDoor();
+            }
+        }
     }
 
     private void Activation()
@@ -331,10 +378,11 @@ public class ObjectsSanti : MonoBehaviour
         ObjectRightUI.SetActive(false);
         objectNameString = hit.transform.GetComponent<ObjectsData>().ObjectName;
         
-        // RightGrabTwo();
         yield return new WaitForSeconds(0.5f);
         grabObjR = true;
         objectGrabbedR = true;
+
+        
     }
 
     private void LeftGrabTwo()

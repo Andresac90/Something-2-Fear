@@ -60,6 +60,8 @@ MonoBehaviour:
   - SyncDowned
   - SyncRevive
   - DestroyKeyOnline
+  - MasterKeysChange
+  - playerDown
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

@@ -19,6 +19,7 @@ TagManager:
   - Box
   - Key
   - Health
+  - FinalDoor
   layers:
   - Default
   - TransparentFX

@@ -19,8 +19,10 @@ public class HidingSystem : MonoBehaviour
     public Transform HidePosition;
     public Transform OutPosition;
     private GameObject enemy;
-    private AIControl enemyAI;
+    private AIControl enemyAIP;
+    private NurseAI enemyAIN;
     public bool hiding;
+    public bool Pascuala;
     public float loseDistance;
 
     void Awake()
@@ -29,8 +31,17 @@ public class HidingSystem : MonoBehaviour
     }
     void Start()
     {
-        enemy = GameObject.Find("Pascualita");
-        enemyAI = enemy.GetComponent<AIControl>();
+        if (Pascuala)
+        {
+            enemy = GameObject.Find("Pascualita");
+            enemyAIP = enemy.GetComponent<AIControl>();
+        }
+        else
+        {
+            enemy = GameObject.Find("nurse");
+            enemyAIN = enemy.GetComponent<NurseAI>();
+        }
+
         
         hiding = false;
     }
@@ -78,10 +89,21 @@ public class HidingSystem : MonoBehaviour
             float distance = Vector3.Distance(enemy.transform.position, player.transform.position);
             if (distance > loseDistance)
             {
-                if (enemyAI.playerInRange)
+                if (Pascuala)
                 {
-                    InRange(false);
+                    if (enemyAIP.playerInRange)
+                    {
+                        InRange(false);
+                    }
                 }
+                else
+                {
+                    if (enemyAIN.playerInRange)
+                    {
+                        InRange(false);
+                    }
+                }
+                
             }
             yield return new WaitForSeconds(1.5f);
             hiding = true;
