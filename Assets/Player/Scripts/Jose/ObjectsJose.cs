@@ -35,6 +35,15 @@ public class ObjectsJose : MonoBehaviour
     private GameObject ThrowRightUI;
     [SerializeField]
     private GameObject Timer;
+
+    //MasterKeys
+    [SerializeField]
+    private GameObject Key1UI;
+    [SerializeField]
+    private GameObject Key2UI;
+    [SerializeField]
+    private GameObject Key3UI;
+
     private TextMeshProUGUI textMeshProText;
     private RaycastHit hit;
     private float ObjectRScaleData;
@@ -93,6 +102,20 @@ public class ObjectsJose : MonoBehaviour
         else
         {
             ObjectLeftUI.SetActive(false);
+        }
+
+        //MasterKeys
+        if (GameManager.Instance.Key1)
+        {
+            Key1UI.SetActive(true);
+        }
+        if (GameManager.Instance.Key2)
+        {
+            Key2UI.SetActive(true);
+        }
+        if (GameManager.Instance.Key3)
+        {
+            Key3UI.SetActive(true);
         }
 
         //Timer UI

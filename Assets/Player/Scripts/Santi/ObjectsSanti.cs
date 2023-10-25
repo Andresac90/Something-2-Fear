@@ -59,17 +59,25 @@ public class ObjectsSanti : MonoBehaviour
     [SerializeField]
     private GameObject InteractUI;
 
+    //MasterKeys
+    [SerializeField]
+    private GameObject Key1UI;
+    [SerializeField]
+    private GameObject Key2UI;
+    [SerializeField]
+    private GameObject Key3UI;
+
     [SerializeField]
     private GameObject Timer;
 
     private TextMeshProUGUI textMeshProText;
 
-    private GameManager GameManager;
-
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
     public bool noteCreated = false;
     public string objectNameString;
+
+    
 
     public void Awake()
     {
@@ -100,7 +108,16 @@ public class ObjectsSanti : MonoBehaviour
         {
             PuzzleManager();
             NoteManager();
-            Grab();
+            if (objectNameString == "KeyMaster1" || objectNameString == "KeyMaster2" || objectNameString == "KeyMaster3")
+            {
+                hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
+                objectNameString = "";
+            }
+            else
+            {
+                Grab();
+            }
+            
         }
         if (hit.transform != null && hit.transform.tag == "Object" && !grabObjR)
         {
@@ -133,6 +150,20 @@ public class ObjectsSanti : MonoBehaviour
         else
         {
             InteractUI.SetActive(false);
+        }
+
+        //MasterKeys
+        if (GameManager.Instance.Key1)
+        {
+            Key1UI.SetActive(true);
+        }
+        if (GameManager.Instance.Key2)
+        {
+            Key2UI.SetActive(true);
+        }
+        if (GameManager.Instance.Key3)
+        {
+            Key3UI.SetActive(true);
         }
 
         //Timer UI
@@ -331,10 +362,11 @@ public class ObjectsSanti : MonoBehaviour
         ObjectRightUI.SetActive(false);
         objectNameString = hit.transform.GetComponent<ObjectsData>().ObjectName;
         
-        // RightGrabTwo();
         yield return new WaitForSeconds(0.5f);
         grabObjR = true;
         objectGrabbedR = true;
+
+        
     }
 
     private void LeftGrabTwo()

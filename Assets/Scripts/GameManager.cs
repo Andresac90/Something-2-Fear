@@ -22,6 +22,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     public bool blinkJose;
     public bool blinkSanti;
 
+    public bool Key1 = false;
+    public bool Key2 = false;
+    public bool Key3 = false;
+
     void Awake()
     {
         MakeSingleton();   

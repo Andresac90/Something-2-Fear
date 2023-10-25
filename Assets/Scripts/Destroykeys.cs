@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Destroykeys : MonoBehaviour
+public class Destroykeys : MonoBehaviourPun
 {
     [PunRPC]
     public void DestroyKeyOnline(string name)
