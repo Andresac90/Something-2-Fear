@@ -33,6 +33,8 @@ public class ObjectsJose : MonoBehaviour
     private GameObject ThrowLeftUI;
     [SerializeField]
     private GameObject ThrowRightUI;
+    [SerializeField]
+    private GameObject Timer;
     private RaycastHit hit;
     private float ObjectRScaleData;
     private float ObjectROriginalScale;

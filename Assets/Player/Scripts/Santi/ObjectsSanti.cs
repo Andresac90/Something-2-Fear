@@ -58,6 +58,9 @@ public class ObjectsSanti : MonoBehaviour
     [SerializeField]
     private GameObject InteractUI;
 
+    [SerializeField]
+    private GameObject Timer;
+
     private GameManager GameManager;
 
     public bool puzzleCreated = false;
@@ -127,6 +130,13 @@ public class ObjectsSanti : MonoBehaviour
         else
         {
             InteractUI.SetActive(false);
+        }
+
+        //Timer UI
+        if (this.GetComponent<Injection>().isPlayerInjected)
+        {
+            Timer.SetActive(true);
+            //Timer. = this.GetComponent<Injection>().currentTime;
         }
 
         if (puzzleActive)
