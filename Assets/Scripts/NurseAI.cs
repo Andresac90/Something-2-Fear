@@ -269,7 +269,7 @@ public class NurseAI : MonoBehaviour
         for (int i = 0; i < playerInRange.Length; i++)
         {
             Transform player = playerInRange[i].transform;
-            if (player.GetComponent<Injection>().isPlayerInjected)
+            if (player.GetComponent<Injection>().isPlayerInjected || player.GetComponent<Down>().isPlayerDowned)
             {
                 break;
             }
