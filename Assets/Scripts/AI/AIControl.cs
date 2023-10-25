@@ -114,6 +114,14 @@ public class AIControl : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
+    public void SyncInRange(bool range)
+    {
+        
+    }
+
+
+
     private void Update()
     {
         if (isJoseActive && isSantiActive) 
@@ -244,10 +252,7 @@ public class AIControl : MonoBehaviourPun
         if(closerPlayer == players[0])
         {
             isPlayerCaught = false;
-            //aiAnimation.ResetTrigger("walk"); 
-            //aiAnimation.ResetTrigger("idle");
-            //aiAnimation.ResetTrigger("sprint");
-            //aiAnimation.SetTrigger("jumpscare"); //jumpscare especifico SANTI
+
             Debug.Log("Pinga attack SANTI");
             santiAnimation.SetTrigger("SantiJumpscareTrigger");
             StartCoroutine(EndSantiJumpscare());
@@ -259,21 +264,14 @@ public class AIControl : MonoBehaviourPun
         else if(closerPlayer == players[1])
         {
             isPlayerCaught = false;
-            //aiAnimation.ResetTrigger("walk"); 
-            //aiAnimation.ResetTrigger("idle");
-            //aiAnimation.ResetTrigger("sprint");
-            //aiAnimation.SetTrigger("jumpscare"); //jumpscare especifico JOSE
+
             Debug.Log("Pinga attack JOSE");
             joseAnimation.SetTrigger("JoseJumpscareTrigger");
             StartCoroutine(EndJoseJumpscare());
         }
 
         isPatrol = true;
-
-        Move(walkSpeed);
-        //TimeToRotate = timeToRotate;
-        WaitTime = startWaitTime;
-        aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position); //return to patrol
+        Patroling();
 
     }
     private void Seen()
@@ -418,6 +416,8 @@ public class AIControl : MonoBehaviourPun
             Transform player = playerInRange[i].transform;
             if (player.GetComponent<Down>().isPlayerDowned)
             {
+                Debug.Log(playerInRange[i]);
+                isChasing = false;
                 break;
             }
             Vector3 dirToPlayer = (player.position - transform.position).normalized;
@@ -426,6 +426,7 @@ public class AIControl : MonoBehaviourPun
                 float dstToPlayer = Vector3.Distance(transform.position, player.position);          //  Distance of the enmy and the player
                 if (!Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, obstacleMask) && !isPlayerCaught)
                 {
+                    Debug.Log("raycast");
                     this.playerInRange = true;             //  The player has been seen by the enemy and then the enemy chases the player
                     isChasing = true;                 //  Change the state to chasing the player
                     isPatrol = false;
