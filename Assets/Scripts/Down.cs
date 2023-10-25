@@ -105,8 +105,8 @@ public class Down : MonoBehaviourPun
             Debug.Log("eliminado");
             Cursor.lockState = CursorLockMode.None;
             SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Play();
-            //SceneManager.LoadScene("LoseScreen"); // change to 
-            PhotonNetwork.LoadLevel("LoseScreen");
+            SceneManager.LoadScene("LoseScreen"); // change to 
+            //PhotonNetwork.LoadLevel("LoseScreen");
             // gameObject.SetActive(false);
         }
     }
