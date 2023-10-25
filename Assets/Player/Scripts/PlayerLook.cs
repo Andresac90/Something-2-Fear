@@ -52,6 +52,11 @@ public class PlayerLook : MonoBehaviour
         Look();
     }
 
+    public void SetInvert(bool invert)
+    {
+        InvertCamera = invert;
+    }
+
     void Look()
     {
         mouseLook = Controls.Player.Look.ReadValue<Vector2>();

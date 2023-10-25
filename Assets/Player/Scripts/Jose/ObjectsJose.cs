@@ -40,6 +40,7 @@ public class ObjectsJose : MonoBehaviour
     private float ObjectLOriginalScale;
     private Rigidbody ObjectRightRb;
     private GameObject pascualita;
+    private GameObject nurse;
     private Rigidbody ObjectLeftRb;
     private Transform ObjectRightT;
     private Transform ObjectLeftT;
@@ -56,8 +57,11 @@ public class ObjectsJose : MonoBehaviour
     public void Start()
     {
         pascualita = GameObject.Find("Pascualita");
-        AIControl aicontrol = pascualita.GetComponent<AIControl>();
-        aicontrol.joseActivation();
+        nurse = GameObject.Find("nurse");
+        AIControl aicontrolP = pascualita.GetComponent<AIControl>();
+        NurseAI aicontrolN = nurse.GetComponent<NurseAI>();
+        aicontrolP.joseActivation();
+        aicontrolN.JoseActivation();
     }
 
     // Update is called once per frame

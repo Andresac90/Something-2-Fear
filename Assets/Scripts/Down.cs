@@ -17,7 +17,7 @@ public class Down : MonoBehaviourPun
     private bool joseDown = false;
     
     [SerializeField]
-    private float deadTime = 10f;
+    private float deadTime;
 
     public bool isPlayerDowned;
 
@@ -129,6 +129,7 @@ public class Down : MonoBehaviourPun
     {
         if(currentTime >= deadTime)
         {
+            Debug.Log("eliminado");
             Cursor.lockState = CursorLockMode.None;
             SceneManager.LoadScene("LoseScreen");
             // gameObject.SetActive(false);

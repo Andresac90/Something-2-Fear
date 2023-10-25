@@ -46,6 +46,12 @@ MonoBehaviour:
   - SyncItemParent
   - SyncItemForce
   - SyncInRange
+  - SyncResetTrigger
+  - SyncSetTrigger
+  - updateInjected
+  - ChangeObject
+  - SyncDoor
+  - Activation
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

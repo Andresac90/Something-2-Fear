@@ -1662,6 +1662,7 @@ GameObject:
   - component: {fileID: -7280666114099604731}
   - component: {fileID: -1339560007807122216}
   - component: {fileID: -5941515275681577200}
+  - component: {fileID: -3681220690550547108}
   m_Layer: 7
   m_Name: Santi
   m_TagString: PlayerSanti
@@ -1730,6 +1731,9 @@ MonoBehaviour:
   AudioListener: {fileID: 5894979599201347971}
   Canvas: {fileID: 1131350227747810395}
   Speed: 5
+  moveSpeed: 5
+  lookSensitivity: 2
+  isPlayerInjected: 0
   Gravity: -9.81
   IsGrounded: 0
   GroundCheck: {fileID: 8549641747801193850}
@@ -1831,7 +1835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07cb808c5118baf4db010082fe1639af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deadTime: 10
+  deadTime: 30
   isPlayerDowned: 0
 --- !u!114 &-5941515275681577200
 MonoBehaviour:
@@ -1845,9 +1849,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7137e3d2c581d9544b31dc2cf00203c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectTime: 10
-  rayLine: 0
-  player: {fileID: 3676275686622208031, guid: 644089b78c942004284e9f09ef3bfb78, type: 3}
+  objectTime: 5
+  rayLine: 3
+--- !u!114 &-3681220690550547108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8017623072165681613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b71d92a408a506429a29b1d83c3cdc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  downTime: 20
+  isPlayerInjected: 0
+  moveSpeed: 5
 --- !u!1 &8673144922680235202
 GameObject:
   m_ObjectHideFlags: 0

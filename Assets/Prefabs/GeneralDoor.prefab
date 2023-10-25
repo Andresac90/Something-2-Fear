@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7219350347100111192}
   - component: {fileID: 3200645344192291338}
   - component: {fileID: 9117518290520245277}
-  - component: {fileID: 2243345493294148953}
-  - component: {fileID: 3875760870584482528}
   - component: {fileID: -3001792797916707822}
+  - component: {fileID: -2122951558339614227}
+  - component: {fileID: -2260875706485257954}
   m_Layer: 0
   m_Name: GeneralDoor
   m_TagString: Untagged
@@ -35,7 +35,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1315559803231234044}
+  - {fileID: 1674347138543242991}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &7219350347100111192
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   door: {fileID: 3200645344192291338}
   doorState: 0
---- !u!114 &2243345493294148953
+--- !u!114 &-3001792797916707822
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,22 +103,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 2312344220139854998}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 3875760870584482528}
-  - {fileID: -3001792797916707822}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
---- !u!114 &3875760870584482528
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 1
+    Name: doorActive
+  - Type: 4
+    SynchronizeType: 1
+    Name: activate
+  m_SynchronizeLayers:
+  - SynchronizeType: 1
+    LayerIndex: 0
+--- !u!114 &-2122951558339614227
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,7 +151,7 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
---- !u!114 &-3001792797916707822
+--- !u!114 &-2260875706485257954
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,22 +160,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 2312344220139854998}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 1
-    Name: doorActive
-  - Type: 4
-    SynchronizeType: 1
-    Name: activate
-  m_SynchronizeLayers:
-  - SynchronizeType: 1
-    LayerIndex: 0
---- !u!1001 &1170250938935256113
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: -3001792797916707822}
+  - {fileID: -2122951558339614227}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!1001 &1531266159115177250
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -201,7 +201,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 179123280096838605, guid: 85975d653fec94a41b0b785680b0d4bd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.06
+      value: -0.081
       objectReference: {fileID: 0}
     - target: {fileID: 179123280096838605, guid: 85975d653fec94a41b0b785680b0d4bd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -233,15 +233,49 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5282512911675245394, guid: 85975d653fec94a41b0b785680b0d4bd, type: 3}
       propertyPath: m_Name
-      value: Door02 (4)
+      value: LockPick MiniGame1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5282512911675245394, guid: 85975d653fec94a41b0b785680b0d4bd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5282512911675245394, guid: 85975d653fec94a41b0b785680b0d4bd, type: 3}
+      propertyPath: m_TagString
+      value: Puzzle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5282512911675245394, guid: 85975d653fec94a41b0b785680b0d4bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9213972697735336888}
   m_SourcePrefab: {fileID: 100100000, guid: 85975d653fec94a41b0b785680b0d4bd, type: 3}
---- !u!4 &1315559803231234044 stripped
+--- !u!4 &1674347138543242991 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 179123280096838605, guid: 85975d653fec94a41b0b785680b0d4bd, type: 3}
-  m_PrefabInstance: {fileID: 1170250938935256113}
+  m_PrefabInstance: {fileID: 1531266159115177250}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6633635074807058032 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5282512911675245394, guid: 85975d653fec94a41b0b785680b0d4bd, type: 3}
+  m_PrefabInstance: {fileID: 1531266159115177250}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9213972697735336888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6633635074807058032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc3d715c8e78c7a4782b72bab82215d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerMove: {fileID: 0}
+  puzzle: {fileID: 8072690544384710771, guid: 68e35d9642e685b41a348a8a02dc78b0, type: 3}
+  door: {fileID: 9117518290520245277}
+  comprobationsNeeded: 1
+  comprobations: 0
+  PasswordRef: 

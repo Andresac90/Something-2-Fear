@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
+using Photon.Realtime;
 
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    private List<GameObject> joinedPlayers = new List<GameObject>();
+    private int requiredPlayers = 2;
+    public delegate void PlayersJoinedEventHandler(PhotonView player1PV, PhotonView player2PV);
+    public static event PlayersJoinedEventHandler OnPlayersJoined;
+
     public static GameManager Instance;
     public int numpadLevel = 1;
     public int lockpickLevel = 1;
@@ -21,6 +27,28 @@ public class GameManager : MonoBehaviourPunCallbacks
     void Awake()
     {
         MakeSingleton();   
+        PlayerManager.OnPlayerJoined += HandlePlayerJoined;
+    }
+
+    private void HandlePlayerJoined(GameObject playerObject)
+    {
+        if (!joinedPlayers.Contains(playerObject))
+        {
+            joinedPlayers.Add(playerObject);
+            Debug.Log(playerObject.name + " se ha unido.");
+        }
+
+        if (joinedPlayers.Count >= requiredPlayers)
+        {
+            Debug.Log("Se han unido suficientes jugadores para realizar una acción.");
+            PhotonView player1PV = joinedPlayers[0].GetComponent<PhotonView>();
+            PhotonView player2PV = joinedPlayers[1].GetComponent<PhotonView>();
+
+            if (OnPlayersJoined != null)
+            {
+                OnPlayersJoined(player1PV, player2PV);
+            }
+        }
     }
 
     private void MakeSingleton()

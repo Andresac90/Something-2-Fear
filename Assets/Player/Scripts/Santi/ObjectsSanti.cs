@@ -17,6 +17,7 @@ public class ObjectsSanti : MonoBehaviour
     private GameObject cloneR;
     private GameObject player;
     private GameObject pascualita;
+    private GameObject nurse;
     private RaycastHit hit;
     private Rigidbody objectRightRb;
     private Rigidbody objectLeftRb;
@@ -36,6 +37,7 @@ public class ObjectsSanti : MonoBehaviour
     private bool throwCheckL = true;
     private bool activated = false;
     private Button activeButton = null;
+    
 
     [SerializeField]
     private Transform objectRightCamera;
@@ -52,8 +54,7 @@ public class ObjectsSanti : MonoBehaviour
     [SerializeField]
     private GameObject ObjectRightUI;
 
-    [SerializeField]
-    private GameObject DropRightUI;
+    public GameObject DropRightUI;
     [SerializeField]
     private GameObject InteractUI;
 
@@ -62,6 +63,7 @@ public class ObjectsSanti : MonoBehaviour
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
     public bool noteCreated = false;
+    public string objectName;
 
     public void Awake()
     {
@@ -76,8 +78,11 @@ public class ObjectsSanti : MonoBehaviour
     public void Start()
     {
         pascualita = GameObject.Find("Pascualita");
-        AIControl aicontrol = pascualita.GetComponent<AIControl>();
-        aicontrol.santiActivation();
+        nurse = GameObject.Find("nurse");
+        AIControl aicontrolP = pascualita.GetComponent<AIControl>();
+        NurseAI aicontrolN = nurse.GetComponent<NurseAI>();
+        aicontrolP.santiActivation();
+        aicontrolN.SantiActivation();
     }
 
     public void Update()
@@ -100,7 +105,7 @@ public class ObjectsSanti : MonoBehaviour
         }
 
         //Drop UI
-        if (grabObjR && throwCheckR)
+        if (grabObjR && throwCheckR && hit.transform.tag != "Puzzle")
         {
             DropRightUI.SetActive(true);
         }
@@ -114,10 +119,15 @@ public class ObjectsSanti : MonoBehaviour
         {
             InteractUI.SetActive(true);
         }
+        else if (hit.transform != null && hit.transform.tag == "Box")
+        {
+            InteractUI.SetActive(true);
+        }
         else
         {
             InteractUI.SetActive(false);
         }
+
         if (puzzleActive)
         {
             InteractUI.SetActive(false);
@@ -153,8 +163,6 @@ public class ObjectsSanti : MonoBehaviour
             activeButton.Activation(false);
             activated = false;
         }
-<<<<<<< Updated upstream
-=======
         
         if (hit.transform != null && hit.transform.tag == "Box")
         {
@@ -167,7 +175,6 @@ public class ObjectsSanti : MonoBehaviour
                 GameManager.Lights.GetComponent<PhotonView>().RPC("Activation", RpcTarget.All, true);
             }
         }
->>>>>>> Stashed changes
     }
 
     public void PuzzleManager()
@@ -297,7 +304,7 @@ public class ObjectsSanti : MonoBehaviour
         objectRightRb = hit.rigidbody;
         objectRightT = hit.transform;
         ObjectRightUI.SetActive(false);
-        
+        objectName = hit.transform.GetComponent<ObjectsData>().ObjectName;
         
         // RightGrabTwo();
         yield return new WaitForSeconds(0.5f);
@@ -378,7 +385,7 @@ public class ObjectsSanti : MonoBehaviour
         throwCheckL = true;
     }
 
-    private IEnumerator RightDrop()
+    public IEnumerator RightDrop()
     {
         // GameObject child = playerR.transform.GetChild(0).gameObject;
         // child.layer = 0;
