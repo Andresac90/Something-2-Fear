@@ -10,8 +10,7 @@ public class Puzzle : MonoBehaviourPun
     private GameObject playerMove;
     private ObjectsSanti objectsSanti;
 
-    [SerializeField]
-    private GameObject puzzle;
+    public GameObject puzzle;
     [SerializeField]
     private GameObject door;
     [SerializeField]
@@ -26,27 +25,26 @@ public class Puzzle : MonoBehaviourPun
     {
         playerMove = GameObject.Find("Santi(Clone)");
         GameManager.Instance.puzzle = true;
-        
         objectsSanti = playerMove.GetComponent<ObjectsSanti>();
         
         if(!puzzleActive && objectName == this.name && !puzzleCreated)
         {
-            if(objectsSanti.objectName == "Key" && puzzle.name == "LockPick")
+            if (objectsSanti.objectNameString == "Key" && puzzle.name == "LockPick")
             {
                 puzzleCopy = Instantiate(puzzle);
                 PlayerMovement(false);
             }
-            if (puzzle.name != "LockPick")
+            else if (puzzle.name != "LockPick")
             {
                 puzzleCopy = Instantiate(puzzle);
                 PlayerMovement(false);
             }
         }
-        else if(!puzzleActive && puzzleCopy != null)
-        {
-            puzzleCopy.SetActive(true);
-            PlayerMovement(false);
-        }
+        //else if(!puzzleActive && puzzleCopy != null)
+        //{
+        //    puzzleCopy.SetActive(true);
+        //    PlayerMovement(false);
+        //}
     }
 
     public void ClosePuzzle(bool puzzleActive)
@@ -93,9 +91,10 @@ public class Puzzle : MonoBehaviourPun
             objectsSanti.puzzleActive = false;
             Destroy(puzzleCopy.gameObject, 1f);
             Destroy(this);
-            if (objectsSanti.objectName == "Key" && puzzle.name == "LockPick")
+            if (objectsSanti.objectNameString == "Key" && puzzle.name == "LockPick")
             {
                 StartCoroutine(objectsSanti.RightDrop());
+                objectsSanti.objectNameString = "";
                 GameObject.Find("SmallKey_Item" + keylevel).SetActive(false);
                 keylevel += 1;
             }
