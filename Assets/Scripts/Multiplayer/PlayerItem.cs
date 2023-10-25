@@ -42,6 +42,7 @@ public class PlayerItem : MonoBehaviourPunCallbacks
     {
         playerName = characterName;
         playerProperties["Player"] = playerName;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
         photonView.RPC("SyncCharacterSelection", RpcTarget.All, characterName);
     }
 
