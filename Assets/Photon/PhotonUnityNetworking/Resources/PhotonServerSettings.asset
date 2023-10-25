@@ -52,6 +52,8 @@ MonoBehaviour:
   - ChangeObject
   - SyncDoor
   - Activation
+  - SyncDowned
+  - SyncRevive
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
