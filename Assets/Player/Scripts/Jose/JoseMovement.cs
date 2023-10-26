@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEditor;
 
 using Photon.Pun;
-using System;
 
 public class JoseMovement : MonoBehaviour
 {
@@ -29,6 +28,7 @@ public class JoseMovement : MonoBehaviour
     private float Gravity = -9.81f;
 
     private Transform playerCam;
+    public float moveSpeed = 5.0f;
     public float lookSensitivity = 2.0f;
     public bool isPlayerInjected = false;
     private float rotationX = 0;
@@ -59,7 +59,6 @@ public class JoseMovement : MonoBehaviour
 
     PhotonView PV;
 
-    [SerializeField]
     private int controlsModifier  = 1;
 
 
@@ -87,28 +86,27 @@ public class JoseMovement : MonoBehaviour
     {
         if (!PV.IsMine) return;
 
+
         Movement();
         Jump();
         Crouch();
         Sprint();
         Camera.transform.position = new Vector3(transform.position.x, Camera.transform.position.y, transform.position.z);
+
     }
     void Movement()
     {
-        Vector2 movement = Controls.Player.Movement.ReadValue<Vector2>();
+        Move = Controls.Player.Movement.ReadValue<Vector2>();
 
-        YVel.y += Gravity * Time.deltaTime;
-
-        bool isFalling = YVel.y < 0;
-
-        if (IsGrounded && isFalling)
+        if (IsGrounded && YVel.y < 0)
         {
             YVel.y = 0;
         }
 
-        Vector3 newPos = (transform.right * movement.x + transform.forward * movement.y + transform.up * YVel.y) * controlsModifier;
-
-        CharController.Move(newPos * Speed * Time.deltaTime);
+        Vector3 MovementZ = (transform.right * Move.x + transform.forward * Move.y);
+        YVel.y += Gravity * Time.deltaTime;
+        CharController.Move(MovementZ * Speed * Time.deltaTime * controlsModifier);
+        CharController.Move(YVel * Time.deltaTime);
     }
 
     void Sprint()
@@ -169,16 +167,6 @@ public class JoseMovement : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        Controls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        Controls.Disable();
-    }
-
     public void SetInjected()
     {
         isPlayerInjected = true;
@@ -191,6 +179,16 @@ public class JoseMovement : MonoBehaviour
         controlsModifier = 1;
     }
 
+    private void OnEnable()
+    {
+        Controls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        Controls.Disable();
+    }
+
     // private void InvertControls()
     // {
     //     Vector2 invertedMovementInput = Controls.Player.Movement.ReadValue<Vector2>() * -1;
@@ -198,7 +196,7 @@ public class JoseMovement : MonoBehaviour
 
     //     // Move the player with inverted controls
     //     Vector3 moveDirection = transform.TransformDirection(new Vector3(invertedMovementInput.x, 0, invertedMovementInput.y));
-    //     CharController.Move(moveDirection * Speed * Time.deltaTime);
+    //     CharController.Move(moveDirection * moveSpeed * Time.deltaTime);
 
     //     // Rotate the camera with inverted controls
     //     //look.SetInvert(true);
