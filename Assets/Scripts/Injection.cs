@@ -73,7 +73,7 @@ public class Injection : MonoBehaviour
             if (isPlayerInjected && cured)
             {
                 AudioInjection.Play();
-                santiController.SetInjected(true);
+                santiController.SetInjected();
                 camera.GetComponent<PlayerLook>().SetInvert(true);
                 currentTime = 0f;
 
@@ -90,7 +90,7 @@ public class Injection : MonoBehaviour
             if (isPlayerInjected && cured)
             {
                 AudioInjection.Play();
-                joseController.SetInjected(isPlayerCaught);
+                joseController.SetInjected();
                 camera.GetComponent<PlayerLook>().SetInvert(true);
                 currentTime = 0f;
 
@@ -109,7 +109,7 @@ public class Injection : MonoBehaviour
         if (this.name == "Santi(Clone)")
         {
             AudioInjection.Stop();
-            santiController.SetInjected(false);
+            santiController.SetCured();
             camera.fieldOfView = 60;
             camera.GetComponent<PlayerLook>().SetInvert(false);
             currentTime = 0f;
@@ -119,7 +119,7 @@ public class Injection : MonoBehaviour
         else if (this.name == "Jose(Clone)")
         {
             AudioInjection.Stop();
-            joseController.SetInjected(false);
+            joseController.SetCured();
             camera.fieldOfView = 60;
             camera.GetComponent<PlayerLook>().SetInvert(false);
             currentTime = 0f;
