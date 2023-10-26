@@ -18,11 +18,8 @@ public class EventManager : MonoBehaviour
     private bool Event = false;
     [SerializeField]
     private bool WinScreen = false;
-    [SerializeField]
-    private GameObject Pascuala;
-    [SerializeField]
-    private GameObject Lights;
-    private bool RunOnce = false;
+
+    private GameObject ChangeObjects;
 
     public bool santiNear = false;
     public bool joseNear = false;
@@ -33,6 +30,11 @@ public class EventManager : MonoBehaviour
         Interact();
         JoseInteract();
         SantiInteract();
+    }
+
+    void Start()
+    {
+        ChangeObjects = GameObject.Find("ChangeObjects");
     }
 
     public void OnTriggerEnter(Collider collision)
@@ -61,56 +63,47 @@ public class EventManager : MonoBehaviour
 
     void Interact()
     {
-        if (joseNear && santiNear && TwoPlayers && !RunOnce && Event && Pascuala.activeSelf && Lights.activeSelf)
+        if (joseNear && santiNear && TwoPlayers && Event)
         {
-            Pascuala.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Pascuala.name);
-            Lights.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Lights.name);
-            RunOnce = true;
-            
-            //AI.SetActive(true);
+            ChangeObjects.GetComponent<PhotonView>().RPC("DeactivatePascualita", RpcTarget.All);
+            ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateLights", RpcTarget.All);
             Destroy(this.gameObject);
         }
-        else if (joseNear && santiNear && TwoPlayers && !RunOnce && WinScreen)
+        else if (joseNear && santiNear && TwoPlayers && WinScreen)
         {
-            //PhotonNetwork.AutomaticallySyncScene = true;
-            //PhotonNetwork.LoadLevel("WinScreen");
             SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Play();
             SceneManager.LoadScene("WinScreen");
-            RunOnce = true;
+            Destroy(this.gameObject);
         }
     }
 
     void JoseInteract()
     {
-        if (joseNear && !TwoPlayers && JoseEvent && !SantiEvent && !RunOnce && Event)
+        if (joseNear && JoseEvent && !SantiEvent)
         {
-            Pascuala.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Pascuala.name);
-            //Lights.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Lights.name);
-            RunOnce = true;
-            //AI.SetActive(true);
+            ChangeObjects.GetComponent<PhotonView>().RPC("ActivatePascualita", RpcTarget.All);
             Destroy(this.gameObject);
         }
-        else if (joseNear && TwoPlayers && JoseEvent && !SantiEvent && !RunOnce && WinScreen)
+        else if (joseNear && JoseEvent && !SantiEvent && WinScreen)
         {
             SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Play();
             SceneManager.LoadScene("WinScreen");
+            Destroy(this.gameObject);
         }
 
     }
     void SantiInteract()
     {
-        if (santiNear && !TwoPlayers && !JoseEvent && SantiEvent && !RunOnce && Event)
+        if (santiNear && !JoseEvent && SantiEvent)
         {
-            Pascuala.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Pascuala.name);
-            //Lights.GetComponent<PhotonView>().RPC("ChangeObject", RpcTarget.All, Lights.name);
-            RunOnce = true;
-            //AI.SetActive(true);
+            ChangeObjects.GetComponent<PhotonView>().RPC("ActivatePascualita", RpcTarget.All);
             Destroy(this.gameObject);
         }
-        else if (santiNear && TwoPlayers && !JoseEvent && SantiEvent && !RunOnce && WinScreen)
-        {
+        else if (santiNear && !JoseEvent && SantiEvent && WinScreen)
+        { 
             SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Play();
             SceneManager.LoadScene("WinScreen");
+            Destroy(this.gameObject);
         }
 
     }
