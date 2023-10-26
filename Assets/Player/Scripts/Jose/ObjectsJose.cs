@@ -61,6 +61,8 @@ public class ObjectsJose : MonoBehaviour
     private bool ThrowCheckR = false;
     private bool ThrowCheckL = false;
     private bool IsCrouched = false;
+    private bool activated = false;
+    private Cure activeStation = null;
 
     void Awake()
     {
@@ -152,6 +154,36 @@ public class ObjectsJose : MonoBehaviour
         StartCoroutine(Throw());
         ThrowGrounded();
 
+    }
+
+    private void Activation()
+    {
+        if (hit.transform != null && hit.transform.tag == "Health")
+        {
+            Cure station = hit.transform.GetComponent<Cure>();
+            bool isInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0.0f;
+
+            if (station != null)
+            {
+                if (isInteractPressed)
+                {
+                    station.updateCure(true, this.gameObject);
+                    activeStation = station;
+                    activated = true;
+                }
+                else if (activeStation != null)
+                {
+                    station.updateCure(false, this.gameObject);
+                    activeStation = null;
+                    activated = false;
+                }
+            }
+        }
+        else if (activeStation != null && activated)
+        {
+            activeStation.updateCure(false, this.gameObject);
+            activated = false;
+        }
     }
 
     IEnumerator Grab()

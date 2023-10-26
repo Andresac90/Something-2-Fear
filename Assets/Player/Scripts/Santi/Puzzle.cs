@@ -19,7 +19,6 @@ public class Puzzle : MonoBehaviourPun
 
     public int comprobations;
     public string PasswordRef;
-    
 
     public void OpenPuzzle(bool puzzleCreated, bool puzzleActive, string objectName)
     {

@@ -48,18 +48,8 @@ public class HidingSystem : MonoBehaviour
 
     void Update()
     {
-        //Physics.Raycast(santicamera.GetComponent<Camera>().transform.position, santicamera.GetComponent<Camera>().transform.TransformDirection(Vector3.forward), out hit, rayLine);
         StartCoroutine(Hide());
         StartCoroutine(Raycast());
-        //if (hit.transform != null && hit.transform.tag == ("Hide"))
-        //{
-        //    hideText.SetActive(true);
-            
-        //}
-        //else
-        //{
-        //    hideText.SetActive(false);
-        //}
     }
     IEnumerator Raycast()
     {

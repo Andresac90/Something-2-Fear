@@ -9,40 +9,47 @@ using Unity.Properties;
 
 public class SantiController : MonoBehaviour
 {   
+
+    [Header("Player Components")] // ------------------------------ Player Components ------------------------------ //
     [SerializeField]
     private Camera Camera;
     [SerializeField]
     private AudioListener AudioListener;
     [SerializeField]
     private GameObject Canvas;
-    private Vector2 Move;
-    private Vector2 YVel;
-    public float Speed;
-    private float OriginalSpeed;
-    private Transform playerCam;
-    private InputAction movementAction;
-    private InputAction lookAction;
-    public float moveSpeed = 5.0f;
-    public float lookSensitivity = 2.0f;
-    public bool isPlayerInjected = false;
-    private float rotationX = 0;
-
-    [SerializeField]
-    private float Gravity = -9.81f;
-
     private InputMaster Controls;
     private CharacterController CharController;
-    private PlayerLook look;
 
-    // public GameObject Task;
-    //Grounded
-    public bool IsGrounded;
-    //Head Check in editor
+
+    [Header("Movement")] // ------------------------------ Movement ------------------------------ //
+    [SerializeField]
+    private float Speed;
+    private float OriginalSpeed;
+    private float Gravity = -9.81f;
+    private Vector2 YVel;
+    private bool IsGrounded;
     [SerializeField]
     private Transform GroundCheck;
-    public float RadiusGround;
-    public LayerMask GroundMask;
+    [SerializeField]
+    private float RadiusGround;
+    [SerializeField]
+    private LayerMask GroundMask; 
 
+
+    [Header("Hiding System")] // ------------------------------ Hiding System ------------------------------ //
+    [SerializeField]
+    private GameObject HideText;
+    [SerializeField]
+    private GameObject StopHideText;
+
+    [SerializeField]
+    private float Range;
+    private GameObject hideObject;
+    public bool isHiding = false;
+
+
+    public bool isPlayerInjected = false;
+    private int controlsModifier = 1;
     private PhotonView PV;
 
     void Awake()
@@ -54,62 +61,144 @@ public class SantiController : MonoBehaviour
     {
         PV = GetComponent<PhotonView>();
         
+        // If the player is not mine, disable the camera, audio listener and canvas
         Camera.enabled = PV.IsMine;
         AudioListener.enabled = PV.IsMine;
         Canvas.SetActive(PV.IsMine);
 
         CharController = GetComponent<CharacterController>();
-        look = GetComponent<PlayerLook>();
         OriginalSpeed = Speed;
-        GameObject.Find("Locker").GetComponent<HidingSystem>().ActivateSanti();
-        GameObject.Find("Locker2").GetComponent<HidingSystem>().ActivateSanti();
-        GameObject.Find("Locker3").GetComponent<HidingSystem>().ActivateSanti();
     }
-    public void SetInjected(bool injected)
-    {
-        isPlayerInjected = injected;
-    }
-    // Update is called once per frame
+    
     void Update()
     {
         if (!PV.IsMine) return;
-        if (isPlayerInjected)
+        
+
+        Movement();
+        CheckInteract();
+
+        if (isHiding)
+            CheckRange();
+    }
+
+    private void CheckInteract()
+    {
+        bool InteractPressed = Controls.Player.Interact.triggered;
+        if (isHiding)
         {
-            InvertControls();
+            UIPrompt("StopHide");
+
+            if (InteractPressed)
+            {
+                StopHide();
+                return;
+            }
         }
-        else
+
+        RaycastHit hit;
+        LayerMask mask = LayerMask.GetMask("Obstacle");
+        Physics.Raycast(Camera.transform.position, Camera.transform.TransformDirection(Vector3.forward), out hit, 2.0f, mask);
+
+        if (hit.transform == null){
+            UIPrompt("");
+            return;
+        }
+
+        UIPrompt(hit.transform.tag);
+
+        if (!InteractPressed) return;
+        switch (hit.transform.tag)
         {
-            Movement();
+            case "Hide":
+                Hide(hit.transform.gameObject);
+                break;
+            default:
+                break;
         }
-        // Camera.transform.position = new Vector3(transform.position.x, Camera.transform.position.y, transform.position.z);
-        // Interact();
+
+    }
+
+    private void CheckRange()
+    {
+        float distance = Vector3.Distance(transform.position, hideObject.transform.position);
+
+        if (distance > Range)
+        {
+            hideObject.GetComponent<Locker>().enemy.GetComponent<PhotonView>().RPC("SyncInRange", RpcTarget.All, false);
+        }
+    }
+    private void Hide(GameObject locker)
+    {
+        if (isHiding) return;
+        isHiding = true;
+
+        var hidePosition = locker.GetComponent<Locker>().HidePosition;  
+        transform.position = new Vector3(hidePosition.position.x, hidePosition.position.y, hidePosition.position.z);
+
+        hideObject = locker;
+
+    }
+
+    private void StopHide()
+    {
+        if (!isHiding) return;
+        isHiding = false;
+
+        var outPosition = hideObject.GetComponent<Locker>().OutPosition;
+        transform.position = new Vector3(outPosition.position.x, outPosition.position.y, outPosition.position.z);
+
     }
 
     private void Movement()
     {
+        if (isHiding) return;
+
         IsGrounded = Physics.CheckSphere(GroundCheck.position, RadiusGround, GroundMask);
-        Move = Controls.Player.Movement.ReadValue<Vector2>();
-
-        if (IsGrounded && YVel.y < 0)
-        {
-            YVel.y = 0;
-        }
-
-        Vector3 MovementZ = (transform.right * Move.x + transform.forward * Move.y);
         YVel.y += Gravity * Time.deltaTime;
-        CharController.Move(MovementZ * Speed * Time.deltaTime);
-        CharController.Move(YVel * Speed * Time.deltaTime);
+
+        Vector2 movement = Controls.Player.Movement.ReadValue<Vector2>();
+
+        bool isFalling = YVel.y < 0;
+
+        if (IsGrounded && isFalling)
+            YVel.y = 0;
+
+        Vector3 newPos = (transform.right * movement.x + transform.forward * movement.y + transform.up * YVel.y) * controlsModifier;
+
+        CharController.Move(newPos * Speed * Time.deltaTime);
     }
 
-    // private void Interact()
-    // {
-    //     bool IsInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0f;
-    //     if(isTaskActive() && IsInteractPressed)
-    //     {
-    //         Debug.Log("Iniciado");
-    //         Instantiate(Task);
-    //     }
-    // }
+    private void UIPrompt(string text)
+    {   
+        if (text == "Hide")
+        {
+            HideText.SetActive(true);
+            StopHideText.SetActive(false);
+        }
+        else if (text == "StopHide")
+        {
+            StopHideText.SetActive(true);
+            HideText.SetActive(false);
+        }
+        else
+        {
+            HideText.SetActive(false);
+            StopHideText.SetActive(false);
+        }
+    }
+
+    public void SetInjected()
+    {
+        isPlayerInjected = true;
+        controlsModifier = -1;
+    }
+
+    public void SetCured()
+    {
+        isPlayerInjected = false;
+        controlsModifier = 1;
+    }
 
     private void OnEnable()
     {
@@ -119,19 +208,6 @@ public class SantiController : MonoBehaviour
     private void OnDisable()
     {
         Controls.Disable();
-    }
-
-    private void InvertControls()
-    {
-        Vector2 invertedMovementInput = Controls.Player.Movement.ReadValue<Vector2>() * -1;
-        Vector2 invertedLookInput = Controls.Player.Look.ReadValue<Vector2>() * -1;
-
-        // Move the player with inverted controls
-        Vector3 moveDirection = transform.TransformDirection(new Vector3(invertedMovementInput.x, 0, invertedMovementInput.y));
-        CharController.Move(moveDirection * moveSpeed * Time.deltaTime);
-
-        // Rotate the camera with inverted controls
-        //look.SetInvert(true);
     }
 
 }

@@ -9,7 +9,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 
-public class ObjectsSanti : MonoBehaviour
+public class ObjectsSanti : MonoBehaviourPun
 {
     private InputMaster controls;
     private GameObject playerL;
@@ -20,7 +20,7 @@ public class ObjectsSanti : MonoBehaviour
     private GameObject pascualita;
     private GameObject nurse;
     private GameObject LightBox;
-    private GameObject puertaPrinicipal;
+    private GameObject puertaPrinicipal; 
     private RaycastHit hit;
     private Rigidbody objectRightRb;
     private Rigidbody objectLeftRb;
@@ -40,6 +40,7 @@ public class ObjectsSanti : MonoBehaviour
     private bool throwCheckL = true;
     private bool activated = false;
     private Button activeButton = null;
+    private Cure activeStation = null;
 
     [SerializeField]
     private Transform objectRightCamera;
@@ -99,6 +100,7 @@ public class ObjectsSanti : MonoBehaviour
         NurseAI aicontrolN = nurse.GetComponent<NurseAI>();
         aicontrolP.santiActivation();
         aicontrolN.SantiActivation();
+        puertaPrinicipal = GameObject.Find("PuertaPrincipal");
     }
 
     public void Update()
@@ -112,6 +114,7 @@ public class ObjectsSanti : MonoBehaviour
             NoteManager();
             if (objectNameString == "KeyMaster1" || objectNameString == "KeyMaster2" || objectNameString == "KeyMaster3")
             {
+                StartCoroutine(RightDrop());
                 hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
                 objectNameString = "";
             }
@@ -146,6 +149,10 @@ public class ObjectsSanti : MonoBehaviour
             InteractUI.SetActive(true);
         }
         else if (hit.transform != null && hit.transform.tag == "Box")
+        {
+            InteractUI.SetActive(true);
+        }
+        else if (hit.transform != null && hit.transform.tag == "Health")
         {
             InteractUI.SetActive(true);
         }
@@ -193,6 +200,9 @@ public class ObjectsSanti : MonoBehaviour
     {
         if(hit.transform.tag == "FinalDoor")
         {
+            Debug.Log("Key 1 " + GameManager.Instance.Key1);
+            Debug.Log("Key 2 " + GameManager.Instance.Key2);
+            Debug.Log("Key 3 " + GameManager.Instance.Key3);
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
             if(isInteractPressed && GameManager.Instance.Key1 && GameManager.Instance.Key2 && GameManager.Instance.Key3)
             {
@@ -242,6 +252,33 @@ public class ObjectsSanti : MonoBehaviour
                 LightBox.GetComponent<PhotonView>().RPC("Activation", RpcTarget.All, true);
             }
         }
+
+        if (hit.transform != null && hit.transform.tag == "Health")
+        {
+            Cure station = hit.transform.GetComponent<Cure>();
+            bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
+
+            if (station != null)
+            {
+                if (isInteractPressed)
+                {
+                    station.updateCure(true, this.gameObject);
+                    activeStation = station;
+                    activated = true;
+                }
+                else if (activeStation != null)
+                {
+                    station.updateCure(false, this.gameObject);
+                    activeStation = null;
+                    activated = false;
+                }
+            }
+        }
+        else if (activeStation != null && activated)
+        {
+            activeStation.updateCure(false, this.gameObject);
+            activated = false;
+        }
     }
 
     public void PuzzleManager()
@@ -251,12 +288,12 @@ public class ObjectsSanti : MonoBehaviour
             Puzzle puzzle = hit.transform.GetComponent<Puzzle>();
             string objectName = hit.collider.gameObject.name;
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.2f;
-            if(objectNameString != "Key" && puzzle.puzzle.name == "LockPick")
-            {
-                Debug.Log("You need a key");
-                //UI You need a key
-            }
-            else if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
+            //if(objectNameString != "Key" && puzzle.puzzle.name == "LockPick")
+            //{
+            //    Debug.Log("You need a key");
+            //    //UI You need a key
+            //}
+            if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
             {
                 puzzle.OpenPuzzle(false, false, objectName);
                 puzzleCreated = true;

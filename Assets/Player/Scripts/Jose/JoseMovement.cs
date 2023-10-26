@@ -59,6 +59,8 @@ public class JoseMovement : MonoBehaviour
 
     PhotonView PV;
 
+    private int controlsModifier  = 1;
+
 
     void Awake()
     {
@@ -84,18 +86,13 @@ public class JoseMovement : MonoBehaviour
     {
         if (!PV.IsMine) return;
 
-        if (isPlayerInjected)
-        {
-            InvertControls();
-        }
-        else
-        {
-            Movement();
-            Jump();
-            Crouch();
-            Sprint();
-            Camera.transform.position = new Vector3(transform.position.x, Camera.transform.position.y, transform.position.z);
-        }
+
+        Movement();
+        Jump();
+        Crouch();
+        Sprint();
+        Camera.transform.position = new Vector3(transform.position.x, Camera.transform.position.y, transform.position.z);
+
     }
     void Movement()
     {
@@ -108,7 +105,7 @@ public class JoseMovement : MonoBehaviour
 
         Vector3 MovementZ = (transform.right * Move.x + transform.forward * Move.y);
         YVel.y += Gravity * Time.deltaTime;
-        CharController.Move(MovementZ * Speed * Time.deltaTime);
+        CharController.Move(MovementZ * Speed * Time.deltaTime * controlsModifier);
         CharController.Move(YVel * Time.deltaTime);
     }
 
@@ -170,6 +167,18 @@ public class JoseMovement : MonoBehaviour
         }
     }
 
+    public void SetInjected()
+    {
+        isPlayerInjected = true;
+        controlsModifier = -1;
+    }
+
+    public void SetCured()
+    {
+        isPlayerInjected = false;
+        controlsModifier = 1;
+    }
+
     private void OnEnable()
     {
         Controls.Enable();
@@ -180,16 +189,16 @@ public class JoseMovement : MonoBehaviour
         Controls.Disable();
     }
 
-    private void InvertControls()
-    {
-        Vector2 invertedMovementInput = Controls.Player.Movement.ReadValue<Vector2>() * -1;
-        Vector2 invertedLookInput = Controls.Player.Look.ReadValue<Vector2>() * -1;
+    // private void InvertControls()
+    // {
+    //     Vector2 invertedMovementInput = Controls.Player.Movement.ReadValue<Vector2>() * -1;
+    //     Vector2 invertedLookInput = Controls.Player.Look.ReadValue<Vector2>() * -1;
 
-        // Move the player with inverted controls
-        Vector3 moveDirection = transform.TransformDirection(new Vector3(invertedMovementInput.x, 0, invertedMovementInput.y));
-        CharController.Move(moveDirection * moveSpeed * Time.deltaTime);
+    //     // Move the player with inverted controls
+    //     Vector3 moveDirection = transform.TransformDirection(new Vector3(invertedMovementInput.x, 0, invertedMovementInput.y));
+    //     CharController.Move(moveDirection * moveSpeed * Time.deltaTime);
 
-        // Rotate the camera with inverted controls
-        //look.SetInvert(true);
-    }
+    //     // Rotate the camera with inverted controls
+    //     //look.SetInvert(true);
+    // }
 }
