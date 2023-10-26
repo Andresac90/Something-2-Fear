@@ -40,6 +40,7 @@ public class ObjectsSanti : MonoBehaviour
     private bool throwCheckL = true;
     private bool activated = false;
     private Button activeButton = null;
+    private Cure activeStation = null;
 
     [SerializeField]
     private Transform objectRightCamera;
@@ -149,6 +150,10 @@ public class ObjectsSanti : MonoBehaviour
         {
             InteractUI.SetActive(true);
         }
+        else if (hit.transform != null && hit.transform.tag == "Health")
+        {
+            InteractUI.SetActive(true);
+        }
         else
         {
             InteractUI.SetActive(false);
@@ -241,6 +246,33 @@ public class ObjectsSanti : MonoBehaviour
             {
                 LightBox.GetComponent<PhotonView>().RPC("Activation", RpcTarget.All, true);
             }
+        }
+
+        if (hit.transform != null && hit.transform.tag == "Health")
+        {
+            Cure station = hit.transform.GetComponent<Cure>();
+            bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
+
+            if (station != null)
+            {
+                if (isInteractPressed)
+                {
+                    station.updateCure(true, this.gameObject);
+                    activeStation = station;
+                    activated = true;
+                }
+                else if (activeStation != null)
+                {
+                    station.updateCure(false, this.gameObject);
+                    activeStation = null;
+                    activated = false;
+                }
+            }
+        }
+        else if (activeStation != null && activated)
+        {
+            activeStation.updateCure(false, this.gameObject);
+            activated = false;
         }
     }
 

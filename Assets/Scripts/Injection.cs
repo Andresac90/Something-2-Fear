@@ -12,9 +12,6 @@ public class Injection : MonoBehaviour
     private GameObject playerCam;
     public bool cured = true;
     public float currentTime = 0f;
-    private bool santiInjected = false;
-    private bool joseInjected = false;
-    private bool timeOver = false;
     public float downTime = 35f;
 
     private PhotonView JosePV;
@@ -57,6 +54,7 @@ public class Injection : MonoBehaviour
         {
             Injected(isPlayerInjected);
         }
+        Debug.Log(cured);
         checkInjection();
     }
 
@@ -74,7 +72,6 @@ public class Injection : MonoBehaviour
                 currentTime = 0f;
 
                 cured = false;
-                santiInjected = true;
             }
             else if (!cured)
             {
@@ -92,7 +89,6 @@ public class Injection : MonoBehaviour
                 currentTime = 0f;
 
                 cured = false;
-                joseInjected = true;
             }
             else if (!cured)
             {
@@ -106,26 +102,33 @@ public class Injection : MonoBehaviour
     {
         if (this.name == "Santi(Clone)")
         {
+            AudioInjection.Stop();
             santiController.SetInjected(false);
             camera.fieldOfView = 60;
             camera.GetComponent<PlayerLook>().SetInvert(false);
             currentTime = 0f;
             cured = true;
+            isPlayerInjected = false;
         }
         else if (this.name == "Jose(Clone)")
         {
+            AudioInjection.Stop();
             joseController.SetInjected(false);
             camera.fieldOfView = 60;
             camera.GetComponent<PlayerLook>().SetInvert(false);
             currentTime = 0f;
             cured = true;
+            isPlayerInjected = false;
         }
     }
 
     public void checkInjection()
     {
-        if (currentTime > downTime)
+        if (currentTime > downTime && !cured)
         {
+            Debug.Log("Weno?");
+            Debug.Log(cured);
+            Debug.Log(currentTime);
             if(this.name == "Santi(Clone)")
             {
                 isPlayerInjected = false;
