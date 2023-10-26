@@ -9,7 +9,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 
-public class ObjectsSanti : MonoBehaviour
+public class ObjectsSanti : MonoBehaviourPun
 {
     private InputMaster controls;
     private GameObject playerL;
@@ -194,6 +194,9 @@ public class ObjectsSanti : MonoBehaviour
     {
         if(hit.transform.tag == "FinalDoor")
         {
+            Debug.Log("Key 1 " + GameManager.Instance.Key1);
+            Debug.Log("Key 2 " + GameManager.Instance.Key2);
+            Debug.Log("Key 3 " + GameManager.Instance.Key3);
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
             if(isInteractPressed && GameManager.Instance.Key1 && GameManager.Instance.Key2 && GameManager.Instance.Key3)
             {
