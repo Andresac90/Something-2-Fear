@@ -69,6 +69,7 @@ MonoBehaviour:
   - DeactivatePascualita
   - ActivateLights
   - DeactivateLights
+  - SyncScale
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

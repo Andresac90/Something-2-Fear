@@ -846,7 +846,6 @@ MonoBehaviour:
   Speed: 5
   JumpForce: 3
   Gravity: -50
-  moveSpeed: 5
   lookSensitivity: 2
   isPlayerInjected: 0
   HasRun: 0

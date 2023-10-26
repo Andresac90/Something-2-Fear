@@ -9,7 +9,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 
-public class ObjectsSanti : MonoBehaviour
+public class ObjectsSanti : MonoBehaviourPun
 {
     private InputMaster controls;
     private GameObject playerL;
@@ -40,6 +40,7 @@ public class ObjectsSanti : MonoBehaviour
     private bool throwCheckL = true;
     private bool activated = false;
     private Button activeButton = null;
+    private Cure activeStation = null;
 
     [SerializeField]
     private Transform objectRightCamera;
@@ -151,6 +152,10 @@ public class ObjectsSanti : MonoBehaviour
         {
             InteractUI.SetActive(true);
         }
+        else if (hit.transform != null && hit.transform.tag == "Health")
+        {
+            InteractUI.SetActive(true);
+        }
         else
         {
             InteractUI.SetActive(false);
@@ -195,6 +200,9 @@ public class ObjectsSanti : MonoBehaviour
     {
         if(hit.transform.tag == "FinalDoor")
         {
+            Debug.Log("Key 1 " + GameManager.Instance.Key1);
+            Debug.Log("Key 2 " + GameManager.Instance.Key2);
+            Debug.Log("Key 3 " + GameManager.Instance.Key3);
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
             if(isInteractPressed && GameManager.Instance.Key1 && GameManager.Instance.Key2 && GameManager.Instance.Key3)
             {
@@ -243,6 +251,33 @@ public class ObjectsSanti : MonoBehaviour
             {
                 LightBox.GetComponent<PhotonView>().RPC("Activation", RpcTarget.All, true);
             }
+        }
+
+        if (hit.transform != null && hit.transform.tag == "Health")
+        {
+            Cure station = hit.transform.GetComponent<Cure>();
+            bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
+
+            if (station != null)
+            {
+                if (isInteractPressed)
+                {
+                    station.updateCure(true, this.gameObject);
+                    activeStation = station;
+                    activated = true;
+                }
+                else if (activeStation != null)
+                {
+                    station.updateCure(false, this.gameObject);
+                    activeStation = null;
+                    activated = false;
+                }
+            }
+        }
+        else if (activeStation != null && activated)
+        {
+            activeStation.updateCure(false, this.gameObject);
+            activated = false;
         }
     }
 

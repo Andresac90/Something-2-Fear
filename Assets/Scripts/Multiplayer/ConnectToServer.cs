@@ -9,6 +9,12 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
 {
     void Start()
     {
+        if (PhotonNetwork.InRoom)
+            PhotonNetwork.LeaveRoom();
+
+        if (PhotonNetwork.IsConnected)
+            PhotonNetwork.Disconnect();
+
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings();
     }
