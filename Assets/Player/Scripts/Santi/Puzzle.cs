@@ -94,10 +94,18 @@ public class Puzzle : MonoBehaviourPun
             {
                 StartCoroutine(objectsSanti.RightDrop());
                 objectsSanti.objectNameString = "";
-                GameObject.Find("SmallKey_Item" + keylevel).GetComponent<PhotonView>().RPC("DestroyKeyOnline", RpcTarget.All, GameObject.Find("SmallKey_Item" + keylevel).name);
-                keylevel += 1;
+                Debug.Log(keylevel);
+                Debug.Log(GameObject.Find("SmallKey_Item" + keylevel));
+                GameObject.Find("SmallKey_Item" + keylevel).GetComponent<PhotonView>().RPC("DestroyKeyOnline", RpcTarget.All, "SmallKey_Item" + keylevel);
+                photonView.RPC("KeyLevel", RpcTarget.All);
             }
 
         }
+    }
+
+    [PunRPC]
+    public void KeyLevel()
+    {
+        keylevel++;
     }
 }
