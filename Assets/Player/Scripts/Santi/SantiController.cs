@@ -73,9 +73,16 @@ public class SantiController : MonoBehaviour
     void Update()
     {
         if (!PV.IsMine) return;
-        
 
-        Movement();
+        if (isPlayerInjected)
+        {
+            InvertControls();
+        }
+        else
+        {
+            Movement();
+        }
+
         CheckInteract();
 
         if (isHiding)
@@ -191,13 +198,11 @@ public class SantiController : MonoBehaviour
     public void SetInjected()
     {
         isPlayerInjected = true;
-        controlsModifier = -1;
     }
 
     public void SetCured()
     {
         isPlayerInjected = false;
-        controlsModifier = 1;
     }
 
     private void OnEnable()
@@ -208,6 +213,19 @@ public class SantiController : MonoBehaviour
     private void OnDisable()
     {
         Controls.Disable();
+    }
+
+    private void InvertControls()
+    {
+        Vector2 invertedMovementInput = Controls.Player.Movement.ReadValue<Vector2>() * -1;
+        Vector2 invertedLookInput = Controls.Player.Look.ReadValue<Vector2>() * -1;
+
+        // Move the player with inverted controls
+        Vector3 moveDirection = transform.TransformDirection(new Vector3(invertedMovementInput.x, 0, invertedMovementInput.y));
+        CharController.Move(moveDirection * OriginalSpeed * Time.deltaTime);
+
+        // Rotate the camera with inverted controls
+        //look.SetInvert(true);
     }
 
 }

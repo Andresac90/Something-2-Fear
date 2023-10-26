@@ -60,7 +60,6 @@ public class Injection : MonoBehaviour
         {
             Injected(isPlayerInjected);
         }
-        Debug.Log(cured);
         checkInjection();
     }
 

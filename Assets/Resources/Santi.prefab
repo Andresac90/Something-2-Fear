@@ -2479,7 +2479,7 @@ MonoBehaviour:
   ObjectRightUI: {fileID: 5450255875206467538}
   DropRightUI: {fileID: 7316846329107394762}
   InteractUI: {fileID: 2403783609015219916}
-  HealingUI: {fileID: 0}
+  HealingUI: {fileID: 6643732670335232918}
   Key1UI: {fileID: 2286605370524345816}
   Key2UI: {fileID: 7373177397655203014}
   Key3UI: {fileID: 4884980180378821560}
@@ -2488,6 +2488,7 @@ MonoBehaviour:
   puzzleActive: 0
   noteCreated: 0
   objectNameString: 
+  keylevel: 1
 --- !u!114 &4948735220528498441
 MonoBehaviour:
   m_ObjectHideFlags: 0
