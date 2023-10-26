@@ -36,7 +36,7 @@ public class Down : MonoBehaviourPun
     {
         if (name == "Santi(Clone)")
         {
-            santiDown = down;   
+            santiDown = down;
         }
         else if (name == "Jose(Clone)")
         {
@@ -54,7 +54,7 @@ public class Down : MonoBehaviourPun
         if (name == "Santi(Clone)")
         {
             photonView.RPC("playerDown", RpcTarget.All, true);
-            GetComponent<SantiController>().enabled = false;            
+            GetComponent<SantiController>().enabled = false;
         }
         else if (name == "Jose(Clone)")
         {
@@ -79,13 +79,13 @@ public class Down : MonoBehaviourPun
         {
             photonView.RPC("playerDown", RpcTarget.All, false);
             GetComponent<SantiController>().enabled = true;
-            
+
         }
         else if (name == "Jose(Clone)")
         {
             photonView.RPC("playerDown", RpcTarget.All, false);
             GetComponent<JoseMovement>().enabled = true;
-            
+
         }
         GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y + 0.879f, transform.position.z);
         GetComponent<Transform>().rotation = Quaternion.Euler(Quaternion.identity.x, Quaternion.identity.y, Quaternion.identity.z);
@@ -115,9 +115,11 @@ public class Down : MonoBehaviourPun
         {
             Debug.Log("eliminado");
             Cursor.lockState = CursorLockMode.None;
-            SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Play();
-            SceneManager.LoadScene("LoseScreen"); // change to 
-            //PhotonNetwork.LoadLevel("LoseScreen");
+            // SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Play();
+
+            // change ever
+            // SceneManager.LoadScene("LoseScreen");
+            PhotonNetwork.LoadLevel("LoseScreen");
             // gameObject.SetActive(false);
         }
     }
