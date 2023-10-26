@@ -60,6 +60,8 @@ public class ObjectsSanti : MonoBehaviourPun
     public GameObject DropRightUI;
     [SerializeField]
     private GameObject InteractUI;
+    [SerializeField]
+    private GameObject HealingUI;
 
     //MasterKeys
     [SerializeField]
@@ -109,7 +111,6 @@ public class ObjectsSanti : MonoBehaviourPun
         Activation();
         if(hit.transform != null)
         {
-            OpenFinalDoor();
             PuzzleManager();
             NoteManager();
             if (objectNameString == "KeyMaster1" || objectNameString == "KeyMaster2" || objectNameString == "KeyMaster3")
@@ -156,6 +157,10 @@ public class ObjectsSanti : MonoBehaviourPun
         {
             InteractUI.SetActive(true);
         }
+        else if (hit.transform != null && hit.transform.tag == "FinalDoor")
+        {
+            InteractUI.SetActive(true);
+        }
         else
         {
             InteractUI.SetActive(false);
@@ -194,23 +199,6 @@ public class ObjectsSanti : MonoBehaviourPun
             InteractUI.SetActive(false);
         }
         Drop();
-    }
-
-    private void OpenFinalDoor()
-    {
-        if(hit.transform.tag == "FinalDoor")
-        {
-            Debug.Log("Key 1 " + GameManager.Instance.Key1);
-            Debug.Log("Key 2 " + GameManager.Instance.Key2);
-            Debug.Log("Key 3 " + GameManager.Instance.Key3);
-            bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
-            if(isInteractPressed && GameManager.Instance.Key1 && GameManager.Instance.Key2 && GameManager.Instance.Key3)
-            {
-                puertaPrinicipal.GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, true);
-                puertaPrinicipal.GetComponent<Door>().doorState = true;
-                puertaPrinicipal.GetComponent<Door>().OpenDoor();
-            }
-        }
     }
 
     private void Activation()
@@ -262,12 +250,14 @@ public class ObjectsSanti : MonoBehaviourPun
             {
                 if (isInteractPressed)
                 {
+                    HealingUI.SetActive(true);
                     station.updateCure(true, this.gameObject);
                     activeStation = station;
                     activated = true;
                 }
                 else if (activeStation != null)
                 {
+                    HealingUI.SetActive(false);
                     station.updateCure(false, this.gameObject);
                     activeStation = null;
                     activated = false;
@@ -276,8 +266,20 @@ public class ObjectsSanti : MonoBehaviourPun
         }
         else if (activeStation != null && activated)
         {
+            HealingUI.SetActive(false);
             activeStation.updateCure(false, this.gameObject);
             activated = false;
+        }
+
+        if (hit.transform != null && hit.transform.tag == "FinalDoor")
+        {
+            bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.1f;
+            if (isInteractPressed && GameManager.Instance.Key1 && GameManager.Instance.Key2 && GameManager.Instance.Key3)
+            {
+                puertaPrinicipal.GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, true);
+                puertaPrinicipal.GetComponent<Door>().doorState = true;
+                puertaPrinicipal.GetComponent<Door>().OpenDoor();
+            }
         }
     }
 
