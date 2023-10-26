@@ -28,7 +28,11 @@ public class Down : MonoBehaviourPun
 
     void Update()
     {
-        Die();
+        if(isPlayerDowned)
+        {
+            currentTime += Time.deltaTime;
+            Die();
+        }
     }
 
     [PunRPC]
