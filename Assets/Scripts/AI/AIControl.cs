@@ -55,6 +55,9 @@ public class AIControl : MonoBehaviourPun
 
     //Testing variables
     public bool isSeen;  //Pascualita is being seen by player
+    public bool isSeenSanti = false;  //Pascualita is being seen by player
+    public bool isSeenJose = false;  //Pascualita is being seen by player
+
     //int randNum; //Random val to randomize patrol pattern
     public float catchDistance;
     public Animator aiAnimation; //for fuuture use in animations
@@ -276,31 +279,31 @@ public class AIControl : MonoBehaviourPun
     }
     private void Seen()
     {
-        
+        Stop();
         //StartCoroutine(IsSeenTimer());
-        if (stoppedTimer >= 0) // pascualita is stopped (cambiar wait time)
-        {
-            Stop();
-            stoppedTimer -= Time.deltaTime;
-            seenCooldownTimer = defaultCooldownTime;
-        }
-        else //is on cooldown from being seen
-        {   
-            if(seenCooldownTimer >= 0) //
-            {
-                Debug.Log("Player is controlled");
-                seenCooldownTimer -= Time.deltaTime;
-                Move(walkSpeed);
-                //isPatrol = true;
-                //aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
-            }
-            else
-            {
-                Debug.Log("Undo ivnecible pascuala");
-                stoppedTimer = defaultCooldownTime;
-                //TimeToRotate = timeToRotate;  
-            }
-        }
+        //if (stoppedTimer >= 0) // pascualita is stopped (cambiar wait time)
+        //{
+        //    Stop();
+        //    stoppedTimer -= Time.deltaTime;
+        //    seenCooldownTimer = defaultCooldownTime;
+        //}
+        //else //is on cooldown from being seen
+        //{   
+        //    if(seenCooldownTimer >= 0) //
+        //    {
+        //        Debug.Log("Player is controlled");
+        //        seenCooldownTimer -= Time.deltaTime;
+        //        Move(walkSpeed);
+        //        //isPatrol = true;
+        //        //aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("Undo ivnecible pascuala");
+        //        stoppedTimer = defaultCooldownTime;
+        //        //TimeToRotate = timeToRotate;  
+        //    }
+        //}
     }
     public void Seen2(bool playerSeeing)
     {
@@ -416,7 +419,6 @@ public class AIControl : MonoBehaviourPun
             Transform player = playerInRange[i].transform;
             if (player.GetComponent<Down>().isPlayerDowned)
             {
-                Debug.Log(playerInRange[i]);
                 isChasing = false;
                 isPatrol = true;
                 break;
@@ -426,8 +428,7 @@ public class AIControl : MonoBehaviourPun
             {
                 float dstToPlayer = Vector3.Distance(transform.position, player.position);          //  Distance of the enmy and the player
                 if (!Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, obstacleMask) && !isPlayerCaught)
-                {
-                    Debug.Log("raycast");
+                {                  
                     this.playerInRange = true;             //  The player has been seen by the enemy and then the enemy chases the player
                     isChasing = true;                 //  Change the state to chasing the player
                     isPatrol = false;
@@ -459,8 +460,21 @@ public class AIControl : MonoBehaviourPun
         }
     }
 
-    public void SetIsSeen(bool setIsSeen)
-    { isSeen = setIsSeen; }
+    [PunRPC]
+    public void SyncSetIsSeen(bool setIsSeen, string names)
+    {
+        if(names == "Jose(Clone)")
+        {
+            isSeenJose = setIsSeen;
+        }
+        else if(names == "Santi(Clone)")
+        {
+            isSeenSanti = setIsSeen;
+        }
+        isSeen = isSeenJose || isSeenSanti; 
+    }
+    //public void SetIsSeen(bool setIsSeen)
+    //{ isSeen = setIsSeen; }
 
     public bool GetIsSeen()
     { return isSeen; }

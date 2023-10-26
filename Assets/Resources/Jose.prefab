@@ -800,6 +800,7 @@ GameObject:
   - component: {fileID: 7004039161926669386}
   - component: {fileID: 1300117991072718322}
   - component: {fileID: 9041468969258766003}
+  - component: {fileID: 4278532075990428552}
   m_Layer: 9
   m_Name: Jose
   m_TagString: PlayerJose
@@ -1065,6 +1066,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.71909124, y: 2.0166059, z: 0.4175057}
   m_Center: {x: 0.014493912, y: -0.031064987, z: 0.022256047}
+--- !u!114 &4278532075990428552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3676275686622208031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4861bcaca7b32da439eec177788e0909, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aiControlRef: {fileID: 0}
+  radius: 0
+  angle: 0
+  enemyRef: {fileID: 0}
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &3721035067046737618
 GameObject:
   m_ObjectHideFlags: 0
@@ -1887,7 +1910,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4599
+    m_Bits: 5623
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

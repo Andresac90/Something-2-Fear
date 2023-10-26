@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class ViewStopAI : MonoBehaviour
 {
@@ -11,7 +12,6 @@ public class ViewStopAI : MonoBehaviour
     public float radius;
     [Range(0, 360)]
     public float angle;
-    public bool timer;
 
     public GameObject enemyRef;
 
@@ -22,8 +22,9 @@ public class ViewStopAI : MonoBehaviour
     {
         radius = 15f;
         angle = 90f;
-        timer = true;
+
         enemy = GameObject.Find("Pascualita");
+        enemyRef = GameObject.Find("Pascualita");
         aiControlRef = enemy.GetComponent<AIControl>();
         StartCoroutine(FOVRoutine());
     }
@@ -42,9 +43,9 @@ public class ViewStopAI : MonoBehaviour
     private void FieldOfViewCheck()
     {
         Collider[] rangeChecks = Physics.OverlapSphere(transform.position, radius, enemyMask);
-        
+        //Debug.Log(rangeChecks.Length);
         if (rangeChecks.Length != 0)
-        {   
+        {
             Transform target = rangeChecks[0].transform;
             Vector3 directionToTarget = (target.position - transform.position).normalized;
 
@@ -52,24 +53,37 @@ public class ViewStopAI : MonoBehaviour
             {
                 float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
-                if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask) && aiControlRef.WaitTime != 0)        
-                    aiControlRef.SetIsSeen(true);
+                if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask))
+                {
+                    aiControlRef.GetComponent<PhotonView>().RPC("SyncSetIsSeen", RpcTarget.All, true, transform.name);
+                    //aiControlRef.SyncSetIsSeen(true);
+                    Debug.Log("Pascualita is seen");
+                }
                 else
-                    aiControlRef.SetIsSeen(false);
+                {
+                    aiControlRef.GetComponent<PhotonView>().RPC("SyncSetIsSeen", RpcTarget.All, false, transform.name);
+                    Debug.Log("Hallo1");
+                }
             }
             else
-                aiControlRef.SetIsSeen(false);
+            {
+                aiControlRef.GetComponent<PhotonView>().RPC("SyncSetIsSeen", RpcTarget.All, false, transform.name);
+                Debug.Log("Hallo2");
+            }
         }
         else if (aiControlRef)
-            aiControlRef.SetIsSeen(false);
+        {
+            aiControlRef.GetComponent<PhotonView>().RPC("SyncSetIsSeen", RpcTarget.All, false, transform.name);
+            //Debug.Log("Hallo3");
+        }
     }
     private IEnumerator IsSeenTimer()
     {
         //timer = false;
         StopCoroutine(FOVRoutine());
-        aiControlRef.SetIsSeen(true);
+        //aiControlRef.SyncSetIsSeen(true);
         yield return new WaitForSeconds(4f);
-        aiControlRef.SetIsSeen(false);
+        aiControlRef.GetComponent<PhotonView>().RPC("SyncSetIsSeen", RpcTarget.All, false);
         StartCoroutine(FOVRoutine());
         
     }
