@@ -130,7 +130,7 @@ public class Injection : MonoBehaviour
 
     public void checkInjection()
     {
-        if (currentTime > downTime && !cured)
+        if (currentTime > downTime)
         {
             if(this.name == "Santi(Clone)")
             {

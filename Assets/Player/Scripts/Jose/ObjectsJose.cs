@@ -34,7 +34,12 @@ public class ObjectsJose : MonoBehaviour
     [SerializeField]
     private GameObject ThrowRightUI;
     [SerializeField]
+    private GameObject InteractUI;
+    [SerializeField]
+    private GameObject HealingUI;
+    [SerializeField]
     private GameObject Timer;
+    private GameObject LightBox;
 
     //MasterKeys
     [SerializeField]
@@ -72,6 +77,7 @@ public class ObjectsJose : MonoBehaviour
     {
         pascualita = GameObject.Find("Pascualita");
         nurse = GameObject.Find("nurse");
+        LightBox = GameObject.Find("LightBox");
         AIControl aicontrolP = pascualita.GetComponent<AIControl>();
         NurseAI aicontrolN = nurse.GetComponent<NurseAI>();
         aicontrolP.joseActivation();
@@ -81,6 +87,7 @@ public class ObjectsJose : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Activation();
         Physics.Raycast(PlayerCamera.position, PlayerCamera.TransformDirection(Vector3.forward), out hit, rayline);
         if (hit.transform != null)
         {
@@ -104,6 +111,20 @@ public class ObjectsJose : MonoBehaviour
         else
         {
             ObjectLeftUI.SetActive(false);
+        }
+
+        //Interact UI
+        if (hit.transform != null && hit.transform.tag == "Box")
+        {
+            InteractUI.SetActive(true);
+        }
+        else if (hit.transform != null && hit.transform.tag == "Health")
+        {
+            InteractUI.SetActive(true);
+        }
+        else
+        {
+            InteractUI.SetActive(false);
         }
 
         //MasterKeys
@@ -158,6 +179,17 @@ public class ObjectsJose : MonoBehaviour
 
     private void Activation()
     {
+        if (hit.transform != null && hit.transform.tag == "Box")
+        {
+            Electricity box = hit.transform.GetComponent<Electricity>();
+            bool isInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0.0f;
+
+            if (isInteractPressed)
+            {
+                LightBox.GetComponent<PhotonView>().RPC("Activation", RpcTarget.All, true);
+            }
+        }
+
         if (hit.transform != null && hit.transform.tag == "Health")
         {
             Cure station = hit.transform.GetComponent<Cure>();
@@ -167,12 +199,14 @@ public class ObjectsJose : MonoBehaviour
             {
                 if (isInteractPressed)
                 {
+                    HealingUI.SetActive(true);
                     station.updateCure(true, this.gameObject);
                     activeStation = station;
                     activated = true;
                 }
                 else if (activeStation != null)
                 {
+                    HealingUI.SetActive(false);
                     station.updateCure(false, this.gameObject);
                     activeStation = null;
                     activated = false;
@@ -181,6 +215,7 @@ public class ObjectsJose : MonoBehaviour
         }
         else if (activeStation != null && activated)
         {
+            HealingUI.SetActive(false);
             activeStation.updateCure(false, this.gameObject);
             activated = false;
         }

@@ -60,6 +60,8 @@ public class ObjectsSanti : MonoBehaviourPun
     public GameObject DropRightUI;
     [SerializeField]
     private GameObject InteractUI;
+    [SerializeField]
+    private GameObject HealingUI;
 
     //MasterKeys
     [SerializeField]
@@ -261,12 +263,14 @@ public class ObjectsSanti : MonoBehaviourPun
             {
                 if (isInteractPressed)
                 {
+                    HealingUI.SetActive(true);
                     station.updateCure(true, this.gameObject);
                     activeStation = station;
                     activated = true;
                 }
                 else if (activeStation != null)
                 {
+                    HealingUI.SetActive(false);
                     station.updateCure(false, this.gameObject);
                     activeStation = null;
                     activated = false;
@@ -275,6 +279,7 @@ public class ObjectsSanti : MonoBehaviourPun
         }
         else if (activeStation != null && activated)
         {
+            HealingUI.SetActive(false);
             activeStation.updateCure(false, this.gameObject);
             activated = false;
         }
