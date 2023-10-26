@@ -91,7 +91,7 @@ public class PlayerLook : MonoBehaviour
 
     public void SetSens (float sens)
     {  
-        SensitivityX = sens;
-        SensitivityY = sens;
+        SensitivityX *= sens;
+        SensitivityY *= sens;
     }
 }
