@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class Cure : MonoBehaviour
+public class Cure : MonoBehaviourPun
 {
     private float currentTime = 0f;
     private float cureTime = 5f;
@@ -35,7 +36,7 @@ public class Cure : MonoBehaviour
 
         if (currentTime > cureTime)
         {
-            player.GetComponent<Injection>().Cured();
+            player.GetComponent<PhotonView>().RPC("updateCured", RpcTarget.All);
             isInteractPressed = false;
         }
     }

@@ -48,6 +48,12 @@ public class Injection : MonoBehaviour
         isPlayerInjected = status;
     }
 
+    [PunRPC]
+    void updateCured()
+    {
+        Cured();
+    }
+
     void Update()
     {
         if (isPlayerInjected)
@@ -73,7 +79,7 @@ public class Injection : MonoBehaviour
 
                 cured = false;
             }
-            else if (!cured)
+            else if (cured == false)
             {
                 camera.fieldOfView++;
                 currentTime += Time.deltaTime;
@@ -90,7 +96,7 @@ public class Injection : MonoBehaviour
 
                 cured = false;
             }
-            else if (!cured)
+            else if (cured == false)
             {
                 camera.fieldOfView++;
                 currentTime += Time.deltaTime;
@@ -126,9 +132,6 @@ public class Injection : MonoBehaviour
     {
         if (currentTime > downTime && !cured)
         {
-            Debug.Log("Weno?");
-            Debug.Log(cured);
-            Debug.Log(currentTime);
             if(this.name == "Santi(Clone)")
             {
                 isPlayerInjected = false;
