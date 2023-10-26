@@ -5,11 +5,36 @@ using UnityEngine;
 
 public class ChangeObjects : MonoBehaviourPun
 {
+    [SerializeField]
+    private GameObject pascualita;
+    [SerializeField] 
+    private GameObject lights;
+
     [PunRPC]
-    public void ChangeObject(string name)
+    public void ActivatePascualita()
     {
-        GameObject Objects = GameObject.Find(name);
-        bool Value = Objects.activeInHierarchy;
-        Objects.SetActive(!Value);
+        bool value = pascualita.activeInHierarchy;
+        pascualita.SetActive(true);
+    }
+
+    [PunRPC]
+    public void DeactivatePascualita()
+    {
+        bool value = pascualita.activeInHierarchy;
+        pascualita.SetActive(false);
+    }
+
+    [PunRPC]
+    public void ActivateLights()
+    {
+        bool value = lights.activeInHierarchy;
+        lights.SetActive(true);
+    }
+
+    [PunRPC]
+    public void DeactivateLights()
+    {
+        bool value = lights.activeInHierarchy;
+        lights.SetActive(false);
     }
 }

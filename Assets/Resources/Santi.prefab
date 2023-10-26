@@ -2446,16 +2446,16 @@ MonoBehaviour:
   AudioListener: {fileID: 5894979599201347971}
   Canvas: {fileID: 1131350227747810395}
   Speed: 5
-  moveSpeed: 5
-  lookSensitivity: 2
-  isPlayerInjected: 0
-  Gravity: -9.81
-  IsGrounded: 0
   GroundCheck: {fileID: 8549641747801193850}
   RadiusGround: 0
   GroundMask:
     serializedVersion: 2
     m_Bits: 0
+  HideText: {fileID: 5798447591345190588}
+  StopHideText: {fileID: 7581138225988538103}
+  Range: 0
+  isHiding: 0
+  isPlayerInjected: 0
 --- !u!114 &7758464723538168035
 MonoBehaviour:
   m_ObjectHideFlags: 0

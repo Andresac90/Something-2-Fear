@@ -44,14 +44,13 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public void JoinRoom()
     {
+        if (joinInput.text == "") return;
         PhotonNetwork.JoinRoom(joinInput.text);
 
     }
 
     public override void OnJoinedRoom()
     {
-        // PhotonNetwork.LoadLevel("Main");
-        // PhotonNetwork.LoadLevel("Multijugador");
         roomPanel.SetActive(false);
         lobbyPanel.SetActive(true);
         roomNameText.text = "Room: " + PhotonNetwork.CurrentRoom.Name;
@@ -64,6 +63,11 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         PopUp.SendPopUp();        
     }
 
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        PopUp.SendPopUp();
+    }
+
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         UpdatePlayerList();
@@ -74,6 +78,11 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         UpdatePlayerList();
     }
 
+    void Start ()
+    {
+        if (PhotonNetwork.InRoom)
+            PhotonNetwork.LeaveRoom();
+    }
     private void Update()
     {
         if (PhotonNetwork.InRoom == false) return;
@@ -118,21 +127,17 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         foreach (PlayerItem item in playerItems)
         {
             if (item.playerName == "Jose")
-            {
                 playerIsJose = true;
-            }
+
             if (item.playerName == "Santi")
-            {
                 playerIsSanti = true;
-            }
         }
 
-        bool roomIsFull = PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers;
-        bool gameIsReady = playerIsJose && playerIsSanti && roomIsFull;
+        bool gameIsReady = playerIsJose && playerIsSanti;
 
         if (PhotonNetwork.IsMasterClient && gameIsReady)
         {
-            SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Pause();
+            // SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Pause();
             playButton.SetActive(true);
         }
         else
