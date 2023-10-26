@@ -39,11 +39,6 @@ public class Puzzle : MonoBehaviourPun
                 PlayerMovement(false);
             }
         }
-        //else if(!puzzleActive && puzzleCopy != null)
-        //{
-        //    puzzleCopy.SetActive(true);
-        //    PlayerMovement(false);
-        //}
     }
 
     public void ClosePuzzle(bool puzzleActive)
@@ -94,18 +89,15 @@ public class Puzzle : MonoBehaviourPun
             {
                 StartCoroutine(objectsSanti.RightDrop());
                 objectsSanti.objectNameString = "";
-                Debug.Log(keylevel);
-                Debug.Log(GameObject.Find("SmallKey_Item" + keylevel));
+
+                GameObject santi = GameObject.Find("Santi(Clone)"); 
+                int keylevel = santi.GetComponent<ObjectsSanti>().keylevel;
+
+                Debug.Log("SmallKey_Item" + keylevel);
                 GameObject.Find("SmallKey_Item" + keylevel).GetComponent<PhotonView>().RPC("DestroyKeyOnline", RpcTarget.All, "SmallKey_Item" + keylevel);
-                photonView.RPC("KeyLevel", RpcTarget.All);
+                santi.GetComponent<PhotonView>().RPC("SyncKeyLevel", RpcTarget.All, keylevel + 1);
             }
 
         }
-    }
-
-    [PunRPC]
-    public void KeyLevel()
-    {
-        keylevel++;
     }
 }

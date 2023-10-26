@@ -81,6 +81,12 @@ public class ObjectsSanti : MonoBehaviourPun
     public bool noteCreated = false;
     public string objectNameString;
 
+
+
+        // Arreglar
+
+    public int keylevel = 1;
+
     
 
     public void Awake()
@@ -498,6 +504,8 @@ public class ObjectsSanti : MonoBehaviourPun
         throwCheckL = true;
     }
 
+
+
     public IEnumerator RightDrop()
     {
         // GameObject child = playerR.transform.GetChild(0).gameObject;
@@ -513,6 +521,12 @@ public class ObjectsSanti : MonoBehaviourPun
         yield return new WaitForSeconds(0.5f);
         grabObjR = false;
         throwCheckR = true;
+    }
+
+    [PunRPC]
+    public void SyncKeyLevel(int _keylevel)
+    {
+        keylevel = _keylevel;
     }
 
     private void OnEnable()
