@@ -7,6 +7,8 @@ public class ChangeObjects : MonoBehaviourPun
 {
     [SerializeField]
     private GameObject pascualita;
+    [SerializeField]
+    private GameObject dummy;
     [SerializeField] 
     private GameObject lights;
 
@@ -22,6 +24,13 @@ public class ChangeObjects : MonoBehaviourPun
     {
         bool value = pascualita.activeInHierarchy;
         pascualita.SetActive(false);
+    }
+
+    [PunRPC]
+    public void DeactivateDummy()
+    {
+        bool value = dummy.activeInHierarchy;
+        dummy.SetActive(false);
     }
 
     [PunRPC]

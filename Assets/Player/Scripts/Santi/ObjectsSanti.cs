@@ -276,6 +276,7 @@ public class ObjectsSanti : MonoBehaviourPun
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.1f;
             if (isInteractPressed && GameManager.Instance.Key1 && GameManager.Instance.Key2 && GameManager.Instance.Key3)
             {
+                Debug.Log("3 KEYS");
                 puertaPrinicipal.GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, true);
                 puertaPrinicipal.GetComponent<Door>().doorState = true;
                 puertaPrinicipal.GetComponent<Door>().OpenDoor();
