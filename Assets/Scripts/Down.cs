@@ -54,8 +54,7 @@ public class Down : MonoBehaviourPun
         if (name == "Santi(Clone)")
         {
             photonView.RPC("playerDown", RpcTarget.All, true);
-            GetComponent<SantiController>().enabled = false;
-            
+            GetComponent<SantiController>().enabled = false;            
         }
         else if (name == "Jose(Clone)")
         {
@@ -98,6 +97,20 @@ public class Down : MonoBehaviourPun
     }
     private void Die()
     {
+        GameObject otherPlayer;
+        if (name == "Santi(Clone)")
+        {
+            otherPlayer = GameObject.Find("Jose(Clone)");
+            if (otherPlayer == null) return;
+            joseDown = otherPlayer.GetComponent<Down>().isPlayerDowned;
+        }
+        else
+        {
+            otherPlayer = GameObject.Find("Santi(Clone)");
+            if (otherPlayer == null) return;
+            santiDown = otherPlayer.GetComponent<Down>().isPlayerDowned;
+        }
+
         if((currentTime >= deadTime) || (joseDown && santiDown))
         {
             Debug.Log("eliminado");
