@@ -2469,6 +2469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecaca93d0f410034fba79557d42c3f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectRightT: {fileID: 0}
   playerCamera: {fileID: 4118181153985221479}
   objectRightCamera: {fileID: 6493715969387195652}
   objectLeftCamera: {fileID: 1098111588169949984}

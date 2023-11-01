@@ -90,7 +90,6 @@ public class Puzzle : MonoBehaviourPun
             {
                 StartCoroutine(objectsSanti.RightDrop());
                 objectsSanti.objectNameString = "";
-
                 GameObject santi = GameObject.Find("Santi(Clone)"); 
                 int keylevel = santi.GetComponent<ObjectsSanti>().keylevel;
 
