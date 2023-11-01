@@ -28,7 +28,7 @@ public class EventManager : MonoBehaviour
     public bool santiNear = false;
     public bool joseNear = false;
 
-    public float currentAudio;
+    public bool audioH;
 
     // Update is called once per frame
     void Update()
@@ -37,6 +37,12 @@ public class EventManager : MonoBehaviour
         JoseInteract();
         SantiInteract();
         HospitalLockdown();
+        Win();
+        if (audioH && AudioHospital.time > 17.0f)
+        {
+            ChangeObjects.GetComponent<PhotonView>().RPC("ActivateNurse", RpcTarget.All);
+            Destroy(this.gameObject);
+        }
     }
 
     void Start()
@@ -113,12 +119,7 @@ public class EventManager : MonoBehaviour
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("ActivateLockdown", RpcTarget.All);
             AudioHospital.Play();
-            currentAudio = AudioHospital.time;
-            while(currentAudio > 17.0f)
-            {
-                ChangeObjects.GetComponent<PhotonView>().RPC("ActivateNurse", RpcTarget.All);
-                Destroy(this.gameObject);
-            }
+            audioH = true;
         }
     }
 }
