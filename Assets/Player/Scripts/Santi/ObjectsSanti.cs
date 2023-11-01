@@ -24,7 +24,7 @@ public class ObjectsSanti : MonoBehaviourPun
     private RaycastHit hit;
     private Rigidbody objectRightRb;
     private Rigidbody objectLeftRb;
-    private Transform objectRightT;
+    public Transform objectRightT;
     private Transform objectLeftT;
     [SerializeField]
     private Transform playerCamera;
@@ -131,9 +131,12 @@ public class ObjectsSanti : MonoBehaviourPun
             }
             
         }
+
+        //Object UI
         if (hit.transform != null && hit.transform.tag == "Object" && !grabObjR)
         {
             ObjectRightUI.SetActive(true);
+            DropRightUI.SetActive(false);
         }
         else
         {
@@ -141,9 +144,10 @@ public class ObjectsSanti : MonoBehaviourPun
         }
 
         //Drop UI
-        if (grabObjR && throwCheckR && hit.transform != null && hit.transform.tag != "Puzzle")
+        if (grabObjR)
         {
             DropRightUI.SetActive(true);
+            ObjectRightUI.SetActive(false);
         }
         else
         {
@@ -154,18 +158,27 @@ public class ObjectsSanti : MonoBehaviourPun
         if (hit.transform != null && hit.transform.tag == "Puzzle")
         {
             InteractUI.SetActive(true);
+            DropRightUI.SetActive(false);
         }
         else if (hit.transform != null && hit.transform.tag == "Box")
         {
             InteractUI.SetActive(true);
+            DropRightUI.SetActive(false);
         }
         else if (hit.transform != null && hit.transform.tag == "Health")
         {
             InteractUI.SetActive(true);
+            DropRightUI.SetActive(false);
         }
         else if (hit.transform != null && hit.transform.tag == "FinalDoor")
         {
             InteractUI.SetActive(true);
+            DropRightUI.SetActive(false);
+        }
+        else if (hit.transform != null && hit.transform.tag == "Note")
+        {
+            InteractUI.SetActive(true);
+            DropRightUI.SetActive(false);
         }
         else
         {
@@ -518,9 +531,9 @@ public class ObjectsSanti : MonoBehaviourPun
         // objectRightRb.AddForce(camerDirection * 0);
         // Destroy(cloneR);
         objectRightT.GetComponent<ObjectsData>().OnRelease();
-        yield return new WaitForSeconds(0.5f);
         grabObjR = false;
         throwCheckR = true;
+        yield return new WaitForSeconds(0.5f);
     }
 
     [PunRPC]
