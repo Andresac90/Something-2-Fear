@@ -75,6 +75,10 @@ MonoBehaviour:
   - DeactivateDummy
   - KeyLevel
   - SyncKeyLevel
+  - ActivateLockdown
+  - ActivateNurse
+  - DeactivateLockdown
+  - DeactivateNurse
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
