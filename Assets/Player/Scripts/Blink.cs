@@ -58,8 +58,8 @@ public class Blink : MonoBehaviourPun
             IsBlinking = false;
 
             pascualitaPV.RPC("BlinkRPC", RpcTarget.All, PlayerName);
-            AboveEye.transform.localPosition = new Vector3(0, 500, 0);
-            BelowEye.transform.localPosition = new Vector3(0, -500, 0);
+            AboveEye.transform.localPosition = new Vector3(0, 1000, 0);
+            BelowEye.transform.localPosition = new Vector3(0, -1000, 0);
             RandomNumber = Random.Range(5, 10);
             Contador = 0;
             Check = true;
