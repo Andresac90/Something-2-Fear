@@ -77,15 +77,5 @@ public class ViewStopAI : MonoBehaviour
             //Debug.Log("Hallo3");
         }
     }
-    private IEnumerator IsSeenTimer()
-    {
-        //timer = false;
-        StopCoroutine(FOVRoutine());
-        //aiControlRef.SyncSetIsSeen(true);
-        yield return new WaitForSeconds(4f);
-        aiControlRef.GetComponent<PhotonView>().RPC("SyncSetIsSeen", RpcTarget.All, false);
-        StartCoroutine(FOVRoutine());
-        
-    }
 }
 
