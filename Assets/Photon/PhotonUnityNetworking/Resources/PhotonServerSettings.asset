@@ -39,6 +39,33 @@ MonoBehaviour:
   - ClickRpc
   - DestroyRpc
   - HeresWhy
+  - ActivateLights
+  - ActivateLockdown
+  - ActivateNurse
+  - ActivatePascualita
+  - Activation
+  - BlinkRPC
+  - DeactivateDummy
+  - DeactivateLights
+  - DeactivateLockdown
+  - DeactivateNurse
+  - DeactivatePascualita
+  - DestroyKeyOnline
+  - MasterKeysChange
+  - playerDown
+  - SyncCharacterSelection
+  - SyncDoor
+  - SyncDowned
+  - SyncInRange
+  - SyncItemForce
+  - SyncItemParent
+  - SyncKeyLevel
+  - SyncParent
+  - SyncRevive
+  - SyncScale
+  - SyncSetIsSeen
+  - updateCured
+  - updateInjected
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
