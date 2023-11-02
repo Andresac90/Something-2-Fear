@@ -80,7 +80,7 @@ public class Injection : MonoBehaviour
             }
             else if (cured == false)
             {
-                camera.fieldOfView++;
+                camera.fieldOfView = 100f;
                 currentTime += Time.deltaTime;
             }
         }
@@ -97,7 +97,7 @@ public class Injection : MonoBehaviour
             }
             else if (cured == false)
             {
-                camera.fieldOfView++;
+                camera.fieldOfView = 100f;
                 currentTime += Time.deltaTime;
             }
         }
