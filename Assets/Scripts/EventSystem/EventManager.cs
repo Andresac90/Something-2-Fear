@@ -37,6 +37,7 @@ public class EventManager : MonoBehaviour
         JoseInteract();
         SantiInteract();
         HospitalLockdown();
+        HospitalCleared();
         Win();
         if (audioH && AudioHospital.time > 17.0f)
         {
@@ -120,6 +121,14 @@ public class EventManager : MonoBehaviour
             ChangeObjects.GetComponent<PhotonView>().RPC("ActivateLockdown", RpcTarget.All);
             AudioHospital.Play();
             audioH = true;
+        }
+    }
+
+    void HospitalCleared()
+    {
+        if (GameManager.Instance.Key3)
+        {
+            ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateLockdown", RpcTarget.All);
         }
     }
 }

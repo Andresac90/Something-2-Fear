@@ -40,8 +40,8 @@ public class Blink : MonoBehaviourPun
         Contador += Time.deltaTime;
         if (Contador >= RandomNumber && Check)
         {
-            AboveEye.transform.localPosition += new Vector3(0, -7 * Time.deltaTime * 200, 0);
-            BelowEye.transform.localPosition += new Vector3(0, 7 * Time.deltaTime * 200, 0);
+            AboveEye.transform.localPosition += new Vector3(0, -7 * Time.deltaTime * 300, 0);
+            BelowEye.transform.localPosition += new Vector3(0, 7 * Time.deltaTime * 300, 0);
             IsBlinking = true;
 
             pascualitaPV.RPC("BlinkRPC", RpcTarget.All, PlayerName);
@@ -50,16 +50,16 @@ public class Blink : MonoBehaviourPun
         if(Contador >= RandomNumber + 0.5f)
         {
             Check = false;
-            AboveEye.transform.localPosition += new Vector3(0, 7 * Time.deltaTime * 200, 0);
-            BelowEye.transform.localPosition += new Vector3(0, -7 * Time.deltaTime * 200, 0);
+            AboveEye.transform.localPosition += new Vector3(0, 7 * Time.deltaTime * 300, 0);
+            BelowEye.transform.localPosition += new Vector3(0, -7 * Time.deltaTime * 300, 0);
         }
         if (Contador >= RandomNumber + 1.0f)
         {
             IsBlinking = false;
 
             pascualitaPV.RPC("BlinkRPC", RpcTarget.All, PlayerName);
-            AboveEye.transform.localPosition = new Vector3(0, 500, 0);
-            BelowEye.transform.localPosition = new Vector3(0, -500, 0);
+            AboveEye.transform.localPosition = new Vector3(0, 1000, 0);
+            BelowEye.transform.localPosition = new Vector3(0, -1000, 0);
             RandomNumber = Random.Range(5, 10);
             Contador = 0;
             Check = true;

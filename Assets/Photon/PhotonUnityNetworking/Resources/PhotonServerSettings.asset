@@ -16,10 +16,10 @@ MonoBehaviour:
     AppIdRealtime: 4d416854-c61d-4e1e-a2af-1f44cf84fe01
     AppIdFusion: 
     AppIdChat: 
-    AppIdVoice: 
+    AppIdVoice: c8948f28-c385-4f56-b1b6-e84028a5cb78
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: us
+    FixedRegion: 
     Server: 
     Port: 0
     ProxyServer: 
@@ -34,51 +34,38 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - CantHearYou
+  - ChangeColour
   - ClickRpc
   - DestroyRpc
-  - updateDowned
-  - updateBlinking
-  - updateBlinkingBoolJose
-  - updateBlinkingJose
-  - updateBlinkingSanti
-  - BlinkRPC
-  - SyncItemPosition
-  - SyncItemParent
-  - SyncItemForce
-  - SyncInRange
-  - SyncCharacterSelection
-  - updateInjected
-  - ChangeObject
-  - SetUpPlayerItem
-  - SyncParent
-  - SyncResetTrigger
-  - SyncSetTrigger
-  - updateInjected
-  - ChangeObject
-  - SyncDoor
+  - HeresWhy
+  - ActivateLights
+  - ActivateLockdown
+  - ActivateNurse
+  - ActivatePascualita
   - Activation
-  - SyncDowned
-  - SyncRevive
+  - BlinkRPC
+  - DeactivateDummy
+  - DeactivateLights
+  - DeactivateLockdown
+  - DeactivateNurse
+  - DeactivatePascualita
   - DestroyKeyOnline
   - MasterKeysChange
   - playerDown
-  - SyncSetIsSeen
-  - ChangePascualita
-  - ChangeLights
-  - Activate
-  - ActivatePascualita
-  - DeactivatePascualita
-  - ActivateLights
-  - DeactivateLights
-  - SyncScale
-  - updateCured
-  - DeactivateDummy
-  - KeyLevel
+  - SyncCharacterSelection
+  - SyncDoor
+  - SyncDowned
+  - SyncInRange
+  - SyncItemForce
+  - SyncItemParent
   - SyncKeyLevel
-  - ActivateLockdown
-  - ActivateNurse
-  - DeactivateLockdown
-  - DeactivateNurse
+  - SyncParent
+  - SyncRevive
+  - SyncScale
+  - SyncSetIsSeen
+  - updateCured
+  - updateInjected
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
