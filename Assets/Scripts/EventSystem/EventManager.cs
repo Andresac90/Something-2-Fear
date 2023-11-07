@@ -112,6 +112,7 @@ public class EventManager : MonoBehaviour
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivatePascualita", RpcTarget.All);
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateNurse", RpcTarget.All);
+            ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateNina", RpcTarget.All);
             Destroy(this.gameObject);
         }
     }
@@ -136,7 +137,7 @@ public class EventManager : MonoBehaviour
 
     void LabyrinthNina()
     {
-        if (joseNear && santiNear && TwoPlayers && Labyrinth)
+        if (joseNear && JoseEvent && !SantiEvent && Labyrinth)
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("ActivateNina", RpcTarget.All);
         }
