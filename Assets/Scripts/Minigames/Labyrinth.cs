@@ -10,12 +10,14 @@ public class Labyrinth : MonoBehaviour
     private GameObject Puzzle; //terminal
     private Puzzle Comprobations; //iteraciones de puertas
     public GameObject[] doorsList; //lista de puertas
-    
+    private GameObject Nina;
+
     void Start()
     {
         doorsList = new GameObject[5];
         Passcodes = new string[5];
         Puzzle = GameObject.Find("Labyrinth MiniGame");
+        Nina = GameObject.Find("Nina");
         Comprobations = Puzzle.GetComponent<Puzzle>();
         for (int i = 0; i < doorsList.Length; i++)
         {
@@ -42,6 +44,7 @@ public class Labyrinth : MonoBehaviour
             doorsList[GameManager.Instance.doorNumber].GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, true);
             doorsList[GameManager.Instance.doorNumber].GetComponent<Door>().doorState = true;
             doorsList[GameManager.Instance.doorNumber].GetComponent<Door>().OpenDoor();
+            Nina.GetComponent<NinaAI>().InvertPlayers();
             GameManager.Instance.doorNumber += 1;
             Comprobations.comprobations++;
             Comprobations.Completed();
