@@ -93,7 +93,6 @@ public class Puzzle : MonoBehaviourPun
                 GameObject santi = GameObject.Find("Santi(Clone)"); 
                 int keylevel = santi.GetComponent<ObjectsSanti>().keylevel;
 
-                Debug.Log("SmallKey_Item" + keylevel);
                 GameObject.Find("SmallKey_Item" + keylevel).GetComponent<PhotonView>().RPC("DestroyKeyOnline", RpcTarget.All, "SmallKey_Item" + keylevel);
                 santi.GetComponent<PhotonView>().RPC("SyncKeyLevel", RpcTarget.All, keylevel + 1);
             }
