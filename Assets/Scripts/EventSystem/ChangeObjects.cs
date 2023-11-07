@@ -14,6 +14,8 @@ public class ChangeObjects : MonoBehaviourPun
     [SerializeField]
     private GameObject Nurse;
     [SerializeField]
+    private GameObject Nina;
+    [SerializeField]
     private GameObject HospitalDoor;
     [SerializeField]
     private GameObject HospitalLightsLockdown;
@@ -73,5 +75,17 @@ public class ChangeObjects : MonoBehaviourPun
     {
         Nurse.SetActive(false);
         HospitalDoor.GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, true);
+    }
+
+    [PunRPC]
+    public void ActivateNina()
+    {
+        Nina.SetActive(true);
+    }
+
+    [PunRPC]
+    public void DeactivateNina()
+    {
+        Nina.SetActive(false);
     }
 }

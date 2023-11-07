@@ -20,6 +20,7 @@ TagManager:
   - Key
   - Health
   - FinalDoor
+  - Buzzer
   layers:
   - Default
   - TransparentFX
