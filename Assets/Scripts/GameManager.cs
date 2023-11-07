@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public static GameManager Instance;
     public int numpadLevel = 1;
     public int lockpickLevel = 1;
+    public int doorNumber = 0;
     public bool win = false;
 
     public bool puzzle = false;
