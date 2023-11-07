@@ -61,6 +61,7 @@ public class ObjectsJose : MonoBehaviour
     private Rigidbody ObjectRightRb;
     private GameObject pascualita;
     private GameObject nurse;
+    private GameObject nina;
     private Rigidbody ObjectLeftRb;
     private Transform ObjectRightT;
     private Transform ObjectLeftT;
@@ -78,16 +79,20 @@ public class ObjectsJose : MonoBehaviour
     }
     public void Start()
     {
+        Buzzer = new GameObject[4];
         pascualita = GameObject.Find("Pascualita");
         nurse = GameObject.Find("nurse");
+        nina = GameObject.Find("Nina");
         LightBox = GameObject.Find("LightBox");
         for(int i = 0; i < Buzzer.Length; i++) {
             Buzzer[i] = GameObject.Find("Buzzer"+i.ToString());
         }
         AIControl aicontrolP = pascualita.GetComponent<AIControl>();
         NurseAI aicontrolN = nurse.GetComponent<NurseAI>();
+        NinaAI aicontrolNi = nina.GetComponent<NinaAI>();
         aicontrolP.joseActivation();
         aicontrolN.JoseActivation();
+        aicontrolNi.JoseActivation();
     }
 
     // Update is called once per frame
@@ -125,6 +130,10 @@ public class ObjectsJose : MonoBehaviour
             InteractUI.SetActive(true);
         }
         else if (hit.transform != null && hit.transform.tag == "Health")
+        {
+            InteractUI.SetActive(true);
+        }
+        else if (hit.transform != null && hit.transform.tag == "Buzzer")
         {
             InteractUI.SetActive(true);
         }
@@ -235,7 +244,8 @@ public class ObjectsJose : MonoBehaviour
             {
                 Buzzer[iBuzzer].GetComponent<PhotonView>().RPC("Activation", RpcTarget.All);
                 Destroy(buzzer.GetComponent<Buzzer>());
-                buzzer.transform.tag = "Default";
+                buzzer.transform.tag = "Untagged";
+                iBuzzer++;
             }
         }
     }

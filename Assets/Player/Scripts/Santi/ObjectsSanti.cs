@@ -19,6 +19,7 @@ public class ObjectsSanti : MonoBehaviourPun
     private GameObject player;
     private GameObject pascualita;
     private GameObject nurse;
+    private GameObject nina;
     private GameObject LightBox;
     private GameObject puertaPrinicipal; 
     private RaycastHit hit;
@@ -103,11 +104,14 @@ public class ObjectsSanti : MonoBehaviourPun
     {
         pascualita = GameObject.Find("Pascualita");
         nurse = GameObject.Find("nurse");
+        nina = GameObject.Find("Nina");
         LightBox = GameObject.Find("LightBox");
         AIControl aicontrolP = pascualita.GetComponent<AIControl>();
         NurseAI aicontrolN = nurse.GetComponent<NurseAI>();
+        NinaAI aicontrolNi = nina.GetComponent<NinaAI>();
         aicontrolP.santiActivation();
         aicontrolN.SantiActivation();
+        aicontrolNi.SantiActivation();
         puertaPrinicipal = GameObject.Find("PuertaPrincipal");
     }
 

@@ -16,8 +16,8 @@ public class NinaAI : MonoBehaviour
     public UnityEngine.AI.NavMeshAgent aiAgent;               //  Nav mesh agent component
     static float startWaitTime = 4;                 //  Wait time of every action
     public float timeToRotate = 1;                  //  Wait time when the enemy detect near the player without seeing
-    public float walkSpeed = 6;                     //  Walking speed, speed in the nav mesh agent
-    public float chaseSpeed = 9;                      //  Running speed
+    public float walkSpeed = 3;                     //  Walking speed, speed in the nav mesh agent
+    public float chaseSpeed = 3;                      //  Running speed
 
     public float viewRadius = 15;                   //  Radius of the enemy view
     public float viewAngle = 90;                    //  Angle of the enemy view
@@ -26,11 +26,12 @@ public class NinaAI : MonoBehaviour
     public float meshResolution = 1.0f;             //  How many rays will cast per degree
     public int edgeIterations = 4;                  //  Number of iterations to get a better performance of the mesh filter when the raycast hit an obstacule
     public float edgeDistance = 0.5f;               //  Max distance to calcule the a minumun and a maximum raycast when hits something
-    private int JoseIteration = 1;
+    private int JoseIteration = 0;
 
 
     public Transform[] waypoints;
-    public Transform[] spawns;                      //  All the waypoints where the enemy patrols
+    public Transform[] spawns;
+    public Transform spawn;                         //  All the waypoints where the enemy patrols
     int CurrentWaypointIndex;                       //  Current waypoint where the enemy is going to
 
     Vector3 playerLastPosition = Vector3.zero;      //  Last position of the player when was near the enemy
@@ -242,12 +243,12 @@ public class NinaAI : MonoBehaviour
         attackingSanti = !attackingSanti;
         if (attackingJose)
         {
+            transform.localPosition = spawns[JoseIteration].position;
             JoseIteration++;
-            this.transform.position = spawns[JoseIteration].position;
         }
         else if (attackingSanti)
         {
-            this.transform.position = spawns[0].position;
+            transform.localPosition = spawn.position;
         }
     }
 
@@ -259,7 +260,7 @@ public class NinaAI : MonoBehaviour
 
     public void ChaseJose()
     {
-        aiAgent.SetDestination(players[2].transform.position);
+        aiAgent.SetDestination(players[1].transform.position);
     }
 
     void Move(float speed)

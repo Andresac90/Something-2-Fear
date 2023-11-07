@@ -40,6 +40,7 @@ public class EventManager : MonoBehaviour
         SantiInteract();
         HospitalLockdown();
         HospitalCleared();
+        LabyrinthNina();
         Win();
         if (audioH && AudioHospital.time > 17.0f)
         {
@@ -137,7 +138,7 @@ public class EventManager : MonoBehaviour
 
     void LabyrinthNina()
     {
-        if (joseNear && JoseEvent && !SantiEvent && Labyrinth)
+        if (joseNear && Labyrinth)
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("ActivateNina", RpcTarget.All);
         }
