@@ -74,9 +74,16 @@ public class Puzzle : MonoBehaviourPun
 
     public void Completed()
     {
-        if(comprobations == comprobationsNeeded)
+        if(puzzleCopy.name == "Labyrinth MiniGame" && comprobations == comprobationsNeeded)
         {
-
+            PlayerMovement(true);
+            objectsSanti.puzzleCreated = false;
+            objectsSanti.puzzleActive = false;
+            Destroy(puzzleCopy.gameObject, 1f);
+            Destroy(this);
+        }
+        else if (comprobations == comprobationsNeeded)
+        {
             door.GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, true);
             // door.OpenDoor();
             door.GetComponent<Door>().doorState = true;

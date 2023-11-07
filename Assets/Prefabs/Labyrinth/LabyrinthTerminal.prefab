@@ -283,7 +283,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: "\u25CB"
+          m_StringArgument: c
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &3097962733295216741
@@ -601,7 +601,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: "\u25A1"
+          m_StringArgument: s
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &3877032124944514320
@@ -1239,7 +1239,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 8400000, guid: e1762f66ed235fa4ab7e259ddf92f36f, type: 2}
+  m_Texture: {fileID: 8400000, guid: d74a99f68f7831a409872b43ff08b617, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -1659,7 +1659,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: "\u25B3"
+          m_StringArgument: t
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &8873182992230728159
@@ -1916,5 +1916,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 144c1dc6639fa6740af1834523cd945c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minigameName: 
   doorsList: []
