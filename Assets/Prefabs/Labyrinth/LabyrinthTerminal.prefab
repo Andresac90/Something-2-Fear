@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8207547, g: 0.18892843, b: 0.18892843, a: 1}
+  m_Color: {r: 0.5660378, g: 0.06621572, b: 0.06621572, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.18823527, g: 0.81960785, b: 0.40014267, a: 1}
+  m_Color: {r: 0.082876444, g: 0.4528302, b: 0.20696029, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -274,9 +274,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 144c1dc6639fa6740af1834523cd945c, type: 3}
-        m_TargetAssemblyTypeName: UnityEngine.Object, UnityEngine
-        m_MethodName: set_name
+      - m_Target: {fileID: 6348658631449804921}
+        m_TargetAssemblyTypeName: Labyrinth, Assembly-CSharp
+        m_MethodName: AddSymbol
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -346,7 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.18823527, g: 0.37206396, b: 0.81960785, a: 1}
+  m_Color: {r: 0.13536845, g: 0.27486184, b: 0.6132076, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -592,9 +592,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 144c1dc6639fa6740af1834523cd945c, type: 3}
-        m_TargetAssemblyTypeName: UnityEngine.Object, UnityEngine
-        m_MethodName: set_name
+      - m_Target: {fileID: 6348658631449804921}
+        m_TargetAssemblyTypeName: Labyrinth, Assembly-CSharp
+        m_MethodName: AddSymbol
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1650,9 +1650,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 144c1dc6639fa6740af1834523cd945c, type: 3}
-        m_TargetAssemblyTypeName: UnityEngine.Object, UnityEngine
-        m_MethodName: set_name
+      - m_Target: {fileID: 6348658631449804921}
+        m_TargetAssemblyTypeName: Labyrinth, Assembly-CSharp
+        m_MethodName: AddSymbol
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1782,16 +1782,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 144c1dc6639fa6740af1834523cd945c, type: 3}
-        m_TargetAssemblyTypeName: UnityEngine.Object, UnityEngine
-        m_MethodName: set_name
+      - m_Target: {fileID: 6348658631449804921}
+        m_TargetAssemblyTypeName: Labyrinth, Assembly-CSharp
+        m_MethodName: AddSymbol
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: "\u2B1F\u2B53\u2B54\u2BC2pentagon"
+          m_StringArgument: p
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &9087345823649208880
@@ -1854,7 +1854,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.81960785, g: 0.72848177, b: 0.18823527, a: 1}
+  m_Color: {r: 0.509434, g: 0.44448462, b: 0.05478815, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1880,6 +1880,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 576084494481908660}
+  - component: {fileID: 6348658631449804921}
   m_Layer: 0
   m_Name: LabyrinthTerminal
   m_TagString: Untagged
@@ -1903,3 +1904,17 @@ Transform:
   - {fileID: 8895890401684953827}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6348658631449804921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9188078891259749410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 144c1dc6639fa6740af1834523cd945c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minigameName: 
+  doorsList: []
