@@ -6,7 +6,7 @@ using Photon.Pun;
 public class Labyrinth : MonoBehaviour
 {
     private string terminalCode;
-    private string[] Passcodes; //lista de passcodes
+    public string[] Passcodes; //lista de passcodes
     private GameObject Puzzle; //terminal
     private Puzzle Comprobations; //iteraciones de puertas
     public GameObject[] doorsList; //lista de puertas
@@ -14,19 +14,19 @@ public class Labyrinth : MonoBehaviour
     void Start()
     {
         doorsList = new GameObject[5];
+        Passcodes = new string[5];
         Puzzle = GameObject.Find("Labyrinth MiniGame");
         Comprobations = Puzzle.GetComponent<Puzzle>();
         for (int i = 0; i < doorsList.Length; i++)
         {
             doorsList[i] = GameObject.Find("L_Door" + (i+1).ToString()); 
-            Passcodes[i] = doorsList[i].GetComponent<LabDoor>().Code;
+            if(i > 0)
+            {
+                Passcodes[i] = Passcodes[i-1];
+            }
+            Passcodes[i] += doorsList[i].GetComponent<LabDoor>().Code;
+            Debug.Log(Passcodes[i]);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void AddSymbol(string symbol)

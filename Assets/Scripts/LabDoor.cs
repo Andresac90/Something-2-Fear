@@ -5,7 +5,7 @@ using UnityEngine;
 public class LabDoor : MonoBehaviour
 {
     public int nSymbols;
-    public string Code;
+    public string Code = "";
     private int iCode;
     private string[] Symbols = { "t", "s", "c", "p" };
 
@@ -15,7 +15,7 @@ public class LabDoor : MonoBehaviour
         for(int i = 0; i < nSymbols; i++)
         {
             iCode = Random.Range(0, Symbols.Length);
-            Code = Symbols[iCode].ToString();
+            Code += Symbols[iCode].ToString();
         }
     }
 }

@@ -1208,8 +1208,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -83, y: -195}
-  m_SizeDelta: {x: 537.68, y: 287.1}
+  m_AnchoredPosition: {x: -86, y: -213}
+  m_SizeDelta: {x: 1072, y: 327}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7818359058612739468
 CanvasRenderer:
@@ -1916,4 +1916,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 144c1dc6639fa6740af1834523cd945c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Passcodes: []
   doorsList: []
