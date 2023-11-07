@@ -19,6 +19,8 @@ public class EventManager : MonoBehaviour
     [SerializeField]
     private bool Hospital = false;
     [SerializeField]
+    private bool Labyrinth = false;
+    [SerializeField]
     private bool WinScreen = false;
    
     public AudioSource AudioHospital;
@@ -110,6 +112,7 @@ public class EventManager : MonoBehaviour
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivatePascualita", RpcTarget.All);
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateNurse", RpcTarget.All);
+            ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateNina", RpcTarget.All);
             Destroy(this.gameObject);
         }
     }
@@ -129,6 +132,14 @@ public class EventManager : MonoBehaviour
         if (GameManager.Instance.Key3)
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateLockdown", RpcTarget.All);
+        }
+    }
+
+    void LabyrinthNina()
+    {
+        if (joseNear && JoseEvent && !SantiEvent && Labyrinth)
+        {
+            ChangeObjects.GetComponent<PhotonView>().RPC("ActivateNina", RpcTarget.All);
         }
     }
 }

@@ -40,6 +40,8 @@ public class ObjectsJose : MonoBehaviour
     [SerializeField]
     private GameObject Timer;
     private GameObject LightBox;
+    [SerializeField]
+    private GameObject[] Buzzer;
 
     //MasterKeys
     [SerializeField]
@@ -55,6 +57,7 @@ public class ObjectsJose : MonoBehaviour
     private float ObjectROriginalScale;
     private float ObjectLScaleData;
     private float ObjectLOriginalScale;
+    private int iBuzzer = 0;
     private Rigidbody ObjectRightRb;
     private GameObject pascualita;
     private GameObject nurse;
@@ -78,6 +81,9 @@ public class ObjectsJose : MonoBehaviour
         pascualita = GameObject.Find("Pascualita");
         nurse = GameObject.Find("nurse");
         LightBox = GameObject.Find("LightBox");
+        for(int i = 0; i < Buzzer.Length; i++) {
+            Buzzer[i] = GameObject.Find("Buzzer"+i.ToString());
+        }
         AIControl aicontrolP = pascualita.GetComponent<AIControl>();
         NurseAI aicontrolN = nurse.GetComponent<NurseAI>();
         aicontrolP.joseActivation();
@@ -218,6 +224,19 @@ public class ObjectsJose : MonoBehaviour
             HealingUI.SetActive(false);
             activeStation.updateCure(false, this.gameObject);
             activated = false;
+        }
+
+        if (hit.transform != null && hit.transform.tag == "Buzzer")
+        {
+            Buzzer buzzer = hit.transform.GetComponent<Buzzer>();
+            bool isInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0.0f;
+
+            if (isInteractPressed)
+            {
+                Buzzer[iBuzzer].GetComponent<PhotonView>().RPC("Activation", RpcTarget.All);
+                Destroy(buzzer.GetComponent<Buzzer>());
+                buzzer.transform.tag = "Default";
+            }
         }
     }
 
