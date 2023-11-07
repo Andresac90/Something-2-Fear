@@ -34,6 +34,7 @@ public class JoseMovement : MonoBehaviour
     private float rotationX = 0;
     private CharacterController CharController;
     private PlayerLook look;
+    private Animator joseAnimator;
 
     public bool HasRun = false;
 
@@ -76,6 +77,7 @@ public class JoseMovement : MonoBehaviour
         look = GetComponent<PlayerLook>();
         CharController = GetComponent<CharacterController>();
         OriginalSpeed = Speed;
+        joseAnimator = GetComponent<Animator>();
     }
     public void SetInjected(bool injected)
     {
@@ -107,6 +109,16 @@ public class JoseMovement : MonoBehaviour
         YVel.y += Gravity * Time.deltaTime;
         CharController.Move(MovementZ * Speed * Time.deltaTime * controlsModifier);
         CharController.Move(YVel * Time.deltaTime);
+
+        if(Move.x != 0 || Move.y != 0)
+        {
+            joseAnimator.SetBool("IsWalking", true);
+
+        }
+        else
+        {
+            joseAnimator.SetBool("IsWalking", false);
+        }
     }
 
     void Sprint()

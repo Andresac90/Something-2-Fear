@@ -9,6 +9,7 @@ public class Door : MonoBehaviourPun
     private Animator door;
 
     public bool doorState;
+    public string doorCode;
     
     public void OpenDoor()
     {
