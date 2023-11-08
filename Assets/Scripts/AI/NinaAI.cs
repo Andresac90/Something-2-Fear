@@ -115,7 +115,7 @@ public class NinaAI : MonoBehaviour
             if (attackingJose)
             {
                 ChaseJose();
-                walkSpeed = 3f;
+                walkSpeed = 1f;
             }
             else if (attackingSanti)
             {
@@ -245,15 +245,19 @@ public class NinaAI : MonoBehaviour
         attackingJose = !attackingJose;
         attackingSanti = !attackingSanti;
         if (attackingJose)
-        { 
-            transform.localPosition = new Vector3(spawns[5].position.x, spawns[5].position.y, spawns[5].position.z);
+        {
+            Debug.Log("Attack Jose Niña");
+            Debug.Log(spawns[JoseIteration].position.x + " " +spawns[JoseIteration].position.y + " " +spawns[JoseIteration].position.z);
+            //transform.localPosition = new Vector3(spawns[5].position.x, spawns[5].position.y, spawns[5].position.z);
             transform.localPosition = new Vector3(spawns[JoseIteration].position.x, spawns[JoseIteration].position.y, spawns[JoseIteration].position.z);
             JoseIteration++;
         }
         else if (attackingSanti)
         {
-            transform.localPosition = new Vector3(spawns[5].position.x, spawns[5].position.y, spawns[5].position.z);
-            transform.localPosition = new Vector3(spawn.position.x, spawn.position.y, spawn.position.z);
+            Debug.Log("Attack Santi Niña");
+            Debug.Log(spawn.position.x + " " + spawn.position.y + " " + spawn.position.z);
+            //transform.localPosition = new Vector3(spawns[5].position.x, spawns[5].position.y, spawns[5].position.z);
+            transform.localPosition = new Vector3(37, 0, -2);
         }
     }
 

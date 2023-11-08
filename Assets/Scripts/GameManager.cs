@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public AudioSource Success;
     public AudioSource Click;
     public AudioSource Keys;
+    public AudioSource Door;
 
     void Awake()
     {

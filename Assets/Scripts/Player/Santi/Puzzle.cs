@@ -85,7 +85,7 @@ public class Puzzle : MonoBehaviourPun
         else if (comprobations == comprobationsNeeded)
         {
             door.GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, true);
-            // door.OpenDoor();
+            GameManager.Instance.Door.Play();
             door.GetComponent<Door>().doorState = true;
             door.GetComponent<Door>().OpenDoor();
             PlayerMovement(true);
