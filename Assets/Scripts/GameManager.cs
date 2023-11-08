@@ -27,6 +27,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     public bool Key2 = false;
     public bool Key3 = false;
 
+    public AudioSource Buzzer;
+    public AudioSource Success;
+    public AudioSource Click;
+    public AudioSource Keys;
+
     void Awake()
     {
         MakeSingleton();   

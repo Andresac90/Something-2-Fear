@@ -9,6 +9,8 @@ public class NinaAI : MonoBehaviour
 {
     public GameObject[] players;
     private GameObject closerPlayer;
+    [SerializeField]
+    private AudioSource Laugh;
 
     private bool isSantiActive = false;
     private bool isJoseActive = false;
@@ -62,7 +64,7 @@ public class NinaAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.transform.position = spawns[JoseIteration].position;
+        transform.position = new Vector3(spawns[JoseIteration].position.x, spawns[JoseIteration].position.y, spawns[JoseIteration].position.z);
         players = new GameObject[2];
 
         PlayerPosition = Vector3.zero;
@@ -239,16 +241,19 @@ public class NinaAI : MonoBehaviour
 
     public void InvertPlayers()
     {
+        Laugh.Play();
         attackingJose = !attackingJose;
         attackingSanti = !attackingSanti;
         if (attackingJose)
-        {
-            transform.localPosition = spawns[JoseIteration].position;
+        { 
+            transform.localPosition = new Vector3(spawns[5].position.x, spawns[5].position.y, spawns[5].position.z);
+            transform.localPosition = new Vector3(spawns[JoseIteration].position.x, spawns[JoseIteration].position.y, spawns[JoseIteration].position.z);
             JoseIteration++;
         }
         else if (attackingSanti)
         {
-            transform.localPosition = spawn.position;
+            transform.localPosition = new Vector3(spawns[5].position.x, spawns[5].position.y, spawns[5].position.z);
+            transform.localPosition = new Vector3(spawn.position.x, spawn.position.y, spawn.position.z);
         }
     }
 

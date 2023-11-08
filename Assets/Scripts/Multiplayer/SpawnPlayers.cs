@@ -21,6 +21,5 @@ public class SpawnPlayers : MonoBehaviour
             GameObject spawn = GameObject.FindGameObjectsWithTag("JoseSpawn")[0];
             PhotonNetwork.Instantiate(josePrefab.name, spawn.transform.position, Quaternion.identity);
         }
-        
     }
 }

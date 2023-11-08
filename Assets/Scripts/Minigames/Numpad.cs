@@ -33,6 +33,7 @@ public class Numpad : MonoBehaviour
 
     public void AddNumber(string number)
     {
+        GameManager.Instance.Click.Play();
         if (display.text.Length >= 4)
         {
             return;
@@ -50,6 +51,7 @@ public class Numpad : MonoBehaviour
     {
         if (display.text.Equals(password))
         {
+            GameManager.Instance.Success.Play();
             display.color = Color.green;
             display.text = "Granted";
             Destroy(gameObject, 1.0f);
@@ -59,6 +61,7 @@ public class Numpad : MonoBehaviour
         }
         else
         {
+            GameManager.Instance.Buzzer.Play();
             display.text = "Denied";
         }
     }    

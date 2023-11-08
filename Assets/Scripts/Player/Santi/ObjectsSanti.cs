@@ -127,6 +127,7 @@ public class ObjectsSanti : MonoBehaviourPun
             NoteManager();
             if (objectNameString == "KeyMaster1" || objectNameString == "KeyMaster2" || objectNameString == "KeyMaster3")
             {
+                GameManager.Instance.Keys.Play();
                 StartCoroutine(RightDrop());
                 hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
                 objectNameString = "";
