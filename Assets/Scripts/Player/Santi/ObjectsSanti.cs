@@ -11,6 +11,7 @@ using TMPro;
 
 public class ObjectsSanti : MonoBehaviourPun
 {
+    private Animator santiAnimator;
     private InputMaster controls;
     private GameObject playerL;
     private GameObject playerR;
@@ -113,6 +114,7 @@ public class ObjectsSanti : MonoBehaviourPun
         aicontrolN.SantiActivation();
         aicontrolNi.SantiActivation();
         puertaPrinicipal = GameObject.Find("PuertaPrincipal");
+        santiAnimator = GetComponent<Animator>();
     }
 
     public void Update()
@@ -376,6 +378,8 @@ public class ObjectsSanti : MonoBehaviourPun
             }
             else if(isLeftPressed && !grabObjL && objectGrabbedL && hit.transform.tag == "Bengal")
             {
+                santiAnimator.SetBool("IsBengalThrow", true);
+                santiAnimator.SetBool("IsBengalThrow", false);
                 StartCoroutine(LeftGrab());
             }
         }

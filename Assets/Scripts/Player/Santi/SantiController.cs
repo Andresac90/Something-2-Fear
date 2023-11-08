@@ -19,6 +19,8 @@ public class SantiController : MonoBehaviour
     private GameObject Canvas;
     private InputMaster Controls;
     private CharacterController CharController;
+    private Animator santiAnimator;
+
 
 
     [Header("Movement")] // ------------------------------ Movement ------------------------------ //
@@ -68,6 +70,7 @@ public class SantiController : MonoBehaviour
 
         CharController = GetComponent<CharacterController>();
         OriginalSpeed = Speed;
+        santiAnimator = GetComponent<Animator>();
     }
     
     void Update()
@@ -174,6 +177,16 @@ public class SantiController : MonoBehaviour
         Vector3 newPos = (transform.right * movement.x + transform.forward * movement.y + transform.up * YVel.y) * controlsModifier;
 
         CharController.Move(newPos * Speed * Time.deltaTime);
+
+        if(movement.x != 0 || movement.y != 0)
+        {
+            santiAnimator.SetBool("IsWalking", true);
+
+        }
+        else
+        {
+            santiAnimator.SetBool("IsWalking", false);
+        }
     }
 
     private void UIPrompt(string text)

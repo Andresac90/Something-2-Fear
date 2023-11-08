@@ -72,6 +72,7 @@ public class ObjectsJose : MonoBehaviour
     private bool IsCrouched = false;
     private bool activated = false;
     private Cure activeStation = null;
+    private Animator joseAnimator;
 
     void Awake()
     {
@@ -93,6 +94,7 @@ public class ObjectsJose : MonoBehaviour
         aicontrolP.joseActivation();
         aicontrolN.JoseActivation();
         aicontrolNi.JoseActivation();
+        joseAnimator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -257,8 +259,10 @@ public class ObjectsJose : MonoBehaviour
         {
             
             bool IsRightPressed = Controls.Player.RightItem.ReadValue<float>() > 0.1f;
-            if(IsRightPressed && HasObjectRight == false)
+            if(IsRightPressed && !HasObjectRight)
             {
+                joseAnimator.SetBool("IsRightGrabbing", true);
+                joseAnimator.SetBool("IsRightGrabbing", false);
                 // hit.transform.position = ObjectRightCamera.position;
                 // hit.rigidbody.isKinematic = true;
                 // hit.transform.parent = ObjectRightCamera;
@@ -279,8 +283,10 @@ public class ObjectsJose : MonoBehaviour
             }
 
             bool IsLeftPressed = Controls.Player.LeftItem.ReadValue<float>() > 0.1f;
-            if (IsLeftPressed && HasObjectLeft == false)
+            if (IsLeftPressed && !HasObjectLeft)
             {
+                joseAnimator.SetBool("IsLeftGrabbing", true);
+                joseAnimator.SetBool("IsLeftGrabbing", false);
                 // hit.transform.position = ObjectRightCamera.position;
                 // hit.rigidbody.isKinematic = true;
                 // hit.transform.parent = ObjectLeftCamera;
@@ -322,8 +328,9 @@ public class ObjectsJose : MonoBehaviour
         }
 
         bool IsLeftPressed = Controls.Player.LeftThrow.ReadValue<float>() > 0.1f;
-        if (IsLeftPressed && HasObjectLeft == true && ThrowCheckL)
+        if (IsLeftPressed && HasObjectLeft && ThrowCheckL)
         {
+            
             // ObjectLeftT.transform.localScale = new Vector3(ObjectLOriginalScale, ObjectLOriginalScale, ObjectLOriginalScale);
             // Vector3 camerDirection = PlayerCamera.transform.forward;
             // ObjectLeftT.transform.parent = null;

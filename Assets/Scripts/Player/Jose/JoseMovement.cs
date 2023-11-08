@@ -124,14 +124,15 @@ public class JoseMovement : MonoBehaviour
     void Sprint()
     {
         bool IsSprintPressed = Controls.Player.Run.ReadValue<float>() > 0.1f;
-        if (IsSprintPressed && !HasRun && HasCrouched == false && IsGrounded == true)
+        if (IsSprintPressed && !HasRun && !HasCrouched && IsGrounded)
         {
+            joseAnimator.SetBool("IsRunning", true);
             Speed *= 1.9f;
             HasRun = true;
         }
-
-        if (!IsSprintPressed && HasRun == true)
+        else if (!IsSprintPressed && HasRun)
         {
+            joseAnimator.SetBool("IsRunning", false);
             Speed = OriginalSpeed;
             HasRun = false;
         }
@@ -141,12 +142,12 @@ public class JoseMovement : MonoBehaviour
     {
         IsGrounded = Physics.CheckSphere(GroundCheck.position, RadiusGround, GroundMask);
         bool IsJumpPressed = Controls.Player.Jump.ReadValue<float>() > 0.1f;
-        if (IsJumpPressed && IsGrounded && HasCeiling == false && IsCrouched == false && HasJump == false)
+        if (IsJumpPressed && IsGrounded && !HasCeiling && !IsCrouched && !HasJump)
         {
             YVel.y = Mathf.Sqrt(Gravity * JumpForce * -2);
             HasJump = true;
         }
-        if (IsGrounded && !IsJumpPressed)
+        else if (IsGrounded && !IsJumpPressed)
         {
             HasJump = false;
         }
@@ -156,8 +157,9 @@ public class JoseMovement : MonoBehaviour
     {
         HasCeiling = Physics.CheckSphere(HeadCheck.position, RadiusHead, GroundMask);
         bool IsCrouchPressed = Controls.Player.Crouch.ReadValue<float>() > 0.1f;
-        if (IsCrouchPressed && !HasCrouched && HasJump == false)
+        if (IsCrouchPressed && !HasCrouched && !HasJump)
         {
+            joseAnimator.SetBool("IsBending", true);
             CharController.height = 1;
             CharController.center = new Vector3(0, -0.5f, 0);
             // Camera.localPosition = new Vector3(0, 0.4f, 0.225f);
@@ -166,9 +168,9 @@ public class JoseMovement : MonoBehaviour
             HasCrouched = true;
             IsCrouched = true;
         }
-
-        if (HasCeiling == false && !IsCrouchPressed && HasRun == false)
+        else if (!HasCeiling && !IsCrouchPressed && !HasRun)
         {
+            joseAnimator.SetBool("IsBending", false);
             CharController.height = 2;
             CharController.center = new Vector3(0, 0, 0);
             // Camera.localPosition = new Vector3(0, 0.894f, 0.225f);
