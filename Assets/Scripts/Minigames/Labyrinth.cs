@@ -33,6 +33,7 @@ public class Labyrinth : MonoBehaviour
 
     public void AddSymbol(string symbol)
     {
+        GameManager.Instance.Click.Play();
         terminalCode += symbol;
         CheckPassword();
     }    
@@ -41,6 +42,7 @@ public class Labyrinth : MonoBehaviour
     {
         if (terminalCode == Passcodes[GameManager.Instance.doorNumber])
         {
+            GameManager.Instance.Success.Play();
             doorsList[GameManager.Instance.doorNumber].GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, true);
             doorsList[GameManager.Instance.doorNumber].GetComponent<Door>().doorState = true;
             doorsList[GameManager.Instance.doorNumber].GetComponent<Door>().OpenDoor();
@@ -56,6 +58,7 @@ public class Labyrinth : MonoBehaviour
             {
                 if (terminalCode[i] != Passcodes[GameManager.Instance.doorNumber][i])
                 {
+                    GameManager.Instance.Buzzer.Play();
                     terminalCode = "";
                 }
             }
