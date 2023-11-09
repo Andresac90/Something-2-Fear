@@ -317,12 +317,12 @@ public class ObjectsSanti : MonoBehaviourPun
             Puzzle puzzle = hit.transform.GetComponent<Puzzle>();
             string objectName = hit.collider.gameObject.name;
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.2f;
-            //if(objectNameString != "Key" && puzzle.puzzle.name == "LockPick")
-            //{
-            //    Debug.Log("You need a key");
-            //    //UI You need a key
-            //}
-            if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
+            if (objectNameString != "Key" && puzzle.puzzle.name == "LockPick")
+            {
+                Debug.Log("You need a key");
+                //UI You need a key
+            }
+            else if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
             {
                 puzzle.OpenPuzzle(false, false, objectName);
                 puzzleCreated = true;
