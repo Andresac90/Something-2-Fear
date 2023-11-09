@@ -157,11 +157,6 @@ public class AIControl : MonoBehaviourPun
                 aiAnimation.SetTrigger("walk");
                 Patroling();
             }
-            else if (isPlayerCaught)
-            {
-                Debug.Log("Attacking");
-                Attacking();
-            }
         }
     }
 
@@ -197,8 +192,9 @@ public class AIControl : MonoBehaviourPun
                 WaitTime -= Time.deltaTime;
             }
             if (Vector3.Distance(transform.position, closerPlayer.transform.position)  < catchDistance)
-            {   
+            {
                 CaughtPlayer();
+                Attacking();
             }
         }
     }
@@ -259,10 +255,10 @@ public class AIControl : MonoBehaviourPun
             isPlayerCaught = false;
 
             Debug.Log("Pinga attack SANTI");
-            santiAnimation.SetTrigger("SantiJumpscareTrigger");
+            SantiPV.RPC("SyncDowned", RpcTarget.All);
             GameManager.Instance.PascualitaJumpscare.Play();
+            santiAnimation.SetTrigger("SantiJumpscareTrigger");
             StartCoroutine(EndSantiJumpscare());
-            
 
             //SantiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught)
             //SantPV.RPC("SyncDowned", RpcTarget.All);
@@ -484,19 +480,17 @@ public class AIControl : MonoBehaviourPun
 
     IEnumerator EndSantiJumpscare()
     {
-        if (!courutineRinning)
-        {
-            courutineRinning= true;
-            yield return new WaitForSeconds(1f);
+        
+        yield return new WaitForSeconds(2f);
             
-            aiAnimation.ResetTrigger("walk");
-            aiAnimation.ResetTrigger("idle");
-            aiAnimation.ResetTrigger("sprint");
-            santiAnimation.ResetTrigger("SantiJumpscareTrigger");
-            santiAnimation.SetTrigger("SantiDownedTrigger");
-            SantiPV.RPC("SyncDowned", RpcTarget.All);
-            courutineRinning = false;                 
-        }
+        aiAnimation.ResetTrigger("walk");
+        aiAnimation.ResetTrigger("idle");
+        aiAnimation.ResetTrigger("sprint");
+        santiAnimation.ResetTrigger("SantiJumpscareTrigger");
+        santiAnimation.SetTrigger("SantiDownedTrigger");
+        
+                  
+        
     }                                         
 
     IEnumerator EndJoseJumpscare()

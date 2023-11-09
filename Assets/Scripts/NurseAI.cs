@@ -115,11 +115,6 @@ public class NurseAI : MonoBehaviour
                 //aiAnimation.SetTrigger("walk");
                 Patroling();
             }
-            else if (isPlayerCaught)
-            {
-                Debug.Log("Attacking");
-                Attacking();
-            }
         }
 
     }
@@ -154,7 +149,7 @@ public class NurseAI : MonoBehaviour
             }
             if (Vector3.Distance(transform.position, closerPlayer.transform.position) < catchDistance)
             {
-                CaughtPlayer();
+                Attacking();
             }
         }
     }

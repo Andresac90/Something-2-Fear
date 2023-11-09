@@ -57,24 +57,20 @@ public class ViewStopAI : MonoBehaviour
                 {
                     aiControlRef.GetComponent<PhotonView>().RPC("SyncSetIsSeen", RpcTarget.All, true, transform.name);
                     //aiControlRef.SyncSetIsSeen(true);
-                    Debug.Log("Pascualita is seen");
                 }
                 else
                 {
-                    aiControlRef.GetComponent<PhotonView>().RPC("SyncSetIsSeen", RpcTarget.All, false, transform.name);
-                    Debug.Log("Hallo1");
+                    aiControlRef.GetComponent<PhotonView>().RPC("SyncSetIsSeen", RpcTarget.All, false, transform.name);        
                 }
             }
             else
             {
                 aiControlRef.GetComponent<PhotonView>().RPC("SyncSetIsSeen", RpcTarget.All, false, transform.name);
-                Debug.Log("Hallo2");
             }
         }
         else if (aiControlRef)
         {
             aiControlRef.GetComponent<PhotonView>().RPC("SyncSetIsSeen", RpcTarget.All, false, transform.name);
-            //Debug.Log("Hallo3");
         }
     }
 }
