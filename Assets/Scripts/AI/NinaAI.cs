@@ -283,7 +283,7 @@ public class NinaAI : MonoBehaviour
     public void ChaseJose()
     {
         aiAgent.SetDestination(players[1].transform.position);
-        aiAgent.speed = 0.5f;
+        aiAgent.speed = 0.8f;
         if (Vector3.Distance(transform.position, players[1].transform.position) < catchDistance)
         {
             JosePV.RPC("SyncDowned", RpcTarget.All);
