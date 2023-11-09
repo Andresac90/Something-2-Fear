@@ -115,11 +115,11 @@ public class NinaAI : MonoBehaviour
             if (attackingJose)
             {
                 ChaseJose();
-                walkSpeed = 1f;
+                walkSpeed = 0.3f;
             }
             else if (attackingSanti)
             {
-                walkSpeed = 6f;
+                walkSpeed = 3f;
                 if (isChasing && !isPlayerCaught)
                 {
                     //aiAnimation.ResetTrigger("walk");
@@ -271,6 +271,11 @@ public class NinaAI : MonoBehaviour
     public void ChaseJose()
     {
         aiAgent.SetDestination(players[1].transform.position);
+        if (Vector3.Distance(transform.position, players[1].transform.position) < catchDistance)
+        {
+            JosePV.RPC("SyncDowned", RpcTarget.All);
+            isPlayerCaught = false;
+        }
     }
 
     void Move(float speed)
