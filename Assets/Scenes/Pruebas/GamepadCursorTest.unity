@@ -339,8 +339,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 142202124}
-  - {fileID: 947671815}
   - {fileID: 868376245}
+  - {fileID: 947671815}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -914,7 +914,7 @@ MonoBehaviour:
   cursorTransform: {fileID: 947671815}
   canvas: {fileID: 575644237}
   canvasTransform: {fileID: 575644238}
-  cursorSpeed: 1000
+  cursorSpeed: 1500
   padding: 70
 --- !u!4 &1511199178
 Transform:
