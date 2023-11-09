@@ -69,7 +69,7 @@ public class Down : MonoBehaviourPun
         GetComponent<Transform>().rotation = Quaternion.Euler(Quaternion.identity.x - 90f, Quaternion.identity.y, Quaternion.identity.z);
         GetComponent<BoxCollider>().enabled = true;
         CharController.enabled = false;
-        Camera.transform.rotation = Quaternion.Euler(Quaternion.identity.x + 70f, Quaternion.identity.y, Quaternion.identity.z);
+        Camera.transform.rotation = Quaternion.Euler(Quaternion.identity.x - 70f, Quaternion.identity.y, Quaternion.identity.z);
         GetComponentInChildren<PlayerLook>().enabled = false;
         isPlayerDowned = true;
     }
