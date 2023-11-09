@@ -51,6 +51,7 @@ public class NinaAI : MonoBehaviour
     public bool attackingJose;
     public bool attackingSanti;
     public bool isSeen;
+    private bool isWarping = false;
 
     private PhotonView JosePV;
     private PhotonView SantiPV;
@@ -65,6 +66,7 @@ public class NinaAI : MonoBehaviour
     void Start()
     {
         transform.position = new Vector3(spawns[JoseIteration].position.x, spawns[JoseIteration].position.y, spawns[JoseIteration].position.z);
+        JoseIteration++;
         players = new GameObject[2];
 
         PlayerPosition = Vector3.zero;
@@ -115,11 +117,11 @@ public class NinaAI : MonoBehaviour
             if (attackingJose)
             {
                 ChaseJose();
-                walkSpeed = 1f;
+                walkSpeed = 0.3f;
             }
             else if (attackingSanti)
             {
-                walkSpeed = 6f;
+                walkSpeed = 3f;
                 if (isChasing && !isPlayerCaught)
                 {
                     //aiAnimation.ResetTrigger("walk");
@@ -241,25 +243,35 @@ public class NinaAI : MonoBehaviour
     [PunRPC]
     public void InvertPlayers()
     {
+        if (isWarping)
+        {
+            return; // If warping is already in progress, exit the method
+        }
+
         Laugh.Play();
         attackingJose = !attackingJose;
         attackingSanti = !attackingSanti;
+
         if (attackingJose)
-        {
-            Debug.Log("AttackJose Niña");
-            Debug.Log(spawns[JoseIteration].localPosition.x + " " +spawns[JoseIteration].localPosition.y + " " +spawns[JoseIteration].localPosition.z);
-            
-            this.GetComponent<NavMeshAgent>().Warp(spawns[JoseIteration].localPosition);
+        { 
+            StartCoroutine(WarpWithDelay(spawns[JoseIteration].localPosition, 8.0f));
             JoseIteration++;
         }
         else if (attackingSanti)
         {
-          
-            Debug.Log("AttackSanti Niña");
-            Debug.Log(spawn.position.x + " " + spawn.position.y + " " + spawn.position.z);
-
-            this.GetComponent<NavMeshAgent>().Warp(spawn.position);
+            StartCoroutine(WarpWithDelay(spawn.position, 8.0f));
         }
+    }
+
+    private IEnumerator WarpWithDelay(Vector3 position, float delay)
+    {
+        isWarping = true; // Mark warping in progress
+        yield return new WaitForSeconds(delay); // Wait for the specified delay
+
+        // Perform the warp after the delay
+        this.GetComponent<NavMeshAgent>().Warp(position);
+
+        isWarping = false; // Reset the flag when warping is done
     }
 
     public void NextPoint()
@@ -271,6 +283,12 @@ public class NinaAI : MonoBehaviour
     public void ChaseJose()
     {
         aiAgent.SetDestination(players[1].transform.position);
+        aiAgent.speed = 0.8f;
+        if (Vector3.Distance(transform.position, players[1].transform.position) < catchDistance)
+        {
+            JosePV.RPC("SyncDowned", RpcTarget.All);
+            isPlayerCaught = false;
+        }
     }
 
     void Move(float speed)
