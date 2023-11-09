@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class LabDoor : MonoBehaviour
 {
@@ -12,10 +13,20 @@ public class LabDoor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i < nSymbols; i++)
+        if (PhotonNetwork.IsMasterClient)
         {
-            iCode = Random.Range(0, Symbols.Length);
-            Code += Symbols[iCode].ToString();
+            for (int i = 0; i < nSymbols; i++)
+            {
+                iCode = Random.Range(0, Symbols.Length);
+                Code += Symbols[iCode].ToString();
+            }
+            this.GetComponent<PhotonView>().RPC("SetCodes", RpcTarget.All, iCode, Code);
         }
+    }
+    [PunRPC]
+    void SetCodes(int iC, string C)
+    {
+        iCode = iC;
+        Code = C;
     }
 }

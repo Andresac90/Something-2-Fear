@@ -238,7 +238,7 @@ public class NinaAI : MonoBehaviour
     {
 
     }
-
+    [PunRPC]
     public void InvertPlayers()
     {
         Laugh.Play();
@@ -246,18 +246,19 @@ public class NinaAI : MonoBehaviour
         attackingSanti = !attackingSanti;
         if (attackingJose)
         {
-            Debug.Log("Attack Jose Niña");
-            Debug.Log(spawns[JoseIteration].position.x + " " +spawns[JoseIteration].position.y + " " +spawns[JoseIteration].position.z);
-            //transform.localPosition = new Vector3(spawns[5].position.x, spawns[5].position.y, spawns[5].position.z);
-            transform.localPosition = new Vector3(spawns[JoseIteration].position.x, spawns[JoseIteration].position.y, spawns[JoseIteration].position.z);
+            Debug.Log("AttackJose Niña");
+            Debug.Log(spawns[JoseIteration].localPosition.x + " " +spawns[JoseIteration].localPosition.y + " " +spawns[JoseIteration].localPosition.z);
+            
+            this.GetComponent<NavMeshAgent>().Warp(spawns[JoseIteration].localPosition);
             JoseIteration++;
         }
         else if (attackingSanti)
         {
-            Debug.Log("Attack Santi Niña");
+          
+            Debug.Log("AttackSanti Niña");
             Debug.Log(spawn.position.x + " " + spawn.position.y + " " + spawn.position.z);
-            //transform.localPosition = new Vector3(spawns[5].position.x, spawns[5].position.y, spawns[5].position.z);
-            transform.localPosition = new Vector3(37, 0, -2);
+
+            this.GetComponent<NavMeshAgent>().Warp(spawn.position);
         }
     }
 

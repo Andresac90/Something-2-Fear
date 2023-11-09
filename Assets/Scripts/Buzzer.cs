@@ -13,7 +13,7 @@ public class Buzzer : MonoBehaviour
     public void Activation()
     {
         GameManager.Instance.Buzzer.Play();
-        Nina.GetComponent<NinaAI>().InvertPlayers();
+        Nina.GetComponent<PhotonView>().RPC("InvertPlayers", RpcTarget.All);
     }
 
     public void Update()

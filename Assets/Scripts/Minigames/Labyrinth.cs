@@ -46,7 +46,7 @@ public class Labyrinth : MonoBehaviour
             doorsList[GameManager.Instance.doorNumber].GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, true);
             doorsList[GameManager.Instance.doorNumber].GetComponent<Door>().doorState = true;
             doorsList[GameManager.Instance.doorNumber].GetComponent<Door>().OpenDoor();
-            Nina.GetComponent<NinaAI>().InvertPlayers();
+            Nina.GetComponent<PhotonView>().RPC("InvertPlayers",RpcTarget.All);
             GameManager.Instance.doorNumber += 1;
             Comprobations.comprobations++;
             Comprobations.Completed();
