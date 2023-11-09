@@ -53,6 +53,8 @@ public class AIControl : MonoBehaviourPun
     private PhotonView JosePV;
     private PhotonView SantiPV;
 
+    
+
     //Testing variables
     public bool isSeen;  //Pascualita is being seen by player
     public bool isSeenSanti = false;  //Pascualita is being seen by player
@@ -258,6 +260,7 @@ public class AIControl : MonoBehaviourPun
 
             Debug.Log("Pinga attack SANTI");
             santiAnimation.SetTrigger("SantiJumpscareTrigger");
+            GameManager.Instance.PascualitaJumpscare.Play();
             StartCoroutine(EndSantiJumpscare());
             
 
@@ -484,7 +487,7 @@ public class AIControl : MonoBehaviourPun
         if (!courutineRinning)
         {
             courutineRinning= true;
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
             
             aiAnimation.ResetTrigger("walk");
             aiAnimation.ResetTrigger("idle");
@@ -492,16 +495,16 @@ public class AIControl : MonoBehaviourPun
             santiAnimation.ResetTrigger("SantiJumpscareTrigger");
             santiAnimation.SetTrigger("SantiDownedTrigger");
             SantiPV.RPC("SyncDowned", RpcTarget.All);
-            courutineRinning = false;
+            courutineRinning = false;                 
         }
-    }
+    }                                         
 
     IEnumerator EndJoseJumpscare()
     {
         if (!courutineRinning)
         {
             courutineRinning = true;
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
             
             aiAnimation.ResetTrigger("walk");
             aiAnimation.ResetTrigger("idle");
