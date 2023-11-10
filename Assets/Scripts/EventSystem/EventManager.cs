@@ -13,6 +13,8 @@ public class EventManager : MonoBehaviour
     [SerializeField]
     private bool JoseEvent = false;
     [SerializeField]
+    private bool spawnPasc = false;
+    [SerializeField]
     private bool SantiEvent = false;
     [SerializeField]
     private bool Event = false;
@@ -85,7 +87,6 @@ public class EventManager : MonoBehaviour
         {
             SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Play();
             SceneManager.LoadScene("WinScreen");
-            Destroy(this.gameObject);
         }
     }
 
@@ -100,7 +101,7 @@ public class EventManager : MonoBehaviour
 
     void JoseInteract()
     {
-        if (joseNear && JoseEvent && !SantiEvent)
+        if (joseNear && spawnPasc)
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("ActivatePascualita", RpcTarget.All);
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateDummy", RpcTarget.All);
