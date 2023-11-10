@@ -243,15 +243,11 @@ public class AIControl : MonoBehaviourPun
 
     private void Attacking()
     {
-        //llamar funcion de downeado de Jose/Santi y jumpscare
-        //aiAnimation.ResetTrigger("walk");
-        //aiAnimation.ResetTrigger("idle");
-        //aiAnimation.ResetTrigger("sprint");
-        //aiAnimation.SetTrigger("jumpscare");
-        //StartCoroutine(deathRoutine());
         
         if(closerPlayer == players[0])
         {
+            if (!SantiPV.IsMine)
+                return;
             isPlayerCaught = false;
 
             Debug.Log("Pinga attack SANTI");
@@ -259,12 +255,13 @@ public class AIControl : MonoBehaviourPun
             GameManager.Instance.PascualitaJumpscare.Play();
             santiAnimation.SetTrigger("SantiJumpscareTrigger");
             StartCoroutine(EndSantiJumpscare());
+            
 
-            //SantiPV.RPC("updateDowned", RpcTarget.All, isPlayerCaught)
-            //SantPV.RPC("SyncDowned", RpcTarget.All);
         }
         else if(closerPlayer == players[1])
         {
+            if (!JosePV.IsMine)
+                return;
             isPlayerCaught = false;
 
             Debug.Log("Pinga attack JOSE");
