@@ -192,7 +192,10 @@ public class SantiController : MonoBehaviourPun
     [PunRPC]
     void UpdateWalkingAnimation(bool isWalking)
     {
-        santiAnimator.SetBool("IsWalking", isWalking);
+        if (santiAnimator != null)
+        {
+            santiAnimator.SetBool("IsWalking", isWalking);
+        }
     }
 
     private void UIPrompt(string text)

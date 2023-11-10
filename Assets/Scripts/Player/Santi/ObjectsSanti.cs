@@ -379,7 +379,10 @@ public class ObjectsSanti : MonoBehaviourPun
     [PunRPC]
     void UpdateBengalThrowAnimation(bool isBengalThrow)
     {
-        santiAnimator.SetBool("IsBengalThrow", isBengalThrow);
+        if (santiAnimator != null)
+        {
+            santiAnimator.SetBool("IsBengalThrow", isBengalThrow);
+        }
     }
 
     private void Grab()

@@ -184,19 +184,28 @@ public class JoseMovement : MonoBehaviourPun
     [PunRPC]
     void UpdateWalkingAnimation(bool isWalking)
     {
-        joseAnimator.SetBool("IsWalking", isWalking);
+        if (joseAnimator != null)
+        {
+            joseAnimator.SetBool("IsWalking", isWalking);
+        }
     }
 
     [PunRPC]
     void UpdateBendingAnimation(bool isBending)
     {
-        joseAnimator.SetBool("IsBending", isBending);
+        if (joseAnimator != null)
+        {
+            joseAnimator.SetBool("IsBending", isBending);
+        }
     }
 
     [PunRPC]
     void UpdateRunningAnimation(bool isRunning)
     {
-        joseAnimator.SetBool("IsRunning", isRunning);
+        if (joseAnimator != null)
+        {
+            joseAnimator.SetBool("IsRunning", isRunning);
+        }
     }
 
     public void SetInjected()

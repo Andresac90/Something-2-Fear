@@ -270,13 +270,19 @@ public class ObjectsJose : MonoBehaviourPun
     [PunRPC]
     void UpdateRightGrabbingAnimation(bool isRightGrabbing)
     {
-        joseAnimator.SetBool("IsRightGrabbing", isRightGrabbing);
+        if (joseAnimator != null)
+        {
+            joseAnimator.SetBool("IsRightGrabbing", isRightGrabbing);
+        }
     }
 
     [PunRPC]
     void UpdateLeftGrabbingAnimation(bool isLeftGrabbing)
     {
-        joseAnimator.SetBool("IsLeftGrabbing", isLeftGrabbing);
+        if (joseAnimator != null)
+        {
+            joseAnimator.SetBool("IsLeftGrabbing", isLeftGrabbing);
+        }
     }
 
     IEnumerator Grab()
