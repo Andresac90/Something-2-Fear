@@ -22,15 +22,13 @@ public class EventManager : MonoBehaviour
     private bool Labyrinth = false;
     [SerializeField]
     private bool WinScreen = false;
-   
-    public AudioSource AudioHospital;
 
     private GameObject ChangeObjects;
 
     public bool santiNear = false;
     public bool joseNear = false;
 
-    public bool audioH;
+    public bool HospitalEvent = false;
 
     // Update is called once per frame
     void Update()
@@ -42,17 +40,19 @@ public class EventManager : MonoBehaviour
         HospitalCleared();
         LabyrinthNina();
         Win();
-        if (audioH && AudioHospital.time > 17.0f)
+        if (GameManager.Instance.audioH && GameManager.Instance.AudioHospital.time > 17.0f)
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("ActivateNurse", RpcTarget.All);
-            Destroy(this.gameObject);
+        }
+        if(GameManager.Instance.AudioHospital.time > 25.0f)
+        {
+            GameManager.Instance.audioH = false;
         }
     }
 
     void Start()
     {
         ChangeObjects = GameObject.Find("ChangeObjects");
-        AudioHospital = GameObject.Find("AudioHospital").GetComponent<AudioSource>();
     }
 
     public void OnTriggerEnter(Collider collision)
@@ -119,12 +119,12 @@ public class EventManager : MonoBehaviour
 
     void HospitalLockdown()
     {
-        if (joseNear && santiNear && TwoPlayers && Hospital)
+        if (joseNear && santiNear && TwoPlayers && Hospital && !HospitalEvent)
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("ActivateLockdown", RpcTarget.All);
-            AudioHospital.Play();
-            audioH = true;
-            Destroy(this.gameObject);
+            GameManager.Instance.AudioHospital.Play();
+            GameManager.Instance.audioH = true;
+            HospitalEvent = true;
         }
     }
 
@@ -133,7 +133,6 @@ public class EventManager : MonoBehaviour
         if (GameManager.Instance.Key3)
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateLockdown", RpcTarget.All);
-            Destroy(this.gameObject);
         }
     }
 

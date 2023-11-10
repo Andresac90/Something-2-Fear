@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public bool blinkJose;
     public bool blinkSanti;
     public bool JoseInsideLab = false;
+    public bool audioH;
 
     public bool Key1 = false;
     public bool Key2 = false;
@@ -34,6 +35,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public AudioSource Keys;
     public AudioSource Door;
     public AudioSource PascualitaJumpscare;
+    public AudioSource AudioHospital;
 
     void Awake()
     {
