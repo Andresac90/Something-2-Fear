@@ -198,7 +198,7 @@ public class ObjectsJose : MonoBehaviour
 
     private void Activation()
     {
-        if (hit.transform != null && hit.transform.tag == "Box" && hit.transform.name == "LightBox")
+        if (hit.transform != null && hit.transform.tag == "Box" && hit.transform.name == "LightBox" && !GameManager.Instance.audioH)
         {
             Electricity box = hit.transform.GetComponent<Electricity>();
             bool isInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0.0f;

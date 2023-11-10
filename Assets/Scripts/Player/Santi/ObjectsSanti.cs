@@ -261,7 +261,7 @@ public class ObjectsSanti : MonoBehaviourPun
             activated = false;
         }
         
-        if (hit.transform != null && hit.transform.tag == "Box")
+        if (hit.transform != null && hit.transform.tag == "Box" && !GameManager.Instance.audioH)
         {
             Electricity box = hit.transform.GetComponent<Electricity>();
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
