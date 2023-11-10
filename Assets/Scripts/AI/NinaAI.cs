@@ -246,18 +246,25 @@ public class NinaAI : MonoBehaviour
             return; // If warping is already in progress, exit the method
         }
 
-        Laugh.Play();
-        attackingJose = !attackingJose;
-        attackingSanti = !attackingSanti;
-
-        if (attackingJose)
-        { 
-            StartCoroutine(WarpWithDelay(spawns[JoseIteration].localPosition, 8.0f));
-            JoseIteration++;
-        }
-        else if (attackingSanti)
+        if(JoseIteration < 5)
         {
-            StartCoroutine(WarpWithDelay(spawn.position, 8.0f));
+            Laugh.Play();
+            attackingJose = !attackingJose;
+            attackingSanti = !attackingSanti;
+
+            if (attackingJose)
+            {
+                StartCoroutine(WarpWithDelay(spawns[JoseIteration].localPosition, 0.5f));
+                JoseIteration++;
+            }
+            else if (attackingSanti)
+            {
+                StartCoroutine(WarpWithDelay(spawn.position, 8.0f));
+            }
+        }
+        else
+        {
+            this.gameObject.SetActive(false);
         }
     }
 

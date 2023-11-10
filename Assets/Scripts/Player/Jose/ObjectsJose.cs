@@ -62,6 +62,7 @@ public class ObjectsJose : MonoBehaviour
     private GameObject pascualita;
     private GameObject nurse;
     private GameObject nina;
+    private GameObject LDoor;
     private Rigidbody ObjectLeftRb;
     private Transform ObjectRightT;
     private Transform ObjectLeftT;
@@ -85,6 +86,7 @@ public class ObjectsJose : MonoBehaviour
         nurse = GameObject.Find("nurse");
         nina = GameObject.Find("Niña");
         LightBox = GameObject.Find("LightBox");
+        LDoor = GameObject.Find("L_DoorFinal");
         for(int i = 0; i < Buzzer.Length; i++) {
             Buzzer[i] = GameObject.Find("Buzzer"+i.ToString());
         }
@@ -196,7 +198,7 @@ public class ObjectsJose : MonoBehaviour
 
     private void Activation()
     {
-        if (hit.transform != null && hit.transform.tag == "Box")
+        if (hit.transform != null && hit.transform.tag == "Box" && hit.transform.name == "LightBox")
         {
             Electricity box = hit.transform.GetComponent<Electricity>();
             bool isInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0.0f;
@@ -204,6 +206,17 @@ public class ObjectsJose : MonoBehaviour
             if (isInteractPressed)
             {
                 LightBox.GetComponent<PhotonView>().RPC("Activation", RpcTarget.All, true);
+            }
+        }
+
+        if (hit.transform != null && hit.transform.tag == "Box" && hit.transform.name == "L_Button")
+        {
+            bool isInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0.0f;
+
+            if (isInteractPressed)
+            {
+                LDoor.GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, true);
+                hit.transform.tag = "Untagged";
             }
         }
 
