@@ -107,7 +107,7 @@ public class ObjectsSanti : MonoBehaviourPun
         PV = GetComponent<PhotonView>();
         pascualita = GameObject.Find("Pascualita");
         nurse = GameObject.Find("nurse");
-        nina = GameObject.Find("Ni�a");
+        nina = GameObject.Find("Nina");
         LightBox = GameObject.Find("LightBox");
         AIControl aicontrolP = pascualita.GetComponent<AIControl>();
         NurseAI aicontrolN = nurse.GetComponent<NurseAI>();
