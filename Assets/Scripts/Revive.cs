@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Revive : MonoBehaviourPun
 {
@@ -16,9 +17,12 @@ public class Revive : MonoBehaviourPun
     private float objectTime;
     [SerializeField]
     private float rayLine;
-
     [SerializeField]
     private LayerMask layerMask;
+    [SerializeField]
+    private Canvas canvas;
+    [SerializeField]
+    private Image fill;
 
     public void Awake()
     {
@@ -53,18 +57,26 @@ public class Revive : MonoBehaviourPun
             Physics.Raycast(playerCamera.position, playerCamera.TransformDirection(Vector3.forward), out hit, rayLine, layerMask);
             if (hit.transform != null && (hit.transform.tag == "PlayerSanti" || hit.transform.tag == "PlayerJose"))
             {
+                canvas.gameObject.SetActive(true);
                 currentTime += Time.deltaTime;
+                fill.fillAmount = currentTime / objectTime;
                 if (currentTime >= objectTime)
                 {
                     RevivePlayer(hit.transform.gameObject);
                     currentTime = 0f;
+                    fill.fillAmount = currentTime / objectTime;
                 }
+            }
+            else
+            {
+                canvas.gameObject.SetActive(false);
             }
         }
         else
-            {
-                currentTime = 0f;
-            }
+        {
+            currentTime = 0f;
+            fill.fillAmount = currentTime / objectTime;
+        }
     }
 
     private void RevivePlayer(GameObject playerObject)
