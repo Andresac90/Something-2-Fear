@@ -112,11 +112,13 @@ public class JoseMovement : MonoBehaviour
 
         if(Move.x != 0 || Move.y != 0)
         {
+            Debug.Log("WALKING PENDEJI");
             joseAnimator.SetBool("IsWalking", true);
 
         }
         else
         {
+            Debug.Log("NOT WALKING PENDEJI");
             joseAnimator.SetBool("IsWalking", false);
         }
     }

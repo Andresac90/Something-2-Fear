@@ -268,6 +268,8 @@ public class AIControl : MonoBehaviourPun
             isPlayerCaught = false;
 
             Debug.Log("Pinga attack JOSE");
+            JosePV.RPC("SyncDowned", RpcTarget.All);
+            GameManager.Instance.PascualitaJumpscare.Play();
             joseAnimation.SetTrigger("JoseJumpscareTrigger");
             StartCoroutine(EndJoseJumpscare());
         }
@@ -488,26 +490,19 @@ public class AIControl : MonoBehaviourPun
         aiAnimation.ResetTrigger("sprint");
         santiAnimation.ResetTrigger("SantiJumpscareTrigger");
         santiAnimation.SetTrigger("SantiDownedTrigger");
-        
-                  
-        
     }                                         
 
     IEnumerator EndJoseJumpscare()
     {
-        if (!courutineRinning)
-        {
-            courutineRinning = true;
-            yield return new WaitForSeconds(1f);
+        
+        yield return new WaitForSeconds(2f);
             
-            aiAnimation.ResetTrigger("walk");
-            aiAnimation.ResetTrigger("idle");
-            aiAnimation.ResetTrigger("sprint");
-            joseAnimation.ResetTrigger("JoseJumpscareTrigger");
-            joseAnimation.SetTrigger("JoseDownedTrigger");
-            JosePV.RPC("SyncDowned", RpcTarget.All);
-            courutineRinning = false;
-        }
+        aiAnimation.ResetTrigger("walk");
+        aiAnimation.ResetTrigger("idle");
+        aiAnimation.ResetTrigger("sprint");
+        joseAnimation.ResetTrigger("JoseJumpscareTrigger");
+        joseAnimation.SetTrigger("JoseDownedTrigger");
+
     }
 
     //IEnumerator stayIdle()
