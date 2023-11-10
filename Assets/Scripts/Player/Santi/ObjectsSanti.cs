@@ -167,6 +167,11 @@ public class ObjectsSanti : MonoBehaviourPun
             InteractUI.SetActive(true);
             DropRightUI.SetActive(false);
         }
+        else if (hit.transform != null && hit.transform.tag == "Button")
+        {
+            InteractUI.SetActive(true);
+            DropRightUI.SetActive(false);
+        }
         else if (hit.transform != null && hit.transform.tag == "Box")
         {
             InteractUI.SetActive(true);
