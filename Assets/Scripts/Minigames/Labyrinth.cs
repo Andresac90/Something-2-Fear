@@ -29,14 +29,16 @@ public class Labyrinth : MonoBehaviour
             Passcodes[i] += doorsList[i].GetComponent<LabDoor>().Code;
             Debug.Log(Passcodes[i]);
         }
-        if (Nina == null) { Debug.Log("Null"); }
     }
 
     public void AddSymbol(string symbol)
     {
-        GameManager.Instance.Click.Play();
-        terminalCode += symbol;
-        CheckPassword();
+        if (GameManager.Instance.JoseInsideLab)
+        {
+            GameManager.Instance.Click.Play();
+            terminalCode += symbol;
+            CheckPassword();
+        }
     }    
 
     public void CheckPassword()

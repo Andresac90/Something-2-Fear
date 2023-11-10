@@ -1277,7 +1277,7 @@ RectTransform:
   m_GameObject: {fileID: 6803231021617016473}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.7553124, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8895890401684953827}
@@ -2155,3 +2155,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Passcodes: []
   doorsList: []
+  Nina: {fileID: 0}

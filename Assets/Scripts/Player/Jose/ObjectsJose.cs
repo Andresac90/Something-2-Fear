@@ -83,7 +83,7 @@ public class ObjectsJose : MonoBehaviour
         Buzzer = new GameObject[4];
         pascualita = GameObject.Find("Pascualita");
         nurse = GameObject.Find("nurse");
-        nina = GameObject.Find("Nina");
+        nina = GameObject.Find("Niña");
         LightBox = GameObject.Find("LightBox");
         for(int i = 0; i < Buzzer.Length; i++) {
             Buzzer[i] = GameObject.Find("Buzzer"+i.ToString());

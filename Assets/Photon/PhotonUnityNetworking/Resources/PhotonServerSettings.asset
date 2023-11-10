@@ -71,6 +71,7 @@ MonoBehaviour:
   - InvertPlayers
   - GenerateCodes
   - SetCodes
+  - ChangeNina
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

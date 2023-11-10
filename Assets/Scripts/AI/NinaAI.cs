@@ -28,7 +28,7 @@ public class NinaAI : MonoBehaviour
     public float meshResolution = 1.0f;             //  How many rays will cast per degree
     public int edgeIterations = 4;                  //  Number of iterations to get a better performance of the mesh filter when the raycast hit an obstacule
     public float edgeDistance = 0.5f;               //  Max distance to calcule the a minumun and a maximum raycast when hits something
-    private int JoseIteration = 0;
+    private int JoseIteration = 1;
 
 
     public Transform[] waypoints;
@@ -65,8 +65,6 @@ public class NinaAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(spawns[JoseIteration].position.x, spawns[JoseIteration].position.y, spawns[JoseIteration].position.z);
-        JoseIteration++;
         players = new GameObject[2];
 
         PlayerPosition = Vector3.zero;

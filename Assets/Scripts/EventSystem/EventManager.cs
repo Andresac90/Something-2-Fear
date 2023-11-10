@@ -113,7 +113,6 @@ public class EventManager : MonoBehaviour
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivatePascualita", RpcTarget.All);
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateNurse", RpcTarget.All);
-            ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateNina", RpcTarget.All);
             Destroy(this.gameObject);
         }
     }
@@ -125,6 +124,7 @@ public class EventManager : MonoBehaviour
             ChangeObjects.GetComponent<PhotonView>().RPC("ActivateLockdown", RpcTarget.All);
             AudioHospital.Play();
             audioH = true;
+            Destroy(this.gameObject);
         }
     }
 
@@ -133,6 +133,7 @@ public class EventManager : MonoBehaviour
         if (GameManager.Instance.Key3)
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateLockdown", RpcTarget.All);
+            Destroy(this.gameObject);
         }
     }
 
@@ -140,7 +141,9 @@ public class EventManager : MonoBehaviour
     {
         if (joseNear && Labyrinth)
         {
-            ChangeObjects.GetComponent<PhotonView>().RPC("ActivateNina", RpcTarget.All);
+            ChangeObjects.GetComponent<PhotonView>().RPC("ChangeNina", RpcTarget.All);
+
+            Destroy(this.gameObject);
         }
     }
 }

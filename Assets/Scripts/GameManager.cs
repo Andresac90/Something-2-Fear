@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public bool puzzle = false;
     public bool blinkJose;
     public bool blinkSanti;
+    public bool JoseInsideLab = false;
 
     public bool Key1 = false;
     public bool Key2 = false;

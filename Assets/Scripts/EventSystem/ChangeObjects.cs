@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ChangeObjects : MonoBehaviourPun
 {
@@ -19,6 +20,8 @@ public class ChangeObjects : MonoBehaviourPun
     private GameObject HospitalDoor;
     [SerializeField]
     private GameObject HospitalLightsLockdown;
+    [SerializeField]
+    private Transform positionNina;
 
     [PunRPC]
     public void ActivatePascualita()
@@ -78,9 +81,10 @@ public class ChangeObjects : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void ActivateNina()
+    public void ChangeNina()
     {
-        Nina.SetActive(true);
+        GameManager.Instance.JoseInsideLab = true; 
+        Nina.GetComponent<NavMeshAgent>().Warp(positionNina.position);
     }
 
     [PunRPC]
