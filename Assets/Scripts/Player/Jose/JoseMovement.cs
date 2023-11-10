@@ -112,11 +112,11 @@ public class JoseMovement : MonoBehaviourPun
 
         if(Move.x != 0 || Move.y != 0)
         {
-            photonView.RPC("UpdateWalkingAnimation", RpcTarget.All, true);
+            PV.RPC("UpdateWalkingAnimation", RpcTarget.All, true);
         }
         else
         {
-            photonView.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
+            PV.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
         }
     }
 
@@ -125,14 +125,14 @@ public class JoseMovement : MonoBehaviourPun
         bool IsSprintPressed = Controls.Player.Run.ReadValue<float>() > 0.1f;
         if (IsSprintPressed && !HasRun && !HasCrouched && IsGrounded)
         {
-            photonView.RPC("UpdateRunningAnimation", RpcTarget.All, true);
-            photonView.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
+            PV.RPC("UpdateRunningAnimation", RpcTarget.All, true);
+            PV.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
             Speed *= 1.9f;
             HasRun = true;
         }
         else if (!IsSprintPressed && HasRun)
         {
-            photonView.RPC("UpdateRunningAnimation", RpcTarget.All, false);
+            PV.RPC("UpdateRunningAnimation", RpcTarget.All, false);
             Speed = OriginalSpeed;
             HasRun = false;
         }
@@ -159,7 +159,7 @@ public class JoseMovement : MonoBehaviourPun
         bool IsCrouchPressed = Controls.Player.Crouch.ReadValue<float>() > 0.1f;
         if (IsCrouchPressed && !HasCrouched && !HasJump)
         {
-            photonView.RPC("UpdateBendingAnimation", RpcTarget.All, true);
+            PV.RPC("UpdateBendingAnimation", RpcTarget.All, true);
             CharController.height = 1;
             CharController.center = new Vector3(0, -0.5f, 0);
             // Camera.localPosition = new Vector3(0, 0.4f, 0.225f);
@@ -170,7 +170,7 @@ public class JoseMovement : MonoBehaviourPun
         }
         else if (!HasCeiling && !IsCrouchPressed && !HasRun)
         {
-            photonView.RPC("UpdateBendingAnimation", RpcTarget.All, false);
+            PV.RPC("UpdateBendingAnimation", RpcTarget.All, false);
             CharController.height = 2;
             CharController.center = new Vector3(0, 0, 0);
             // Camera.localPosition = new Vector3(0, 0.894f, 0.225f);

@@ -180,12 +180,12 @@ public class SantiController : MonoBehaviourPun
 
         if(movement.x != 0 || movement.y != 0)
         {
-            photonView.RPC("UpdateWalkingAnimation", RpcTarget.All, true);
+            PV.RPC("UpdateWalkingAnimation", RpcTarget.All, true);
 
         }
         else
         {
-            photonView.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
+            PV.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
         }
     }
 

@@ -76,6 +76,7 @@ public class ObjectsSanti : MonoBehaviourPun
     [SerializeField]
     private GameObject Timer;
 
+    private PhotonView PV;
     private TextMeshProUGUI textMeshProText;
     private bool LockPickCheck = false;
     public bool puzzleCreated = false;
@@ -103,6 +104,7 @@ public class ObjectsSanti : MonoBehaviourPun
 
     public void Start()
     {
+        PV = GetComponent<PhotonView>();
         pascualita = GameObject.Find("Pascualita");
         nurse = GameObject.Find("nurse");
         nina = GameObject.Find("Ni�a");
@@ -393,8 +395,8 @@ public class ObjectsSanti : MonoBehaviourPun
             }
             else if(isLeftPressed && !grabObjL && objectGrabbedL && hit.transform.tag == "Bengal")
             {
-                photonView.RPC("UpdateBengalThrowAnimation", RpcTarget.All, true);
-                photonView.RPC("UpdateBengalThrowAnimation", RpcTarget.All, false);
+                PV.RPC("UpdateBengalThrowAnimation", RpcTarget.All, true);
+                PV.RPC("UpdateBengalThrowAnimation", RpcTarget.All, false);
                 StartCoroutine(LeftGrab());
             }
         }

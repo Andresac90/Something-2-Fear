@@ -74,6 +74,7 @@ public class ObjectsJose : MonoBehaviourPun
     private bool activated = false;
     private Cure activeStation = null;
     private Animator joseAnimator;
+    private PhotonView PV;
 
     void Awake()
     {
@@ -81,6 +82,7 @@ public class ObjectsJose : MonoBehaviourPun
     }
     public void Start()
     {
+        PV = GetComponent<PhotonView>();
         Buzzer = new GameObject[4];
         pascualita = GameObject.Find("Pascualita");
         nurse = GameObject.Find("nurse");
@@ -286,8 +288,8 @@ public class ObjectsJose : MonoBehaviourPun
             bool IsRightPressed = Controls.Player.RightItem.ReadValue<float>() > 0.1f;
             if(IsRightPressed && !HasObjectRight)
             {
-                photonView.RPC("UpdateRightGrabbingAnimation", RpcTarget.All, true);
-                photonView.RPC("UpdateRightGrabbingAnimation", RpcTarget.All, false);
+                PV.RPC("UpdateRightGrabbingAnimation", RpcTarget.All, true);
+                PV.RPC("UpdateRightGrabbingAnimation", RpcTarget.All, false);
                 // hit.transform.position = ObjectRightCamera.position;
                 // hit.rigidbody.isKinematic = true;
                 // hit.transform.parent = ObjectRightCamera;
