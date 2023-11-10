@@ -51,6 +51,14 @@ public class ObjectsJose : MonoBehaviourPun
     [SerializeField]
     private GameObject Key3UI;
 
+    //ObjectsNurse
+    [SerializeField]
+    private GameObject Object1UI;
+    [SerializeField]
+    private GameObject Object2UI;
+    [SerializeField]
+    private GameObject Object3UI;
+
     private TextMeshProUGUI textMeshProText;
     private RaycastHit hit;
     private float ObjectRScaleData;
@@ -148,7 +156,7 @@ public class ObjectsJose : MonoBehaviourPun
             InteractUI.SetActive(false);
         }
 
-        //MasterKeys
+        //MasterKeys UI
         if (GameManager.Instance.Key1)
         {
             Key1UI.SetActive(true);
@@ -160,6 +168,19 @@ public class ObjectsJose : MonoBehaviourPun
         if (GameManager.Instance.Key3)
         {
             Key3UI.SetActive(true);
+        }
+        //ObjectsNurseUI
+        if (GameManager.Instance.Key1)
+        {
+            Object1UI.SetActive(true);
+        }
+        if (GameManager.Instance.Key2)
+        {
+            Object2UI.SetActive(true);
+        }
+        if (GameManager.Instance.Key3)
+        {
+            Object3UI.SetActive(true);
         }
 
         //Timer UI

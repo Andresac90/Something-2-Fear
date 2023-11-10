@@ -73,6 +73,14 @@ public class ObjectsSanti : MonoBehaviourPun
     [SerializeField]
     private GameObject Key3UI;
 
+    //ObjectsNurse
+    [SerializeField]
+    private GameObject Object1UI;
+    [SerializeField]
+    private GameObject Object2UI;
+    [SerializeField]
+    private GameObject Object3UI;
+
     [SerializeField]
     private GameObject Timer;
 
@@ -132,6 +140,12 @@ public class ObjectsSanti : MonoBehaviourPun
                 GameManager.Instance.Keys.Play();
                 StartCoroutine(RightDrop());
                 hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
+                objectNameString = "";
+            }
+            if (objectNameString == "Object1" || objectNameString == "Object2" || objectNameString == "Object3")
+            {
+                StartCoroutine(RightDrop());
+                hit.transform.GetComponent<PhotonView>().RPC("ObjectsNurseChange", RpcTarget.All, hit.transform.name);
                 objectNameString = "";
             }
             else
@@ -199,7 +213,7 @@ public class ObjectsSanti : MonoBehaviourPun
             InteractUI.SetActive(false);
         }
 
-        //MasterKeys
+        //MasterKeysUI
         if (GameManager.Instance.Key1)
         {
             Key1UI.SetActive(true);
@@ -211,6 +225,19 @@ public class ObjectsSanti : MonoBehaviourPun
         if (GameManager.Instance.Key3)
         {
             Key3UI.SetActive(true);
+        }
+        //ObjectsNurseUI
+        if (GameManager.Instance.Key1)
+        {
+            Object1UI.SetActive(true);
+        }
+        if (GameManager.Instance.Key2)
+        {
+            Object2UI.SetActive(true);
+        }
+        if (GameManager.Instance.Key3)
+        {
+            Object3UI.SetActive(true);
         }
 
         //Timer UI
