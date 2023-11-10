@@ -105,7 +105,7 @@ public class ObjectsSanti : MonoBehaviourPun
     {
         pascualita = GameObject.Find("Pascualita");
         nurse = GameObject.Find("nurse");
-        nina = GameObject.Find("Niña");
+        nina = GameObject.Find("Niï¿½a");
         LightBox = GameObject.Find("LightBox");
         AIControl aicontrolP = pascualita.GetComponent<AIControl>();
         NurseAI aicontrolN = nurse.GetComponent<NurseAI>();
@@ -369,6 +369,12 @@ public class ObjectsSanti : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
+    void UpdateBengalThrowAnimation(bool isBengalThrow)
+    {
+        santiAnimator.SetBool("IsBengalThrow", isBengalThrow);
+    }
+
     private void Grab()
     {
         if(hit.transform.tag == "Object" || hit.transform.tag == "Bengal")
@@ -382,8 +388,8 @@ public class ObjectsSanti : MonoBehaviourPun
             }
             else if(isLeftPressed && !grabObjL && objectGrabbedL && hit.transform.tag == "Bengal")
             {
-                santiAnimator.SetBool("IsBengalThrow", true);
-                santiAnimator.SetBool("IsBengalThrow", false);
+                photonView.RPC("UpdateBengalThrowAnimation", RpcTarget.All, true);
+                photonView.RPC("UpdateBengalThrowAnimation", RpcTarget.All, false);
                 StartCoroutine(LeftGrab());
             }
         }

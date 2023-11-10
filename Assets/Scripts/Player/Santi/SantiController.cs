@@ -180,13 +180,19 @@ public class SantiController : MonoBehaviour
 
         if(movement.x != 0 || movement.y != 0)
         {
-            santiAnimator.SetBool("IsWalking", true);
+            photonView.RPC("UpdateWalkingAnimation", RpcTarget.All, true);
 
         }
         else
         {
-            santiAnimator.SetBool("IsWalking", false);
+            photonView.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
         }
+    }
+
+    [PunRPC]
+    void UpdateWalkingAnimation(bool isWalking)
+    {
+        santiAnimator.SetBool("IsWalking", isWalking);
     }
 
     private void UIPrompt(string text)

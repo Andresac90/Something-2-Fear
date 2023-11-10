@@ -84,7 +84,7 @@ public class ObjectsJose : MonoBehaviour
         Buzzer = new GameObject[4];
         pascualita = GameObject.Find("Pascualita");
         nurse = GameObject.Find("nurse");
-        nina = GameObject.Find("Niña");
+        nina = GameObject.Find("Niï¿½a");
         LightBox = GameObject.Find("LightBox");
         LDoor = GameObject.Find("L_DoorFinal");
         for(int i = 0; i < Buzzer.Length; i++) {
@@ -265,6 +265,18 @@ public class ObjectsJose : MonoBehaviour
         }
     }
 
+    [PunRPC]
+    void UpdateRightGrabbingAnimation(bool isRightGrabbing)
+    {
+        joseAnimator.SetBool("IsRightGrabbing", isRightGrabbing);
+    }
+
+    [PunRPC]
+    void UpdateLeftGrabbingAnimation(bool isLeftGrabbing)
+    {
+        joseAnimator.SetBool("IsLeftGrabbing", isLeftGrabbing);
+    }
+
     IEnumerator Grab()
     {
         
@@ -274,8 +286,8 @@ public class ObjectsJose : MonoBehaviour
             bool IsRightPressed = Controls.Player.RightItem.ReadValue<float>() > 0.1f;
             if(IsRightPressed && !HasObjectRight)
             {
-                joseAnimator.SetBool("IsRightGrabbing", true);
-                joseAnimator.SetBool("IsRightGrabbing", false);
+                photonView.RPC("UpdateRightGrabbingAnimation", RpcTarget.All, true);
+                photonView.RPC("UpdateRightGrabbingAnimation", RpcTarget.All, false);
                 // hit.transform.position = ObjectRightCamera.position;
                 // hit.rigidbody.isKinematic = true;
                 // hit.transform.parent = ObjectRightCamera;
@@ -298,8 +310,8 @@ public class ObjectsJose : MonoBehaviour
             bool IsLeftPressed = Controls.Player.LeftItem.ReadValue<float>() > 0.1f;
             if (IsLeftPressed && !HasObjectLeft)
             {
-                joseAnimator.SetBool("IsLeftGrabbing", true);
-                joseAnimator.SetBool("IsLeftGrabbing", false);
+                photonView.RPC("UpdateLeftGrabbingAnimation", RpcTarget.All, true);
+                photonView.RPC("UpdateLeftGrabbingAnimation", RpcTarget.All, false);
                 // hit.transform.position = ObjectRightCamera.position;
                 // hit.rigidbody.isKinematic = true;
                 // hit.transform.parent = ObjectLeftCamera;

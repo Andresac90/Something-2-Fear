@@ -112,12 +112,11 @@ public class JoseMovement : MonoBehaviour
 
         if(Move.x != 0 || Move.y != 0)
         {
-            joseAnimator.SetBool("IsWalking", true);
-
+            photonView.RPC("UpdateWalkingAnimation", RpcTarget.All, true);
         }
         else
         {
-            joseAnimator.SetBool("IsWalking", false);
+            photonView.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
         }
     }
 
@@ -126,13 +125,14 @@ public class JoseMovement : MonoBehaviour
         bool IsSprintPressed = Controls.Player.Run.ReadValue<float>() > 0.1f;
         if (IsSprintPressed && !HasRun && !HasCrouched && IsGrounded)
         {
-            joseAnimator.SetBool("IsRunning", true);
+            photonView.RPC("UpdateRunningAnimation", RpcTarget.All, true);
+            photonView.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
             Speed *= 1.9f;
             HasRun = true;
         }
         else if (!IsSprintPressed && HasRun)
         {
-            joseAnimator.SetBool("IsRunning", false);
+            photonView.RPC("UpdateRunningAnimation", RpcTarget.All, false);
             Speed = OriginalSpeed;
             HasRun = false;
         }
@@ -159,7 +159,7 @@ public class JoseMovement : MonoBehaviour
         bool IsCrouchPressed = Controls.Player.Crouch.ReadValue<float>() > 0.1f;
         if (IsCrouchPressed && !HasCrouched && !HasJump)
         {
-            joseAnimator.SetBool("IsBending", true);
+            photonView.RPC("UpdateBendingAnimation", RpcTarget.All, true);
             CharController.height = 1;
             CharController.center = new Vector3(0, -0.5f, 0);
             // Camera.localPosition = new Vector3(0, 0.4f, 0.225f);
@@ -170,7 +170,7 @@ public class JoseMovement : MonoBehaviour
         }
         else if (!HasCeiling && !IsCrouchPressed && !HasRun)
         {
-            joseAnimator.SetBool("IsBending", false);
+            photonView.RPC("UpdateBendingAnimation", RpcTarget.All, false);
             CharController.height = 2;
             CharController.center = new Vector3(0, 0, 0);
             // Camera.localPosition = new Vector3(0, 0.894f, 0.225f);
@@ -179,6 +179,24 @@ public class JoseMovement : MonoBehaviour
             HasCrouched = false;
             IsCrouched = false;
         }
+    }
+
+    [PunRPC]
+    void UpdateWalkingAnimation(bool isWalking)
+    {
+        joseAnimator.SetBool("IsWalking", isWalking);
+    }
+
+    [PunRPC]
+    void UpdateBendingAnimation(bool isBending)
+    {
+        joseAnimator.SetBool("IsBending", isBending);
+    }
+
+    [PunRPC]
+    void UpdateRunningAnimation(bool isRunning)
+    {
+        joseAnimator.SetBool("IsRunning", isRunning);
     }
 
     public void SetInjected()
