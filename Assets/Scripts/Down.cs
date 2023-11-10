@@ -16,6 +16,7 @@ public class Down : MonoBehaviourPun
     private float deadTime;
     private bool joseDown = false;
     private bool santiDown = false;
+    private bool areDead = false;
 
     public bool isPlayerDowned;
 
@@ -99,6 +100,12 @@ public class Down : MonoBehaviourPun
         GetComponentInChildren<PlayerLook>().enabled = true;
         isPlayerDowned = false;
     }
+    [PunRPC]
+    public void AreDead()
+    {
+        areDead = true;
+    }
+    
     private void Die()
     {
         GameObject otherPlayer;
@@ -115,7 +122,7 @@ public class Down : MonoBehaviourPun
             santiDown = otherPlayer.GetComponent<Down>().isPlayerDowned;
         }
 
-        if((currentTime >= deadTime) || (joseDown && santiDown))
+        if(((currentTime >= deadTime) || (joseDown && santiDown)) && !areDead)
         {
             Debug.Log("eliminado");
             Cursor.lockState = CursorLockMode.None;
@@ -124,6 +131,7 @@ public class Down : MonoBehaviourPun
             // change ever
             // SceneManager.LoadScene("LoseScreen");
             PhotonNetwork.LoadLevel("LoseScreen");
+            photonView.RPC("AreDead", RpcTarget.All);
             // gameObject.SetActive(false);
         }
     }
