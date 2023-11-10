@@ -98,6 +98,7 @@ public class JoseMovement : MonoBehaviourPun
     }
     void Movement()
     {
+        bool IsSprintPressed = Controls.Player.Run.ReadValue<float>() > 0.1f;
         Move = Controls.Player.Movement.ReadValue<Vector2>();
 
         if (IsGrounded && YVel.y < 0)
@@ -110,7 +111,7 @@ public class JoseMovement : MonoBehaviourPun
         CharController.Move(MovementZ * Speed * Time.deltaTime * controlsModifier);
         CharController.Move(YVel * Time.deltaTime);
 
-        if(Move.x != 0 || Move.y != 0)
+        if(Move.x != 0 || Move.y != 0 && !IsSprintPressed)
         {
             PV.RPC("UpdateWalkingAnimation", RpcTarget.All, true);
         }
