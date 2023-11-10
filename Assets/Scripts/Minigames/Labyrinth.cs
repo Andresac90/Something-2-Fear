@@ -10,14 +10,14 @@ public class Labyrinth : MonoBehaviour
     private GameObject Puzzle; //terminal
     private Puzzle Comprobations; //iteraciones de puertas
     public GameObject[] doorsList; //lista de puertas
-    private GameObject Nina;
+    public GameObject Nina;
 
     void Start()
     {
         doorsList = new GameObject[5];
         Passcodes = new string[5];
         Puzzle = GameObject.Find("Labyrinth MiniGame");
-        Nina = GameObject.Find("Nina");
+        Nina = GameObject.Find("Niña");
         Comprobations = Puzzle.GetComponent<Puzzle>();
         for (int i = 0; i < doorsList.Length; i++)
         {
@@ -29,6 +29,7 @@ public class Labyrinth : MonoBehaviour
             Passcodes[i] += doorsList[i].GetComponent<LabDoor>().Code;
             Debug.Log(Passcodes[i]);
         }
+        if (Nina == null) { Debug.Log("Null"); }
     }
 
     public void AddSymbol(string symbol)
