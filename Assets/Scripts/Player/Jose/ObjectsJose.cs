@@ -9,7 +9,7 @@ using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class ObjectsJose : MonoBehaviour
+public class ObjectsJose : MonoBehaviourPun
 {
     private InputMaster Controls;
 

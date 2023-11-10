@@ -7,7 +7,7 @@ using UnityEditor;
 using Photon.Pun;
 using Unity.Properties;
 
-public class SantiController : MonoBehaviour
+public class SantiController : MonoBehaviourPun
 {   
 
     [Header("Player Components")] // ------------------------------ Player Components ------------------------------ //

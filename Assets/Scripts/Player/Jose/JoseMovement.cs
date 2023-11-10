@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using UnityEditor;
-
+using Photon.Realtime;
 using Photon.Pun;
 
-public class JoseMovement : MonoBehaviour
+public class JoseMovement : MonoBehaviourPun
 {
     [SerializeField]
     private Camera Camera;
