@@ -52,6 +52,10 @@ public class Labyrinth : MonoBehaviour
             Nina.GetComponent<PhotonView>().RPC("InvertPlayers",RpcTarget.All);
             GameManager.Instance.doorNumber += 1;
             Comprobations.comprobations++;
+            if (Comprobations.comprobations == 5)
+            {
+                Destroy(gameObject);
+            }
             Comprobations.Completed();
             terminalCode = "";
         }
