@@ -89,6 +89,7 @@ public class Down : MonoBehaviourPun
             GetComponent<SantiController>().enabled = true;
             playerAnimator.ResetTrigger("SantiDownedTrigger");
             playerAnimator.SetTrigger("SantiRevivedTrigger");
+            //playerAnimator.ResetTrigger("SantiRevivedTrigger");
             
             
 
@@ -99,6 +100,7 @@ public class Down : MonoBehaviourPun
             GetComponent<JoseMovement>().enabled = true;
             playerAnimator.ResetTrigger("JoseDownedTrigger");
             playerAnimator.SetTrigger("JoseRevivedTrigger");
+            //playerAnimator.ResetTrigger("JoseRevivedTrigger");
 
         }
         GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y + 0.879f, transform.position.z);
