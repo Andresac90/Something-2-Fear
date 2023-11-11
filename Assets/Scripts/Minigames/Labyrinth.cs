@@ -17,7 +17,7 @@ public class Labyrinth : MonoBehaviour
         doorsList = new GameObject[5];
         Passcodes = new string[5];
         Puzzle = GameObject.Find("Labyrinth MiniGame");
-        Nina = GameObject.Find("Niña");
+        Nina = GameObject.Find("Nina");
         Comprobations = Puzzle.GetComponent<Puzzle>();
         for (int i = 0; i < doorsList.Length; i++)
         {
