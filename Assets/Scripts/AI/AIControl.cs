@@ -247,9 +247,11 @@ public class AIControl : MonoBehaviourPun
         if(closerPlayer == players[0])
         {
             if (!SantiPV.IsMine)
-                return;
+            {
+                isPlayerCaught = false;
+                return;             
+            }
             isPlayerCaught = false;
-
             Debug.Log("Pinga attack SANTI");
             SantiPV.RPC("SyncDowned", RpcTarget.All);
             GameManager.Instance.PascualitaJumpscare.Play();
@@ -261,9 +263,12 @@ public class AIControl : MonoBehaviourPun
         else if(closerPlayer == players[1])
         {
             if (!JosePV.IsMine)
+            {
+                isPlayerCaught = false;
                 return;
-            isPlayerCaught = false;
+            }
 
+            isPlayerCaught = false;
             Debug.Log("Pinga attack JOSE");
             JosePV.RPC("SyncDowned", RpcTarget.All);
             GameManager.Instance.PascualitaJumpscare.Play();
