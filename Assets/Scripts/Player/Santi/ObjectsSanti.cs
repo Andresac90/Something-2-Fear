@@ -73,9 +73,18 @@ public class ObjectsSanti : MonoBehaviourPun
     [SerializeField]
     private GameObject Key3UI;
 
+    //ObjectsNurse
+    [SerializeField]
+    private GameObject Object1UI;
+    [SerializeField]
+    private GameObject Object2UI;
+    [SerializeField]
+    private GameObject Object3UI;
+
     [SerializeField]
     private GameObject Timer;
 
+    private PhotonView PV;
     private TextMeshProUGUI textMeshProText;
     private bool LockPickCheck = false;
     public bool puzzleCreated = false;
@@ -103,9 +112,10 @@ public class ObjectsSanti : MonoBehaviourPun
 
     public void Start()
     {
+        PV = GetComponent<PhotonView>();
         pascualita = GameObject.Find("Pascualita");
         nurse = GameObject.Find("nurse");
-        nina = GameObject.Find("Niña");
+        nina = GameObject.Find("Nina");
         LightBox = GameObject.Find("LightBox");
         AIControl aicontrolP = pascualita.GetComponent<AIControl>();
         NurseAI aicontrolN = nurse.GetComponent<NurseAI>();
@@ -130,6 +140,12 @@ public class ObjectsSanti : MonoBehaviourPun
                 GameManager.Instance.Keys.Play();
                 StartCoroutine(RightDrop());
                 hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
+                objectNameString = "";
+            }
+            if (objectNameString == "Object1" || objectNameString == "Object2" || objectNameString == "Object3")
+            {
+                StartCoroutine(RightDrop());
+                hit.transform.GetComponent<PhotonView>().RPC("ObjectsNurseChange", RpcTarget.All, hit.transform.name);
                 objectNameString = "";
             }
             else
@@ -197,7 +213,7 @@ public class ObjectsSanti : MonoBehaviourPun
             InteractUI.SetActive(false);
         }
 
-        //MasterKeys
+        //MasterKeysUI
         if (GameManager.Instance.Key1)
         {
             Key1UI.SetActive(true);
@@ -209,6 +225,19 @@ public class ObjectsSanti : MonoBehaviourPun
         if (GameManager.Instance.Key3)
         {
             Key3UI.SetActive(true);
+        }
+        //ObjectsNurseUI
+        if (GameManager.Instance.Key1)
+        {
+            Object1UI.SetActive(true);
+        }
+        if (GameManager.Instance.Key2)
+        {
+            Object2UI.SetActive(true);
+        }
+        if (GameManager.Instance.Key3)
+        {
+            Object3UI.SetActive(true);
         }
 
         //Timer UI
@@ -374,6 +403,15 @@ public class ObjectsSanti : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
+    void UpdateBengalThrowAnimation(bool isBengalThrow)
+    {
+        if (santiAnimator != null)
+        {
+            santiAnimator.SetBool("IsBengalThrow", isBengalThrow);
+        }
+    }
+
     private void Grab()
     {
         if(hit.transform.tag == "Object" || hit.transform.tag == "Bengal")
@@ -387,8 +425,8 @@ public class ObjectsSanti : MonoBehaviourPun
             }
             else if(isLeftPressed && !grabObjL && objectGrabbedL && hit.transform.tag == "Bengal")
             {
-                santiAnimator.SetBool("IsBengalThrow", true);
-                santiAnimator.SetBool("IsBengalThrow", false);
+                PV.RPC("UpdateBengalThrowAnimation", RpcTarget.All, true);
+                PV.RPC("UpdateBengalThrowAnimation", RpcTarget.All, false);
                 StartCoroutine(LeftGrab());
             }
         }

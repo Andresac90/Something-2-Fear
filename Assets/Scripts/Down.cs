@@ -16,6 +16,9 @@ public class Down : MonoBehaviourPun
     private float deadTime;
     private bool joseDown = false;
     private bool santiDown = false;
+    private bool areDead = false;
+
+    public Animator playerAnimator;
 
     public bool isPlayerDowned;
 
@@ -24,6 +27,7 @@ public class Down : MonoBehaviourPun
         playerCam = transform.GetComponentInChildren<Camera>().gameObject;
         Camera = playerCam.GetComponent<Camera>();
         CharController = GetComponent<CharacterController>();
+        playerAnimator = GetComponent<Animator>();
     }
 
     void Update()
@@ -83,12 +87,18 @@ public class Down : MonoBehaviourPun
         {
             photonView.RPC("playerDown", RpcTarget.All, false);
             GetComponent<SantiController>().enabled = true;
+            playerAnimator.ResetTrigger("SantiDownedTrigger");
+            playerAnimator.SetTrigger("SantiRevivedTrigger");
+            
+            
 
         }
         else if (name == "Jose(Clone)")
         {
             photonView.RPC("playerDown", RpcTarget.All, false);
             GetComponent<JoseMovement>().enabled = true;
+            playerAnimator.ResetTrigger("JoseDownedTrigger");
+            playerAnimator.SetTrigger("JoseRevivedTrigger");
 
         }
         GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y + 0.879f, transform.position.z);
@@ -99,6 +109,12 @@ public class Down : MonoBehaviourPun
         GetComponentInChildren<PlayerLook>().enabled = true;
         isPlayerDowned = false;
     }
+    [PunRPC]
+    public void AreDead()
+    {
+        areDead = true;
+    }
+    
     private void Die()
     {
         GameObject otherPlayer;
@@ -115,7 +131,7 @@ public class Down : MonoBehaviourPun
             santiDown = otherPlayer.GetComponent<Down>().isPlayerDowned;
         }
 
-        if((currentTime >= deadTime) || (joseDown && santiDown))
+        if(((currentTime >= deadTime) || (joseDown && santiDown)) && !areDead)
         {
             Debug.Log("eliminado");
             Cursor.lockState = CursorLockMode.None;
@@ -124,6 +140,7 @@ public class Down : MonoBehaviourPun
             // change ever
             // SceneManager.LoadScene("LoseScreen");
             PhotonNetwork.LoadLevel("LoseScreen");
+            photonView.RPC("AreDead", RpcTarget.All);
             // gameObject.SetActive(false);
         }
     }

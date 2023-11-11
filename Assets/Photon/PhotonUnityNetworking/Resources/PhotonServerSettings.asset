@@ -72,6 +72,14 @@ MonoBehaviour:
   - GenerateCodes
   - SetCodes
   - ChangeNina
+  - AreDead
+  - UpdateBendingAnimation
+  - UpdateBengalThrowAnimation
+  - UpdateLeftGrabbingAnimation
+  - UpdateRightGrabbingAnimation
+  - UpdateRunningAnimation
+  - UpdateWalkingAnimation
+  - ObjectsNurseChange
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

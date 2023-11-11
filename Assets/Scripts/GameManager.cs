@@ -29,6 +29,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     public bool Key2 = false;
     public bool Key3 = false;
 
+    public bool Object1 = false;
+    public bool Object2 = false;
+    public bool Object3 = false;
+
     public AudioSource Buzzer;
     public AudioSource Success;
     public AudioSource Click;
@@ -80,5 +84,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
        SceneManager.LoadScene(0);
+    }
+
+    void Update()
+    {
+        Debug.Log(Object1);
+        Debug.Log(Object2);
+        Debug.Log(Object3);
     }
 }

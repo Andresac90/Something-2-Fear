@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using UnityEditor;
-
+using Photon.Realtime;
 using Photon.Pun;
 
-public class JoseMovement : MonoBehaviour
+public class JoseMovement : MonoBehaviourPun
 {
     [SerializeField]
     private Camera Camera;
@@ -98,6 +98,7 @@ public class JoseMovement : MonoBehaviour
     }
     void Movement()
     {
+        bool IsSprintPressed = Controls.Player.Run.ReadValue<float>() > 0.1f;
         Move = Controls.Player.Movement.ReadValue<Vector2>();
 
         if (IsGrounded && YVel.y < 0)
@@ -110,14 +111,13 @@ public class JoseMovement : MonoBehaviour
         CharController.Move(MovementZ * Speed * Time.deltaTime * controlsModifier);
         CharController.Move(YVel * Time.deltaTime);
 
-        if(Move.x != 0 || Move.y != 0)
+        if(Move.x != 0 || Move.y != 0 && !IsSprintPressed)
         {
-            joseAnimator.SetBool("IsWalking", true);
-
+            PV.RPC("UpdateWalkingAnimation", RpcTarget.All, true);
         }
         else
         {
-            joseAnimator.SetBool("IsWalking", false);
+            PV.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
         }
     }
 
@@ -126,13 +126,14 @@ public class JoseMovement : MonoBehaviour
         bool IsSprintPressed = Controls.Player.Run.ReadValue<float>() > 0.1f;
         if (IsSprintPressed && !HasRun && !HasCrouched && IsGrounded)
         {
-            joseAnimator.SetBool("IsRunning", true);
+            PV.RPC("UpdateRunningAnimation", RpcTarget.All, true);
+            PV.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
             Speed *= 1.9f;
             HasRun = true;
         }
         else if (!IsSprintPressed && HasRun)
         {
-            joseAnimator.SetBool("IsRunning", false);
+            PV.RPC("UpdateRunningAnimation", RpcTarget.All, false);
             Speed = OriginalSpeed;
             HasRun = false;
         }
@@ -159,7 +160,7 @@ public class JoseMovement : MonoBehaviour
         bool IsCrouchPressed = Controls.Player.Crouch.ReadValue<float>() > 0.1f;
         if (IsCrouchPressed && !HasCrouched && !HasJump)
         {
-            joseAnimator.SetBool("IsBending", true);
+            PV.RPC("UpdateBendingAnimation", RpcTarget.All, true);
             CharController.height = 1;
             CharController.center = new Vector3(0, -0.5f, 0);
             // Camera.localPosition = new Vector3(0, 0.4f, 0.225f);
@@ -170,7 +171,7 @@ public class JoseMovement : MonoBehaviour
         }
         else if (!HasCeiling && !IsCrouchPressed && !HasRun)
         {
-            joseAnimator.SetBool("IsBending", false);
+            PV.RPC("UpdateBendingAnimation", RpcTarget.All, false);
             CharController.height = 2;
             CharController.center = new Vector3(0, 0, 0);
             // Camera.localPosition = new Vector3(0, 0.894f, 0.225f);
@@ -178,6 +179,33 @@ public class JoseMovement : MonoBehaviour
             Speed = OriginalSpeed;
             HasCrouched = false;
             IsCrouched = false;
+        }
+    }
+
+    [PunRPC]
+    void UpdateWalkingAnimation(bool isWalking)
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.SetBool("IsWalking", isWalking);
+        }
+    }
+
+    [PunRPC]
+    void UpdateBendingAnimation(bool isBending)
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.SetBool("IsBending", isBending);
+        }
+    }
+
+    [PunRPC]
+    void UpdateRunningAnimation(bool isRunning)
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.SetBool("IsRunning", isRunning);
         }
     }
 

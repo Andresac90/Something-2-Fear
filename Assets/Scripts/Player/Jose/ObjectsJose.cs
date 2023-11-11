@@ -9,7 +9,7 @@ using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class ObjectsJose : MonoBehaviour
+public class ObjectsJose : MonoBehaviourPun
 {
     private InputMaster Controls;
 
@@ -51,6 +51,14 @@ public class ObjectsJose : MonoBehaviour
     [SerializeField]
     private GameObject Key3UI;
 
+    //ObjectsNurse
+    [SerializeField]
+    private GameObject Object1UI;
+    [SerializeField]
+    private GameObject Object2UI;
+    [SerializeField]
+    private GameObject Object3UI;
+
     private TextMeshProUGUI textMeshProText;
     private RaycastHit hit;
     private float ObjectRScaleData;
@@ -74,6 +82,7 @@ public class ObjectsJose : MonoBehaviour
     private bool activated = false;
     private Cure activeStation = null;
     private Animator joseAnimator;
+    private PhotonView PV;
 
     void Awake()
     {
@@ -81,10 +90,11 @@ public class ObjectsJose : MonoBehaviour
     }
     public void Start()
     {
+        PV = GetComponent<PhotonView>();
         Buzzer = new GameObject[4];
         pascualita = GameObject.Find("Pascualita");
         nurse = GameObject.Find("nurse");
-        nina = GameObject.Find("Niña");
+        nina = GameObject.Find("Nina");
         LightBox = GameObject.Find("LightBox");
         LDoor = GameObject.Find("L_DoorFinal");
         for(int i = 0; i < Buzzer.Length; i++) {
@@ -146,7 +156,7 @@ public class ObjectsJose : MonoBehaviour
             InteractUI.SetActive(false);
         }
 
-        //MasterKeys
+        //MasterKeys UI
         if (GameManager.Instance.Key1)
         {
             Key1UI.SetActive(true);
@@ -158,6 +168,19 @@ public class ObjectsJose : MonoBehaviour
         if (GameManager.Instance.Key3)
         {
             Key3UI.SetActive(true);
+        }
+        //ObjectsNurseUI
+        if (GameManager.Instance.Key1)
+        {
+            Object1UI.SetActive(true);
+        }
+        if (GameManager.Instance.Key2)
+        {
+            Object2UI.SetActive(true);
+        }
+        if (GameManager.Instance.Key3)
+        {
+            Object3UI.SetActive(true);
         }
 
         //Timer UI
@@ -265,6 +288,24 @@ public class ObjectsJose : MonoBehaviour
         }
     }
 
+    [PunRPC]
+    void UpdateRightGrabbingAnimation(bool isRightGrabbing)
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.SetBool("IsRightGrabbing", isRightGrabbing);
+        }
+    }
+
+    [PunRPC]
+    void UpdateLeftGrabbingAnimation(bool isLeftGrabbing)
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.SetBool("IsLeftGrabbing", isLeftGrabbing);
+        }
+    }
+
     IEnumerator Grab()
     {
         
@@ -274,8 +315,8 @@ public class ObjectsJose : MonoBehaviour
             bool IsRightPressed = Controls.Player.RightItem.ReadValue<float>() > 0.1f;
             if(IsRightPressed && !HasObjectRight)
             {
-                joseAnimator.SetBool("IsRightGrabbing", true);
-                joseAnimator.SetBool("IsRightGrabbing", false);
+                PV.RPC("UpdateRightGrabbingAnimation", RpcTarget.All, true);
+                PV.RPC("UpdateRightGrabbingAnimation", RpcTarget.All, false);
                 // hit.transform.position = ObjectRightCamera.position;
                 // hit.rigidbody.isKinematic = true;
                 // hit.transform.parent = ObjectRightCamera;
@@ -298,8 +339,8 @@ public class ObjectsJose : MonoBehaviour
             bool IsLeftPressed = Controls.Player.LeftItem.ReadValue<float>() > 0.1f;
             if (IsLeftPressed && !HasObjectLeft)
             {
-                joseAnimator.SetBool("IsLeftGrabbing", true);
-                joseAnimator.SetBool("IsLeftGrabbing", false);
+                photonView.RPC("UpdateLeftGrabbingAnimation", RpcTarget.All, true);
+                photonView.RPC("UpdateLeftGrabbingAnimation", RpcTarget.All, false);
                 // hit.transform.position = ObjectRightCamera.position;
                 // hit.rigidbody.isKinematic = true;
                 // hit.transform.parent = ObjectLeftCamera;
