@@ -86,5 +86,10 @@ public class GameManager : MonoBehaviourPunCallbacks
        SceneManager.LoadScene(0);
     }
 
-    
+    void Update()
+    {
+        Debug.Log(Object1);
+        Debug.Log(Object2);
+        Debug.Log(Object3);
+    }
 }
