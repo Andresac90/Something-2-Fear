@@ -253,7 +253,8 @@ public class AIControl : MonoBehaviourPun
             }
             isPlayerCaught = false;
             Debug.Log("Pinga attack SANTI");
-            SantiPV.RPC("SyncDowned", RpcTarget.All);
+            // SantiPV.RPC("SyncDowned", RpcTarget.All);
+            closerPlayer.GetComponent<Down>().DownPlayer();
             GameManager.Instance.PascualitaJumpscare.Play();
             santiAnimation.SetTrigger("SantiJumpscareTrigger");
             StartCoroutine(EndSantiJumpscare());
@@ -270,7 +271,8 @@ public class AIControl : MonoBehaviourPun
 
             isPlayerCaught = false;
             Debug.Log("Pinga attack JOSE");
-            JosePV.RPC("SyncDowned", RpcTarget.All);
+            // JosePV.RPC("SyncDowned", RpcTarget.All);
+            closerPlayer.GetComponent<Down>().DownPlayer();
             GameManager.Instance.PascualitaJumpscare.Play();
             joseAnimation.SetTrigger("JoseJumpscareTrigger");
             StartCoroutine(EndJoseJumpscare());

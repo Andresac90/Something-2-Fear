@@ -85,7 +85,8 @@ public class Revive : MonoBehaviourPun
         if (playerPV == null) return;
         if (playerPV.IsMine) return;
         
-        playerPV.RPC("SyncRevive", RpcTarget.All);
+        // playerPV.RPC("SyncRevive", RpcTarget.All);
+        playerObject.GetComponent<Down>().RevivePlayer();
     }
 
     private void OnEnable()
