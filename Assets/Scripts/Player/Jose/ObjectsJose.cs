@@ -170,15 +170,15 @@ public class ObjectsJose : MonoBehaviourPun
             Key3UI.SetActive(true);
         }
         //ObjectsNurseUI
-        if (GameManager.Instance.Key1)
+        if (GameManager.Instance.Object1)
         {
             Object1UI.SetActive(true);
         }
-        if (GameManager.Instance.Key2)
+        if (GameManager.Instance.Object2)
         {
             Object2UI.SetActive(true);
         }
-        if (GameManager.Instance.Key3)
+        if (GameManager.Instance.Object3)
         {
             Object3UI.SetActive(true);
         }
