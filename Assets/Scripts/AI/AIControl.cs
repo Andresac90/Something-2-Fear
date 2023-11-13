@@ -272,7 +272,7 @@ public class AIControl : MonoBehaviourPun
             Debug.Log("Pinga attack JOSE");
             JosePV.RPC("SyncDowned", RpcTarget.All);
             GameManager.Instance.PascualitaJumpscare.Play();
-            joseAnimation.SetTrigger("JoseJumpscareTrigger");
+            joseAnimation.SetTrigger("JosePascualitaJumpscareTrigger");
             StartCoroutine(EndJoseJumpscare());
         }
 
@@ -502,7 +502,7 @@ public class AIControl : MonoBehaviourPun
         aiAnimation.ResetTrigger("walk");
         aiAnimation.ResetTrigger("idle");
         aiAnimation.ResetTrigger("sprint");
-        joseAnimation.ResetTrigger("JoseJumpscareTrigger");
+        joseAnimation.ResetTrigger("JosePascualitaJumpscareTrigger");
         joseAnimation.SetTrigger("JoseDownedTrigger");
 
     }
