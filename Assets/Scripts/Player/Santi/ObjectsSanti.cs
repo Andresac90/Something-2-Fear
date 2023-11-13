@@ -227,15 +227,15 @@ public class ObjectsSanti : MonoBehaviourPun
             Key3UI.SetActive(true);
         }
         //ObjectsNurseUI
-        if (GameManager.Instance.Key1)
+        if (GameManager.Instance.Object1)
         {
             Object1UI.SetActive(true);
         }
-        if (GameManager.Instance.Key2)
+        if (GameManager.Instance.Object2)
         {
             Object2UI.SetActive(true);
         }
-        if (GameManager.Instance.Key3)
+        if (GameManager.Instance.Object3)
         {
             Object3UI.SetActive(true);
         }
@@ -290,7 +290,7 @@ public class ObjectsSanti : MonoBehaviourPun
             activated = false;
         }
         
-        if (hit.transform != null && hit.transform.tag == "Box")
+        if (hit.transform != null && hit.transform.tag == "Box" && !GameManager.Instance.audioH)
         {
             Electricity box = hit.transform.GetComponent<Electricity>();
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
