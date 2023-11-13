@@ -2907,11 +2907,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07cb808c5118baf4db010082fe1639af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Camera: {fileID: 2490933095253580234}
-  CharController: {fileID: 395162182169490362}
-  playerAnimator: {fileID: 4869968867936912613}
-  PlayerLook: {fileID: 5061532409630288172}
-  downTime: 35
+  deadTime: 30
+  playerAnimator: {fileID: 0}
   isPlayerDowned: 0
 --- !u!114 &-5941515275681577200
 MonoBehaviour:
