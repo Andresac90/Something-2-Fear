@@ -5,8 +5,14 @@ using UnityEngine;
 
 public class Voice : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject MicOn;
+    [SerializeField]
+    private GameObject MicOff;
     private Recorder recorder;
     private InputMaster Controls;
+
+    private bool isMuted = false;
 
     void Awake()
     {
@@ -15,18 +21,53 @@ public class Voice : MonoBehaviour
     void Start()
     {
         recorder = GetComponent<Recorder>();
+
+        
     }
     
     void Update()
     {
         if (Controls.Player.PushToTalk.ReadValue<float>() > 0f)
         {
-            recorder.TransmitEnabled = true;
+            bool unMute = isMuted ? false : true;
+            
+            if (unMute)
+            {
+                MicOn.SetActive(true);
+                MicOff.SetActive(false);
+            }
+            else
+            {
+                MicOn.SetActive(false);
+                MicOff.SetActive(true);
+            }
+
         }
         else
         {
             recorder.TransmitEnabled = false;
+            MicOn.SetActive(false);
+            MicOff.SetActive(true); 
         }
+
+        // check if Mute is pressed
+        if (Controls.Player.Mute.ReadValue<float>() > 0f)
+        {
+            isMuted = !isMuted;
+            recorder.TransmitEnabled = !isMuted;
+
+            if (isMuted)
+            {
+                MicOn.SetActive(false);
+                MicOff.SetActive(true);
+            }
+            else
+            {
+                MicOn.SetActive(true);
+                MicOff.SetActive(false);
+            }
+        }
+
     }
 
     private void OnEnable()
