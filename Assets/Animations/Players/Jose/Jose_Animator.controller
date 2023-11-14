@@ -338,7 +338,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: JoseJumpscareTrigger
+    m_ConditionEvent: JosePascualitaJumpscareTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7531410994713607356}
@@ -421,7 +421,7 @@ AnimatorController:
   m_Name: Jose_Animator
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: JoseJumpscareTrigger
+  - m_Name: JosePascualitaJumpscareTrigger
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -702,7 +702,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: JoseJumpscareTrigger
+    m_ConditionEvent: JosePascualitaJumpscareTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7531410994713607356}
@@ -877,7 +877,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: JoseJumpscareTrigger
+    m_ConditionEvent: JosePascualitaJumpscareTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7531410994713607356}
