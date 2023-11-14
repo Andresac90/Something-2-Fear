@@ -246,7 +246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectScale: 1.4
   ObjectOriginalScale: 4.5
-  ObjectName: Key
+  ObjectName: Injection
 --- !u!54 &4305811978544278123
 Rigidbody:
   m_ObjectHideFlags: 0

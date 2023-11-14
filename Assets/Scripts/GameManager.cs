@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
-
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -86,5 +86,10 @@ public class GameManager : MonoBehaviourPunCallbacks
        SceneManager.LoadScene(0);
     }
 
-    
+    void Update()
+    {
+        Debug.Log(Object1);
+        Debug.Log(Object2);
+        Debug.Log(Object3);
+    }
 }
