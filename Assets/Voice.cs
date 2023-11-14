@@ -7,10 +7,14 @@ public class Voice : MonoBehaviour
 {
     private Recorder recorder;
     private InputMaster Controls;
+
+    void Awake()
+    {
+        Controls = new InputMaster();
+    }
     void Start()
     {
         recorder = GetComponent<Recorder>();
-        Controls = new InputMaster();   
     }
     
     void Update()
