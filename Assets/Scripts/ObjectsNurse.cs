@@ -8,8 +8,8 @@ public class ObjectsNurse : MonoBehaviourPun
     [PunRPC]
     public void ObjectsNurseChange(string objectName)
     {
-        GameObject masterKey = GameObject.Find(objectName);
-        masterKey.SetActive(false);
+        GameObject objectNurse = GameObject.Find(objectName);
+        objectNurse.SetActive(false);
         if (objectName == "Object1")
         {
             GameManager.Instance.Object1 = true;
