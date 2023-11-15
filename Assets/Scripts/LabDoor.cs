@@ -39,7 +39,7 @@ public class LabDoor : MonoBehaviour
                     Debug.Log(symbols[j].name);
                     GameObject spawnedPrefab = Instantiate(symbols[j], visions.transform.GetChild(i).position, Quaternion.identity);
                     spawnedPrefab.transform.parent = visions.transform.GetChild(i);  // Set the parent to visions' child
-                    spawnedPrefab.transform.rotation = Quaternion.identity;  // Set rotation to zero
+                    spawnedPrefab.transform.rotation = ;  // Set rotation to zero
                     spawnedPrefab.transform.localScale = Vector3.one;  // Set scale to (1, 1, 1)
                 }
             }
