@@ -20,7 +20,7 @@ public class ViewStopAI : MonoBehaviour
 
     private void Start()
     {
-        radius = 15f;
+        radius = 10f;
         angle = 90f;
 
         enemy = GameObject.Find("Pascualita");
