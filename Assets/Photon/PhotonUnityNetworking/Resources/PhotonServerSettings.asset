@@ -80,6 +80,8 @@ MonoBehaviour:
   - UpdateRunningAnimation
   - UpdateWalkingAnimation
   - ObjectsNurseChange
+  - SyncDisableDowningIndicator
+  - SyncEnableDowningIndicator
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

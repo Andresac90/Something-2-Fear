@@ -18,6 +18,10 @@ public class ObjectsJose : MonoBehaviourPun
     [SerializeField]
     private Transform ObjectLeftCamera;
     [SerializeField]
+    private Transform objectRightHand;
+    [SerializeField]
+    private Transform objectLeftHand;
+    [SerializeField]
     private Transform PlayerCamera;
     [SerializeField]
     private float rayline;
@@ -61,10 +65,6 @@ public class ObjectsJose : MonoBehaviourPun
 
     private TextMeshProUGUI textMeshProText;
     private RaycastHit hit;
-    private float ObjectRScaleData;
-    private float ObjectROriginalScale;
-    private float ObjectLScaleData;
-    private float ObjectLOriginalScale;
     private int iBuzzer = 0;
     private Rigidbody ObjectRightRb;
     private GameObject pascualita;
@@ -72,8 +72,6 @@ public class ObjectsJose : MonoBehaviourPun
     private GameObject nina;
     private GameObject LDoor;
     private Rigidbody ObjectLeftRb;
-    private Transform ObjectRightT;
-    private Transform ObjectLeftT;
     private bool HasObjectRight = false;
     private bool HasObjectLeft = false;
     private bool ThrowCheckR = false;
@@ -170,15 +168,15 @@ public class ObjectsJose : MonoBehaviourPun
             Key3UI.SetActive(true);
         }
         //ObjectsNurseUI
-        if (GameManager.Instance.Key1)
+        if (GameManager.Instance.Object1)
         {
             Object1UI.SetActive(true);
         }
-        if (GameManager.Instance.Key2)
+        if (GameManager.Instance.Object2)
         {
             Object2UI.SetActive(true);
         }
-        if (GameManager.Instance.Key3)
+        if (GameManager.Instance.Object3)
         {
             Object3UI.SetActive(true);
         }
@@ -328,7 +326,6 @@ public class ObjectsJose : MonoBehaviourPun
                 
                 hit.transform.GetComponent<ObjectsData>().OnGrab(ObjectRightCamera);
                 ObjectRightRb = hit.rigidbody;
-                ObjectRightT = hit.transform;
                 ObjectRightUI.SetActive(false);
                 yield return new WaitForSeconds(0.5f);
                 HasObjectRight = true;
@@ -352,7 +349,6 @@ public class ObjectsJose : MonoBehaviourPun
                 
                 hit.transform.GetComponent<ObjectsData>().OnGrab(ObjectLeftCamera);
                 ObjectLeftRb = hit.rigidbody;
-                ObjectLeftT = hit.transform;
                 ObjectLeftUI.SetActive(false);
                 yield return new WaitForSeconds(0.5f);
                 HasObjectLeft = true;
