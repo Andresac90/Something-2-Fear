@@ -18,6 +18,8 @@ public class Down : MonoBehaviourPun
     private bool santiDown = false;
     private bool areDead = false;
 
+    public PhotonView downingIndicator;
+
     public Animator playerAnimator;
 
     public bool isPlayerDowned;
@@ -35,7 +37,17 @@ public class Down : MonoBehaviourPun
         if(isPlayerDowned)
         {
             currentTime += Time.deltaTime;
-            Die();
+            if (currentTime >= deadTime)
+            {
+                Die();
+            }
+            else{
+                downingIndicator.RPC("SyncEnableDowningIndicator", RpcTarget.All);
+            }
+        }
+        else
+        {
+            downingIndicator.RPC("SyncDisableDowningIndicator", RpcTarget.All);
         }
     }
 
