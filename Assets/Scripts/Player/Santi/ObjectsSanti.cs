@@ -300,6 +300,7 @@ public class ObjectsSanti : MonoBehaviourPun
             InteractUI.SetActive(false);
         }
         Drop();
+        Video();
     }
 
     private void Activation()
@@ -377,7 +378,7 @@ public class ObjectsSanti : MonoBehaviourPun
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.1f;
             if (isInteractPressed && GameManager.Instance.Key1 && GameManager.Instance.Key2 && GameManager.Instance.Key3)
             {
-                //wa wa
+                GameManager.Instance.GetComponent<PhotonView>().RPC("EndingCutscene",RpcTarget.All);
             }
         }
     }
@@ -497,5 +498,18 @@ public class ObjectsSanti : MonoBehaviourPun
     private void OnDisable()
     {
         controls.Disable();
+    }
+
+    private void Video()
+    {
+        if(GameManager.Instance.ending.time == 35.0)
+        {
+            GameManager.Instance.GetComponent<PhotonView>().RPC("StartVideo", RpcTarget.All, 0);
+        }
+
+        if (GameManager.Instance.ending.time == 200.0)
+        {
+            GameManager.Instance.GetComponent<PhotonView>().RPC("StartVideo", RpcTarget.All, 1);
+        }
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
+using UnityEngine.Playables;
+using UnityEngine.Video;
 using Photon.Realtime;
 using Unity.VisualScripting;
 
@@ -42,6 +44,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     public AudioSource Door;
     public AudioSource PascualitaJumpscare;
     public AudioSource AudioHospital;
+
+    public PlayableDirector ending;
+
+    public GameObject endingCanva;
+    public GameObject Jose;
+    public GameObject Santi;
+    public GameObject[] videos;
 
     private SpawnInjection InjectionScript;
 
@@ -98,5 +107,27 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             InjectionScript.Spawn();
         }
+    }
+    [PunRPC]
+    public void EndingCutscene()
+    {
+        Jose = GameObject.Find("Jose(Clone)");
+        Santi = GameObject.Find("Santi(Clone)");
+        Jose.GetComponent<JoseMovement>().enabled = false;
+        Jose.GetComponentInChildren<PlayerLook>().enabled = false;
+        Jose.GetComponentInChildren<Camera>().enabled = false;
+        Jose.GetComponentInChildren<Canvas>().enabled = false;
+        Santi.GetComponent<SantiController>().enabled = false;
+        Santi.GetComponentInChildren<PlayerLook>().enabled = false;
+        Santi.GetComponentInChildren<Camera>().enabled = false;
+        Santi.GetComponentInChildren<Canvas>().enabled = false;
+        Instantiate(endingCanva);
+        ending.Play();
+    }
+
+    [PunRPC]
+    public void StartVideo(int i)
+    {
+        videos[i].GetComponent<VideoPlayer>().Play();
     }
 }
