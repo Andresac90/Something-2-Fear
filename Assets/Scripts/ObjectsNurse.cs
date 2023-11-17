@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class ObjectsNurse : MonoBehaviourPun
@@ -22,5 +23,19 @@ public class ObjectsNurse : MonoBehaviourPun
         {
             GameManager.Instance.Object3 = true;
         }
+    }
+
+    [PunRPC]
+    public void SpawnInjection()
+    {
+        GameManager.Instance.InjectionSpawn = true;
+    }
+
+    [PunRPC]
+    public void InjectionChange(string objectName)
+    {
+        GameObject injection = GameObject.Find(objectName);
+        injection.SetActive(false);
+        GameManager.Instance.Injection = true;
     }
 }

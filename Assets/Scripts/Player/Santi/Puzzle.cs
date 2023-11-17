@@ -15,7 +15,6 @@ public class Puzzle : MonoBehaviourPun
     private GameObject door;
     [SerializeField]
     private int comprobationsNeeded;
-    private int keylevel = 1;
 
     public int comprobations;
     public string PasswordRef;

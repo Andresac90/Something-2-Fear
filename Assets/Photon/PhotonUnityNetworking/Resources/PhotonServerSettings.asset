@@ -80,6 +80,9 @@ MonoBehaviour:
   - UpdateRunningAnimation
   - UpdateWalkingAnimation
   - ObjectsNurseChange
+  - ObjectsNurseOff
+  - SpawnInjection
+  - InjectionChange
   - SyncDisableDowningIndicator
   - SyncEnableDowningIndicator
   DisableAutoOpenWizard: 1
