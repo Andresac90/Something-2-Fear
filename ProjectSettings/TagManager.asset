@@ -22,6 +22,7 @@ TagManager:
   - FinalDoor
   - Buzzer
   - Table
+  - InjectionSpawn
   layers:
   - Default
   - TransparentFX

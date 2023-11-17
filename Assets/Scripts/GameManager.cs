@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public bool Object1 = false;
     public bool Object2 = false;
     public bool Object3 = false;
+    public bool InjectionSpawn = false;
+    public bool Injection = false;
 
     public AudioSource Buzzer;
     public AudioSource Success;
@@ -41,10 +43,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     public AudioSource PascualitaJumpscare;
     public AudioSource AudioHospital;
 
+    private SpawnInjection InjectionScript;
+
     void Awake()
     {
         MakeSingleton();   
         PlayerManager.OnPlayerJoined += HandlePlayerJoined;
+        InjectionScript = GameObject.Find("SpawnerInjection").GetComponent<SpawnInjection>();
+        Debug.Log(InjectionScript);
     }
 
     private void HandlePlayerJoined(GameObject playerObject)
@@ -86,10 +92,11 @@ public class GameManager : MonoBehaviourPunCallbacks
        SceneManager.LoadScene(0);
     }
 
-    void Update()
+    public void SpawnInjectionOnline()
     {
-        Debug.Log(Object1);
-        Debug.Log(Object2);
-        Debug.Log(Object3);
+        if (InjectionSpawn)
+        {
+            InjectionScript.Spawn();
+        }
     }
 }
