@@ -33,11 +33,13 @@ public class Voice : MonoBehaviour
             
             if (unMute)
             {
+                recorder.TransmitEnabled = true;
                 MicOn.SetActive(true);
                 MicOff.SetActive(false);
             }
             else
             {
+                recorder.TransmitEnabled = false;
                 MicOn.SetActive(false);
                 MicOff.SetActive(true);
             }
