@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 using UnityEngine.Playables;
-using UnityEngine.Video;
 using Photon.Realtime;
 using Unity.VisualScripting;
 
@@ -50,7 +49,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject endingCanva;
     public GameObject Jose;
     public GameObject Santi;
-    public GameObject[] videos;
 
     private SpawnInjection InjectionScript;
 
@@ -123,11 +121,5 @@ public class GameManager : MonoBehaviourPunCallbacks
         Santi.GetComponentInChildren<Canvas>().enabled = false;
         Instantiate(endingCanva);
         ending.Play();
-    }
-
-    [PunRPC]
-    public void StartVideo(int i)
-    {
-        videos[i].GetComponent<VideoPlayer>().Play();
     }
 }

@@ -115,6 +115,11 @@ public class NurseAI : MonoBehaviour
                 //aiAnimation.SetTrigger("walk");
                 Patroling();
             }
+            else if (isPlayerCaught)
+            {
+                Debug.Log("Attacking");
+                Attacking();
+            }
         }
 
     }
