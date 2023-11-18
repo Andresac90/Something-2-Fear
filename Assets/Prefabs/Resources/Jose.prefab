@@ -1212,6 +1212,7 @@ MonoBehaviour:
   Object1UI: {fileID: 1114690362676415497}
   Object2UI: {fileID: 7617086148374567345}
   Object3UI: {fileID: 5539706650877225370}
+  InjectionUI: {fileID: 2374306196715990986}
 --- !u!114 &-1153828020552127956
 MonoBehaviour:
   m_ObjectHideFlags: 0
