@@ -17,7 +17,7 @@ public class ObjectsSanti : MonoBehaviourPun
     private GameObject nurse;
     private GameObject nina;
     private GameObject LightBox;
-    private GameObject puertaPrinicipal; 
+    private GameObject ChangeObjects;
     private RaycastHit hit;
     public Transform objectRightT;
 
@@ -97,7 +97,7 @@ public class ObjectsSanti : MonoBehaviourPun
         aicontrolP.santiActivation();
         aicontrolN.SantiActivation();
         aicontrolNi.SantiActivation();
-        puertaPrinicipal = GameObject.Find("PuertaPrincipal");
+        ChangeObjects = GameObject.Find("ChangeObjects");
         santiAnimator = GetComponent<Animator>();
     }
 
@@ -211,6 +211,11 @@ public class ObjectsSanti : MonoBehaviourPun
             InteractUI.SetActive(true);
             DropRightUI.SetActive(false);
         }
+        else if (hit.transform != null && hit.transform.tag == "Table")
+        {
+            InteractUI.SetActive(true);
+            DropRightUI.SetActive(false);
+        }
         else if (hit.transform != null && hit.transform.tag == "Note")
         {
             InteractUI.SetActive(true);
@@ -269,7 +274,6 @@ public class ObjectsSanti : MonoBehaviourPun
             {
                 //Spawnear Injection
                 hit.transform.GetComponent<PhotonView>().RPC("SpawnInjection", RpcTarget.All);
-                Debug.Log("Hola!!!!!!!!!!");
                 isInjectionSpawned = true;
                 GameManager.Instance.SpawnInjectionOnline();
             }
@@ -378,6 +382,7 @@ public class ObjectsSanti : MonoBehaviourPun
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.1f;
             if (isInteractPressed && GameManager.Instance.Key1 && GameManager.Instance.Key2 && GameManager.Instance.Key3)
             {
+                ChangeObjects.GetComponent<PhotonView>().RPC("DeactivatePascualita", RpcTarget.All);
                 GameManager.Instance.GetComponent<PhotonView>().RPC("EndingCutscene",RpcTarget.All);
             }
         }

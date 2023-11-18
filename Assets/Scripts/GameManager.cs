@@ -51,14 +51,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject Jose;
     public GameObject Santi;
 
+    [SerializeField]
     private SpawnInjection InjectionScript;
 
     void Awake()
     {
         MakeSingleton();   
         PlayerManager.OnPlayerJoined += HandlePlayerJoined;
-        InjectionScript = GameObject.Find("SpawnerInjection").GetComponent<SpawnInjection>();
-        Debug.Log(InjectionScript);
     }
 
     private void HandlePlayerJoined(GameObject playerObject)
@@ -104,7 +103,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         if (InjectionSpawn)
         {
-            InjectionScript.Spawn();
+            InjectionScript.GetComponent<SpawnInjection>().Spawn();
         }
     }
     [PunRPC]

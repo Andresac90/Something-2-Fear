@@ -10,6 +10,7 @@ public class NurseAI : MonoBehaviour
     public GameObject[] players;
     private GameObject closerPlayer;
     public GameObject key;
+    private GameObject ChangeObjects;
 
     private bool isSantiActive = false;
     private bool isJoseActive = false;
@@ -59,7 +60,7 @@ public class NurseAI : MonoBehaviour
     void Start()
     {
         players = new GameObject[2];
-
+        ChangeObjects = GameObject.Find("ChangeObjects");
         PlayerPosition = Vector3.zero;
         isPatrol = true;
         isPlayerCaught = false;
@@ -251,7 +252,7 @@ public class NurseAI : MonoBehaviour
         {
             gameObject.GetComponent<PhotonView>().RPC("SpawnKey", RpcTarget.All);
             GameManager.Instance.NurseScream.Play();
-            gameObject.SetActive(false);
+            ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateNurse", RpcTarget.All);
         }
         Patroling();
     }
