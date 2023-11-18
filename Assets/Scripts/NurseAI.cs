@@ -9,6 +9,7 @@ public class NurseAI : MonoBehaviour
 {
     public GameObject[] players;
     private GameObject closerPlayer;
+    public GameObject key;
 
     private bool isSantiActive = false;
     private bool isJoseActive = false;
@@ -235,16 +236,22 @@ public class NurseAI : MonoBehaviour
     void CaughtPlayer()
     {
         isPlayerCaught = true;
-        if (closerPlayer == players[0])
+        if (closerPlayer == players[0] && !GameManager.Instance.Injection)
         {
             SantiPV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
             isPlayerCaught = false;
 
         }
-        else if (closerPlayer == players[1])
+        else if (closerPlayer == players[1] && !GameManager.Instance.Injection)
         {
             JosePV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
             isPlayerCaught = false;
+        }
+        else if ((closerPlayer == players[0] || closerPlayer == players[1]) && GameManager.Instance.Injection)
+        {
+            gameObject.GetComponent<PhotonView>().RPC("SpawnKey", RpcTarget.All);
+            GameManager.Instance.NurseScream.Play();
+            gameObject.SetActive(false);
         }
         Patroling();
     }
@@ -342,6 +349,11 @@ public class NurseAI : MonoBehaviour
         }
 
         return close;
+    }
+    [PunRPC]
+    private void SpawnKey()
+    {
+        key.SetActive(true);
     }
  
 }

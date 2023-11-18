@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public AudioSource Door;
     public AudioSource PascualitaJumpscare;
     public AudioSource AudioHospital;
+    public AudioSource NurseScream;
 
     public PlayableDirector ending;
 

@@ -76,7 +76,6 @@ public class ChangeObjects : MonoBehaviourPun
     [PunRPC]
     public void DeactivateLockdown()
     {
-        Nurse.SetActive(false);
         HospitalDoor.GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, true);
     }
 
