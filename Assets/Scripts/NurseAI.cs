@@ -9,6 +9,8 @@ public class NurseAI : MonoBehaviour
 {
     public GameObject[] players;
     private GameObject closerPlayer;
+    public GameObject key;
+    private GameObject ChangeObjects;
 
     private bool isSantiActive = false;
     private bool isJoseActive = false;
@@ -58,7 +60,7 @@ public class NurseAI : MonoBehaviour
     void Start()
     {
         players = new GameObject[2];
-
+        ChangeObjects = GameObject.Find("ChangeObjects");
         PlayerPosition = Vector3.zero;
         isPatrol = true;
         isPlayerCaught = false;
@@ -115,6 +117,11 @@ public class NurseAI : MonoBehaviour
                 //aiAnimation.SetTrigger("walk");
                 Patroling();
             }
+            else if (isPlayerCaught)
+            {
+                Debug.Log("Attacking");
+                Attacking();
+            }
         }
 
     }
@@ -150,7 +157,6 @@ public class NurseAI : MonoBehaviour
             if (Vector3.Distance(transform.position, closerPlayer.transform.position) < catchDistance)
             {
                 CaughtPlayer();
-                Attacking();
             }
         }
     }
@@ -231,16 +237,22 @@ public class NurseAI : MonoBehaviour
     void CaughtPlayer()
     {
         isPlayerCaught = true;
-        if (closerPlayer == players[0])
+        if (closerPlayer == players[0] && !GameManager.Instance.Injection)
         {
             SantiPV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
             isPlayerCaught = false;
 
         }
-        else if (closerPlayer == players[1])
+        else if (closerPlayer == players[1] && !GameManager.Instance.Injection)
         {
             JosePV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
             isPlayerCaught = false;
+        }
+        else if ((closerPlayer == players[0] || closerPlayer == players[1]) && GameManager.Instance.Injection)
+        {
+            gameObject.GetComponent<PhotonView>().RPC("SpawnKey", RpcTarget.All);
+            GameManager.Instance.NurseScream.Play();
+            ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateNurse", RpcTarget.All);
         }
         Patroling();
     }
@@ -338,6 +350,11 @@ public class NurseAI : MonoBehaviour
         }
 
         return close;
+    }
+    [PunRPC]
+    private void SpawnKey()
+    {
+        key.SetActive(true);
     }
  
 }

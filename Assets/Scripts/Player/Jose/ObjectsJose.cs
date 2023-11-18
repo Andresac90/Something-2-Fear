@@ -62,6 +62,8 @@ public class ObjectsJose : MonoBehaviourPun
     private GameObject Object2UI;
     [SerializeField]
     private GameObject Object3UI;
+    [SerializeField]
+    private GameObject InjectionUI;
 
     private TextMeshProUGUI textMeshProText;
     private RaycastHit hit;
@@ -167,18 +169,36 @@ public class ObjectsJose : MonoBehaviourPun
         {
             Key3UI.SetActive(true);
         }
+
         //ObjectsNurseUI
-        if (GameManager.Instance.Object1)
+        if (GameManager.Instance.Object1 && !GameManager.Instance.Injection && !GameManager.Instance.InjectionSpawn)
         {
             Object1UI.SetActive(true);
         }
-        if (GameManager.Instance.Object2)
+        else
+        {
+            Object1UI.SetActive(false);
+        }
+        if (GameManager.Instance.Object2 && !GameManager.Instance.Injection && !GameManager.Instance.InjectionSpawn)
         {
             Object2UI.SetActive(true);
         }
-        if (GameManager.Instance.Object3)
+        else
+        {
+            Object2UI.SetActive(false);
+        }
+        if (GameManager.Instance.Object3 && !GameManager.Instance.Injection && !GameManager.Instance.InjectionSpawn)
         {
             Object3UI.SetActive(true);
+        }
+        else
+        {
+            Object3UI.SetActive(false);
+        }
+
+        if (GameManager.Instance.Injection)
+        {
+            InjectionUI.SetActive(true);
         }
 
         //Timer UI

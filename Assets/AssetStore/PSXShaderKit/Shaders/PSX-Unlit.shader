@@ -9,8 +9,8 @@
     }
         SubShader
     {
-        Tags {"RenderType" = "Opaque" }
-        ZWrite On
+        Tags {"RenderType" = "Transparent"}
+        Cull Off ZWrite Off ZTest Always
         LOD 100
 
         Pass

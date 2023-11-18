@@ -30,18 +30,67 @@ public class LabDoor : MonoBehaviour
     {
         iCode = iC;
         Code = C;
-        for (int i = 0; i < Code.Length; i++)
+
+        if (Code.Length == 1)
         {
-            for (int j = 0; j < symbols.Length; j++)
+            for (int i = 0; i < Code.Length; i++)
             {
-                if (Code[i].ToString() == symbols[j].name)
+                for (int j = 0; j < symbols.Length; j++)
                 {
-                    GameObject spawnedPrefab = Instantiate(symbols[j], visions.transform.GetChild(i).position, Quaternion.identity);
-                    spawnedPrefab.transform.parent = visions.transform.GetChild(i);  // Set the parent to visions' child
+                    string codename = symbols[j].name[0].ToString();
+                    if(codename == Code[i].ToString())
+                    {
+                        symbols[j].SetActive(true);
+                    }
+                }
+            }
+        } else if (Code.Length == 2)
+        {
+            int j = 0;
+            for (int i = 0; i < Code.Length; i++)
+            {
+                while (j < symbols.Length)
+                {
+                    string codename = symbols[j].name;
+                    if (codename == Code[i].ToString() + j.ToString())
+                    {
+                        symbols[j].SetActive(true);
+
+                        if (j < 4) 
+                        { 
+                            j = 4; 
+                        }
+                        break;
+                    }
+                    j++;
+                }
+            }
+        }
+        else if (Code.Length == 3)
+        {
+            int j = 0;
+            for (int i = 0; i < Code.Length; i++)
+            {
+                while (j < symbols.Length)
+                {
+                    string codename = symbols[j].name;
+                    if (codename == Code[i].ToString() + j.ToString())
+                    {
+                        symbols[j].SetActive(true);
+
+                        if (j < 4)
+                        {
+                            j = 4;
+                        }
+                        if ((j > 3 && j < 8) && i == 1)
+                        {
+                            j = 8;
+                        }
+                        break;
+                    }
+                    j++;
                 }
             }
         }
     }
-
-
 }

@@ -80,8 +80,14 @@ MonoBehaviour:
   - UpdateRunningAnimation
   - UpdateWalkingAnimation
   - ObjectsNurseChange
+  - ObjectsNurseOff
+  - SpawnInjection
+  - InjectionChange
   - SyncDisableDowningIndicator
   - SyncEnableDowningIndicator
+  - EndingCutscene
+  - StartVideo
+  - SpawnKey
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
