@@ -155,7 +155,6 @@ public class NurseAI : MonoBehaviour
             if (Vector3.Distance(transform.position, closerPlayer.transform.position) < catchDistance)
             {
                 CaughtPlayer();
-                Attacking();
             }
         }
     }
