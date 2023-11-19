@@ -291,7 +291,7 @@ public class ObjectsJose : MonoBehaviourPun
             activated = false;
         }
 
-        if (hit.transform != null && hit.transform.tag == "Buzzer")
+        if (hit.transform != null && hit.transform.tag == "Buzzer" && !nina.GetComponent<NinaAI>().isWarping)
         {
             Buzzer buzzer = hit.transform.GetComponent<Buzzer>();
             bool isInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0.0f;

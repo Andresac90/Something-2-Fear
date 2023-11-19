@@ -29,6 +29,8 @@ public class ChangeObjects : MonoBehaviourPun
     [SerializeField]
     private GameObject Block3;
     [SerializeField]
+    private GameObject Block4;
+    [SerializeField]
     private GameObject Zone2Lights;
     [SerializeField]
     private GameObject Zone3Lights;
@@ -120,5 +122,17 @@ public class ChangeObjects : MonoBehaviourPun
     {
         Block3.SetActive(false);
         Zone3Lights.SetActive(true);
+    }
+
+    [PunRPC]
+    public void EnableBlock4()
+    {
+        Block4.SetActive(true);
+    }
+
+    [PunRPC]
+    public void EraseBlock4()
+    {
+        Block4.SetActive(false);
     }
 }

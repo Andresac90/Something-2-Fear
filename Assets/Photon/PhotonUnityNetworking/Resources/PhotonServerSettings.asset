@@ -91,6 +91,8 @@ MonoBehaviour:
   - EraseBlock1
   - EraseBlock2
   - EraseBlock3
+  - EnableBlock4
+  - EraseBlock4
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -51,7 +51,7 @@ public class NinaAI : MonoBehaviour
     public bool attackingJose;
     public bool attackingSanti;
     public bool isSeen;
-    private bool isWarping = false;
+    public bool isWarping = false;
 
     private PhotonView JosePV;
     private PhotonView SantiPV;
@@ -259,7 +259,7 @@ public class NinaAI : MonoBehaviour
             }
             else if (attackingSanti)
             {
-                StartCoroutine(WarpWithDelay(spawn.position, 12.0f));
+                StartCoroutine(WarpWithDelay(spawn.position, 9.0f));
             }
         }
         else

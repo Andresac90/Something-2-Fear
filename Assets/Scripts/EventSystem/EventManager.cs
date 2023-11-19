@@ -115,6 +115,7 @@ public class EventManager : MonoBehaviour
         if (joseNear && santiNear && TwoPlayers && Hospital && !HospitalEvent)
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("ActivateLockdown", RpcTarget.All);
+            ChangeObjects.GetComponent<PhotonView>().RPC("EnableBlock4", RpcTarget.All);
             GameManager.Instance.AudioHospital.Play();
             GameManager.Instance.audioH = true;
             HospitalEvent = true;
@@ -125,6 +126,7 @@ public class EventManager : MonoBehaviour
     {
         if (GameManager.Instance.Key3)
         {
+            ChangeObjects.GetComponent<PhotonView>().RPC("EraseBlock4", RpcTarget.All);
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateLockdown", RpcTarget.All);
         }
     }
