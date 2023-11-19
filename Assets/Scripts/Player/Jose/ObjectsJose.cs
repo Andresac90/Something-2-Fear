@@ -347,7 +347,7 @@ public class ObjectsJose : MonoBehaviourPun
                 hit.transform.GetComponent<ObjectsData>().OnGrab(ObjectRightCamera);
                 ObjectRightRb = hit.rigidbody;
                 ObjectRightUI.SetActive(false);
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.1f);
                 HasObjectRight = true;
                 ThrowCheckR = true;
                 
@@ -370,7 +370,7 @@ public class ObjectsJose : MonoBehaviourPun
                 hit.transform.GetComponent<ObjectsData>().OnGrab(ObjectLeftCamera);
                 ObjectLeftRb = hit.rigidbody;
                 ObjectLeftUI.SetActive(false);
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.1f);
                 HasObjectLeft = true;
                 ThrowCheckL = true;
             }
@@ -392,7 +392,7 @@ public class ObjectsJose : MonoBehaviourPun
             Debug.Log("Throwing");
             ObjectRightRb.GetComponent<ObjectsData>().onThrow(PlayerCamera.transform.forward, ThrowForce);
             ThrowCheckR = false;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1.5f);
             HasObjectRight = false;
            
         }
@@ -409,7 +409,7 @@ public class ObjectsJose : MonoBehaviourPun
             Debug.Log("Throwing");
             ObjectLeftRb.GetComponent<ObjectsData>().onThrow(PlayerCamera.transform.forward, ThrowForce);
             ThrowCheckL = false;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1.5f);
             HasObjectLeft = false;
         }
 
