@@ -22,6 +22,16 @@ public class ChangeObjects : MonoBehaviourPun
     private GameObject HospitalLightsLockdown;
     [SerializeField]
     private Transform positionNina;
+    [SerializeField]
+    private GameObject Block1;
+    [SerializeField]
+    private GameObject Block2;
+    [SerializeField]
+    private GameObject Block3;
+    [SerializeField]
+    private GameObject Zone2Lights;
+    [SerializeField]
+    private GameObject Zone3Lights;
 
     [PunRPC]
     public void ActivatePascualita()
@@ -90,5 +100,25 @@ public class ChangeObjects : MonoBehaviourPun
     public void DeactivateNina()
     {
         Nina.SetActive(false);
+    }
+
+    [PunRPC]
+    public void EraseBlock1()
+    {
+        Block1.SetActive(false);
+    }
+
+    [PunRPC]
+    public void EraseBlock2()
+    {
+        Block2.SetActive(false);
+        Zone2Lights.SetActive(true);
+    }
+
+    [PunRPC]
+    public void EraseBlock3()
+    {
+        Block3.SetActive(false);
+        Zone3Lights.SetActive(true);
     }
 }

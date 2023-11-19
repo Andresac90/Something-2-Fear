@@ -10,14 +10,14 @@ public class Note : MonoBehaviour
     private GameObject playerMove;
     private ObjectsSanti objectsSanti;
     private TextMeshProUGUI textMesh;
-    private Image img;
+    private RawImage img;
 
     [SerializeField]
     private GameObject note;
     [SerializeField]
     private string text;
     [SerializeField]
-    private Image image;
+    private RawImage image;
 
     void Start()
     {
@@ -31,7 +31,7 @@ public class Note : MonoBehaviour
         GameObject child = note.transform.GetChild(0).gameObject;
         textMesh = child.GetComponentInChildren<TextMeshProUGUI>();
         GameObject sonChild = child.transform.GetChild(1).gameObject;
-        img = sonChild.GetComponent<Image>();
+        img = sonChild.GetComponent<RawImage>();
 
         img = image;
         textMesh.text = text;
