@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad82b47a23dc674a8a4e7485ea3c16b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectScale: 0.2
+  ObjectScale: 0.08
   ObjectOriginalScale: 0.4
   ObjectName: Bengala
 --- !u!54 &7637204637757273554
