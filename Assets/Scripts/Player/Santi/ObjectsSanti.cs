@@ -25,7 +25,6 @@ public class ObjectsSanti : MonoBehaviourPun
     private Transform playerCamera;
     private bool grabObjR = false;
     private bool objectGrabbedR = true;
-    private bool throwCheckR = true;
     private bool activated = false;
     private Button activeButton = null;
     private Cure activeStation = null;
@@ -137,7 +136,7 @@ public class ObjectsSanti : MonoBehaviourPun
                     StartCoroutine(RightDrop());
                     objectNameString = "";
                     hit.transform.GetComponent<PhotonView>().RPC("ObjectsNurseChange", RpcTarget.All, hit.transform.name);
-                    
+
                     break;
                 case "Object2":
                     StartCoroutine(RightDrop());
@@ -395,15 +394,12 @@ public class ObjectsSanti : MonoBehaviourPun
             Puzzle puzzle = hit.transform.GetComponent<Puzzle>();
             string objectName = hit.collider.gameObject.name;
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.2f;
-            //if (objectNameString != "Key" && puzzle.puzzle.name != null)
-            //{
-            //    if (puzzle.puzzle.name == "LockPick")
-            //    {
-            //        Debug.Log("You need a key");
-            //        //UI You need a key
-            //    }
-            //}
-            if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
+            if (objectNameString != "Key" && puzzle.puzzle.name != null && puzzle.puzzle.name == "LockPick" && !puzzleCreated)
+            {
+                Debug.Log("You need a key");
+                //UI You need a key
+            }
+            else if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
             {
                 puzzle.OpenPuzzle(false, false, objectName);
                 puzzleCreated = true;
@@ -462,7 +458,7 @@ public class ObjectsSanti : MonoBehaviourPun
     {
         bool isRightPressed = controls.Player.RightThrow.ReadValue<float>() > 0.1f;
 
-        if(isRightPressed && grabObjR && throwCheckR)
+        if(isRightPressed && grabObjR)
         {
             StartCoroutine(RightDrop());
         }
@@ -470,23 +466,23 @@ public class ObjectsSanti : MonoBehaviourPun
 
     private IEnumerator RightGrab()
     {
+        
         objectGrabbedR = false;
         hit.transform.GetComponent<ObjectsData>().OnGrab(objectRightCamera);
         objectRightT = hit.transform;
         ObjectRightUI.SetActive(false);
         objectNameString = hit.transform.GetComponent<ObjectsData>().ObjectName;
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.5f);
         grabObjR = true;
-        objectGrabbedR = true;
-        
+
     }
 
     public IEnumerator RightDrop()
     {
         objectRightT.GetComponent<ObjectsData>().OnRelease();
+        yield return new WaitForSeconds(0.501f);
         grabObjR = false;
-        throwCheckR = true;
-        yield return new WaitForSeconds(0.1f);
+        objectGrabbedR = true;
     }
 
     [PunRPC]
