@@ -102,6 +102,8 @@ public class ObjectsSanti : MonoBehaviourPun
 
     public void Update()
     {
+        if (!PV.IsMine) return;
+
         Physics.Raycast(playerCamera.position, playerCamera.TransformDirection(Vector3.forward), out hit, rayLine);
         Activation();
         if(hit.transform != null)
