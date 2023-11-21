@@ -87,6 +87,12 @@ MonoBehaviour:
   - SyncEnableDowningIndicator
   - EndingCutscene
   - StartVideo
+  - SpawnKey
+  - JosePassed
+  - SantiPassed
+  - SetCheckPoint
+  - SetCheckPointRPC
+  - GoToCheckPoint
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
