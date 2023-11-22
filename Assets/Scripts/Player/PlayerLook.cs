@@ -12,9 +12,9 @@ public class PlayerLook : MonoBehaviour
     private float LookY;
 
     [SerializeField]
-    private float SensitivityX = 1f;
+    private float SensitivityX = 15f;
     [SerializeField]
-    private float SensitivityY = 1f;
+    private float SensitivityY = 15f;
 
     [SerializeField]
     private bool InvertCamera;
