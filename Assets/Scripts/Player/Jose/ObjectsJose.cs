@@ -112,6 +112,9 @@ public class ObjectsJose : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
+
+        if (!PV.IsMine) return;
+        
         Activation();
         Physics.Raycast(PlayerCamera.position, PlayerCamera.TransformDirection(Vector3.forward), out hit, rayline);
         if (hit.transform != null)
