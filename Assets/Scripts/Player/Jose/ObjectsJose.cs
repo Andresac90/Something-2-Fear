@@ -64,6 +64,13 @@ public class ObjectsJose : MonoBehaviourPun
     private GameObject Object3UI;
     [SerializeField]
     private GameObject InjectionUI;
+    //TutorialUI
+    [SerializeField]
+    private GameObject jumpUI;
+    [SerializeField]
+    private GameObject runUI;
+    [SerializeField]
+    private GameObject crouchUI;
 
     private TextMeshProUGUI textMeshProText;
     private RaycastHit hit;
@@ -84,6 +91,7 @@ public class ObjectsJose : MonoBehaviourPun
     private Animator joseAnimator;
     private PhotonView PV;
 
+    
     void Awake()
     {
         Controls = new InputMaster();
@@ -108,7 +116,7 @@ public class ObjectsJose : MonoBehaviourPun
         aicontrolNi.JoseActivation();
         joseAnimator = GetComponent<Animator>();
     }
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -235,9 +243,37 @@ public class ObjectsJose : MonoBehaviourPun
         {
             ThrowLeftUI.SetActive(false);
         }
+
+        //UI Tutorial
+        if (GameManager.Instance.tutorialJump)
+        {
+            jumpUI.SetActive(true);
+        }
+        else
+        {
+            jumpUI.SetActive(false);
+        }
+
+        if(GameManager.Instance.tutorialRun)
+        {
+            runUI.SetActive(true);
+        }
+        else
+        {
+            runUI.SetActive(false);
+        }
+
+        if(GameManager.Instance.tutorialCrouch)
+        {
+            crouchUI.SetActive(true);
+        }
+        else
+        {
+            crouchUI.SetActive(false);
+        }
+
         StartCoroutine(Throw());
         ThrowGrounded();
-
     }
 
     private void Activation()

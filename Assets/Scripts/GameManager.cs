@@ -54,6 +54,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private SpawnInjection InjectionScript;
 
+    public bool tutorialJump = false;
+    public bool tutorialRun = false;
+    public bool tutorialCrouch = false;
+
     void Awake()
     {
         MakeSingleton();   
