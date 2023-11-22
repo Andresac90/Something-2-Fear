@@ -46,6 +46,7 @@ public class Revive : MonoBehaviourPun
     {
         if (!photonView.IsMine) return;
         
+
         CheckRevive();
     }
 
@@ -57,6 +58,8 @@ public class Revive : MonoBehaviourPun
             Physics.Raycast(playerCamera.position, playerCamera.TransformDirection(Vector3.forward), out hit, rayLine, layerMask);
             if (hit.transform != null && (hit.transform.tag == "PlayerSanti" || hit.transform.tag == "PlayerJose"))
             {
+                if (hit.transform.gameObject.GetComponent<Down>().isPlayerDowned == false) return;
+                
                 canvas.gameObject.SetActive(true);
                 currentTime += Time.deltaTime;
                 fill.fillAmount = currentTime / objectTime;
