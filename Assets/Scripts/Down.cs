@@ -48,6 +48,7 @@ public class Down : MonoBehaviourPun
         else
         {
             downingIndicator.RPC("SyncDisableDowningIndicator", RpcTarget.All);
+            currentTime = 0f;
         }
     }
 
