@@ -19,16 +19,16 @@ MonoBehaviour:
     AppIdVoice: c8948f28-c385-4f56-b1b6-e84028a5cb78
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: 
+    FixedRegion: us
     Server: 
     Port: 0
     ProxyServer: 
-    Protocol: 0
+    Protocol: 5
     EnableProtocolFallback: 1
     AuthMode: 0
     EnableLobbyStatistics: 0
     NetworkLogging: 1
-  DevRegion: ussc
+  DevRegion: us
   PunLogging: 0
   EnableSupportLogger: 0
   RunInBackground: 1
@@ -88,6 +88,11 @@ MonoBehaviour:
   - EndingCutscene
   - StartVideo
   - SpawnKey
+  - EraseBlock1
+  - EraseBlock2
+  - EraseBlock3
+  - EnableBlock4
+  - EraseBlock4
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

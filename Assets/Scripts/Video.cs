@@ -12,6 +12,18 @@ public class Video : MonoBehaviour
     public bool firstPlaying = false;
     public bool secondPlaying = false;
 
+    private void Start()
+    {
+        if (firstV)
+        {
+            gameObject.GetComponent<VideoPlayer>().url = Application.streamingAssetsPath + "/" + "FinalCutscene.mp4";
+        }
+        else if (secondV)
+        {
+            gameObject.GetComponent<VideoPlayer>().url = Application.streamingAssetsPath + "/" + "AnimacionLogo.mp4";
+        }
+    }
+
     void Update()
     {
         TimeS();
