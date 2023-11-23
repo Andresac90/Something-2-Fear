@@ -45,13 +45,13 @@ public class Video : MonoBehaviour
 
     void checkTime()
     {
-        if (currentTime > 40.0f && firstV && !firstPlaying)
+        if (currentTime > 38.0f && firstV && !firstPlaying)
         {
             gameObject.GetComponent<VideoPlayer>().Play();
             firstPlaying = true;
         }
 
-        if (currentTime > 124.0f && secondV && !secondPlaying)
+        if (currentTime > 120.0f && secondV && !secondPlaying)
         {
             gameObject.GetComponent<VideoPlayer>().Play();
             secondPlaying = true;
