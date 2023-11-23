@@ -51,7 +51,7 @@ public class Video : MonoBehaviour
             firstPlaying = true;
         }
 
-        if (currentTime > 120.0f && secondV && !secondPlaying)
+        if (currentTime > 122.0f && secondV && !secondPlaying)
         {
             gameObject.GetComponent<VideoPlayer>().Play();
             secondPlaying = true;
