@@ -51,7 +51,7 @@ public class NinaAI : MonoBehaviour
     public bool attackingJose;
     public bool attackingSanti;
     public bool isSeen;
-    private bool isWarping = false;
+    public bool isWarping = false;
 
     private PhotonView JosePV;
     private PhotonView SantiPV;
@@ -80,7 +80,7 @@ public class NinaAI : MonoBehaviour
         //randNum = 0;
         minWaitTime = 1f;
         maxWiatTime = 3f;
-        catchDistance = 3f;
+        catchDistance = 0.5f;
 
         stoppedTimer = defaultCooldownTime;
         seenCooldownTimer = defaultCooldownTime;
@@ -115,7 +115,7 @@ public class NinaAI : MonoBehaviour
             if (attackingJose)
             {
                 ChaseJose();
-                walkSpeed = 0.3f;
+                walkSpeed = 0.5f;
             }
             else if (attackingSanti)
             {
@@ -259,7 +259,7 @@ public class NinaAI : MonoBehaviour
             }
             else if (attackingSanti)
             {
-                StartCoroutine(WarpWithDelay(spawn.position, 8.0f));
+                StartCoroutine(WarpWithDelay(spawn.position, 9.0f));
             }
         }
         else

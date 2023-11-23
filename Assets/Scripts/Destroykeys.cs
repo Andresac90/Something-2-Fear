@@ -10,6 +10,5 @@ public class Destroykeys : MonoBehaviourPun
     {
         GameObject key = GameObject.Find(name);
         key.SetActive(false);
-
     }
 }

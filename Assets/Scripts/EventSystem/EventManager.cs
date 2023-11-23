@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class EventManager : MonoBehaviour
 {
@@ -36,12 +35,11 @@ public class EventManager : MonoBehaviour
     void Update()
     {
         Interact();
-        JoseInteract();
+        SpawnPascuala();
         SantiInteract();
         HospitalLockdown();
         HospitalCleared();
         LabyrinthNina();
-        Win();
         if (GameManager.Instance.audioH && GameManager.Instance.AudioHospital.time > 17.0f)
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("ActivateNurse", RpcTarget.All);
@@ -81,30 +79,24 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    void Win()
-    {
-        if (joseNear && santiNear && TwoPlayers && WinScreen)
-        {
-            SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Play();
-            SceneManager.LoadScene("WinScreen");
-        }
-    }
-
     void Interact()
     {
         if (joseNear && santiNear && TwoPlayers && Event)
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateLights", RpcTarget.All);
+            ChangeObjects.GetComponent<PhotonView>().RPC("EraseBlock1", RpcTarget.All);
             Destroy(this.gameObject);
         }
     }
 
-    void JoseInteract()
+    void SpawnPascuala()
     {
-        if (joseNear && spawnPasc)
+        if (joseNear && JoseEvent && spawnPasc)
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("ActivatePascualita", RpcTarget.All);
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateDummy", RpcTarget.All);
+            ChangeObjects.GetComponent<PhotonView>().RPC("EraseBlock2", RpcTarget.All);
+            ChangeObjects.GetComponent<PhotonView>().RPC("EraseBlock3", RpcTarget.All);
             Destroy(this.gameObject);
         }
     }
@@ -123,6 +115,7 @@ public class EventManager : MonoBehaviour
         if (joseNear && santiNear && TwoPlayers && Hospital && !HospitalEvent)
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("ActivateLockdown", RpcTarget.All);
+            ChangeObjects.GetComponent<PhotonView>().RPC("EnableBlock4", RpcTarget.All);
             GameManager.Instance.AudioHospital.Play();
             GameManager.Instance.audioH = true;
             HospitalEvent = true;
@@ -133,6 +126,7 @@ public class EventManager : MonoBehaviour
     {
         if (GameManager.Instance.Key3)
         {
+            ChangeObjects.GetComponent<PhotonView>().RPC("EraseBlock4", RpcTarget.All);
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateLockdown", RpcTarget.All);
         }
     }

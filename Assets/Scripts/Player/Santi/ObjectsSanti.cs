@@ -17,7 +17,7 @@ public class ObjectsSanti : MonoBehaviourPun
     private GameObject nurse;
     private GameObject nina;
     private GameObject LightBox;
-    private GameObject puertaPrinicipal; 
+    private GameObject ChangeObjects;
     private RaycastHit hit;
     public Transform objectRightT;
 
@@ -25,7 +25,6 @@ public class ObjectsSanti : MonoBehaviourPun
     private Transform playerCamera;
     private bool grabObjR = false;
     private bool objectGrabbedR = true;
-    private bool throwCheckR = true;
     private bool activated = false;
     private Button activeButton = null;
     private Cure activeStation = null;
@@ -64,12 +63,15 @@ public class ObjectsSanti : MonoBehaviourPun
     private GameObject Object3UI;
     [SerializeField]
     private GameObject InjectionUI;
+    [SerializeField]
+    private GameObject noKeyUI;
 
     [SerializeField]
     private GameObject Timer;
 
     private PhotonView PV;
     private TextMeshProUGUI textMeshProText;
+    private bool isInjectionSpawned = false;
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
     public bool noteCreated = false;
@@ -96,36 +98,73 @@ public class ObjectsSanti : MonoBehaviourPun
         aicontrolP.santiActivation();
         aicontrolN.SantiActivation();
         aicontrolNi.SantiActivation();
-        puertaPrinicipal = GameObject.Find("PuertaPrincipal");
+        ChangeObjects = GameObject.Find("ChangeObjects");
         santiAnimator = GetComponent<Animator>();
     }
 
     public void Update()
     {
+        if (!PV.IsMine) return;
+
         Physics.Raycast(playerCamera.position, playerCamera.TransformDirection(Vector3.forward), out hit, rayLine);
         Activation();
         if(hit.transform != null)
         {
             PuzzleManager();
             NoteManager();
-            if (objectNameString == "KeyMaster1" || objectNameString == "KeyMaster2" || objectNameString == "KeyMaster3")
+            Grab();
+            switch (objectNameString)
             {
-                GameManager.Instance.Keys.Play();
-                StartCoroutine(RightDrop());
-                hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
-                objectNameString = "";
+                case "KeyMaster1":
+                    GameManager.Instance.Keys.Play();
+                    StartCoroutine(RightDrop());
+                    objectNameString = "";
+                    hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
+                    
+                    break;
+                case "KeyMaster2":
+                    GameManager.Instance.Keys.Play();
+                    StartCoroutine(RightDrop());
+                    objectNameString = "";
+                    hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
+                    
+                    break;
+                case "KeyMaster3":
+                    GameManager.Instance.Keys.Play();
+                    StartCoroutine(RightDrop());
+                    objectNameString = "";
+                    hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
+                    
+                    break;
+                case "Object1":
+                    StartCoroutine(RightDrop());
+                    objectNameString = "";
+                    hit.transform.GetComponent<PhotonView>().RPC("ObjectsNurseChange", RpcTarget.All, hit.transform.name);
+
+                    break;
+                case "Object2":
+                    StartCoroutine(RightDrop());
+                    objectNameString = "";
+                    hit.transform.GetComponent<PhotonView>().RPC("ObjectsNurseChange", RpcTarget.All, hit.transform.name);
+                    
+                    break;
+                case "Object3":
+                    StartCoroutine(RightDrop());
+                    objectNameString = "";
+                    hit.transform.GetComponent<PhotonView>().RPC("ObjectsNurseChange", RpcTarget.All, hit.transform.name);
+                    
+                    break;
+                case "Injection":
+                    StartCoroutine(RightDrop());
+                    objectNameString = "";
+                    hit.transform.GetComponent<PhotonView>().RPC("InjectionChange", RpcTarget.All, hit.transform.name);
+                    
+                    break;
             }
-            if (objectNameString == "Object1" || objectNameString == "Object2" || objectNameString == "Object3")
-            {
-                StartCoroutine(RightDrop());
-                hit.transform.GetComponent<PhotonView>().RPC("ObjectsNurseChange", RpcTarget.All, hit.transform.name);
-                objectNameString = "";
-            }
-            else
-            {
-                Grab();
-            }
-            
+        }
+        else
+        {
+            noKeyUI.SetActive(false);
         }
 
         //Object UI
@@ -151,7 +190,7 @@ public class ObjectsSanti : MonoBehaviourPun
         }
 
         //Interact UI
-        if (hit.transform != null && hit.transform.tag == "Puzzle")
+        if (hit.transform != null && hit.transform.tag == "Puzzle" && !noKeyUI.activeInHierarchy)
         {
             InteractUI.SetActive(true);
             DropRightUI.SetActive(false);
@@ -172,6 +211,11 @@ public class ObjectsSanti : MonoBehaviourPun
             DropRightUI.SetActive(false);
         }
         else if (hit.transform != null && hit.transform.tag == "FinalDoor")
+        {
+            InteractUI.SetActive(true);
+            DropRightUI.SetActive(false);
+        }
+        else if (hit.transform != null && hit.transform.tag == "Table")
         {
             InteractUI.SetActive(true);
             DropRightUI.SetActive(false);
@@ -199,18 +243,50 @@ public class ObjectsSanti : MonoBehaviourPun
         {
             Key3UI.SetActive(true);
         }
+
         //ObjectsNurseUI
-        if (GameManager.Instance.Object1)
+        if (GameManager.Instance.Object1 && !GameManager.Instance.Injection && !GameManager.Instance.InjectionSpawn)
         {
             Object1UI.SetActive(true);
         }
-        if (GameManager.Instance.Object2)
+        else
+        {
+            Object1UI.SetActive(false);
+        }
+        if (GameManager.Instance.Object2 && !GameManager.Instance.Injection && !GameManager.Instance.InjectionSpawn)
         {
             Object2UI.SetActive(true);
         }
-        if (GameManager.Instance.Object3)
+        else
+        {
+            Object2UI.SetActive(false);
+        }
+        if (GameManager.Instance.Object3 && !GameManager.Instance.Injection && !GameManager.Instance.InjectionSpawn)
         {
             Object3UI.SetActive(true);
+        }
+        else
+        {
+            Object3UI.SetActive(false);
+        }
+
+        //Injection UI
+        if (hit.transform != null && hit.transform.tag == "Table" && GameManager.Instance.Object1 && GameManager.Instance.Object2 && GameManager.Instance.Object3)
+        {
+            bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
+            if (isInteractPressed && !isInjectionSpawned)
+            {
+                //Spawnear Injection
+                hit.transform.GetComponent<PhotonView>().RPC("SpawnInjection", RpcTarget.All);
+                isInjectionSpawned = true;
+                GameManager.Instance.SpawnInjectionOnline();
+            }
+            
+        }
+
+        if (GameManager.Instance.Injection)
+        {
+            InjectionUI.SetActive(true);
         }
 
         //Timer UI
@@ -232,6 +308,7 @@ public class ObjectsSanti : MonoBehaviourPun
             InteractUI.SetActive(false);
         }
         Drop();
+        Video();
     }
 
     private void Activation()
@@ -309,9 +386,8 @@ public class ObjectsSanti : MonoBehaviourPun
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.1f;
             if (isInteractPressed && GameManager.Instance.Key1 && GameManager.Instance.Key2 && GameManager.Instance.Key3)
             {
-                puertaPrinicipal.GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, true);
-                puertaPrinicipal.GetComponent<Door>().doorState = true;
-                puertaPrinicipal.GetComponent<Door>().OpenDoor();
+                ChangeObjects.GetComponent<PhotonView>().RPC("DeactivatePascualita", RpcTarget.All);
+                GameManager.Instance.GetComponent<PhotonView>().RPC("EndingCutscene",RpcTarget.All);
             }
         }
     }
@@ -323,19 +399,16 @@ public class ObjectsSanti : MonoBehaviourPun
             Puzzle puzzle = hit.transform.GetComponent<Puzzle>();
             string objectName = hit.collider.gameObject.name;
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.2f;
-            //if (objectNameString != "Key" && puzzle.puzzle.name != null)
-            //{
-            //    if (puzzle.puzzle.name == "LockPick")
-            //    {
-            //        Debug.Log("You need a key");
-            //        //UI You need a key
-            //    }
-            //}
-            if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
+            if (objectNameString != "Key" && puzzle.puzzle.name != null && puzzle.puzzle.name == "LockPick" && !puzzleCreated)
+            {
+                noKeyUI.SetActive(true);
+            }
+            else if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
             {
                 puzzle.OpenPuzzle(false, false, objectName);
                 puzzleCreated = true;
                 puzzleActive = true;
+                noKeyUI.SetActive(false);
             }
             else if(puzzle != null && isInteractPressed && puzzleCreated && !puzzleActive)
             {
@@ -352,6 +425,11 @@ public class ObjectsSanti : MonoBehaviourPun
                 }
             }
         }
+        else
+        {
+            noKeyUI.SetActive(false);
+        }
+
     }
 
     public void NoteManager()
@@ -389,9 +467,8 @@ public class ObjectsSanti : MonoBehaviourPun
     private void Drop()
     {
         bool isRightPressed = controls.Player.RightThrow.ReadValue<float>() > 0.1f;
-        bool isLeftPressed = controls.Player.LeftThrow.ReadValue<float>() > 0.1f;
 
-        if(isRightPressed && grabObjR && throwCheckR)
+        if(isRightPressed && grabObjR)
         {
             StartCoroutine(RightDrop());
         }
@@ -399,23 +476,23 @@ public class ObjectsSanti : MonoBehaviourPun
 
     private IEnumerator RightGrab()
     {
+        
         objectGrabbedR = false;
         hit.transform.GetComponent<ObjectsData>().OnGrab(objectRightCamera);
         objectRightT = hit.transform;
         ObjectRightUI.SetActive(false);
         objectNameString = hit.transform.GetComponent<ObjectsData>().ObjectName;
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.5f);
         grabObjR = true;
-        objectGrabbedR = true;
-        
+
     }
 
     public IEnumerator RightDrop()
     {
         objectRightT.GetComponent<ObjectsData>().OnRelease();
+        yield return new WaitForSeconds(0.501f);
         grabObjR = false;
-        throwCheckR = true;
-        yield return new WaitForSeconds(1.5f);
+        objectGrabbedR = true;
     }
 
     [PunRPC]
@@ -432,5 +509,18 @@ public class ObjectsSanti : MonoBehaviourPun
     private void OnDisable()
     {
         controls.Disable();
+    }
+
+    private void Video()
+    {
+        if(GameManager.Instance.ending.time == 35.0)
+        {
+            GameManager.Instance.GetComponent<PhotonView>().RPC("StartVideo", RpcTarget.All, 0);
+        }
+
+        if (GameManager.Instance.ending.time == 200.0)
+        {
+            GameManager.Instance.GetComponent<PhotonView>().RPC("StartVideo", RpcTarget.All, 1);
+        }
     }
 }

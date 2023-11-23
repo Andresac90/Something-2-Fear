@@ -62,6 +62,15 @@ public class ObjectsJose : MonoBehaviourPun
     private GameObject Object2UI;
     [SerializeField]
     private GameObject Object3UI;
+    [SerializeField]
+    private GameObject InjectionUI;
+    //TutorialUI
+    [SerializeField]
+    private GameObject jumpUI;
+    [SerializeField]
+    private GameObject runUI;
+    [SerializeField]
+    private GameObject crouchUI;
 
     private TextMeshProUGUI textMeshProText;
     private RaycastHit hit;
@@ -82,6 +91,7 @@ public class ObjectsJose : MonoBehaviourPun
     private Animator joseAnimator;
     private PhotonView PV;
 
+    
     void Awake()
     {
         Controls = new InputMaster();
@@ -106,10 +116,13 @@ public class ObjectsJose : MonoBehaviourPun
         aicontrolNi.JoseActivation();
         joseAnimator = GetComponent<Animator>();
     }
-
+    
     // Update is called once per frame
     void Update()
     {
+
+        if (!PV.IsMine) return;
+        
         Activation();
         Physics.Raycast(PlayerCamera.position, PlayerCamera.TransformDirection(Vector3.forward), out hit, rayline);
         if (hit.transform != null)
@@ -167,18 +180,36 @@ public class ObjectsJose : MonoBehaviourPun
         {
             Key3UI.SetActive(true);
         }
+
         //ObjectsNurseUI
-        if (GameManager.Instance.Object1)
+        if (GameManager.Instance.Object1 && !GameManager.Instance.Injection && !GameManager.Instance.InjectionSpawn)
         {
             Object1UI.SetActive(true);
         }
-        if (GameManager.Instance.Object2)
+        else
+        {
+            Object1UI.SetActive(false);
+        }
+        if (GameManager.Instance.Object2 && !GameManager.Instance.Injection && !GameManager.Instance.InjectionSpawn)
         {
             Object2UI.SetActive(true);
         }
-        if (GameManager.Instance.Object3)
+        else
+        {
+            Object2UI.SetActive(false);
+        }
+        if (GameManager.Instance.Object3 && !GameManager.Instance.Injection && !GameManager.Instance.InjectionSpawn)
         {
             Object3UI.SetActive(true);
+        }
+        else
+        {
+            Object3UI.SetActive(false);
+        }
+
+        if (GameManager.Instance.Injection)
+        {
+            InjectionUI.SetActive(true);
         }
 
         //Timer UI
@@ -212,9 +243,37 @@ public class ObjectsJose : MonoBehaviourPun
         {
             ThrowLeftUI.SetActive(false);
         }
+
+        //UI Tutorial
+        if (GameManager.Instance.tutorialJump)
+        {
+            jumpUI.SetActive(true);
+        }
+        else
+        {
+            jumpUI.SetActive(false);
+        }
+
+        if(GameManager.Instance.tutorialRun)
+        {
+            runUI.SetActive(true);
+        }
+        else
+        {
+            runUI.SetActive(false);
+        }
+
+        if(GameManager.Instance.tutorialCrouch)
+        {
+            crouchUI.SetActive(true);
+        }
+        else
+        {
+            crouchUI.SetActive(false);
+        }
+
         StartCoroutine(Throw());
         ThrowGrounded();
-
     }
 
     private void Activation()
@@ -271,7 +330,7 @@ public class ObjectsJose : MonoBehaviourPun
             activated = false;
         }
 
-        if (hit.transform != null && hit.transform.tag == "Buzzer")
+        if (hit.transform != null && hit.transform.tag == "Buzzer" && !nina.GetComponent<NinaAI>().isWarping)
         {
             Buzzer buzzer = hit.transform.GetComponent<Buzzer>();
             bool isInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0.0f;
@@ -372,7 +431,7 @@ public class ObjectsJose : MonoBehaviourPun
             Debug.Log("Throwing");
             ObjectRightRb.GetComponent<ObjectsData>().onThrow(PlayerCamera.transform.forward, ThrowForce);
             ThrowCheckR = false;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.501f);
             HasObjectRight = false;
            
         }
@@ -389,7 +448,7 @@ public class ObjectsJose : MonoBehaviourPun
             Debug.Log("Throwing");
             ObjectLeftRb.GetComponent<ObjectsData>().onThrow(PlayerCamera.transform.forward, ThrowForce);
             ThrowCheckL = false;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.501f);
             HasObjectLeft = false;
         }
 
