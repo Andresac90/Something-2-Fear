@@ -321,12 +321,12 @@ public class ObjectsJose : MonoBehaviourPun
                 }
                 else if (activeStation != null)
                 {
-                    PV.RPC("UpdateHealingAnimation", RpcTarget.All, false);
                     HealingUI.SetActive(false);
                     station.updateCure(false, this.gameObject);
                     activeStation = null;
                     activated = false;
                 }
+                PV.RPC("UpdateHealingAnimation", RpcTarget.All, false);
             }
         }
         else if (activeStation != null && activated)
