@@ -309,6 +309,10 @@ public class ObjectsJose : MonoBehaviourPun
             {
                 if (isInteractPressed)
                 {
+                    if (!GameManager.Instance.Healing.isPlaying)
+                    {
+                        GameManager.Instance.Healing.Play();
+                    }
                     PV.RPC("UpdateHealingAnimation", RpcTarget.All, true);
                     HealingUI.SetActive(true);
                     station.updateCure(true, this.gameObject);

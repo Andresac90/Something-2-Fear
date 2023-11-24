@@ -181,7 +181,10 @@ public class SantiController : MonoBehaviourPun
         if(movement.x != 0 || movement.y != 0)
         {
             PV.RPC("UpdateWalkingAnimation", RpcTarget.All, true);
-            GameManager.Instance.Footsteps.Play();
+            if (!GameManager.Instance.Footsteps.isPlaying)
+            {
+                GameManager.Instance.Footsteps.Play();
+            }
 
         }
         else

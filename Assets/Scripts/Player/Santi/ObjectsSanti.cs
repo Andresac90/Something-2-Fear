@@ -360,7 +360,10 @@ public class ObjectsSanti : MonoBehaviourPun
             {
                 if (isInteractPressed)
                 {
-                    GameManager.Instance.Healing.Play();
+                    if (!GameManager.Instance.Healing.isPlaying)
+                    {
+                        GameManager.Instance.Healing.Play();
+                    }
                     HealingUI.SetActive(true);
                     station.updateCure(true, this.gameObject);
                     activeStation = station;
