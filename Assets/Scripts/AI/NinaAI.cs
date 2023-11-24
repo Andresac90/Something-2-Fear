@@ -57,17 +57,18 @@ public class NinaAI : MonoBehaviour
     private PhotonView SantiPV;
 
     public float catchDistance;
-    public Animator aiAnimation; //for fuuture use in animations
 
     public float seenCooldownTimer;
     public float stoppedTimer;
     public float defaultCooldownTime = 5f;
 
     private Animator ninaAnimator;
+    private PhotonView PV;
 
     // Start is called before the first frame update
     void Start()
     {
+        PV = GetComponent<PhotonView>();
         players = new GameObject[2];
 
         PlayerPosition = Vector3.zero;
@@ -150,7 +151,7 @@ public class NinaAI : MonoBehaviour
 
     private void Chasing()
     {
-
+        PV.RPC("UpdateAttackingAnimation", RpcTarget.All);
         //  The enemy is chasing the player
         //  Set false that hte player is near beacause the enemy already sees the player
         playerLastPosition = Vector3.zero;          //  Reset the player near position
@@ -207,12 +208,14 @@ public class NinaAI : MonoBehaviour
             //  If the enemy arrives to the waypoint position then wait for a moment and go to the next
             if (WaitTime <= 0)
             {
+                PV.RPC("UpdateMoveAnimation", RpcTarget.All,true);
                 NextPoint();
                 Move(walkSpeed);
                 WaitTime = Random.Range(minWaitTime, maxWiatTime);
             }
             else
             {
+                PV.RPC("UpdateMoveAnimation", RpcTarget.All, false);
                 //aiAnimation.ResetTrigger("sprint");
                 //aiAnimation.ResetTrigger("walk");
                 //aiAnimation.SetTrigger("idle");
@@ -292,6 +295,7 @@ public class NinaAI : MonoBehaviour
 
     public void ChaseJose()
     {
+        PV.RPC("UpdateAttackingAnimation", RpcTarget.All);
         aiAgent.SetDestination(players[1].transform.position);
         aiAgent.speed = 0.8f;
         if (Vector3.Distance(transform.position, players[1].transform.position) < catchDistance)
@@ -429,11 +433,9 @@ public class NinaAI : MonoBehaviour
     }
 
     [PunRPC]
-    void UpdateAttackingAnimation(bool isAttacking)
+    void UpdateAttackingAnimation()
     {
-        if (ninaAnimator != null)
-        {
-            ninaAnimator.SetBool("IsAttacking", isAttacking);
-        }
+        ninaAnimator.SetTrigger("IsAttacking");
+        ninaAnimator.ResetTrigger("IsAttacking");
     }
 }
