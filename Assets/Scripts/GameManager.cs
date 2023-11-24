@@ -44,6 +44,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     public AudioSource PascualitaJumpscare;
     public AudioSource AudioHospital;
     public AudioSource NurseScream;
+    public AudioSource Ambience1;
+    public AudioSource Ambience2;
+    public AudioSource PascualaLaugh;
+    public AudioSource Healing;
+    public AudioSource Footsteps;
+    public AudioSource NurseRunning;
+    public AudioSource DoorLocked;
+    public AudioSource Whispers;
 
     public PlayableDirector ending;
 
