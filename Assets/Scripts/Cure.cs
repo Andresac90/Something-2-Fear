@@ -6,7 +6,7 @@ using Photon.Pun;
 public class Cure : MonoBehaviourPun
 {
     private float currentTime = 0f;
-    private float cureTime = 5f;
+    private float cureTime = 4f;
     private bool isInteractPressed;
 
     private GameObject player;
