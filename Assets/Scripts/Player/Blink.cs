@@ -37,6 +37,7 @@ public class Blink : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
+        if (!photonView.IsMine) return;
         Contador += Time.deltaTime;
         if (Contador >= RandomNumber && Check)
         {
@@ -44,7 +45,7 @@ public class Blink : MonoBehaviourPun
             BelowEye.transform.localPosition += new Vector3(0, 7 * Time.deltaTime * 300, 0);
             IsBlinking = true;
 
-            pascualitaPV.RPC("BlinkRPC", RpcTarget.All, PlayerName);
+            pascualitaPV.RPC("BlinkRPC", RpcTarget.All, PlayerName, true);
             
         }
         if(Contador >= RandomNumber + 0.5f)
@@ -57,7 +58,7 @@ public class Blink : MonoBehaviourPun
         {
             IsBlinking = false;
 
-            pascualitaPV.RPC("BlinkRPC", RpcTarget.All, PlayerName);
+            pascualitaPV.RPC("BlinkRPC", RpcTarget.All, PlayerName, false);
             AboveEye.transform.localPosition = new Vector3(0, 1000, 0);
             BelowEye.transform.localPosition = new Vector3(0, -1000, 0);
             RandomNumber = Random.Range(5, 10);

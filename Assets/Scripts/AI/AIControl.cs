@@ -53,12 +53,13 @@ public class AIControl : MonoBehaviourPun
     private PhotonView JosePV;
     private PhotonView SantiPV;
 
-    
+
 
     //Testing variables
     public bool isSeen;  //Pascualita is being seen by player
     public bool isSeenSanti = false;  //Pascualita is being seen by player
     public bool isSeenJose = false;  //Pascualita is being seen by player
+    public bool isSeenBoth = false;
 
     //int randNum; //Random val to randomize patrol pattern
     public float catchDistance;
@@ -75,7 +76,7 @@ public class AIControl : MonoBehaviourPun
 
     void Start()
     {
-        players = new GameObject[2];   
+        players = new GameObject[2];
 
         PlayerPosition = Vector3.zero;
         isPatrol = true;
@@ -108,43 +109,57 @@ public class AIControl : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void BlinkRPC(string name){
+    public void BlinkRPC(string name, bool isBlinking)
+    {
         if (name == "Jose(Clone)")
         {
-            blinkingJose = !blinkingJose;
+            blinkingJose = isBlinking;
         }
         else
         {
-            blinkingSanti = !blinkingSanti;
+            blinkingSanti = isBlinking;
         }
     }
 
     [PunRPC]
     public void SyncInRange(bool range)
     {
-        
+
     }
 
 
 
     private void Update()
     {
-        if (isJoseActive && isSantiActive) 
+        if (isJoseActive && isSantiActive)
         {
             EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
 
             closerPlayer = GetCloserPlayer(); //relevant player
 
-            //santiDowned = players[0].GetComponent<Down>().isPlayerDowned;
-            //joseDowned = players[1].GetComponent<Down>().isPlayerDowned;
+            isSeenBoth = isSeenJose && isSeenSanti;
 
-            if (isSeen && (!blinkingSanti || !blinkingJose)) //&& seenCooldownTimer >= 0) // if Pascualita is seen stop (recibe valor de PlayerScript)
+            if (isSeenBoth && !blinkingSanti && !blinkingJose)
             {
-                //Debug.Log("Pascualita is being seen");
-                Seen();
+                // Both players are seen and not blinking
+                Debug.Log("cond 1");
+                Stop();
+            }
+            // Either only Santi or only Jose is seen
+            else if (!isSeenBoth && isSeenSanti && !blinkingSanti)
+            {
+                Debug.Log("cond 2");
+                Stop();
+            }
+            else if (!isSeenBoth && isSeenJose && !blinkingJose)
+            {
+                // Only Jose is seen and not blinking
+                Debug.Log("cond 3");
+                Stop();
             }
             else if (isChasing && !isPlayerCaught)
             {
+                Debug.Log("ass Chasing");
                 aiAnimation.ResetTrigger("walk");
                 aiAnimation.ResetTrigger("idle");
                 aiAnimation.SetTrigger("sprint");
@@ -152,6 +167,7 @@ public class AIControl : MonoBehaviourPun
             }
             else if (isPatrol && !isPlayerCaught)
             {
+                Debug.Log("ass patrolling");
                 aiAnimation.ResetTrigger("sprint");
                 aiAnimation.ResetTrigger("idle");
                 aiAnimation.SetTrigger("walk");
@@ -162,18 +178,20 @@ public class AIControl : MonoBehaviourPun
 
     private void Chasing()
     {
-        
+
         //  The enemy is chasing the player
-                               //  Set false that hte player is near beacause the enemy already sees the player
+        //  Set false that hte player is near beacause the enemy already sees the player
         playerLastPosition = Vector3.zero;          //  Reset the player near position
 
         if (!isPlayerCaught)
         {
             Move(chaseSpeed);
             aiAgent.SetDestination(PlayerPosition);          //  set the destination of the enemy to the player location
+            Debug.Log("ass CHASE");
         }
         if (aiAgent.remainingDistance <= aiAgent.stoppingDistance)    //  Control if the enemy arrive to the player location
         {
+            Debug.Log("ass PING");
             if (WaitTime <= 0 && !isPlayerCaught && Vector3.Distance(transform.position, closerPlayer.transform.position) >= 6f)
             {
                 //  Check if the enemy is not near to the player, returns to patrol after the wait time delay
@@ -191,7 +209,7 @@ public class AIControl : MonoBehaviourPun
                     Stop();
                 WaitTime -= Time.deltaTime;
             }
-            if (Vector3.Distance(transform.position, closerPlayer.transform.position)  < catchDistance)
+            if (Vector3.Distance(transform.position, closerPlayer.transform.position) < catchDistance)
             {
                 CaughtPlayer();
                 Attacking();
@@ -217,7 +235,7 @@ public class AIControl : MonoBehaviourPun
 
     private void Patroling()
     {
-                   //  The player is no near when the enemy is platroling
+        //  The player is no near when the enemy is platroling
         playerLastPosition = Vector3.zero;
         Move(walkSpeed);
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);    //  Set the enemy destination to the next waypoint
@@ -243,24 +261,24 @@ public class AIControl : MonoBehaviourPun
 
     private void Attacking()
     {
-        
-        if(closerPlayer == players[0])
+
+        if (closerPlayer == players[0])
         {
             if (!SantiPV.IsMine)
             {
                 isPlayerCaught = false;
-                return;             
+                return;
             }
             isPlayerCaught = false;
             Debug.Log("Pinga attack SANTI");
             SantiPV.RPC("SyncDowned", RpcTarget.All);
             GameManager.Instance.PascualitaJumpscare.Play();
-            santiAnimation.SetTrigger("SantiJumpscareTrigger");
+            santiAnimation.SetTrigger("SantiPascualitaJumpscareTrigger");
             StartCoroutine(EndSantiJumpscare());
-            
+
 
         }
-        else if(closerPlayer == players[1])
+        else if (closerPlayer == players[1])
         {
             if (!JosePV.IsMine)
             {
@@ -276,7 +294,7 @@ public class AIControl : MonoBehaviourPun
             StartCoroutine(EndJoseJumpscare());
         }
 
-        
+
         Patroling();
 
     }
@@ -314,11 +332,6 @@ public class AIControl : MonoBehaviourPun
         if (WaitTime <= 0)
         {
             Debug.Log("Hallo");
-            //isPatrol = true;
-            //Move(walkSpeed);
-            //aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
-            //WaitTime = startWaitTime;
-            //TimeToRotate = timeToRotate;
         }
         else
         {
@@ -372,7 +385,7 @@ public class AIControl : MonoBehaviourPun
         {
             if (WaitTime <= 0)
             {
-                
+
                 Move(walkSpeed);
                 aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
                 WaitTime = startWaitTime;
@@ -386,22 +399,22 @@ public class AIControl : MonoBehaviourPun
         }
     }
 
-    private GameObject GetCloserPlayer() 
+    private GameObject GetCloserPlayer()
     {
         GameObject close;
         float distanceToSanti;
         float distanceToJose;
-        if(players[0] != null && players[1] != null)
+        if (players[0] != null && players[1] != null)
         {
             distanceToSanti = Vector3.Distance(transform.position, players[0].transform.position);
             distanceToJose = Vector3.Distance(transform.position, players[1].transform.position);
             close = (distanceToSanti < distanceToJose) ? players[0] : players[1];
         }
-        else if(players[1] != null)
+        else if (players[1] != null)
         {
             close = players[1];
         }
-        else if(players[0] != null)
+        else if (players[0] != null)
         {
             close = players[0];
         }
@@ -431,11 +444,11 @@ public class AIControl : MonoBehaviourPun
             {
                 float dstToPlayer = Vector3.Distance(transform.position, player.position);          //  Distance of the enmy and the player
                 if (!Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, obstacleMask) && !isPlayerCaught)
-                {                  
+                {
                     this.playerInRange = true;             //  The player has been seen by the enemy and then the enemy chases the player
                     isChasing = true;                 //  Change the state to chasing the player
                     isPatrol = false;
-                    
+
                 }
                 else
                 {
@@ -466,39 +479,38 @@ public class AIControl : MonoBehaviourPun
     [PunRPC]
     public void SyncSetIsSeen(bool setIsSeen, string names)
     {
-        if(names == "Jose(Clone)")
+        if (names == "Jose(Clone)")
         {
             isSeenJose = setIsSeen;
         }
-        else if(names == "Santi(Clone)")
+        else if (names == "Santi(Clone)")
         {
             isSeenSanti = setIsSeen;
         }
-        isSeen = isSeenJose || isSeenSanti; 
+        isSeen = isSeenJose || isSeenSanti;
     }
-    //public void SetIsSeen(bool setIsSeen)
-    //{ isSeen = setIsSeen; }
+
 
     public bool GetIsSeen()
     { return isSeen; }
 
     IEnumerator EndSantiJumpscare()
     {
-        
+
         yield return new WaitForSeconds(2f);
-            
+
         aiAnimation.ResetTrigger("walk");
         aiAnimation.ResetTrigger("idle");
         aiAnimation.ResetTrigger("sprint");
         santiAnimation.ResetTrigger("SantiJumpscareTrigger");
         santiAnimation.SetTrigger("SantiDownedTrigger");
-    }                                         
+    }
 
     IEnumerator EndJoseJumpscare()
     {
-        
+
         yield return new WaitForSeconds(2f);
-            
+
         aiAnimation.ResetTrigger("walk");
         aiAnimation.ResetTrigger("idle");
         aiAnimation.ResetTrigger("sprint");
@@ -506,29 +518,4 @@ public class AIControl : MonoBehaviourPun
         joseAnimation.SetTrigger("JoseDownedTrigger");
 
     }
-
-    //IEnumerator stayIdle()
-    //{
-    //    WaitTime = Random.Range(minWaitTime, maxWiatTime);
-    //    yield return new WaitForSeconds(WaitTime);
-    //    isPatrol = true;
-    //    CurrentWaypointIndex = Random.Range(0, waypoints.Length);
-    //    aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
-    //}
-    //IEnumerator chaseRoutine()
-    //{
-    //    chaseTime = Random.Range(minChaseTime, maxChaseTime);
-    //    yield return new WaitForSeconds(chaseTime);
-    //    isPatrol = true;
-    //    chasing = false;
-    //    CurrentWaypointIndex = Random.Range(0, waypoints.Length);
-    //    aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
-    //}
-    //IEnumerator deathRoutine()
-    //{
-    //    Debug.Log("deathroutine");
-
-    //    yield return new WaitForSeconds(1);//jumpscare time
-    //    //SceneManager.LoadScene(deathScene);
-    //}
 }

@@ -480,7 +480,7 @@ MonoBehaviour:
   timeToRotate: 0.5
   walkSpeed: 6
   chaseSpeed: 9
-  viewRadius: 10
+  viewRadius: 15
   viewAngle: 90
   playerMask:
     serializedVersion: 2
@@ -510,6 +510,9 @@ MonoBehaviour:
   blinkingSanti: 0
   blinkingJose: 0
   isSeen: 0
+  isSeenSanti: 0
+  isSeenJose: 0
+  isSeenBoth: 0
   catchDistance: 0
   aiAnimation: {fileID: 7047640769868950306}
   santiAnimation: {fileID: 0}
