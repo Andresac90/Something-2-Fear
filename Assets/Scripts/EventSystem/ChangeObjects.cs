@@ -38,6 +38,7 @@ public class ChangeObjects : MonoBehaviourPun
     [PunRPC]
     public void ActivatePascualita()
     {
+        GameManager.Instance.PascualaLaugh.Play();
         pascualita.SetActive(true);
     }
 
@@ -62,6 +63,7 @@ public class ChangeObjects : MonoBehaviourPun
     [PunRPC]
     public void DeactivateLights()
     {
+        GameManager.Instance.Ambience2.Play();
         lights.SetActive(false);
     }
 

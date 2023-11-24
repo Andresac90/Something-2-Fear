@@ -114,9 +114,11 @@ public class JoseMovement : MonoBehaviourPun
         if(Move.x != 0 || Move.y != 0 && !IsSprintPressed)
         {
             PV.RPC("UpdateWalkingAnimation", RpcTarget.All, true);
+            GameManager.Instance.Footsteps.Play();
         }
         else
         {
+            GameManager.Instance.Footsteps.Stop();
             PV.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
         }
     }
@@ -126,6 +128,7 @@ public class JoseMovement : MonoBehaviourPun
         bool IsSprintPressed = Controls.Player.Run.ReadValue<float>() > 0.1f;
         if (IsSprintPressed && !HasRun && !HasCrouched && IsGrounded)
         {
+            GameManager.Instance.Footsteps.Play();
             PV.RPC("UpdateRunningAnimation", RpcTarget.All, true);
             PV.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
             Speed *= 1.9f;
@@ -133,6 +136,7 @@ public class JoseMovement : MonoBehaviourPun
         }
         else if (!IsSprintPressed && HasRun)
         {
+            GameManager.Instance.Footsteps.Stop();
             PV.RPC("UpdateRunningAnimation", RpcTarget.All, false);
             Speed = OriginalSpeed;
             HasRun = false;
