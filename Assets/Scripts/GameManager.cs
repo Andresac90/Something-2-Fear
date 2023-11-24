@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public AudioSource Click;
     public AudioSource Keys;
     public AudioSource Door;
+    public AudioSource Switch;
     public AudioSource PascualitaJumpscare;
     public AudioSource AudioHospital;
     public AudioSource NurseScream;

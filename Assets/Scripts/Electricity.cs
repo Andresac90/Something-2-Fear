@@ -15,6 +15,7 @@ public class Electricity : MonoBehaviour
     [PunRPC]
     public void Activation(bool state)
     {
+        GameManager.Instance.Switch.Play();
         Lights.SetActive(state);
         currentTime = 0f;
     }
