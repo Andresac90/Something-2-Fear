@@ -57,6 +57,8 @@ public class NurseAI : MonoBehaviour
     public float stoppedTimer;
     public float defaultCooldownTime = 5f;
 
+    private Animator nurseAnimator;
+
     void Start()
     {
         players = new GameObject[2];
@@ -356,6 +358,33 @@ public class NurseAI : MonoBehaviour
     {
         key.SetActive(true);
     }
- 
+
+    [PunRPC]
+    void UpdateMoveAnimation(bool isMoving)
+    {
+        if (nurseAnimator != null)
+        {
+            nurseAnimator.SetBool("IsMoving", isMoving);
+        }
+    }
+
+    [PunRPC]
+    void UpdateRunningAnimation(bool isRunning)
+    {
+        if (nurseAnimator != null)
+        {
+            nurseAnimator.SetBool("IsRunning", isRunning);
+        }
+    }
+
+    [PunRPC]
+    void UpdateIdleAnimation(bool isIdle)
+    {
+        if (nurseAnimator != null)
+        {
+            nurseAnimator.SetBool("IsIdle", isIdle);
+        }
+    }
+
 }
 
