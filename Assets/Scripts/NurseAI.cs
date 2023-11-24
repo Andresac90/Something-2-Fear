@@ -51,7 +51,6 @@ public class NurseAI : MonoBehaviour
     private PhotonView SantiPV;
 
     public float catchDistance;
-    public Animator aiAnimation; //for fuuture use in animations
 
     public float seenCooldownTimer;
     public float stoppedTimer;
@@ -59,8 +58,11 @@ public class NurseAI : MonoBehaviour
 
     private Animator nurseAnimator;
 
+    private PhotonView PV;
+
     void Start()
     {
+        PV = GetComponent<PhotonView>();
         players = new GameObject[2];
         ChangeObjects = GameObject.Find("ChangeObjects");
         PlayerPosition = Vector3.zero;
@@ -187,12 +189,16 @@ public class NurseAI : MonoBehaviour
             //  If the enemy arrives to the waypoint position then wait for a moment and go to the next
             if (WaitTime <= 0)
             {
+                PV.RPC("UpdateIdleAnimation", RpcTarget.All, false);
+                PV.RPC("UpdateMoveAnimation", RpcTarget.All,true);
                 NextPoint();
                 Move(walkSpeed);
                 WaitTime = Random.Range(minWaitTime, maxWiatTime);
             }
             else
             {
+                PV.RPC("UpdateMoveAnimation", RpcTarget.All, false);
+                PV.RPC("UpdateIdleAnimation", RpcTarget.All,true);
                 //aiAnimation.ResetTrigger("sprint");
                 //aiAnimation.ResetTrigger("walk");
                 //aiAnimation.SetTrigger("idle");
@@ -374,15 +380,6 @@ public class NurseAI : MonoBehaviour
         if (nurseAnimator != null)
         {
             nurseAnimator.SetBool("IsRunning", isRunning);
-        }
-    }
-
-    [PunRPC]
-    void UpdateIdleAnimation(bool isIdle)
-    {
-        if (nurseAnimator != null)
-        {
-            nurseAnimator.SetBool("IsIdle", isIdle);
         }
     }
 
