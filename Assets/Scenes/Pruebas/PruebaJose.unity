@@ -2125,6 +2125,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hassan_Enfermera_Idle_03
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: d55f94f8323b6f54dae347a0b9696d54, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 41373c3d45fba954499fe8935e26688a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

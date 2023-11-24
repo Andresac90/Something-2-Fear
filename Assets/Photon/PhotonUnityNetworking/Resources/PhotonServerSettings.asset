@@ -93,6 +93,13 @@ MonoBehaviour:
   - EraseBlock3
   - EnableBlock4
   - EraseBlock4
+  - UpdateAttackingAnimation
+  - UpdateEnterPuzzleAnimation
+  - UpdateExitPuzzle
+  - UpdateHealingAnimation
+  - UpdateIdleAnimation
+  - UpdateMoveAnimation
+  - UpdateStandAnimation
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
