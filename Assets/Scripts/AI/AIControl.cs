@@ -503,8 +503,8 @@ public class AIControl : MonoBehaviourPun
         aiAnimation.ResetTrigger("idle");
         aiAnimation.ResetTrigger("sprint");
         santiAnimation.ResetTrigger("SantiJumpscareTrigger");
-        santiAnimation.SetTrigger("SantiDownedTrigger");
-    }
+        
+    }                                         
 
     IEnumerator EndJoseJumpscare()
     {
@@ -515,7 +515,7 @@ public class AIControl : MonoBehaviourPun
         aiAnimation.ResetTrigger("idle");
         aiAnimation.ResetTrigger("sprint");
         joseAnimation.ResetTrigger("JosePascualitaJumpscareTrigger");
-        joseAnimation.SetTrigger("JoseDownedTrigger");
+        
 
     }
 }

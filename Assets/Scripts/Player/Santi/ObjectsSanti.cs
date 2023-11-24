@@ -63,6 +63,8 @@ public class ObjectsSanti : MonoBehaviourPun
     private GameObject Object3UI;
     [SerializeField]
     private GameObject InjectionUI;
+    [SerializeField]
+    private GameObject noKeyUI;
 
     [SerializeField]
     private GameObject Timer;
@@ -159,9 +161,10 @@ public class ObjectsSanti : MonoBehaviourPun
                     
                     break;
             }
-
-            
-
+        }
+        else
+        {
+            noKeyUI.SetActive(false);
         }
 
         //Object UI
@@ -187,7 +190,7 @@ public class ObjectsSanti : MonoBehaviourPun
         }
 
         //Interact UI
-        if (hit.transform != null && hit.transform.tag == "Puzzle")
+        if (hit.transform != null && hit.transform.tag == "Puzzle" && !noKeyUI.activeInHierarchy)
         {
             InteractUI.SetActive(true);
             DropRightUI.SetActive(false);
@@ -398,17 +401,19 @@ public class ObjectsSanti : MonoBehaviourPun
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.2f;
             if (objectNameString != "Key" && puzzle.puzzle.name != null && puzzle.puzzle.name == "LockPick" && !puzzleCreated)
             {
-                Debug.Log("You need a key");
-                //UI You need a key
+                noKeyUI.SetActive(true);
             }
             else if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
             {
+                photonView.RPC("UpdateEnterPuzzleAnimation", RpcTarget.All);
                 puzzle.OpenPuzzle(false, false, objectName);
                 puzzleCreated = true;
                 puzzleActive = true;
+                noKeyUI.SetActive(false);
             }
             else if(puzzle != null && isInteractPressed && puzzleCreated && !puzzleActive)
             {
+                photonView.RPC("UpdateEnterPuzzleAnimation", RpcTarget.All);
                 puzzle.OpenPuzzle(true, false, objectName);
                 puzzleActive = true;
             }
@@ -417,11 +422,17 @@ public class ObjectsSanti : MonoBehaviourPun
                 bool isCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0.2f;
                 if(isCancelPressed && puzzleActive)
                 {
+                    photonView.RPC("UpdateExitPuzzle", RpcTarget.All);
                     puzzle.ClosePuzzle(true);
                     puzzleActive = false;
                 }
             }
         }
+        else
+        {
+            noKeyUI.SetActive(false);
+        }
+
     }
 
     public void NoteManager()
@@ -442,6 +453,20 @@ public class ObjectsSanti : MonoBehaviourPun
                 noteCreated = false;
             }
         }
+    }
+
+    [PunRPC]
+    void UpdateEnterPuzzleAnimation()
+    {
+        santiAnimator.SetTrigger("BeginPuzzleTrigger");
+        santiAnimator.ResetTrigger("EndPuzzleTrigger");
+    }
+
+    [PunRPC]
+    void UpdateExitPuzzle()
+    {
+        santiAnimator.SetTrigger("EndPuzzleTrigger");
+        santiAnimator.ResetTrigger("BeginPuzzleTrigger");
     }
 
     private void Grab()

@@ -16,7 +16,7 @@ public class Video : MonoBehaviour
     {
         if (firstV)
         {
-            gameObject.GetComponent<VideoPlayer>().url = Application.streamingAssetsPath + "/" + "FinalCutscene.mp4";
+            gameObject.GetComponent<VideoPlayer>().url = Application.streamingAssetsPath + "/" + "FinalCutsceneV2.mp4";
         }
         else if (secondV)
         {
@@ -45,13 +45,13 @@ public class Video : MonoBehaviour
 
     void checkTime()
     {
-        if (currentTime > 39.0f && firstV && !firstPlaying)
+        if (currentTime > 38.0f && firstV && !firstPlaying)
         {
             gameObject.GetComponent<VideoPlayer>().Play();
             firstPlaying = true;
         }
 
-        if (currentTime > 199.0f && secondV && !secondPlaying)
+        if (currentTime > 122.0f && secondV && !secondPlaying)
         {
             gameObject.GetComponent<VideoPlayer>().Play();
             secondPlaying = true;

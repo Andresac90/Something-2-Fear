@@ -76,11 +76,13 @@ public class Down : MonoBehaviourPun
         {
             photonView.RPC("playerDown", RpcTarget.All, true);
             GetComponent<SantiController>().enabled = false;
+            playerAnimator.SetTrigger("SantiDownedTrigger");
         }
         else if (name == "Jose(Clone)")
         {
             photonView.RPC("playerDown", RpcTarget.All, true);
             GetComponent<JoseMovement>().enabled = false;
+            playerAnimator.SetTrigger("JoseDownedTrigger");
         }
         GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y - 0.879f, transform.position.z);
         GetComponent<Transform>().rotation = Quaternion.Euler(Quaternion.identity.x - 90f, Quaternion.identity.y, Quaternion.identity.z);

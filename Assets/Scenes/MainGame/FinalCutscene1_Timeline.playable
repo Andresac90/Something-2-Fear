@@ -59,76 +59,7 @@ MonoBehaviour:
   m_Curves: {fileID: 0}
   m_Parent: {fileID: 11400000}
   m_Children: []
-  m_Clips:
-  - m_Version: 1
-    m_Start: 32.13333333333333
-    m_ClipIn: 0
-    m_Asset: {fileID: -7128583777175905011}
-    m_Duration: 184.29551020408164
-    m_TimeScale: 1
-    m_ParentTrack: {fileID: -7682874327829113617}
-    m_EaseInDuration: 0
-    m_EaseOutDuration: 0
-    m_BlendInDuration: -1
-    m_BlendOutDuration: -1
-    m_MixInCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_MixOutCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_BlendInCurveMode: 0
-    m_BlendOutCurveMode: 0
-    m_ExposedParameterNames: []
-    m_AnimationCurves: {fileID: 0}
-    m_Recordable: 0
-    m_PostExtrapolationMode: 0
-    m_PreExtrapolationMode: 0
-    m_PostExtrapolationTime: 0
-    m_PreExtrapolationTime: 0
-    m_DisplayName: Final Music1
+  m_Clips: []
   m_Markers:
     m_Objects: []
   m_TrackProperties:
@@ -295,7 +226,7 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: Recorded (2)
   - m_Version: 1
-    m_Start: 174.12651407519974
+    m_Start: 100.1
     m_ClipIn: 0
     m_Asset: {fileID: 7914860779322027089}
     m_Duration: 19.75681925813359
@@ -303,7 +234,7 @@ MonoBehaviour:
     m_ParentTrack: {fileID: -7660572907024973226}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
-    m_BlendInDuration: 0.006819258133589301
+    m_BlendInDuration: -1
     m_BlendOutDuration: -1
     m_MixInCurve:
       serializedVersion: 2
@@ -342,11 +273,11 @@ MonoBehaviour:
     m_Recordable: 1
     m_PostExtrapolationMode: 1
     m_PreExtrapolationMode: 1
-    m_PostExtrapolationTime: 7.133333333333354
+    m_PostExtrapolationTime: 3.459801411442456
     m_PreExtrapolationTime: 0
     m_DisplayName: Recorded (3)
   - m_Version: 1
-    m_Start: 201.01666666666668
+    m_Start: 123.31662066957604
     m_ClipIn: 0
     m_Asset: {fileID: -1611861828905502203}
     m_Duration: 7.851018031438173
@@ -418,13 +349,13 @@ MonoBehaviour:
     m_Start: 41.4
     m_ClipIn: 0
     m_Asset: {fileID: 2120059184660006688}
-    m_Duration: 132.73333333333332
+    m_Duration: 53.06666666666667
     m_TimeScale: 1
     m_ParentTrack: {fileID: -7660572907024973226}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: -1
-    m_BlendOutDuration: 0.006819258133589301
+    m_BlendOutDuration: -1
     m_MixInCurve:
       serializedVersion: 2
       m_Curve:
@@ -480,7 +411,7 @@ MonoBehaviour:
     m_Recordable: 1
     m_PostExtrapolationMode: 1
     m_PreExtrapolationMode: 1
-    m_PostExtrapolationTime: 0
+    m_PostExtrapolationTime: 5.633333333333326
     m_PreExtrapolationTime: 0
     m_DisplayName: Recorded (5)
   m_Markers:
@@ -1040,7 +971,7 @@ MonoBehaviour:
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: -1
-    m_BlendOutDuration: -1
+    m_BlendOutDuration: 6.071156462585037
     m_MixInCurve:
       serializedVersion: 2
       m_Curve:
@@ -1062,6 +993,39 @@ MonoBehaviour:
         weightedMode: 0
         inWeight: 0
         outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: FinalJumpscare
+  - m_Version: 1
+    m_Start: 37.15
+    m_ClipIn: 81.96116215318952
+    m_Asset: {fileID: -7128583777175905011}
+    m_Duration: 102.33434805089198
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: -4023714255543524228}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: 6.071156462585037
+    m_BlendOutDuration: -1
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve: []
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -1098,7 +1062,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: FinalJumpscare
+    m_DisplayName: Final Music1
   m_Markers:
     m_Objects: []
   m_TrackProperties:
@@ -1674,15 +1638,6 @@ AnimationClip:
       - serializedVersion: 3
         time: 32.333332
         value: {x: -17.2, y: 0.00000000885143, z: -0.00000002301013}
-        inSlope: {x: -0.8377472, y: 0, z: 0}
-        outSlope: {x: -0.8377472, y: 0, z: 0}
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
-        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
-      - serializedVersion: 3
-        time: 186.73334
-        value: {x: -72.9, y: 0.00000000885143, z: -0.00000002301013}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -1719,7 +1674,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 186.73334
+    m_StopTime: 32.333332
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -1769,15 +1724,6 @@ AnimationClip:
       - serializedVersion: 3
         time: 32.333332
         value: -17.2
-        inSlope: -0.8377472
-        outSlope: -0.8377472
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 186.73334
-        value: -72.9
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1832,15 +1778,6 @@ AnimationClip:
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 186.73334
-        value: 0.00000000885143
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -1882,15 +1819,6 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 32.333332
-        value: -0.00000002301013
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 186.73334
         value: -0.00000002301013
         inSlope: 0
         outSlope: 0
@@ -2037,7 +1965,7 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: AnimationDefaultState
   - m_Version: 1
-    m_Start: 191.65000000000003
+    m_Start: 116.13475044518711
     m_ClipIn: 0
     m_Asset: {fileID: 5977652282594392047}
     m_Duration: 9.366666666666646
@@ -2171,7 +2099,7 @@ MonoBehaviour:
     m_Recordable: 0
     m_PostExtrapolationMode: 1
     m_PreExtrapolationMode: 1
-    m_PostExtrapolationTime: 173.68333333333337
+    m_PostExtrapolationTime: 98.16808377852044
     m_PreExtrapolationTime: 0
     m_DisplayName: AnimationDoor
   m_Markers:
