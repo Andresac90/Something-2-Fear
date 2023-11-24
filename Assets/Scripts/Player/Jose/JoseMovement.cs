@@ -229,6 +229,7 @@ public class JoseMovement : MonoBehaviourPun
             joseAnimator.SetBool("IsStanding", isStanding);
             if (isStanding)
             {
+                joseAnimator.ResetTrigger("IsLeftGrabbingTrigger");
                 joseAnimator.SetTrigger("Standing");
             }
             else

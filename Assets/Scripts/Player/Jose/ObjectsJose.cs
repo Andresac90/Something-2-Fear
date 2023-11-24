@@ -361,11 +361,12 @@ public class ObjectsJose : MonoBehaviourPun
     }
 
     [PunRPC]
-    void UpdateLeftGrabbingAnimation(bool isLeftGrabbing)
+    void UpdateLeftGrabbingAnimation()
     {
         if (joseAnimator != null)
         {
-            joseAnimator.SetBool("IsLeftGrabbing", isLeftGrabbing);
+            joseAnimator.ResetTrigger("Standing");
+            joseAnimator.SetTrigger("IsLeftGrabbingTrigger");
         }
     }
 
@@ -410,8 +411,7 @@ public class ObjectsJose : MonoBehaviourPun
             bool IsLeftPressed = Controls.Player.LeftItem.ReadValue<float>() > 0.1f;
             if (IsLeftPressed && !HasObjectLeft)
             {
-                photonView.RPC("UpdateLeftGrabbingAnimation", RpcTarget.All, true);
-                photonView.RPC("UpdateLeftGrabbingAnimation", RpcTarget.All, false);
+                photonView.RPC("UpdateLeftGrabbingAnimation", RpcTarget.All);
                 // hit.transform.position = ObjectRightCamera.position;
                 // hit.rigidbody.isKinematic = true;
                 // hit.transform.parent = ObjectLeftCamera;
