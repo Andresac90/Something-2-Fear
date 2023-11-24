@@ -62,6 +62,9 @@ public class NinaAI : MonoBehaviour
     public float seenCooldownTimer;
     public float stoppedTimer;
     public float defaultCooldownTime = 5f;
+
+    private Animator ninaAnimator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -95,6 +98,8 @@ public class NinaAI : MonoBehaviour
         aiAgent.isStopped = false;
         aiAgent.speed = walkSpeed;             //  Set the navemesh speed with the normal speed of the enemy
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);    //  Set the destination to the first waypoint
+
+        ninaAnimator = GetComponent<Animator>();
     }
 
     [PunRPC]
@@ -412,5 +417,23 @@ public class NinaAI : MonoBehaviour
         }
 
         return close;
+    }
+
+    [PunRPC]
+    void UpdateMoveAnimation(bool isMoving)
+    {
+        if (ninaAnimator != null)
+        {
+            ninaAnimator.SetBool("IsMoving", isMoving);
+        }
+    }
+
+    [PunRPC]
+    void UpdateAttackingAnimation(bool isAttacking)
+    {
+        if (ninaAnimator != null)
+        {
+            ninaAnimator.SetBool("IsAttacking", isAttacking);
+        }
     }
 }
