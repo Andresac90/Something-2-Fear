@@ -309,6 +309,7 @@ public class ObjectsJose : MonoBehaviourPun
             {
                 if (isInteractPressed)
                 {
+                    PV.RPC("UpdateHealingAnimation", RpcTarget.All, true);
                     HealingUI.SetActive(true);
                     station.updateCure(true, this.gameObject);
                     activeStation = station;
@@ -316,6 +317,7 @@ public class ObjectsJose : MonoBehaviourPun
                 }
                 else if (activeStation != null)
                 {
+                    PV.RPC("UpdateHealingAnimation", RpcTarget.All, false);
                     HealingUI.SetActive(false);
                     station.updateCure(false, this.gameObject);
                     activeStation = null;
@@ -360,6 +362,15 @@ public class ObjectsJose : MonoBehaviourPun
         if (joseAnimator != null)
         {
             joseAnimator.SetBool("IsLeftGrabbing", isLeftGrabbing);
+        }
+    }
+
+    [PunRPC]
+    void UpdateHealingAnimation(bool isHealing)
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.SetBool("IsHealing", isHealing);
         }
     }
 

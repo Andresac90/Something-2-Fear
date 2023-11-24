@@ -405,6 +405,7 @@ public class ObjectsSanti : MonoBehaviourPun
             }
             else if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
             {
+                photonView.RPC("UpdateEnterPuzzleAnimation", RpcTarget.All);
                 puzzle.OpenPuzzle(false, false, objectName);
                 puzzleCreated = true;
                 puzzleActive = true;
@@ -412,6 +413,7 @@ public class ObjectsSanti : MonoBehaviourPun
             }
             else if(puzzle != null && isInteractPressed && puzzleCreated && !puzzleActive)
             {
+                photonView.RPC("UpdateEnterPuzzleAnimation", RpcTarget.All);
                 puzzle.OpenPuzzle(true, false, objectName);
                 puzzleActive = true;
             }
@@ -420,6 +422,7 @@ public class ObjectsSanti : MonoBehaviourPun
                 bool isCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0.2f;
                 if(isCancelPressed && puzzleActive)
                 {
+                    photonView.RPC("UpdateExitPuzzle", RpcTarget.All);
                     puzzle.ClosePuzzle(true);
                     puzzleActive = false;
                 }
@@ -450,6 +453,20 @@ public class ObjectsSanti : MonoBehaviourPun
                 noteCreated = false;
             }
         }
+    }
+
+    [PunRPC]
+    void UpdateEnterPuzzleAnimation()
+    {
+        santiAnimator.SetTrigger("BeginPuzzleTrigger");
+        santiAnimator.ResetTrigger("EndPuzzleTrigger");
+    }
+
+    [PunRPC]
+    void UpdateExitPuzzle()
+    {
+        santiAnimator.SetTrigger("EndPuzzleTrigger");
+        santiAnimator.ResetTrigger("BeginPuzzleTrigger");
     }
 
     private void Grab()

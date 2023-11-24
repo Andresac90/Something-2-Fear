@@ -172,6 +172,7 @@ public class JoseMovement : MonoBehaviourPun
         else if (!HasCeiling && !IsCrouchPressed && !HasRun)
         {
             PV.RPC("UpdateBendingAnimation", RpcTarget.All, false);
+            PV.RPC("UpdateStandAnimation", RpcTarget.All, true);
             CharController.height = 2;
             CharController.center = new Vector3(0, 0, 0);
             // Camera.localPosition = new Vector3(0, 0.894f, 0.225f);
@@ -179,6 +180,7 @@ public class JoseMovement : MonoBehaviourPun
             Speed = OriginalSpeed;
             HasCrouched = false;
             IsCrouched = false;
+            PV.RPC("UpdateStandAnimation", RpcTarget.All, false);
         }
     }
 
@@ -206,6 +208,23 @@ public class JoseMovement : MonoBehaviourPun
         if (joseAnimator != null)
         {
             joseAnimator.SetBool("IsRunning", isRunning);
+        }
+    }
+
+    [PunRPC]
+    void UpdateStandAnimation(bool isStanding)
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.SetBool("IsStanding", isStanding);
+            if (isStanding)
+            {
+                joseAnimator.SetTrigger("Standing");
+            }
+            else
+            {
+                joseAnimator.ResetTrigger("Standing");
+            }
         }
     }
 
