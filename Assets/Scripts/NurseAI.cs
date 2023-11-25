@@ -388,7 +388,7 @@ public class NurseAI : MonoBehaviour
     }
 
     [PunRPC]
-    void UpdateAttackingAnimationNurse(bool mode)
+    void UpdateAttackAnimationNurse(bool mode)
     {
         if (nurseAnimator != null)
         {
