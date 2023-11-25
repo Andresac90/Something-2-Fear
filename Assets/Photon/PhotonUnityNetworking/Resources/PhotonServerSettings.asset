@@ -100,6 +100,24 @@ MonoBehaviour:
   - UpdateIdleAnimation
   - UpdateMoveAnimation
   - UpdateStandAnimation
+<<<<<<< Updated upstream
+=======
+  - UpdateBendingAnimationJose
+  - UpdateDownedAnimationJose
+  - UpdateHealingAnimationJose
+  - UpdateLeftGrabbingAnimationJose
+  - UpdateRevivedAnimationJose
+  - UpdateRightGrabbingAnimationJose
+  - UpdateRunningAnimationJose
+  - UpdateStandAnimationJose
+  - UpdateWalkingAnimationJose
+  - UpdateDownedAnimationSanti
+  - UpdateRevivedAnimationSanti
+  - UpdateAttackingAnimationNurse
+  - UpdateMoveAnimationNurse
+  - UpdateRunningAnimationNurse
+  - UpdateAttackAnimationNurse
+>>>>>>> Stashed changes
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
