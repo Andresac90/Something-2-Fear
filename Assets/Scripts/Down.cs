@@ -76,13 +76,13 @@ public class Down : MonoBehaviourPun
         {
             photonView.RPC("playerDown", RpcTarget.All, true);
             GetComponent<SantiController>().enabled = false;
-            photonView.RPC("UpdateDownedAnimationSanti", RpcTarget.All);
+            playerAnimator.SetTrigger("SantiDownedTrigger");
         }
         else if (name == "Jose(Clone)")
         {
             photonView.RPC("playerDown", RpcTarget.All, true);
             GetComponent<JoseMovement>().enabled = false;
-            photonView.RPC("UpdateDownedAnimationJose", RpcTarget.All);
+            playerAnimator.SetTrigger("JoseDownedTrigger");
         }
         GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y - 0.879f, transform.position.z);
         GetComponent<Transform>().rotation = Quaternion.Euler(Quaternion.identity.x - 90f, Quaternion.identity.y, Quaternion.identity.z);
@@ -102,7 +102,8 @@ public class Down : MonoBehaviourPun
         {
             photonView.RPC("playerDown", RpcTarget.All, false);
             GetComponent<SantiController>().enabled = true;
-            photonView.RPC("UpdateRevivedAnimationSanti", RpcTarget.All);
+            playerAnimator.ResetTrigger("SantiDownedTrigger");
+            playerAnimator.SetTrigger("SantiRevivedTrigger");
             //playerAnimator.ResetTrigger("SantiRevivedTrigger");
             
             
@@ -112,7 +113,8 @@ public class Down : MonoBehaviourPun
         {
             photonView.RPC("playerDown", RpcTarget.All, false);
             GetComponent<JoseMovement>().enabled = true;
-            photonView.RPC("UpdateRevivedAnimationJose", RpcTarget.All);
+            playerAnimator.ResetTrigger("JoseDownedTrigger");
+            playerAnimator.SetTrigger("JoseRevivedTrigger");
             //playerAnimator.ResetTrigger("JoseRevivedTrigger");
 
         }
@@ -157,66 +159,6 @@ public class Down : MonoBehaviourPun
             PhotonNetwork.LoadLevel("LoseScreen");
             photonView.RPC("AreDead", RpcTarget.All);
             // gameObject.SetActive(false);
-        }
-    }
-
-    [PunRPC]
-    void UpdateDownedAnimationJose()
-    {
-        if (playerAnimator != null)
-        {
-            playerAnimator.ResetTrigger("IsHealing");
-            playerAnimator.ResetTrigger("JoseRevivedTrigger");
-            playerAnimator.ResetTrigger("IsStanding");
-            playerAnimator.ResetTrigger("IsRightGrabbingTrigger");
-            playerAnimator.ResetTrigger("IsLeftGrabbingTrigger");
-            playerAnimator.ResetTrigger("IsBending");
-            playerAnimator.ResetTrigger("IsStanding");
-            playerAnimator.SetTrigger("JoseDownedTrigger");
-        }
-    }
-
-    [PunRPC]
-    void UpdateRevivedAnimationJose()
-    {
-        if (playerAnimator != null)
-        {
-            playerAnimator.ResetTrigger("IsHealing");
-            playerAnimator.ResetTrigger("JoseRevivedTrigger");
-            playerAnimator.ResetTrigger("IsStanding");
-            playerAnimator.ResetTrigger("IsRightGrabbingTrigger");
-            playerAnimator.ResetTrigger("IsLeftGrabbingTrigger");
-            playerAnimator.ResetTrigger("IsBending");
-            playerAnimator.ResetTrigger("IsStanding");
-            playerAnimator.SetTrigger("JoseDownedTrigger");
-        }
-    }
-
-    [PunRPC]
-    void UpdateDownedAnimationSanti()
-    {
-        if (playerAnimator != null)
-        {
-            playerAnimator.ResetTrigger("SantiRevivedTrigger");
-            playerAnimator.ResetTrigger("BeginPuzzleTrigger");
-            playerAnimator.ResetTrigger("EndPuzzleTrigger");
-            playerAnimator.ResetTrigger("SpecialIdleTrigger");
-            playerAnimator.ResetTrigger("IsBengalThrowTrigger");
-            playerAnimator.SetTrigger("SantiDownedTrigger");
-        }
-    }
-
-    [PunRPC]
-    void UpdateRevivedAnimationSanti()
-    {
-        if (playerAnimator != null)
-        {
-            playerAnimator.ResetTrigger("SantiDownedTrigger");
-            playerAnimator.ResetTrigger("BeginPuzzleTrigger");
-            playerAnimator.ResetTrigger("EndPuzzleTrigger");
-            playerAnimator.ResetTrigger("SpecialIdleTrigger");
-            playerAnimator.ResetTrigger("IsBengalThrowTrigger");
-            playerAnimator.SetTrigger("SantiRevivedTrigger");
         }
     }
 }

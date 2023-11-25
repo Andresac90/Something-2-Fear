@@ -409,7 +409,7 @@ public class ObjectsSanti : MonoBehaviourPun
             }
             else if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
             {
-                PV.RPC("UpdateEnterPuzzleAnimation", RpcTarget.All);
+                photonView.RPC("UpdateEnterPuzzleAnimation", RpcTarget.All);
                 puzzle.OpenPuzzle(false, false, objectName);
                 puzzleCreated = true;
                 puzzleActive = true;
@@ -417,7 +417,7 @@ public class ObjectsSanti : MonoBehaviourPun
             }
             else if(puzzle != null && isInteractPressed && puzzleCreated && !puzzleActive)
             {
-                PV.RPC("UpdateEnterPuzzleAnimation", RpcTarget.All);
+                photonView.RPC("UpdateEnterPuzzleAnimation", RpcTarget.All);
                 puzzle.OpenPuzzle(true, false, objectName);
                 puzzleActive = true;
             }
@@ -426,7 +426,7 @@ public class ObjectsSanti : MonoBehaviourPun
                 bool isCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0.2f;
                 if(isCancelPressed && puzzleActive)
                 {
-                    PV.RPC("UpdateExitPuzzle", RpcTarget.All);
+                    photonView.RPC("UpdateExitPuzzle", RpcTarget.All);
                     puzzle.ClosePuzzle(true);
                     puzzleActive = false;
                 }

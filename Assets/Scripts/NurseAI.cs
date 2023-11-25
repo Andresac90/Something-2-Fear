@@ -139,9 +139,6 @@ public class NurseAI : MonoBehaviour
 
         if (!isPlayerCaught)
         {
-            PV.RPC("UpdateAttackAnimationNurse", RpcTarget.All, false);
-            PV.RPC("UpdateMoveAnimationNurse", RpcTarget.All, false);
-            PV.RPC("UpdateRunningAnimationNurse", RpcTarget.All, true);
             Move(chaseSpeed);
             aiAgent.SetDestination(PlayerPosition);          //  set the destination of the enemy to the player location
         }
@@ -192,16 +189,16 @@ public class NurseAI : MonoBehaviour
             //  If the enemy arrives to the waypoint position then wait for a moment and go to the next
             if (WaitTime <= 0)
             {
-                PV.RPC("UpdateAttackAnimationNurse", RpcTarget.All, false);
-                PV.RPC("UpdateRunningAnimationNurse", RpcTarget.All, false);
-                PV.RPC("UpdateMoveAnimationNurse", RpcTarget.All,true);
+                PV.RPC("UpdateIdleAnimation", RpcTarget.All, false);
+                PV.RPC("UpdateMoveAnimation", RpcTarget.All,true);
                 NextPoint();
                 Move(walkSpeed);
                 WaitTime = Random.Range(minWaitTime, maxWiatTime);
             }
             else
             {
-                PV.RPC("UpdateMoveAnimationNurse", RpcTarget.All, false);
+                PV.RPC("UpdateMoveAnimation", RpcTarget.All, false);
+                PV.RPC("UpdateIdleAnimation", RpcTarget.All,true);
                 //aiAnimation.ResetTrigger("sprint");
                 //aiAnimation.ResetTrigger("walk");
                 //aiAnimation.SetTrigger("idle");
@@ -248,7 +245,6 @@ public class NurseAI : MonoBehaviour
     void CaughtPlayer()
     {
         isPlayerCaught = true;
-        PV.RPC("UpdateAttackAnimationNurse", RpcTarget.All, true);
         if (closerPlayer == players[0] && !GameManager.Instance.Injection)
         {
             SantiPV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
@@ -370,7 +366,7 @@ public class NurseAI : MonoBehaviour
     }
 
     [PunRPC]
-    void UpdateMoveAnimationNurse(bool isMoving)
+    void UpdateMoveAnimation(bool isMoving)
     {
         if (nurseAnimator != null)
         {
@@ -379,27 +375,11 @@ public class NurseAI : MonoBehaviour
     }
 
     [PunRPC]
-    void UpdateRunningAnimationNurse(bool isRunning)
+    void UpdateRunningAnimation(bool isRunning)
     {
         if (nurseAnimator != null)
         {
             nurseAnimator.SetBool("IsRunning", isRunning);
-        }
-    }
-
-    [PunRPC]
-    void UpdateAttackAnimationNurse(bool mode)
-    {
-        if (nurseAnimator != null)
-        {
-            if(mode)
-            {
-                nurseAnimator.SetTrigger("AttackTrigger");
-            }
-            else
-            {
-                nurseAnimator.ResetTrigger("AttackTrigger");
-            }
         }
     }
 
