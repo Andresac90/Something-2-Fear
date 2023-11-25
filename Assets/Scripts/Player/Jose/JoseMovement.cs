@@ -221,7 +221,6 @@ public class JoseMovement : MonoBehaviourPun
             joseAnimator.ResetTrigger("IsLeftGrabbingTrigger");
             joseAnimator.ResetTrigger("IsRightGrabbingTrigger");
             joseAnimator.ResetTrigger("IsHealing");
-            joseAnimator.ResetTrigger("IsBending");
             joseAnimator.SetTrigger("IsBending");
         }
     }
@@ -238,7 +237,6 @@ public class JoseMovement : MonoBehaviourPun
             joseAnimator.ResetTrigger("IsHealing");
             joseAnimator.ResetTrigger("IsBending");
             joseAnimator.SetTrigger("IsStanding");
-            joseAnimator.SetTrigger("IsBending");
         }
     }
 
