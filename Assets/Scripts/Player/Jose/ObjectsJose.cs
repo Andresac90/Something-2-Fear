@@ -313,7 +313,7 @@ public class ObjectsJose : MonoBehaviourPun
                     {
                         GameManager.Instance.Healing.Play();
                     }
-                    PV.RPC("UpdateHealingAnimation", RpcTarget.All, true);
+                    PV.RPC("UpdateHealingAnimationJose", RpcTarget.All, true);
                     HealingUI.SetActive(true);
                     station.updateCure(true, this.gameObject);
                     activeStation = station;
@@ -326,7 +326,7 @@ public class ObjectsJose : MonoBehaviourPun
                     activeStation = null;
                     activated = false;
                 }
-                PV.RPC("UpdateHealingAnimation", RpcTarget.All, false);
+                PV.RPC("UpdateHealingAnimationJose", RpcTarget.All, false);
             }
         }
         else if (activeStation != null && activated)
@@ -352,30 +352,50 @@ public class ObjectsJose : MonoBehaviourPun
     }
 
     [PunRPC]
-    void UpdateRightGrabbingAnimation(bool isRightGrabbing)
+    void UpdateRightGrabbingAnimationJose()
     {
         if (joseAnimator != null)
         {
-            joseAnimator.SetBool("IsRightGrabbing", isRightGrabbing);
+            joseAnimator.ResetTrigger("JoseDownedTrigger");
+            joseAnimator.ResetTrigger("JoseRevivedTrigger");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsLeftGrabbingTrigger");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.SetTrigger("IsRightGrabbingTrigger");
         }
     }
 
     [PunRPC]
-    void UpdateLeftGrabbingAnimation()
+    void UpdateLeftGrabbingAnimationJose()
     {
         if (joseAnimator != null)
         {
-            joseAnimator.ResetTrigger("Standing");
+            joseAnimator.ResetTrigger("JoseDownedTrigger");
+            joseAnimator.ResetTrigger("JoseRevivedTrigger");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsRightGrabbingTrigger");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("IsStanding");
             joseAnimator.SetTrigger("IsLeftGrabbingTrigger");
         }
     }
 
     [PunRPC]
-    void UpdateHealingAnimation(bool isHealing)
+    void UpdateHealingAnimationJose()
     {
         if (joseAnimator != null)
         {
-            joseAnimator.SetBool("IsHealing", isHealing);
+            joseAnimator.ResetTrigger("JoseDownedTrigger");
+            joseAnimator.ResetTrigger("JoseRevivedTrigger");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsRightGrabbingTrigger");
+            joseAnimator.ResetTrigger("IsLeftGrabbingTrigger");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.SetTrigger("IsHealing");
         }
     }
 
@@ -388,8 +408,8 @@ public class ObjectsJose : MonoBehaviourPun
             bool IsRightPressed = Controls.Player.RightItem.ReadValue<float>() > 0.1f;
             if(IsRightPressed && !HasObjectRight)
             {
-                PV.RPC("UpdateRightGrabbingAnimation", RpcTarget.All, true);
-                PV.RPC("UpdateRightGrabbingAnimation", RpcTarget.All, false);
+                PV.RPC("UpdateRightGrabbingAnimationJose", RpcTarget.All);
+                PV.RPC("UpdateRightGrabbingAnimationJose", RpcTarget.All);
                 // hit.transform.position = ObjectRightCamera.position;
                 // hit.rigidbody.isKinematic = true;
                 // hit.transform.parent = ObjectRightCamera;
@@ -411,7 +431,7 @@ public class ObjectsJose : MonoBehaviourPun
             bool IsLeftPressed = Controls.Player.LeftItem.ReadValue<float>() > 0.1f;
             if (IsLeftPressed && !HasObjectLeft)
             {
-                photonView.RPC("UpdateLeftGrabbingAnimation", RpcTarget.All);
+                photonView.RPC("UpdateLeftGrabbingAnimationJose", RpcTarget.All);
                 // hit.transform.position = ObjectRightCamera.position;
                 // hit.rigidbody.isKinematic = true;
                 // hit.transform.parent = ObjectLeftCamera;

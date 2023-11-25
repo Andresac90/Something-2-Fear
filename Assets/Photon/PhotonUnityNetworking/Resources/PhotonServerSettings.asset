@@ -118,6 +118,20 @@ MonoBehaviour:
   - UpdateRunningAnimationNurse
   - UpdateAttackAnimationNurse
 >>>>>>> Stashed changes
+  - UpdateBendingAnimationJose
+  - UpdateDownedAnimationJose
+  - UpdateHealingAnimationJose
+  - UpdateLeftGrabbingAnimationJose
+  - UpdateRevivedAnimationJose
+  - UpdateRightGrabbingAnimationJose
+  - UpdateRunningAnimationJose
+  - UpdateStandAnimationJose
+  - UpdateWalkingAnimationJose
+  - UpdateDownedAnimationSanti
+  - UpdateRevivedAnimationSanti
+  - UpdateAttackingAnimationNurse
+  - UpdateMoveAnimationNurse
+  - UpdateRunningAnimationNurse
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
