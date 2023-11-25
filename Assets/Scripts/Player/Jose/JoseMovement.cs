@@ -113,7 +113,7 @@ public class JoseMovement : MonoBehaviourPun
 
         if(Move.x != 0 || Move.y != 0 && !IsSprintPressed)
         {
-            PV.RPC("UpdateWalkingAnimation", RpcTarget.All, true);
+            PV.RPC("UpdateWalkingAnimationJose", RpcTarget.All, true);
             if (!GameManager.Instance.Footsteps.isPlaying)
             {
                 GameManager.Instance.Footsteps.Play();
@@ -122,7 +122,7 @@ public class JoseMovement : MonoBehaviourPun
         else
         {
             GameManager.Instance.Footsteps.Stop();
-            PV.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
+            PV.RPC("UpdateWalkingAnimationJose", RpcTarget.All, false);
         }
     }
 
@@ -135,15 +135,15 @@ public class JoseMovement : MonoBehaviourPun
             {
                 GameManager.Instance.Footsteps.Play();
             }
-            PV.RPC("UpdateRunningAnimation", RpcTarget.All, true);
-            PV.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
+            PV.RPC("UpdateRunningAnimationJose", RpcTarget.All, true);
+            PV.RPC("UpdateWalkingAnimationJose", RpcTarget.All, false);
             Speed *= 1.9f;
             HasRun = true;
         }
         else if (!IsSprintPressed && HasRun)
         {
             GameManager.Instance.Footsteps.Stop();
-            PV.RPC("UpdateRunningAnimation", RpcTarget.All, false);
+            PV.RPC("UpdateRunningAnimationJose", RpcTarget.All, false);
             Speed = OriginalSpeed;
             HasRun = false;
         }
@@ -170,7 +170,7 @@ public class JoseMovement : MonoBehaviourPun
         bool IsCrouchPressed = Controls.Player.Crouch.ReadValue<float>() > 0.1f;
         if (IsCrouchPressed && !HasCrouched && !HasJump)
         {
-            PV.RPC("UpdateBendingAnimation", RpcTarget.All, true);
+            PV.RPC("UpdateBendingAnimationJose", RpcTarget.All);
             CharController.height = 1;
             CharController.center = new Vector3(0, -0.5f, 0);
             // Camera.localPosition = new Vector3(0, 0.4f, 0.225f);
@@ -181,8 +181,7 @@ public class JoseMovement : MonoBehaviourPun
         }
         else if (!HasCeiling && !IsCrouchPressed && !HasRun)
         {
-            PV.RPC("UpdateBendingAnimation", RpcTarget.All, false);
-            PV.RPC("UpdateStandAnimation", RpcTarget.All, true);
+            PV.RPC("UpdateStandAnimationJose", RpcTarget.All);
             CharController.height = 2;
             CharController.center = new Vector3(0, 0, 0);
             // Camera.localPosition = new Vector3(0, 0.894f, 0.225f);
@@ -190,12 +189,11 @@ public class JoseMovement : MonoBehaviourPun
             Speed = OriginalSpeed;
             HasCrouched = false;
             IsCrouched = false;
-            PV.RPC("UpdateStandAnimation", RpcTarget.All, false);
         }
     }
 
     [PunRPC]
-    void UpdateWalkingAnimation(bool isWalking)
+    void UpdateWalkingAnimationJose(bool isWalking)
     {
         if (joseAnimator != null)
         {
@@ -204,16 +202,7 @@ public class JoseMovement : MonoBehaviourPun
     }
 
     [PunRPC]
-    void UpdateBendingAnimation(bool isBending)
-    {
-        if (joseAnimator != null)
-        {
-            joseAnimator.SetBool("IsBending", isBending);
-        }
-    }
-
-    [PunRPC]
-    void UpdateRunningAnimation(bool isRunning)
+    void UpdateRunningAnimationJose(bool isRunning)
     {
         if (joseAnimator != null)
         {
@@ -222,20 +211,32 @@ public class JoseMovement : MonoBehaviourPun
     }
 
     [PunRPC]
-    void UpdateStandAnimation(bool isStanding)
+    void UpdateBendingAnimationJose()
     {
         if (joseAnimator != null)
         {
-            joseAnimator.SetBool("IsStanding", isStanding);
-            if (isStanding)
-            {
-                joseAnimator.ResetTrigger("IsLeftGrabbingTrigger");
-                joseAnimator.SetTrigger("Standing");
-            }
-            else
-            {
-                joseAnimator.ResetTrigger("Standing");
-            }
+            joseAnimator.ResetTrigger("JoseDownedTrigger");
+            joseAnimator.ResetTrigger("JoseRevivedTrigger");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsLeftGrabbingTrigger");
+            joseAnimator.ResetTrigger("IsRightGrabbingTrigger");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.SetTrigger("IsBending");
+        }
+    }
+
+    [PunRPC]
+    void UpdateStandAnimationJose()
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.ResetTrigger("JoseDownedTrigger");
+            joseAnimator.ResetTrigger("JoseRevivedTrigger");
+            joseAnimator.ResetTrigger("IsLeftGrabbingTrigger");
+            joseAnimator.ResetTrigger("IsRightGrabbingTrigger");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.SetTrigger("IsStanding");
         }
     }
 

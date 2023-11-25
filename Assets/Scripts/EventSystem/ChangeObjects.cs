@@ -63,6 +63,7 @@ public class ChangeObjects : MonoBehaviourPun
     [PunRPC]
     public void DeactivateLights()
     {
+        GameManager.Instance.Ambience1.Stop();
         GameManager.Instance.Ambience2.Play();
         lights.SetActive(false);
     }
