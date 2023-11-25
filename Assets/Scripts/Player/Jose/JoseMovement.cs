@@ -181,7 +181,6 @@ public class JoseMovement : MonoBehaviourPun
         }
         else if (!HasCeiling && !IsCrouchPressed && !HasRun)
         {
-            PV.RPC("UpdateBendingAnimationJose", RpcTarget.All);
             PV.RPC("UpdateStandAnimationJose", RpcTarget.All);
             CharController.height = 2;
             CharController.center = new Vector3(0, 0, 0);
@@ -190,7 +189,6 @@ public class JoseMovement : MonoBehaviourPun
             Speed = OriginalSpeed;
             HasCrouched = false;
             IsCrouched = false;
-            PV.RPC("UpdateStandAnimationJose", RpcTarget.All);
         }
     }
 
