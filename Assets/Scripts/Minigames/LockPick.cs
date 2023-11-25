@@ -91,14 +91,13 @@ public class LockPick : MonoBehaviour
             if (eulerAngle < unlockRange.y && eulerAngle > unlockRange.x)
             {
                 Contador = 0;
-                Debug.Log("Unlocked!");
                 newLock();
                 movePick = true;
                 keyPressTime = 0;
                 GameManager.Instance.lockpickLevel += 1;
                 Comprobations.comprobations++;
                 Comprobations.Completed();
-
+                lockRotation = 0;
             }
             else
             {

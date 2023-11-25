@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1044053769724436036}
-  - component: {fileID: 69723477268051604}
   - component: {fileID: 7277181940767671121}
   - component: {fileID: 8951943288793894008}
   m_Layer: 0
@@ -34,33 +33,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &69723477268051604
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3740004396937182545}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!114 &7277181940767671121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,12 +46,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TwoPlayers: 1
+  JoseEvent: 0
+  spawnPasc: 0
+  SantiEvent: 0
   Event: 0
+  Hospital: 0
+  Labyrinth: 0
   WinScreen: 0
-  Objects: []
-  AI: {fileID: 0}
-  PlayersNear: 0
-  PlayerNear: 0
+  santiNear: 0
+  joseNear: 0
+  HospitalEvent: 0
 --- !u!65 &8951943288793894008
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -9,6 +9,8 @@ public class NurseAI : MonoBehaviour
 {
     public GameObject[] players;
     private GameObject closerPlayer;
+    public GameObject key;
+    private GameObject ChangeObjects;
 
     private bool isSantiActive = false;
     private bool isJoseActive = false;
@@ -49,16 +51,20 @@ public class NurseAI : MonoBehaviour
     private PhotonView SantiPV;
 
     public float catchDistance;
-    public Animator aiAnimation; //for fuuture use in animations
 
     public float seenCooldownTimer;
     public float stoppedTimer;
     public float defaultCooldownTime = 5f;
 
+    private Animator nurseAnimator;
+
+    private PhotonView PV;
+
     void Start()
     {
+        PV = GetComponent<PhotonView>();
         players = new GameObject[2];
-
+        ChangeObjects = GameObject.Find("ChangeObjects");
         PlayerPosition = Vector3.zero;
         isPatrol = true;
         isPlayerCaught = false;
@@ -115,6 +121,11 @@ public class NurseAI : MonoBehaviour
                 //aiAnimation.SetTrigger("walk");
                 Patroling();
             }
+            else if (isPlayerCaught)
+            {
+                Debug.Log("Attacking");
+                Attacking();
+            }
         }
 
     }
@@ -128,6 +139,9 @@ public class NurseAI : MonoBehaviour
 
         if (!isPlayerCaught)
         {
+            PV.RPC("UpdateAttackAnimationNurse", RpcTarget.All, false);
+            PV.RPC("UpdateMoveAnimationNurse", RpcTarget.All, false);
+            PV.RPC("UpdateRunningAnimationNurse", RpcTarget.All, true);
             Move(chaseSpeed);
             aiAgent.SetDestination(PlayerPosition);          //  set the destination of the enemy to the player location
         }
@@ -149,7 +163,7 @@ public class NurseAI : MonoBehaviour
             }
             if (Vector3.Distance(transform.position, closerPlayer.transform.position) < catchDistance)
             {
-                Attacking();
+                CaughtPlayer();
             }
         }
     }
@@ -178,12 +192,16 @@ public class NurseAI : MonoBehaviour
             //  If the enemy arrives to the waypoint position then wait for a moment and go to the next
             if (WaitTime <= 0)
             {
+                PV.RPC("UpdateAttackAnimationNurse", RpcTarget.All, false);
+                PV.RPC("UpdateRunningAnimationNurse", RpcTarget.All, false);
+                PV.RPC("UpdateMoveAnimationNurse", RpcTarget.All,true);
                 NextPoint();
                 Move(walkSpeed);
                 WaitTime = Random.Range(minWaitTime, maxWiatTime);
             }
             else
             {
+                PV.RPC("UpdateMoveAnimationNurse", RpcTarget.All, false);
                 //aiAnimation.ResetTrigger("sprint");
                 //aiAnimation.ResetTrigger("walk");
                 //aiAnimation.SetTrigger("idle");
@@ -230,16 +248,23 @@ public class NurseAI : MonoBehaviour
     void CaughtPlayer()
     {
         isPlayerCaught = true;
-        if (closerPlayer == players[0])
+        PV.RPC("UpdateAttackAnimationNurse", RpcTarget.All, true);
+        if (closerPlayer == players[0] && !GameManager.Instance.Injection)
         {
             SantiPV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
             isPlayerCaught = false;
 
         }
-        else if (closerPlayer == players[1])
+        else if (closerPlayer == players[1] && !GameManager.Instance.Injection)
         {
             JosePV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
             isPlayerCaught = false;
+        }
+        else if ((closerPlayer == players[0] || closerPlayer == players[1]) && GameManager.Instance.Injection)
+        {
+            gameObject.GetComponent<PhotonView>().RPC("SpawnKey", RpcTarget.All);
+            GameManager.Instance.NurseScream.Play();
+            ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateNurse", RpcTarget.All);
         }
         Patroling();
     }
@@ -338,6 +363,45 @@ public class NurseAI : MonoBehaviour
 
         return close;
     }
- 
+    [PunRPC]
+    private void SpawnKey()
+    {
+        key.SetActive(true);
+    }
+
+    [PunRPC]
+    void UpdateMoveAnimationNurse(bool isMoving)
+    {
+        if (nurseAnimator != null)
+        {
+            nurseAnimator.SetBool("IsMoving", isMoving);
+        }
+    }
+
+    [PunRPC]
+    void UpdateRunningAnimationNurse(bool isRunning)
+    {
+        if (nurseAnimator != null)
+        {
+            nurseAnimator.SetBool("IsRunning", isRunning);
+        }
+    }
+
+    [PunRPC]
+    void UpdateAttackAnimationNurse(bool mode)
+    {
+        if (nurseAnimator != null)
+        {
+            if(mode)
+            {
+                nurseAnimator.SetTrigger("AttackTrigger");
+            }
+            else
+            {
+                nurseAnimator.ResetTrigger("AttackTrigger");
+            }
+        }
+    }
+
 }
 

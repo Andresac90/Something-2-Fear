@@ -18,6 +18,10 @@ public class ObjectsJose : MonoBehaviourPun
     [SerializeField]
     private Transform ObjectLeftCamera;
     [SerializeField]
+    private Transform objectRightHand;
+    [SerializeField]
+    private Transform objectLeftHand;
+    [SerializeField]
     private Transform PlayerCamera;
     [SerializeField]
     private float rayline;
@@ -58,13 +62,18 @@ public class ObjectsJose : MonoBehaviourPun
     private GameObject Object2UI;
     [SerializeField]
     private GameObject Object3UI;
+    [SerializeField]
+    private GameObject InjectionUI;
+    //TutorialUI
+    [SerializeField]
+    private GameObject jumpUI;
+    [SerializeField]
+    private GameObject runUI;
+    [SerializeField]
+    private GameObject crouchUI;
 
     private TextMeshProUGUI textMeshProText;
     private RaycastHit hit;
-    private float ObjectRScaleData;
-    private float ObjectROriginalScale;
-    private float ObjectLScaleData;
-    private float ObjectLOriginalScale;
     private int iBuzzer = 0;
     private Rigidbody ObjectRightRb;
     private GameObject pascualita;
@@ -72,8 +81,6 @@ public class ObjectsJose : MonoBehaviourPun
     private GameObject nina;
     private GameObject LDoor;
     private Rigidbody ObjectLeftRb;
-    private Transform ObjectRightT;
-    private Transform ObjectLeftT;
     private bool HasObjectRight = false;
     private bool HasObjectLeft = false;
     private bool ThrowCheckR = false;
@@ -84,6 +91,7 @@ public class ObjectsJose : MonoBehaviourPun
     private Animator joseAnimator;
     private PhotonView PV;
 
+    
     void Awake()
     {
         Controls = new InputMaster();
@@ -108,10 +116,13 @@ public class ObjectsJose : MonoBehaviourPun
         aicontrolNi.JoseActivation();
         joseAnimator = GetComponent<Animator>();
     }
-
+    
     // Update is called once per frame
     void Update()
     {
+
+        if (!PV.IsMine) return;
+        
         Activation();
         Physics.Raycast(PlayerCamera.position, PlayerCamera.TransformDirection(Vector3.forward), out hit, rayline);
         if (hit.transform != null)
@@ -169,18 +180,36 @@ public class ObjectsJose : MonoBehaviourPun
         {
             Key3UI.SetActive(true);
         }
+
         //ObjectsNurseUI
-        if (GameManager.Instance.Key1)
+        if (GameManager.Instance.Object1 && !GameManager.Instance.Injection && !GameManager.Instance.InjectionSpawn)
         {
             Object1UI.SetActive(true);
         }
-        if (GameManager.Instance.Key2)
+        else
+        {
+            Object1UI.SetActive(false);
+        }
+        if (GameManager.Instance.Object2 && !GameManager.Instance.Injection && !GameManager.Instance.InjectionSpawn)
         {
             Object2UI.SetActive(true);
         }
-        if (GameManager.Instance.Key3)
+        else
+        {
+            Object2UI.SetActive(false);
+        }
+        if (GameManager.Instance.Object3 && !GameManager.Instance.Injection && !GameManager.Instance.InjectionSpawn)
         {
             Object3UI.SetActive(true);
+        }
+        else
+        {
+            Object3UI.SetActive(false);
+        }
+
+        if (GameManager.Instance.Injection)
+        {
+            InjectionUI.SetActive(true);
         }
 
         //Timer UI
@@ -214,14 +243,42 @@ public class ObjectsJose : MonoBehaviourPun
         {
             ThrowLeftUI.SetActive(false);
         }
+
+        //UI Tutorial
+        if (GameManager.Instance.tutorialJump)
+        {
+            jumpUI.SetActive(true);
+        }
+        else
+        {
+            jumpUI.SetActive(false);
+        }
+
+        if(GameManager.Instance.tutorialRun)
+        {
+            runUI.SetActive(true);
+        }
+        else
+        {
+            runUI.SetActive(false);
+        }
+
+        if(GameManager.Instance.tutorialCrouch)
+        {
+            crouchUI.SetActive(true);
+        }
+        else
+        {
+            crouchUI.SetActive(false);
+        }
+
         StartCoroutine(Throw());
         ThrowGrounded();
-
     }
 
     private void Activation()
     {
-        if (hit.transform != null && hit.transform.tag == "Box" && hit.transform.name == "LightBox")
+        if (hit.transform != null && hit.transform.tag == "Box" && hit.transform.name == "LightBox" && !GameManager.Instance.audioH)
         {
             Electricity box = hit.transform.GetComponent<Electricity>();
             bool isInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0.0f;
@@ -252,6 +309,11 @@ public class ObjectsJose : MonoBehaviourPun
             {
                 if (isInteractPressed)
                 {
+                    if (!GameManager.Instance.Healing.isPlaying)
+                    {
+                        GameManager.Instance.Healing.Play();
+                    }
+                    PV.RPC("UpdateHealingAnimationJose", RpcTarget.All, true);
                     HealingUI.SetActive(true);
                     station.updateCure(true, this.gameObject);
                     activeStation = station;
@@ -264,6 +326,7 @@ public class ObjectsJose : MonoBehaviourPun
                     activeStation = null;
                     activated = false;
                 }
+                PV.RPC("UpdateHealingAnimationJose", RpcTarget.All, false);
             }
         }
         else if (activeStation != null && activated)
@@ -273,7 +336,7 @@ public class ObjectsJose : MonoBehaviourPun
             activated = false;
         }
 
-        if (hit.transform != null && hit.transform.tag == "Buzzer")
+        if (hit.transform != null && hit.transform.tag == "Buzzer" && !nina.GetComponent<NinaAI>().isWarping)
         {
             Buzzer buzzer = hit.transform.GetComponent<Buzzer>();
             bool isInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0.0f;
@@ -289,20 +352,50 @@ public class ObjectsJose : MonoBehaviourPun
     }
 
     [PunRPC]
-    void UpdateRightGrabbingAnimation(bool isRightGrabbing)
+    void UpdateRightGrabbingAnimationJose()
     {
         if (joseAnimator != null)
         {
-            joseAnimator.SetBool("IsRightGrabbing", isRightGrabbing);
+            joseAnimator.ResetTrigger("JoseDownedTrigger");
+            joseAnimator.ResetTrigger("JoseRevivedTrigger");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsLeftGrabbingTrigger");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.SetTrigger("IsRightGrabbingTrigger");
         }
     }
 
     [PunRPC]
-    void UpdateLeftGrabbingAnimation(bool isLeftGrabbing)
+    void UpdateLeftGrabbingAnimationJose()
     {
         if (joseAnimator != null)
         {
-            joseAnimator.SetBool("IsLeftGrabbing", isLeftGrabbing);
+            joseAnimator.ResetTrigger("JoseDownedTrigger");
+            joseAnimator.ResetTrigger("JoseRevivedTrigger");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsRightGrabbingTrigger");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.SetTrigger("IsLeftGrabbingTrigger");
+        }
+    }
+
+    [PunRPC]
+    void UpdateHealingAnimationJose()
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.ResetTrigger("JoseDownedTrigger");
+            joseAnimator.ResetTrigger("JoseRevivedTrigger");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsRightGrabbingTrigger");
+            joseAnimator.ResetTrigger("IsLeftGrabbingTrigger");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.SetTrigger("IsHealing");
         }
     }
 
@@ -315,8 +408,8 @@ public class ObjectsJose : MonoBehaviourPun
             bool IsRightPressed = Controls.Player.RightItem.ReadValue<float>() > 0.1f;
             if(IsRightPressed && !HasObjectRight)
             {
-                PV.RPC("UpdateRightGrabbingAnimation", RpcTarget.All, true);
-                PV.RPC("UpdateRightGrabbingAnimation", RpcTarget.All, false);
+                PV.RPC("UpdateRightGrabbingAnimationJose", RpcTarget.All);
+                PV.RPC("UpdateRightGrabbingAnimationJose", RpcTarget.All);
                 // hit.transform.position = ObjectRightCamera.position;
                 // hit.rigidbody.isKinematic = true;
                 // hit.transform.parent = ObjectRightCamera;
@@ -328,7 +421,6 @@ public class ObjectsJose : MonoBehaviourPun
                 
                 hit.transform.GetComponent<ObjectsData>().OnGrab(ObjectRightCamera);
                 ObjectRightRb = hit.rigidbody;
-                ObjectRightT = hit.transform;
                 ObjectRightUI.SetActive(false);
                 yield return new WaitForSeconds(0.5f);
                 HasObjectRight = true;
@@ -339,8 +431,7 @@ public class ObjectsJose : MonoBehaviourPun
             bool IsLeftPressed = Controls.Player.LeftItem.ReadValue<float>() > 0.1f;
             if (IsLeftPressed && !HasObjectLeft)
             {
-                photonView.RPC("UpdateLeftGrabbingAnimation", RpcTarget.All, true);
-                photonView.RPC("UpdateLeftGrabbingAnimation", RpcTarget.All, false);
+                photonView.RPC("UpdateLeftGrabbingAnimationJose", RpcTarget.All);
                 // hit.transform.position = ObjectRightCamera.position;
                 // hit.rigidbody.isKinematic = true;
                 // hit.transform.parent = ObjectLeftCamera;
@@ -352,7 +443,6 @@ public class ObjectsJose : MonoBehaviourPun
                 
                 hit.transform.GetComponent<ObjectsData>().OnGrab(ObjectLeftCamera);
                 ObjectLeftRb = hit.rigidbody;
-                ObjectLeftT = hit.transform;
                 ObjectLeftUI.SetActive(false);
                 yield return new WaitForSeconds(0.5f);
                 HasObjectLeft = true;
@@ -376,7 +466,7 @@ public class ObjectsJose : MonoBehaviourPun
             Debug.Log("Throwing");
             ObjectRightRb.GetComponent<ObjectsData>().onThrow(PlayerCamera.transform.forward, ThrowForce);
             ThrowCheckR = false;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.501f);
             HasObjectRight = false;
            
         }
@@ -393,7 +483,7 @@ public class ObjectsJose : MonoBehaviourPun
             Debug.Log("Throwing");
             ObjectLeftRb.GetComponent<ObjectsData>().onThrow(PlayerCamera.transform.forward, ThrowForce);
             ThrowCheckL = false;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.501f);
             HasObjectLeft = false;
         }
 

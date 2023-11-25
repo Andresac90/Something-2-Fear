@@ -51,20 +51,24 @@ public class NinaAI : MonoBehaviour
     public bool attackingJose;
     public bool attackingSanti;
     public bool isSeen;
-    private bool isWarping = false;
+    public bool isWarping = false;
 
     private PhotonView JosePV;
     private PhotonView SantiPV;
 
     public float catchDistance;
-    public Animator aiAnimation; //for fuuture use in animations
 
     public float seenCooldownTimer;
     public float stoppedTimer;
     public float defaultCooldownTime = 5f;
+
+    private Animator ninaAnimator;
+    private PhotonView PV;
+
     // Start is called before the first frame update
     void Start()
     {
+        PV = GetComponent<PhotonView>();
         players = new GameObject[2];
 
         PlayerPosition = Vector3.zero;
@@ -80,7 +84,7 @@ public class NinaAI : MonoBehaviour
         //randNum = 0;
         minWaitTime = 1f;
         maxWiatTime = 3f;
-        catchDistance = 3f;
+        catchDistance = 0.5f;
 
         stoppedTimer = defaultCooldownTime;
         seenCooldownTimer = defaultCooldownTime;
@@ -95,6 +99,8 @@ public class NinaAI : MonoBehaviour
         aiAgent.isStopped = false;
         aiAgent.speed = walkSpeed;             //  Set the navemesh speed with the normal speed of the enemy
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);    //  Set the destination to the first waypoint
+
+        ninaAnimator = GetComponent<Animator>();
     }
 
     [PunRPC]
@@ -115,7 +121,7 @@ public class NinaAI : MonoBehaviour
             if (attackingJose)
             {
                 ChaseJose();
-                walkSpeed = 0.3f;
+                walkSpeed = 0.5f;
             }
             else if (attackingSanti)
             {
@@ -145,7 +151,7 @@ public class NinaAI : MonoBehaviour
 
     private void Chasing()
     {
-
+        PV.RPC("UpdateAttackingAnimation", RpcTarget.All);
         //  The enemy is chasing the player
         //  Set false that hte player is near beacause the enemy already sees the player
         playerLastPosition = Vector3.zero;          //  Reset the player near position
@@ -202,12 +208,14 @@ public class NinaAI : MonoBehaviour
             //  If the enemy arrives to the waypoint position then wait for a moment and go to the next
             if (WaitTime <= 0)
             {
+                PV.RPC("UpdateMoveAnimation", RpcTarget.All,true);
                 NextPoint();
                 Move(walkSpeed);
                 WaitTime = Random.Range(minWaitTime, maxWiatTime);
             }
             else
             {
+                PV.RPC("UpdateMoveAnimation", RpcTarget.All, false);
                 //aiAnimation.ResetTrigger("sprint");
                 //aiAnimation.ResetTrigger("walk");
                 //aiAnimation.SetTrigger("idle");
@@ -259,7 +267,7 @@ public class NinaAI : MonoBehaviour
             }
             else if (attackingSanti)
             {
-                StartCoroutine(WarpWithDelay(spawn.position, 8.0f));
+                StartCoroutine(WarpWithDelay(spawn.position, 9.0f));
             }
         }
         else
@@ -287,6 +295,7 @@ public class NinaAI : MonoBehaviour
 
     public void ChaseJose()
     {
+        PV.RPC("UpdateAttackingAnimation", RpcTarget.All);
         aiAgent.SetDestination(players[1].transform.position);
         aiAgent.speed = 0.8f;
         if (Vector3.Distance(transform.position, players[1].transform.position) < catchDistance)
@@ -412,5 +421,21 @@ public class NinaAI : MonoBehaviour
         }
 
         return close;
+    }
+
+    [PunRPC]
+    void UpdateMoveAnimation(bool isMoving)
+    {
+        if (ninaAnimator != null)
+        {
+            ninaAnimator.SetBool("IsMoving", isMoving);
+        }
+    }
+
+    [PunRPC]
+    void UpdateAttackingAnimation()
+    {
+        ninaAnimator.SetTrigger("IsAttacking");
+        ninaAnimator.ResetTrigger("IsAttacking");
     }
 }

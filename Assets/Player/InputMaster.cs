@@ -152,6 +152,24 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PushToTalk"",
+                    ""type"": ""Button"",
+                    ""id"": ""15baca52-b9e3-4611-9f65-1f433c526b93"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Mute"",
+                    ""type"": ""Button"",
+                    ""id"": ""8f588ce0-e73c-4b9d-b8c0-816b88f75fc8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -548,6 +566,28 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b44dac34-b0a3-42e4-84aa-a3006c055814"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PushToTalk"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0041086b-3b46-4567-b432-7372bc1c8c91"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mute"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1165,6 +1205,8 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_Player_RightThrow = m_Player.FindAction("RightThrow", throwIfNotFound: true);
         m_Player_Click = m_Player.FindAction("Click", throwIfNotFound: true);
         m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
+        m_Player_PushToTalk = m_Player.FindAction("PushToTalk", throwIfNotFound: true);
+        m_Player_Mute = m_Player.FindAction("Mute", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1252,6 +1294,8 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_RightThrow;
     private readonly InputAction m_Player_Click;
     private readonly InputAction m_Player_Menu;
+    private readonly InputAction m_Player_PushToTalk;
+    private readonly InputAction m_Player_Mute;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -1270,6 +1314,8 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         public InputAction @RightThrow => m_Wrapper.m_Player_RightThrow;
         public InputAction @Click => m_Wrapper.m_Player_Click;
         public InputAction @Menu => m_Wrapper.m_Player_Menu;
+        public InputAction @PushToTalk => m_Wrapper.m_Player_PushToTalk;
+        public InputAction @Mute => m_Wrapper.m_Player_Mute;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1321,6 +1367,12 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Menu.started += instance.OnMenu;
             @Menu.performed += instance.OnMenu;
             @Menu.canceled += instance.OnMenu;
+            @PushToTalk.started += instance.OnPushToTalk;
+            @PushToTalk.performed += instance.OnPushToTalk;
+            @PushToTalk.canceled += instance.OnPushToTalk;
+            @Mute.started += instance.OnMute;
+            @Mute.performed += instance.OnMute;
+            @Mute.canceled += instance.OnMute;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1367,6 +1419,12 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Menu.started -= instance.OnMenu;
             @Menu.performed -= instance.OnMenu;
             @Menu.canceled -= instance.OnMenu;
+            @PushToTalk.started -= instance.OnPushToTalk;
+            @PushToTalk.performed -= instance.OnPushToTalk;
+            @PushToTalk.canceled -= instance.OnPushToTalk;
+            @Mute.started -= instance.OnMute;
+            @Mute.performed -= instance.OnMute;
+            @Mute.canceled -= instance.OnMute;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1536,6 +1594,8 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         void OnRightThrow(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
         void OnMenu(InputAction.CallbackContext context);
+        void OnPushToTalk(InputAction.CallbackContext context);
+        void OnMute(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

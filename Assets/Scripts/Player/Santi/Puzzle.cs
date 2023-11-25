@@ -15,7 +15,6 @@ public class Puzzle : MonoBehaviourPun
     private GameObject door;
     [SerializeField]
     private int comprobationsNeeded;
-    private int keylevel = 1;
 
     public int comprobations;
     public string PasswordRef;
@@ -32,6 +31,13 @@ public class Puzzle : MonoBehaviourPun
             {
                 puzzleCopy = Instantiate(puzzle);
                 PlayerMovement(false);
+                //DestroyKey
+                StartCoroutine(objectsSanti.RightDrop());
+                objectsSanti.objectNameString = "";
+                GameObject santi = GameObject.Find("Santi(Clone)");
+                int keylevel = santi.GetComponent<ObjectsSanti>().keylevel;
+                GameObject.Find("SmallKey_Item" + keylevel).GetComponent<PhotonView>().RPC("DestroyKeyOnline", RpcTarget.All, "SmallKey_Item" + keylevel);
+                santi.GetComponent<PhotonView>().RPC("SyncKeyLevel", RpcTarget.All, keylevel + 1);
             }
             else if (puzzle.name != "LockPick")
             {
@@ -80,6 +86,7 @@ public class Puzzle : MonoBehaviourPun
             objectsSanti.puzzleCreated = false;
             objectsSanti.puzzleActive = false;
             Destroy(puzzleCopy.gameObject, 1f);
+            this.transform.tag = "Untagged";
             Destroy(this);
         }
         else if (comprobations == comprobationsNeeded)
@@ -92,17 +99,8 @@ public class Puzzle : MonoBehaviourPun
             objectsSanti.puzzleCreated = false;
             objectsSanti.puzzleActive = false;
             Destroy(puzzleCopy.gameObject, 1f);
+            this.transform.tag = "Untagged";
             Destroy(this);
-            if (objectsSanti.objectNameString == "Key" && puzzle.name == "LockPick")
-            {
-                StartCoroutine(objectsSanti.RightDrop());
-                objectsSanti.objectNameString = "";
-                GameObject santi = GameObject.Find("Santi(Clone)"); 
-                int keylevel = santi.GetComponent<ObjectsSanti>().keylevel;
-
-                GameObject.Find("SmallKey_Item" + keylevel).GetComponent<PhotonView>().RPC("DestroyKeyOnline", RpcTarget.All, "SmallKey_Item" + keylevel);
-                santi.GetComponent<PhotonView>().RPC("SyncKeyLevel", RpcTarget.All, keylevel + 1);
-            }
 
         }
     }

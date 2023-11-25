@@ -13,33 +13,18 @@ public class ObjectsSanti : MonoBehaviourPun
 {
     private Animator santiAnimator;
     private InputMaster controls;
-    private GameObject playerL;
-    private GameObject playerR;
-    private GameObject cloneL;
-    private GameObject cloneR;
-    private GameObject player;
     private GameObject pascualita;
     private GameObject nurse;
     private GameObject nina;
     private GameObject LightBox;
-    private GameObject puertaPrinicipal; 
+    private GameObject ChangeObjects;
     private RaycastHit hit;
-    private Rigidbody objectRightRb;
-    private Rigidbody objectLeftRb;
     public Transform objectRightT;
-    private Transform objectLeftT;
+
     [SerializeField]
     private Transform playerCamera;
-    private float objectScaleDataR;
-    private float objectOriginalScaleR;
-    private float objectScaleDataL;
-    private float objectOriginalScaleL;
     private bool grabObjR = false;
     private bool objectGrabbedR = true;
-    private bool throwCheckR = true;
-    private bool grabObjL = false;
-    private bool objectGrabbedL = true;
-    private bool throwCheckL = true;
     private bool activated = false;
     private Button activeButton = null;
     private Cure activeStation = null;
@@ -47,11 +32,7 @@ public class ObjectsSanti : MonoBehaviourPun
     [SerializeField]
     private Transform objectRightCamera;
     [SerializeField]
-    private Transform objectLeftCamera;
-    [SerializeField]
     private Transform objectRightHand;
-    [SerializeField]
-    private Transform objectLeftHand;
     [SerializeField]
     private float rayLine;
     [SerializeField]
@@ -80,22 +61,21 @@ public class ObjectsSanti : MonoBehaviourPun
     private GameObject Object2UI;
     [SerializeField]
     private GameObject Object3UI;
+    [SerializeField]
+    private GameObject InjectionUI;
+    [SerializeField]
+    private GameObject noKeyUI;
 
     [SerializeField]
     private GameObject Timer;
 
     private PhotonView PV;
     private TextMeshProUGUI textMeshProText;
-    private bool LockPickCheck = false;
+    private bool isInjectionSpawned = false;
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
     public bool noteCreated = false;
     public string objectNameString;
-
-
-
-        // Arreglar
-
     public int keylevel = 1;
 
     
@@ -103,11 +83,6 @@ public class ObjectsSanti : MonoBehaviourPun
     public void Awake()
     {
         controls = new InputMaster();
-        playerL = GameObject.Find("LeftObject");
-        playerR = GameObject.Find("RightObject");
-        player = GameObject.Find("Santi");
-        
-        // playerCamera = player.transform.GetChild(0).GetComponent<Transform>();
     }
 
     public void Start()
@@ -123,36 +98,73 @@ public class ObjectsSanti : MonoBehaviourPun
         aicontrolP.santiActivation();
         aicontrolN.SantiActivation();
         aicontrolNi.SantiActivation();
-        puertaPrinicipal = GameObject.Find("PuertaPrincipal");
+        ChangeObjects = GameObject.Find("ChangeObjects");
         santiAnimator = GetComponent<Animator>();
     }
 
     public void Update()
     {
+        if (!PV.IsMine) return;
+
         Physics.Raycast(playerCamera.position, playerCamera.TransformDirection(Vector3.forward), out hit, rayLine);
         Activation();
         if(hit.transform != null)
         {
             PuzzleManager();
             NoteManager();
-            if (objectNameString == "KeyMaster1" || objectNameString == "KeyMaster2" || objectNameString == "KeyMaster3")
+            Grab();
+            switch (objectNameString)
             {
-                GameManager.Instance.Keys.Play();
-                StartCoroutine(RightDrop());
-                hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
-                objectNameString = "";
+                case "KeyMaster1":
+                    GameManager.Instance.Keys.Play();
+                    StartCoroutine(RightDrop());
+                    objectNameString = "";
+                    hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
+                    
+                    break;
+                case "KeyMaster2":
+                    GameManager.Instance.Keys.Play();
+                    StartCoroutine(RightDrop());
+                    objectNameString = "";
+                    hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
+                    
+                    break;
+                case "KeyMaster3":
+                    GameManager.Instance.Keys.Play();
+                    StartCoroutine(RightDrop());
+                    objectNameString = "";
+                    hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
+                    
+                    break;
+                case "Object1":
+                    StartCoroutine(RightDrop());
+                    objectNameString = "";
+                    hit.transform.GetComponent<PhotonView>().RPC("ObjectsNurseChange", RpcTarget.All, hit.transform.name);
+
+                    break;
+                case "Object2":
+                    StartCoroutine(RightDrop());
+                    objectNameString = "";
+                    hit.transform.GetComponent<PhotonView>().RPC("ObjectsNurseChange", RpcTarget.All, hit.transform.name);
+                    
+                    break;
+                case "Object3":
+                    StartCoroutine(RightDrop());
+                    objectNameString = "";
+                    hit.transform.GetComponent<PhotonView>().RPC("ObjectsNurseChange", RpcTarget.All, hit.transform.name);
+                    
+                    break;
+                case "Injection":
+                    StartCoroutine(RightDrop());
+                    objectNameString = "";
+                    hit.transform.GetComponent<PhotonView>().RPC("InjectionChange", RpcTarget.All, hit.transform.name);
+                    
+                    break;
             }
-            if (objectNameString == "Object1" || objectNameString == "Object2" || objectNameString == "Object3")
-            {
-                StartCoroutine(RightDrop());
-                hit.transform.GetComponent<PhotonView>().RPC("ObjectsNurseChange", RpcTarget.All, hit.transform.name);
-                objectNameString = "";
-            }
-            else
-            {
-                Grab();
-            }
-            
+        }
+        else
+        {
+            noKeyUI.SetActive(false);
         }
 
         //Object UI
@@ -178,7 +190,7 @@ public class ObjectsSanti : MonoBehaviourPun
         }
 
         //Interact UI
-        if (hit.transform != null && hit.transform.tag == "Puzzle")
+        if (hit.transform != null && hit.transform.tag == "Puzzle" && !noKeyUI.activeInHierarchy)
         {
             InteractUI.SetActive(true);
             DropRightUI.SetActive(false);
@@ -199,6 +211,11 @@ public class ObjectsSanti : MonoBehaviourPun
             DropRightUI.SetActive(false);
         }
         else if (hit.transform != null && hit.transform.tag == "FinalDoor")
+        {
+            InteractUI.SetActive(true);
+            DropRightUI.SetActive(false);
+        }
+        else if (hit.transform != null && hit.transform.tag == "Table")
         {
             InteractUI.SetActive(true);
             DropRightUI.SetActive(false);
@@ -226,18 +243,50 @@ public class ObjectsSanti : MonoBehaviourPun
         {
             Key3UI.SetActive(true);
         }
+
         //ObjectsNurseUI
-        if (GameManager.Instance.Key1)
+        if (GameManager.Instance.Object1 && !GameManager.Instance.Injection && !GameManager.Instance.InjectionSpawn)
         {
             Object1UI.SetActive(true);
         }
-        if (GameManager.Instance.Key2)
+        else
+        {
+            Object1UI.SetActive(false);
+        }
+        if (GameManager.Instance.Object2 && !GameManager.Instance.Injection && !GameManager.Instance.InjectionSpawn)
         {
             Object2UI.SetActive(true);
         }
-        if (GameManager.Instance.Key3)
+        else
+        {
+            Object2UI.SetActive(false);
+        }
+        if (GameManager.Instance.Object3 && !GameManager.Instance.Injection && !GameManager.Instance.InjectionSpawn)
         {
             Object3UI.SetActive(true);
+        }
+        else
+        {
+            Object3UI.SetActive(false);
+        }
+
+        //Injection UI
+        if (hit.transform != null && hit.transform.tag == "Table" && GameManager.Instance.Object1 && GameManager.Instance.Object2 && GameManager.Instance.Object3)
+        {
+            bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
+            if (isInteractPressed && !isInjectionSpawned)
+            {
+                //Spawnear Injection
+                hit.transform.GetComponent<PhotonView>().RPC("SpawnInjection", RpcTarget.All);
+                isInjectionSpawned = true;
+                GameManager.Instance.SpawnInjectionOnline();
+            }
+            
+        }
+
+        if (GameManager.Instance.Injection)
+        {
+            InjectionUI.SetActive(true);
         }
 
         //Timer UI
@@ -259,6 +308,7 @@ public class ObjectsSanti : MonoBehaviourPun
             InteractUI.SetActive(false);
         }
         Drop();
+        Video();
     }
 
     private void Activation()
@@ -290,7 +340,7 @@ public class ObjectsSanti : MonoBehaviourPun
             activated = false;
         }
         
-        if (hit.transform != null && hit.transform.tag == "Box")
+        if (hit.transform != null && hit.transform.tag == "Box" && !GameManager.Instance.audioH)
         {
             Electricity box = hit.transform.GetComponent<Electricity>();
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.0f;
@@ -310,6 +360,10 @@ public class ObjectsSanti : MonoBehaviourPun
             {
                 if (isInteractPressed)
                 {
+                    if (!GameManager.Instance.Healing.isPlaying)
+                    {
+                        GameManager.Instance.Healing.Play();
+                    }
                     HealingUI.SetActive(true);
                     station.updateCure(true, this.gameObject);
                     activeStation = station;
@@ -336,10 +390,8 @@ public class ObjectsSanti : MonoBehaviourPun
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.1f;
             if (isInteractPressed && GameManager.Instance.Key1 && GameManager.Instance.Key2 && GameManager.Instance.Key3)
             {
-                Debug.Log("3 KEYS");
-                puertaPrinicipal.GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, true);
-                puertaPrinicipal.GetComponent<Door>().doorState = true;
-                puertaPrinicipal.GetComponent<Door>().OpenDoor();
+                ChangeObjects.GetComponent<PhotonView>().RPC("DeactivatePascualita", RpcTarget.All);
+                GameManager.Instance.GetComponent<PhotonView>().RPC("EndingCutscene",RpcTarget.All);
             }
         }
     }
@@ -351,22 +403,21 @@ public class ObjectsSanti : MonoBehaviourPun
             Puzzle puzzle = hit.transform.GetComponent<Puzzle>();
             string objectName = hit.collider.gameObject.name;
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.2f;
-            //if (objectNameString != "Key" && puzzle.puzzle.name != null)
-            //{
-            //    if (puzzle.puzzle.name == "LockPick")
-            //    {
-            //        Debug.Log("You need a key");
-            //        //UI You need a key
-            //    }
-            //}
-            if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
+            if (objectNameString != "Key" && puzzle.puzzle.name != null && puzzle.puzzle.name == "LockPick" && !puzzleCreated)
             {
+                noKeyUI.SetActive(true);
+            }
+            else if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
+            {
+                PV.RPC("UpdateEnterPuzzleAnimation", RpcTarget.All);
                 puzzle.OpenPuzzle(false, false, objectName);
                 puzzleCreated = true;
                 puzzleActive = true;
+                noKeyUI.SetActive(false);
             }
             else if(puzzle != null && isInteractPressed && puzzleCreated && !puzzleActive)
             {
+                PV.RPC("UpdateEnterPuzzleAnimation", RpcTarget.All);
                 puzzle.OpenPuzzle(true, false, objectName);
                 puzzleActive = true;
             }
@@ -375,11 +426,17 @@ public class ObjectsSanti : MonoBehaviourPun
                 bool isCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0.2f;
                 if(isCancelPressed && puzzleActive)
                 {
+                    PV.RPC("UpdateExitPuzzle", RpcTarget.All);
                     puzzle.ClosePuzzle(true);
                     puzzleActive = false;
                 }
             }
         }
+        else
+        {
+            noKeyUI.SetActive(false);
+        }
+
     }
 
     public void NoteManager()
@@ -387,7 +444,6 @@ public class ObjectsSanti : MonoBehaviourPun
         if(hit.transform.tag == "Note")
         {
             Note note = hit.transform.GetComponent<Note>();
-            string objectName = hit.collider.gameObject.name;
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.2f;
             bool isCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0.2f;
             if (note != null && isInteractPressed && !noteCreated)
@@ -404,191 +460,60 @@ public class ObjectsSanti : MonoBehaviourPun
     }
 
     [PunRPC]
-    void UpdateBengalThrowAnimation(bool isBengalThrow)
+    void UpdateEnterPuzzleAnimation()
     {
-        if (santiAnimator != null)
-        {
-            santiAnimator.SetBool("IsBengalThrow", isBengalThrow);
-        }
+        santiAnimator.SetTrigger("BeginPuzzleTrigger");
+        santiAnimator.ResetTrigger("EndPuzzleTrigger");
+    }
+
+    [PunRPC]
+    void UpdateExitPuzzle()
+    {
+        santiAnimator.SetTrigger("EndPuzzleTrigger");
+        santiAnimator.ResetTrigger("BeginPuzzleTrigger");
     }
 
     private void Grab()
     {
-        if(hit.transform.tag == "Object" || hit.transform.tag == "Bengal")
+        if(hit.transform.tag == "Object")
         {
             bool isRightPressed = controls.Player.RightItem.ReadValue<float>() > 0.1f;
-            bool isLeftPressed = controls.Player.LeftItem.ReadValue<float>() > 0.1f;
-
             if(isRightPressed && !grabObjR && objectGrabbedR && hit.transform.tag == "Object")
             {
                 StartCoroutine(RightGrab());
             }
-            else if(isLeftPressed && !grabObjL && objectGrabbedL && hit.transform.tag == "Bengal")
-            {
-                PV.RPC("UpdateBengalThrowAnimation", RpcTarget.All, true);
-                PV.RPC("UpdateBengalThrowAnimation", RpcTarget.All, false);
-                StartCoroutine(LeftGrab());
-            }
         }
     }
-    
 
     private void Drop()
     {
         bool isRightPressed = controls.Player.RightThrow.ReadValue<float>() > 0.1f;
-        bool isLeftPressed = controls.Player.LeftThrow.ReadValue<float>() > 0.1f;
 
-        if(isRightPressed && grabObjR && throwCheckR)
+        if(isRightPressed && grabObjR)
         {
             StartCoroutine(RightDrop());
         }
-        else if(isLeftPressed && grabObjL && throwCheckL)
-        {
-            StartCoroutine(LeftDrop());
-        }
-    }
-
-    private IEnumerator LeftGrab()
-    {
-        objectGrabbedL = false;
-        // hit.transform.position = objectLeftCamera.position;
-        // hit.rigidbody.isKinematic = true;
-        // hit.transform.parent = objectLeftCamera;
-        // objectScaleDataL = hit.transform.GetComponent<ObjectsData>().ObjectScale;
-        // hit.transform.localScale = new Vector3(objectScaleDataL, objectScaleDataL, objectScaleDataL);
-        // hit.transform.localPosition = new Vector3(0, 0, 0);
-        // hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
-        // objectOriginalScaleL = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
-
-        hit.transform.GetComponent<ObjectsData>().OnGrab(objectLeftHand);
-
-        objectLeftRb = hit.rigidbody;
-        objectLeftT = hit.transform;
-
-        // LeftGrabTwo();
-        yield return new WaitForSeconds(0.5f);
-        grabObjL = true;
-        objectGrabbedL = true;
     }
 
     private IEnumerator RightGrab()
     {
+        
         objectGrabbedR = false;
-
-        // hit.transform.position = objectRightCamera.position;
-        // hit.rigidbody.isKinematic = true;
-        // hit.transform.parent = objectRightCamera;
-
-        // objectScaleDataR = hit.transform.GetComponent<ObjectsData>().ObjectScale;
-        // hit.transform.localScale = new Vector3(objectScaleDataR, objectScaleDataR, objectScaleDataR);
-        // hit.transform.localPosition = new Vector3(0, 0, 0);
-        // hit.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
-        // objectOriginalScaleR = hit.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
-        
-        hit.transform.GetComponent<ObjectsData>().OnGrab(objectRightHand);
-        
-        objectRightRb = hit.rigidbody;
+        hit.transform.GetComponent<ObjectsData>().OnGrab(objectRightCamera);
         objectRightT = hit.transform;
         ObjectRightUI.SetActive(false);
         objectNameString = hit.transform.GetComponent<ObjectsData>().ObjectName;
-        
         yield return new WaitForSeconds(0.5f);
         grabObjR = true;
-        objectGrabbedR = true;
 
-        
     }
-
-    private void LeftGrabTwo()
-    {   
-        int layerIgnoreRaycast = LayerMask.NameToLayer("PlayerSanti");
-
-        // GameObject child = playerL.transform.GetChild(0).gameObject;
-        // child.layer = layerIgnoreRaycast;
-        // cloneL = (GameObject)Instantiate(child, objectLeftHand.position, Quaternion.identity);
-        // cloneL.transform.parent = objectLeftHand;
-        // layerIgnoreRaycast = LayerMask.NameToLayer("PlayerJose");
-        // child.layer = layerIgnoreRaycast;
-
-        GameObject grabbedObject = objectLeftT.gameObject;
-        grabbedObject.layer = layerIgnoreRaycast;
-
-        cloneL = (GameObject)Instantiate(grabbedObject, objectLeftCamera.position, Quaternion.identity);
-        // remove photonview
-        cloneL.GetComponent<PhotonView>().enabled = false;
-        cloneL.GetComponent<PhotonTransformView>().enabled = false;
-        cloneL.transform.parent = objectLeftCamera;
-
-        objectScaleDataL = hit.transform.GetComponent<ObjectsData>().ObjectScale;
-        cloneL.transform.localScale = new Vector3(objectScaleDataL, objectScaleDataL, objectScaleDataL);
-        cloneL.transform.localPosition = new Vector3(0, 0, 0);
-        cloneL.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
-        objectOriginalScaleL = cloneL.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
-    }
-
-    private void RightGrabTwo()
-    {
-        int layerIgnoreRaycast = LayerMask.NameToLayer("PlayerSanti");
-
-        // GameObject child = playerR.transform.GetChild(0).gameObject;
-        // child.layer = layerIgnoreRaycast;
-        // cloneR = (GameObject) Instantiate(child, objectRightHand.position, Quaternion.identity);
-        // cloneR.transform.parent = objectRightHand;
-        // layerIgnoreRaycast = LayerMask.NameToLayer("PlayerJose");
-        // child.layer = layerIgnoreRaycast;
-
-        GameObject grabbedObject = objectRightT.gameObject;
-        grabbedObject.layer = layerIgnoreRaycast;
-
-        cloneR = (GameObject)Instantiate(grabbedObject, objectRightCamera.position, Quaternion.identity);
-        cloneR.GetComponent<PhotonView>().enabled = false;
-        cloneR.GetComponent<PhotonTransformView>().enabled = false;
-        cloneR.transform.parent = objectRightCamera;
-
-        objectScaleDataR = hit.transform.GetComponent<ObjectsData>().ObjectScale;
-        cloneR.transform.localScale = new Vector3(objectScaleDataR, objectScaleDataR, objectScaleDataR);
-        cloneR.transform.localPosition = new Vector3(0, 0, 0);
-        cloneR.transform.localRotation = Quaternion.Euler(-25f, -60f, 45f);
-        objectOriginalScaleR = cloneR.transform.GetComponent<ObjectsData>().ObjectOriginalScale;
-        
-    }
-
-    
-
-    private IEnumerator LeftDrop()
-    {
-        // GameObject child = playerL.transform.GetChild(0).gameObject;
-        // child.layer = 0;
-        // throwCheckL = false;
-        // objectLeftT.transform.localScale = new Vector3(objectOriginalScaleL, objectOriginalScaleL, objectOriginalScaleL);
-        // Vector3 camerDirection = playerCamera.transform.forward;
-        // objectLeftT.transform.parent = null;
-        // objectLeftRb.isKinematic = false;
-        // objectLeftRb.AddForce(camerDirection * throwForce);
-        // Destroy(cloneL);
-        objectLeftT.GetComponent<ObjectsData>().OnRelease();
-        yield return new WaitForSeconds(0.5f);
-        grabObjL = false;
-        throwCheckL = true;
-    }
-
-
 
     public IEnumerator RightDrop()
     {
-        // GameObject child = playerR.transform.GetChild(0).gameObject;
-        // child.layer = 0;
-        // throwCheckR = false;
-        // objectRightT.transform.localScale = new Vector3(objectOriginalScaleR, objectOriginalScaleR, objectOriginalScaleR);
-        // Vector3 camerDirection = playerCamera.transform.forward;
-        // objectRightT.transform.parent = null;
-        // objectRightRb.isKinematic = false;
-        // objectRightRb.AddForce(camerDirection * 0);
-        // Destroy(cloneR);
         objectRightT.GetComponent<ObjectsData>().OnRelease();
+        yield return new WaitForSeconds(0.501f);
         grabObjR = false;
-        throwCheckR = true;
-        yield return new WaitForSeconds(0.5f);
+        objectGrabbedR = true;
     }
 
     [PunRPC]
@@ -605,5 +530,18 @@ public class ObjectsSanti : MonoBehaviourPun
     private void OnDisable()
     {
         controls.Disable();
+    }
+
+    private void Video()
+    {
+        if(GameManager.Instance.ending.time == 35.0)
+        {
+            GameManager.Instance.GetComponent<PhotonView>().RPC("StartVideo", RpcTarget.All, 0);
+        }
+
+        if (GameManager.Instance.ending.time == 200.0)
+        {
+            GameManager.Instance.GetComponent<PhotonView>().RPC("StartVideo", RpcTarget.All, 1);
+        }
     }
 }
