@@ -73,12 +73,6 @@ MonoBehaviour:
   - SetCodes
   - ChangeNina
   - AreDead
-  - UpdateBendingAnimation
-  - UpdateBengalThrowAnimation
-  - UpdateLeftGrabbingAnimation
-  - UpdateRightGrabbingAnimation
-  - UpdateRunningAnimation
-  - UpdateWalkingAnimation
   - ObjectsNurseChange
   - ObjectsNurseOff
   - SpawnInjection
@@ -94,28 +88,26 @@ MonoBehaviour:
   - EnableBlock4
   - EraseBlock4
   - UpdateAttackingAnimation
-  - UpdateEnterPuzzleAnimation
-  - UpdateExitPuzzle
-  - UpdateHealingAnimation
-  - UpdateIdleAnimation
-  - UpdateMoveAnimation
-  - UpdateStandAnimation
-  - UpdateBendingAnimationJose
-  - UpdateDownedAnimationJose
-  - UpdateHealingAnimationJose
-  - UpdateLeftGrabbingAnimationJose
-  - UpdateRevivedAnimationJose
-  - UpdateRightGrabbingAnimationJose
-  - UpdateRunningAnimationJose
-  - UpdateStandAnimationJose
-  - UpdateWalkingAnimationJose
-  - UpdateDownedAnimationSanti
-  - UpdateRevivedAnimationSanti
-  - UpdateAttackingAnimationNurse
-  - UpdateMoveAnimationNurse
-  - UpdateRunningAnimationNurse
+  - UpdateEnterPuzzleAnimationSanti
+  - UpdateExitPuzzleSanti
+  - UpdateSpecialIdleAnimationSanti
+  - UpdateSpecialIdleTwoAnimationSanti
+  - UpdateThrowAnimationSanti
+  - UpdateHealingAnimationSanti
+  - UpdateReanimatingAnimationSanti
+  - UpdateInyectedAnimationSanti
+  - UpdateGrabAnimationSanti
+  - UpdateWalkingAnimationSanti
+  - UpdateLeftThrowingAnimationJose
+  - UpdateRightThrowingAnimationJose
   - UpdateAttackAnimationNurse
   - UpdateBendingAnimationJose
+  - UpdateSpecialIdleAnimationJose
+  - UpdateSpecialIdleTwoAnimationJose
+  - UpdateInyectedAnimationJose
+  - UpdateReturnAnimationJose
+  - UpdateReanimatingAnimationJose
+  - UpdateJumpingAnimationJose
   - UpdateDownedAnimationJose
   - UpdateHealingAnimationJose
   - UpdateLeftGrabbingAnimationJose
