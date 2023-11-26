@@ -360,6 +360,7 @@ public class ObjectsSanti : MonoBehaviourPun
             {
                 if (isInteractPressed)
                 {
+                    PV.RPC("UpdateHealingAnimationSanti", RpcTarget.All);
                     if (!GameManager.Instance.Healing.isPlaying)
                     {
                         GameManager.Instance.Healing.Play();
@@ -458,7 +459,7 @@ public class ObjectsSanti : MonoBehaviourPun
             }
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateEnterPuzzleAnimationSanti()
     {
@@ -474,7 +475,7 @@ public class ObjectsSanti : MonoBehaviourPun
         santiAnimator.ResetTrigger("IsDown");
         santiAnimator.SetTrigger("IsBeginningPuzzle");
     }
-
+    //puesta
     [PunRPC]
     void UpdateExitPuzzleSanti()
     {
@@ -522,7 +523,7 @@ public class ObjectsSanti : MonoBehaviourPun
         santiAnimator.ResetTrigger("IsThrowing");
         santiAnimator.SetTrigger("Special_Idle2");
     }
-
+    //puesta
     [PunRPC]
     void UpdateThrowAnimationSanti()
     {
@@ -538,7 +539,7 @@ public class ObjectsSanti : MonoBehaviourPun
         santiAnimator.ResetTrigger("IsStanding");
         santiAnimator.SetTrigger("IsThrowing");
     }
-
+    //puesta
     [PunRPC]
     void UpdateHealingAnimationSanti()
     {
@@ -554,7 +555,7 @@ public class ObjectsSanti : MonoBehaviourPun
         santiAnimator.ResetTrigger("IsReanimating");
         santiAnimator.SetTrigger("IsHealing");
     }
-
+    //puesta
     [PunRPC]
     void UpdateReanimatingAnimationSanti()
     {
@@ -570,7 +571,7 @@ public class ObjectsSanti : MonoBehaviourPun
         santiAnimator.ResetTrigger("IsInyected");
         santiAnimator.SetTrigger("IsReanimating");
     }
-
+    //puesta
     [PunRPC]
     void UpdateInyectedAnimationSanti()
     {
@@ -586,7 +587,7 @@ public class ObjectsSanti : MonoBehaviourPun
         santiAnimator.ResetTrigger("IsGrabbing");
         santiAnimator.SetTrigger("IsInyected");
     }
-
+    //puesta
     [PunRPC]
     void UpdateGrabAnimationSanti()
     {
@@ -610,6 +611,7 @@ public class ObjectsSanti : MonoBehaviourPun
             bool isRightPressed = controls.Player.RightItem.ReadValue<float>() > 0.1f;
             if(isRightPressed && !grabObjR && objectGrabbedR && hit.transform.tag == "Object")
             {
+                PV.RPC("UpdateGrabAnimationSanti", RpcTarget.All);
                 StartCoroutine(RightGrab());
             }
         }
@@ -621,6 +623,7 @@ public class ObjectsSanti : MonoBehaviourPun
 
         if(isRightPressed && grabObjR)
         {
+            PV.RPC("UpdateThrowAnimationSanti", RpcTarget.All);
             StartCoroutine(RightDrop());
         }
     }

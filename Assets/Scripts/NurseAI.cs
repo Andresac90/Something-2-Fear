@@ -251,12 +251,14 @@ public class NurseAI : MonoBehaviour
         PV.RPC("UpdateAttackAnimationNurse", RpcTarget.All, true);
         if (closerPlayer == players[0] && !GameManager.Instance.Injection)
         {
+            SantiPV.RPC("UpdateInyectedAnimationSanti", RpcTarget.All);
             SantiPV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
             isPlayerCaught = false;
 
         }
         else if (closerPlayer == players[1] && !GameManager.Instance.Injection)
         {
+            JosePV.RPC("UpdateInyectedAnimationJose", RpcTarget.All);
             JosePV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
             isPlayerCaught = false;
         }

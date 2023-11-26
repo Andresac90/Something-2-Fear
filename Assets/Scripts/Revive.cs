@@ -12,6 +12,7 @@ public class Revive : MonoBehaviourPun
     private float currentTime = 0f;
     private Transform playerCamera;
     private int playersJoined = 0;
+    private bool reanimating = false;
 
     [SerializeField]
     private float objectTime;
@@ -59,7 +60,18 @@ public class Revive : MonoBehaviourPun
             if (hit.transform != null && (hit.transform.tag == "PlayerSanti" || hit.transform.tag == "PlayerJose"))
             {
                 if (hit.transform.gameObject.GetComponent<Down>().isPlayerDowned == false) return;
-                
+                PhotonView playerPV = hit.transform.gameObject.GetComponent<PhotonView>();
+                if(!reanimating && hit.transform.tag == "PlayerJose")
+                {
+                    playerPV.RPC("UpdateReanimatingAnimationSanti", RpcTarget.All);
+                    reanimating = true;
+                }
+                else if(!reanimating && hit.transform.tag == "PlayerSanti")
+                {
+                    playerPV.RPC("UpdateReanimatingAnimationJose", RpcTarget.All);
+                    reanimating = true;
+                }
+
                 canvas.gameObject.SetActive(true);
                 currentTime += Time.deltaTime;
                 fill.fillAmount = currentTime / objectTime;
@@ -68,6 +80,7 @@ public class Revive : MonoBehaviourPun
                     RevivePlayer(hit.transform.gameObject);
                     currentTime = 0f;
                     fill.fillAmount = currentTime / objectTime;
+                    reanimating = false;
                 }
             }
             else
@@ -77,6 +90,7 @@ public class Revive : MonoBehaviourPun
         }
         else
         {
+            reanimating = false;
             currentTime = 0f;
             fill.fillAmount = currentTime / objectTime;
         }
