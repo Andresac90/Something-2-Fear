@@ -209,12 +209,17 @@ public class Down : MonoBehaviourPun
     {
         if (playerAnimator != null)
         {
-            playerAnimator.ResetTrigger("SantiRevivedTrigger");
-            playerAnimator.ResetTrigger("BeginPuzzleTrigger");
-            playerAnimator.ResetTrigger("EndPuzzleTrigger");
-            playerAnimator.ResetTrigger("SpecialIdleTrigger");
-            playerAnimator.ResetTrigger("IsBengalThrowTrigger");
-            playerAnimator.SetTrigger("SantiDownedTrigger");
+            santiAnimator.ResetTrigger("IsEndingPuzzle");
+            santiAnimator.ResetTrigger("IsBeginningPuzzle");
+            santiAnimator.ResetTrigger("IsGrabbing");
+            santiAnimator.ResetTrigger("IsInyected");
+            santiAnimator.ResetTrigger("IsReanimating");
+            santiAnimator.ResetTrigger("IsHealing");
+            santiAnimator.ResetTrigger("IsStanding");
+            santiAnimator.ResetTrigger("IsThrowing");
+            santiAnimator.ResetTrigger("Special_Idle2");
+            santiAnimator.ResetTrigger("Special_Idle");
+            santiAnimator.SetTrigger("IsDown");
         }
     }
 
@@ -223,12 +228,17 @@ public class Down : MonoBehaviourPun
     {
         if (playerAnimator != null)
         {
-            playerAnimator.ResetTrigger("SantiDownedTrigger");
-            playerAnimator.ResetTrigger("BeginPuzzleTrigger");
-            playerAnimator.ResetTrigger("EndPuzzleTrigger");
-            playerAnimator.ResetTrigger("SpecialIdleTrigger");
-            playerAnimator.ResetTrigger("IsBengalThrowTrigger");
-            playerAnimator.SetTrigger("SantiRevivedTrigger");
+            santiAnimator.ResetTrigger("IsEndingPuzzle");
+            santiAnimator.ResetTrigger("IsBeginningPuzzle");
+            santiAnimator.ResetTrigger("IsDown");
+            santiAnimator.ResetTrigger("Special_Idle");
+            santiAnimator.ResetTrigger("Special_Idle2");
+            santiAnimator.ResetTrigger("IsThrowing");
+            santiAnimator.ResetTrigger("IsGrabbing");
+            santiAnimator.ResetTrigger("IsInyected");
+            santiAnimator.ResetTrigger("IsReanimating");
+            santiAnimator.ResetTrigger("IsHealing");
+            santiAnimator.SetTrigger("IsStanding");
         }
     }
 }

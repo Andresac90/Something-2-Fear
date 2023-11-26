@@ -460,17 +460,147 @@ public class ObjectsSanti : MonoBehaviourPun
     }
 
     [PunRPC]
-    void UpdateEnterPuzzleAnimation()
+    void UpdateEnterPuzzleAnimationSanti()
     {
-        santiAnimator.SetTrigger("BeginPuzzleTrigger");
-        santiAnimator.ResetTrigger("EndPuzzleTrigger");
+        santiAnimator.ResetTrigger("IsEndingPuzzle");
+        santiAnimator.ResetTrigger("IsGrabbing");
+        santiAnimator.ResetTrigger("IsInyected");
+        santiAnimator.ResetTrigger("IsReanimating");
+        santiAnimator.ResetTrigger("IsHealing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.ResetTrigger("IsThrowing");
+        santiAnimator.ResetTrigger("Special_Idle2");
+        santiAnimator.ResetTrigger("Special_Idle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.SetTrigger("IsBeginningPuzzle");
     }
 
     [PunRPC]
-    void UpdateExitPuzzle()
+    void UpdateExitPuzzleSanti()
     {
-        santiAnimator.SetTrigger("EndPuzzleTrigger");
-        santiAnimator.ResetTrigger("BeginPuzzleTrigger");
+        santiAnimator.ResetTrigger("IsBeginningPuzzle");
+        santiAnimator.ResetTrigger("IsGrabbing");
+        santiAnimator.ResetTrigger("IsInyected");
+        santiAnimator.ResetTrigger("IsReanimating");
+        santiAnimator.ResetTrigger("IsHealing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.ResetTrigger("IsThrowing");
+        santiAnimator.ResetTrigger("Special_Idle2");
+        santiAnimator.ResetTrigger("Special_Idle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.SetTrigger("IsEndingPuzzle");
+    }
+
+    [PunRPC]
+    void UpdateSpecialIdleAnimationSanti()
+    {
+        santiAnimator.ResetTrigger("IsEndingPuzzle");
+        santiAnimator.ResetTrigger("IsBeginningPuzzle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.ResetTrigger("IsGrabbing");
+        santiAnimator.ResetTrigger("IsInyected");
+        santiAnimator.ResetTrigger("IsReanimating");
+        santiAnimator.ResetTrigger("IsHealing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.ResetTrigger("IsThrowing");
+        santiAnimator.ResetTrigger("Special_Idle2");
+        santiAnimator.SetTrigger("Special_Idle");
+    }
+
+    [PunRPC]
+    void UpdateSpecialIdleTwoAnimationSanti()
+    {
+        santiAnimator.ResetTrigger("IsEndingPuzzle");
+        santiAnimator.ResetTrigger("IsBeginningPuzzle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.ResetTrigger("Special_Idle");
+        santiAnimator.ResetTrigger("IsGrabbing");
+        santiAnimator.ResetTrigger("IsInyected");
+        santiAnimator.ResetTrigger("IsReanimating");
+        santiAnimator.ResetTrigger("IsHealing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.ResetTrigger("IsThrowing");
+        santiAnimator.SetTrigger("Special_Idle2");
+    }
+
+    [PunRPC]
+    void UpdateThrowAnimationSanti()
+    {
+        santiAnimator.ResetTrigger("IsEndingPuzzle");
+        santiAnimator.ResetTrigger("IsBeginningPuzzle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.ResetTrigger("Special_Idle");
+        santiAnimator.ResetTrigger("Special_Idle2");
+        santiAnimator.ResetTrigger("IsGrabbing");
+        santiAnimator.ResetTrigger("IsInyected");
+        santiAnimator.ResetTrigger("IsReanimating");
+        santiAnimator.ResetTrigger("IsHealing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.SetTrigger("IsThrowing");
+    }
+
+    [PunRPC]
+    void UpdateHealingAnimationSanti()
+    {
+        santiAnimator.ResetTrigger("IsEndingPuzzle");
+        santiAnimator.ResetTrigger("IsBeginningPuzzle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.ResetTrigger("Special_Idle");
+        santiAnimator.ResetTrigger("Special_Idle2");
+        santiAnimator.ResetTrigger("IsThrowing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.ResetTrigger("IsGrabbing");
+        santiAnimator.ResetTrigger("IsInyected");
+        santiAnimator.ResetTrigger("IsReanimating");
+        santiAnimator.SetTrigger("IsHealing");
+    }
+
+    [PunRPC]
+    void UpdateReanimatingAnimationSanti()
+    {
+        santiAnimator.ResetTrigger("IsEndingPuzzle");
+        santiAnimator.ResetTrigger("IsBeginningPuzzle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.ResetTrigger("Special_Idle");
+        santiAnimator.ResetTrigger("Special_Idle2");
+        santiAnimator.ResetTrigger("IsThrowing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.ResetTrigger("IsHealing");
+        santiAnimator.ResetTrigger("IsGrabbing");
+        santiAnimator.ResetTrigger("IsInyected");
+        santiAnimator.SetTrigger("IsReanimating");
+    }
+
+    [PunRPC]
+    void UpdateInyectedAnimationSanti()
+    {
+        santiAnimator.ResetTrigger("IsEndingPuzzle");
+        santiAnimator.ResetTrigger("IsBeginningPuzzle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.ResetTrigger("Special_Idle");
+        santiAnimator.ResetTrigger("Special_Idle2");
+        santiAnimator.ResetTrigger("IsThrowing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.ResetTrigger("IsHealing");
+        santiAnimator.ResetTrigger("IsReanimating");
+        santiAnimator.ResetTrigger("IsGrabbing");
+        santiAnimator.SetTrigger("IsInyected");
+    }
+
+    [PunRPC]
+    void UpdateGrabAnimationSanti()
+    {
+        santiAnimator.ResetTrigger("IsEndingPuzzle");
+        santiAnimator.ResetTrigger("IsBeginningPuzzle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.ResetTrigger("Special_Idle");
+        santiAnimator.ResetTrigger("Special_Idle2");
+        santiAnimator.ResetTrigger("IsThrowing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.ResetTrigger("IsHealing");
+        santiAnimator.ResetTrigger("IsReanimating");
+        santiAnimator.ResetTrigger("IsInyected");
+        santiAnimator.SetTrigger("IsGrabbing");
     }
 
     private void Grab()
