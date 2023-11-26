@@ -313,7 +313,7 @@ public class ObjectsJose : MonoBehaviourPun
                     {
                         GameManager.Instance.Healing.Play();
                     }
-                    PV.RPC("UpdateHealingAnimationJose", RpcTarget.All, true);
+                    PV.RPC("UpdateHealingAnimationJose", RpcTarget.All);
                     HealingUI.SetActive(true);
                     station.updateCure(true, this.gameObject);
                     activeStation = station;
@@ -326,7 +326,7 @@ public class ObjectsJose : MonoBehaviourPun
                     activeStation = null;
                     activated = false;
                 }
-                PV.RPC("UpdateHealingAnimationJose", RpcTarget.All, false);
+                PV.RPC("UpdateReturnAnimationJose", RpcTarget.All);
             }
         }
         else if (activeStation != null && activated)
@@ -350,8 +350,8 @@ public class ObjectsJose : MonoBehaviourPun
             }
         }
     }
-
-        [PunRPC]
+    //puesta
+    [PunRPC]
     void UpdateWalkingAnimationJose(bool isWalking)
     {
         if (joseAnimator != null)
@@ -359,7 +359,7 @@ public class ObjectsJose : MonoBehaviourPun
             joseAnimator.SetBool("IsWalking", isWalking);
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateRunningAnimationJose(bool isRunning)
     {
@@ -368,7 +368,7 @@ public class ObjectsJose : MonoBehaviourPun
             joseAnimator.SetBool("IsRunning", isRunning);
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateBendingAnimationJose()
     {
@@ -390,7 +390,7 @@ public class ObjectsJose : MonoBehaviourPun
             joseAnimator.SetTrigger("IsBending");
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateStandAnimationJose()
     {
@@ -412,7 +412,7 @@ public class ObjectsJose : MonoBehaviourPun
             joseAnimator.SetTrigger("IsStanding");
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateRightGrabbingAnimationJose()
     {
@@ -434,7 +434,7 @@ public class ObjectsJose : MonoBehaviourPun
             joseAnimator.SetTrigger("IsRightGrabbing");
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateLeftGrabbingAnimationJose()
     {
@@ -456,7 +456,7 @@ public class ObjectsJose : MonoBehaviourPun
             joseAnimator.SetTrigger("IsLeftGrabbing");
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateHealingAnimationJose()
     {
@@ -478,7 +478,7 @@ public class ObjectsJose : MonoBehaviourPun
             joseAnimator.SetTrigger("IsHealing");
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateRightThrowingAnimationJose()
     {
@@ -500,7 +500,7 @@ public class ObjectsJose : MonoBehaviourPun
             joseAnimator.SetTrigger("IsRightThrowing");
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateLeftThrowingAnimationJose()
     {
@@ -566,7 +566,7 @@ public class ObjectsJose : MonoBehaviourPun
             joseAnimator.SetTrigger("Special_Idle2");
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateInyectedAnimationJose()
     {
@@ -588,7 +588,7 @@ public class ObjectsJose : MonoBehaviourPun
             joseAnimator.SetTrigger("IsInyected");
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateJumpingAnimationJose()
     {
@@ -610,7 +610,7 @@ public class ObjectsJose : MonoBehaviourPun
             joseAnimator.SetTrigger("IsJumping");
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateReanimatingAnimationJose()
     {
@@ -632,7 +632,7 @@ public class ObjectsJose : MonoBehaviourPun
             joseAnimator.SetTrigger("IsReanimating");
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateReturnAnimationJose()
     {
@@ -665,7 +665,6 @@ public class ObjectsJose : MonoBehaviourPun
             if(IsRightPressed && !HasObjectRight)
             {
                 PV.RPC("UpdateRightGrabbingAnimationJose", RpcTarget.All);
-                PV.RPC("UpdateRightGrabbingAnimationJose", RpcTarget.All);
                 // hit.transform.position = ObjectRightCamera.position;
                 // hit.rigidbody.isKinematic = true;
                 // hit.transform.parent = ObjectRightCamera;
@@ -687,7 +686,7 @@ public class ObjectsJose : MonoBehaviourPun
             bool IsLeftPressed = Controls.Player.LeftItem.ReadValue<float>() > 0.1f;
             if (IsLeftPressed && !HasObjectLeft)
             {
-                photonView.RPC("UpdateLeftGrabbingAnimationJose", RpcTarget.All);
+                PV.RPC("UpdateLeftGrabbingAnimationJose", RpcTarget.All);
                 // hit.transform.position = ObjectRightCamera.position;
                 // hit.rigidbody.isKinematic = true;
                 // hit.transform.parent = ObjectLeftCamera;
@@ -714,6 +713,7 @@ public class ObjectsJose : MonoBehaviourPun
         bool IsRightTPressed = Controls.Player.RightThrow.ReadValue<float>() > 0.1f;
         if(IsRightTPressed && HasObjectRight == true && ThrowCheckR)
         {
+            PV.RPC("UpdateRightThrowingAnimationJose", RpcTarget.All);
             // ObjectRightT.transform.localScale = new Vector3(ObjectROriginalScale, ObjectROriginalScale, ObjectROriginalScale);
             // Vector3 camerDirection = PlayerCamera.transform.forward;
             // ObjectRightT.transform.parent = null;
@@ -730,7 +730,7 @@ public class ObjectsJose : MonoBehaviourPun
         bool IsLeftPressed = Controls.Player.LeftThrow.ReadValue<float>() > 0.1f;
         if (IsLeftPressed && HasObjectLeft && ThrowCheckL)
         {
-            
+            PV.RPC("UpdateLeftThrowingAnimationJose", RpcTarget.All);
             // ObjectLeftT.transform.localScale = new Vector3(ObjectLOriginalScale, ObjectLOriginalScale, ObjectLOriginalScale);
             // Vector3 camerDirection = PlayerCamera.transform.forward;
             // ObjectLeftT.transform.parent = null;
