@@ -192,54 +192,6 @@ public class JoseMovement : MonoBehaviourPun
         }
     }
 
-    [PunRPC]
-    void UpdateWalkingAnimationJose(bool isWalking)
-    {
-        if (joseAnimator != null)
-        {
-            joseAnimator.SetBool("IsWalking", isWalking);
-        }
-    }
-
-    [PunRPC]
-    void UpdateRunningAnimationJose(bool isRunning)
-    {
-        if (joseAnimator != null)
-        {
-            joseAnimator.SetBool("IsRunning", isRunning);
-        }
-    }
-
-    [PunRPC]
-    void UpdateBendingAnimationJose()
-    {
-        if (joseAnimator != null)
-        {
-            joseAnimator.ResetTrigger("JoseDownedTrigger");
-            joseAnimator.ResetTrigger("JoseRevivedTrigger");
-            joseAnimator.ResetTrigger("IsStanding");
-            joseAnimator.ResetTrigger("IsLeftGrabbingTrigger");
-            joseAnimator.ResetTrigger("IsRightGrabbingTrigger");
-            joseAnimator.ResetTrigger("IsHealing");
-            joseAnimator.SetTrigger("IsBending");
-        }
-    }
-
-    [PunRPC]
-    void UpdateStandAnimationJose()
-    {
-        if (joseAnimator != null)
-        {
-            joseAnimator.ResetTrigger("JoseDownedTrigger");
-            joseAnimator.ResetTrigger("JoseRevivedTrigger");
-            joseAnimator.ResetTrigger("IsLeftGrabbingTrigger");
-            joseAnimator.ResetTrigger("IsRightGrabbingTrigger");
-            joseAnimator.ResetTrigger("IsHealing");
-            joseAnimator.ResetTrigger("IsBending");
-            joseAnimator.SetTrigger("IsStanding");
-        }
-    }
-
     public void SetInjected()
     {
         isPlayerInjected = true;

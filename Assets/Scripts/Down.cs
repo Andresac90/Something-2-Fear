@@ -165,14 +165,20 @@ public class Down : MonoBehaviourPun
     {
         if (playerAnimator != null)
         {
+            playerAnimator.ResetTrigger("IsStanding");
+            playerAnimator.ResetTrigger("IsLeftGrabbing");
+            playerAnimator.ResetTrigger("IsRightGrabbing");
+            playerAnimator.ResetTrigger("IsLeftThrowing");
+            playerAnimator.ResetTrigger("IsRightThrowing");
             playerAnimator.ResetTrigger("IsHealing");
-            playerAnimator.ResetTrigger("JoseRevivedTrigger");
-            playerAnimator.ResetTrigger("IsStanding");
-            playerAnimator.ResetTrigger("IsRightGrabbingTrigger");
-            playerAnimator.ResetTrigger("IsLeftGrabbingTrigger");
             playerAnimator.ResetTrigger("IsBending");
-            playerAnimator.ResetTrigger("IsStanding");
-            playerAnimator.SetTrigger("JoseDownedTrigger");
+            playerAnimator.ResetTrigger("Special_Idle");
+            playerAnimator.ResetTrigger("Special_Idle2");
+            playerAnimator.ResetTrigger("IsInyected");
+            playerAnimator.ResetTrigger("IsJumping");
+            playerAnimator.ResetTrigger("IsReanimating");
+            playerAnimator.ResetTrigger("Return");
+            playerAnimator.SetTrigger("IsDown");
         }
     }
 
@@ -181,14 +187,20 @@ public class Down : MonoBehaviourPun
     {
         if (playerAnimator != null)
         {
+            playerAnimator.ResetTrigger("IsDown");
+            playerAnimator.ResetTrigger("IsLeftGrabbing");
+            playerAnimator.ResetTrigger("IsRightGrabbing");
+            playerAnimator.ResetTrigger("IsLeftThrowing");
+            playerAnimator.ResetTrigger("IsRightThrowing");
             playerAnimator.ResetTrigger("IsHealing");
-            playerAnimator.ResetTrigger("JoseRevivedTrigger");
-            playerAnimator.ResetTrigger("IsStanding");
-            playerAnimator.ResetTrigger("IsRightGrabbingTrigger");
-            playerAnimator.ResetTrigger("IsLeftGrabbingTrigger");
             playerAnimator.ResetTrigger("IsBending");
-            playerAnimator.ResetTrigger("IsStanding");
-            playerAnimator.SetTrigger("JoseDownedTrigger");
+            playerAnimator.ResetTrigger("Special_Idle");
+            playerAnimator.ResetTrigger("Special_Idle2");
+            playerAnimator.ResetTrigger("IsInyected");
+            playerAnimator.ResetTrigger("IsJumping");
+            playerAnimator.ResetTrigger("IsReanimating");
+            playerAnimator.ResetTrigger("Return");
+            playerAnimator.SetTrigger("IsStanding");
         }
     }
 
