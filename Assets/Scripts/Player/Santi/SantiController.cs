@@ -180,7 +180,7 @@ public class SantiController : MonoBehaviourPun
 
         if(movement.x != 0 || movement.y != 0)
         {
-            PV.RPC("UpdateWalkingAnimation", RpcTarget.All, true);
+            PV.RPC("UpdateWalkingAnimationSanti", RpcTarget.All, true);
             if (!GameManager.Instance.Footsteps.isPlaying)
             {
                 GameManager.Instance.Footsteps.Play();
@@ -190,7 +190,7 @@ public class SantiController : MonoBehaviourPun
         else
         {
             GameManager.Instance.Footsteps.Stop();
-            PV.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
+            PV.RPC("UpdateWalkingAnimationSanti", RpcTarget.All, false);
         }
     }
 
