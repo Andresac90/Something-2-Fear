@@ -104,8 +104,7 @@ public class EventManager : MonoBehaviour
     {
         if (santiNear && !JoseEvent && SantiEvent)
         {
-            ChangeObjects.GetComponent<PhotonView>().RPC("DeactivatePascualita", RpcTarget.All);
-            ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateNurse", RpcTarget.All);
+            GameManager.Instance.GetComponent<PhotonView>().RPC("EndingCutscene", RpcTarget.All);
             Destroy(this.gameObject);
         }
     }
