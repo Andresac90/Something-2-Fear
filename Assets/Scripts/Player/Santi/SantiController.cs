@@ -195,7 +195,7 @@ public class SantiController : MonoBehaviourPun
     }
 
     [PunRPC]
-    void UpdateWalkingAnimation(bool isWalking)
+    void UpdateWalkingAnimationSanti(bool isWalking)
     {
         if (santiAnimator != null)
         {

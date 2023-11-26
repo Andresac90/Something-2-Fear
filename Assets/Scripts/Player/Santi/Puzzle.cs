@@ -22,8 +22,8 @@ public class Puzzle : MonoBehaviourPun
 
     public void OpenPuzzle(bool puzzleCreated, bool puzzleActive, string objectName)
     {
-        PV = GetComponent<PhotonView>();
         playerMove = GameObject.Find("Santi(Clone)");
+        PV = playerMove.GetComponent<PhotonView>();
         GameManager.Instance.puzzle = true;
         objectsSanti = playerMove.GetComponent<ObjectsSanti>();
         
