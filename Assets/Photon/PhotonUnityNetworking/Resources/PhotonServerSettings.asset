@@ -100,8 +100,6 @@ MonoBehaviour:
   - UpdateIdleAnimation
   - UpdateMoveAnimation
   - UpdateStandAnimation
-<<<<<<< Updated upstream
-=======
   - UpdateBendingAnimationJose
   - UpdateDownedAnimationJose
   - UpdateHealingAnimationJose
@@ -117,7 +115,6 @@ MonoBehaviour:
   - UpdateMoveAnimationNurse
   - UpdateRunningAnimationNurse
   - UpdateAttackAnimationNurse
->>>>>>> Stashed changes
   - UpdateBendingAnimationJose
   - UpdateDownedAnimationJose
   - UpdateHealingAnimationJose
