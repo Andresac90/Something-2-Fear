@@ -209,17 +209,17 @@ public class Down : MonoBehaviourPun
     {
         if (playerAnimator != null)
         {
-            santiAnimator.ResetTrigger("IsEndingPuzzle");
-            santiAnimator.ResetTrigger("IsBeginningPuzzle");
-            santiAnimator.ResetTrigger("IsGrabbing");
-            santiAnimator.ResetTrigger("IsInyected");
-            santiAnimator.ResetTrigger("IsReanimating");
-            santiAnimator.ResetTrigger("IsHealing");
-            santiAnimator.ResetTrigger("IsStanding");
-            santiAnimator.ResetTrigger("IsThrowing");
-            santiAnimator.ResetTrigger("Special_Idle2");
-            santiAnimator.ResetTrigger("Special_Idle");
-            santiAnimator.SetTrigger("IsDown");
+            playerAnimator.ResetTrigger("IsEndingPuzzle");
+            playerAnimator.ResetTrigger("IsBeginningPuzzle");
+            playerAnimator.ResetTrigger("IsGrabbing");
+            playerAnimator.ResetTrigger("IsInyected");
+            playerAnimator.ResetTrigger("IsReanimating");
+            playerAnimator.ResetTrigger("IsHealing");
+            playerAnimator.ResetTrigger("IsStanding");
+            playerAnimator.ResetTrigger("IsThrowing");
+            playerAnimator.ResetTrigger("Special_Idle2");
+            playerAnimator.ResetTrigger("Special_Idle");
+            playerAnimator.SetTrigger("IsDown");
         }
     }
 
@@ -228,17 +228,17 @@ public class Down : MonoBehaviourPun
     {
         if (playerAnimator != null)
         {
-            santiAnimator.ResetTrigger("IsEndingPuzzle");
-            santiAnimator.ResetTrigger("IsBeginningPuzzle");
-            santiAnimator.ResetTrigger("IsDown");
-            santiAnimator.ResetTrigger("Special_Idle");
-            santiAnimator.ResetTrigger("Special_Idle2");
-            santiAnimator.ResetTrigger("IsThrowing");
-            santiAnimator.ResetTrigger("IsGrabbing");
-            santiAnimator.ResetTrigger("IsInyected");
-            santiAnimator.ResetTrigger("IsReanimating");
-            santiAnimator.ResetTrigger("IsHealing");
-            santiAnimator.SetTrigger("IsStanding");
+            playerAnimator.ResetTrigger("IsEndingPuzzle");
+            playerAnimator.ResetTrigger("IsBeginningPuzzle");
+            playerAnimator.ResetTrigger("IsDown");
+            playerAnimator.ResetTrigger("Special_Idle");
+            playerAnimator.ResetTrigger("Special_Idle2");
+            playerAnimator.ResetTrigger("IsThrowing");
+            playerAnimator.ResetTrigger("IsGrabbing");
+            playerAnimator.ResetTrigger("IsInyected");
+            playerAnimator.ResetTrigger("IsReanimating");
+            playerAnimator.ResetTrigger("IsHealing");
+            playerAnimator.SetTrigger("IsStanding");
         }
     }
 }
