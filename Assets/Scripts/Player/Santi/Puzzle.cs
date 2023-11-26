@@ -18,9 +18,11 @@ public class Puzzle : MonoBehaviourPun
 
     public int comprobations;
     public string PasswordRef;
+    private PhotonView PV;
 
     public void OpenPuzzle(bool puzzleCreated, bool puzzleActive, string objectName)
     {
+        PV = GetComponent<PhotonView>();
         playerMove = GameObject.Find("Santi(Clone)");
         GameManager.Instance.puzzle = true;
         objectsSanti = playerMove.GetComponent<ObjectsSanti>();
@@ -49,7 +51,7 @@ public class Puzzle : MonoBehaviourPun
 
     public void ClosePuzzle(bool puzzleActive)
     {
-
+        if (!PV.IsMine) return;
         GameManager.Instance.puzzle = false;
         if(puzzleCopy != null)
         {
@@ -62,7 +64,8 @@ public class Puzzle : MonoBehaviourPun
     }
 
     public void PlayerMovement(bool puzzleActive)
-    {
+    {   
+        if (!PV.IsMine) return;
         if(!puzzleActive)
         {
             playerMove.GetComponent<SantiController>().enabled = false;
@@ -80,6 +83,7 @@ public class Puzzle : MonoBehaviourPun
 
     public void Completed()
     {
+        if (!PV.IsMine) return;
         if(puzzleCopy.name == "Labyrinth MiniGame" && comprobations == comprobationsNeeded)
         {
             PlayerMovement(true);
@@ -87,6 +91,7 @@ public class Puzzle : MonoBehaviourPun
             objectsSanti.puzzleActive = false;
             Destroy(puzzleCopy.gameObject, 1f);
             this.transform.tag = "Untagged";
+            PV.RPC("UpdateExitPuzzleSanti", RpcTarget.All);
             Destroy(this);
         }
         else if (comprobations == comprobationsNeeded)
@@ -100,6 +105,7 @@ public class Puzzle : MonoBehaviourPun
             objectsSanti.puzzleActive = false;
             Destroy(puzzleCopy.gameObject, 1f);
             this.transform.tag = "Untagged";
+            PV.RPC("UpdateExitPuzzleSanti", RpcTarget.All);
             Destroy(this);
 
         }
