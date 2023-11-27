@@ -15,7 +15,6 @@ public class Down : MonoBehaviourPun
     [SerializeField]
     private float deadTime;
     private bool joseDown = false;
-    private bool santiDown = false;
     private bool areDead = false;
 
     public PhotonView downingIndicator;
@@ -23,6 +22,7 @@ public class Down : MonoBehaviourPun
     public Animator playerAnimator;
 
     public bool isPlayerDowned;
+    public bool santiDown = false;
 
     public void Start()
     {
