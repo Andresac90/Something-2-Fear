@@ -70,6 +70,7 @@ public class ObjectsSanti : MonoBehaviourPun
     private GameObject Timer;
 
     private PhotonView PV;
+    private Puzzle puzzle;
     private TextMeshProUGUI textMeshProText;
     private bool isInjectionSpawned = false;
     public bool puzzleCreated = false;
@@ -77,7 +78,7 @@ public class ObjectsSanti : MonoBehaviourPun
     public bool noteCreated = false;
     public string objectNameString;
     public int keylevel = 1;
-
+    public bool down;
     
 
     public void Awake()
@@ -100,6 +101,7 @@ public class ObjectsSanti : MonoBehaviourPun
         aicontrolNi.SantiActivation();
         ChangeObjects = GameObject.Find("ChangeObjects");
         santiAnimator = GetComponent<Animator>();
+        down = GetComponent<Down>().santiDown;
     }
 
     public void Update()
@@ -288,6 +290,10 @@ public class ObjectsSanti : MonoBehaviourPun
         {
             InjectionUI.SetActive(true);
         }
+        else
+        {
+            InjectionUI.SetActive(false);
+        }
 
         //Timer UI
         if (this.GetComponent<Injection>().isPlayerInjected)
@@ -401,7 +407,7 @@ public class ObjectsSanti : MonoBehaviourPun
     {
         if(hit.transform.tag == "Puzzle")
         {
-            Puzzle puzzle = hit.transform.GetComponent<Puzzle>();
+            puzzle = hit.transform.GetComponent<Puzzle>();
             string objectName = hit.collider.gameObject.name;
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.2f;
             if (objectNameString != "Key" && puzzle.puzzle.name != null && puzzle.puzzle.name == "LockPick" && !puzzleCreated)
@@ -437,7 +443,12 @@ public class ObjectsSanti : MonoBehaviourPun
         {
             noKeyUI.SetActive(false);
         }
-
+        if(puzzle != null && puzzleCreated && puzzleActive && down)
+        {
+            Debug.Log("Pene");
+            puzzle.ClosePuzzle(true);
+            puzzleActive = false;
+        }
     }
 
     public void NoteManager()

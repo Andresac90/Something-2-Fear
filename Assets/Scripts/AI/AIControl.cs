@@ -502,7 +502,7 @@ public class AIControl : MonoBehaviourPun
         aiAnimation.ResetTrigger("walk");
         aiAnimation.ResetTrigger("idle");
         aiAnimation.ResetTrigger("sprint");
-        santiAnimation.ResetTrigger("SantiJumpscareTrigger");
+        santiAnimation.ResetTrigger("SantiPascualitaJumpscareTrigger");
         
     }                                         
 
