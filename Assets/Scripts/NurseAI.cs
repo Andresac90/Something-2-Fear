@@ -369,6 +369,11 @@ public class NurseAI : MonoBehaviour
     private void SpawnKey()
     {
         key.SetActive(true);
+        GameManager.Instance.Object1 = false;
+        GameManager.Instance.Object2 = false;
+        GameManager.Instance.Object3 = false;
+        GameManager.Instance.Injection = false;
+        GameManager.Instance.InjectionSpawn = false;
     }
 
     [PunRPC]

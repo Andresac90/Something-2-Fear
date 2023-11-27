@@ -121,6 +121,7 @@ MonoBehaviour:
   - UpdateAttackingAnimationNurse
   - UpdateMoveAnimationNurse
   - UpdateRunningAnimationNurse
+  - UpdateAttackAnimationNurse
   - OpenR
   - UpdateMoveAnimation
   DisableAutoOpenWizard: 1

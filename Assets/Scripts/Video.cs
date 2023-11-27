@@ -9,6 +9,7 @@ public class Video : MonoBehaviour
     public float currentTime;
     public bool firstV;
     public bool secondV;
+    public bool menu;
     public bool firstPlaying = false;
     public bool secondPlaying = false;
 
@@ -22,12 +23,19 @@ public class Video : MonoBehaviour
         {
             gameObject.GetComponent<VideoPlayer>().url = Application.streamingAssetsPath + "/" + "AnimacionLogo.mp4";
         }
+        else if (menu)
+        {
+            gameObject.GetComponent<VideoPlayer>().url = Application.streamingAssetsPath + "/" + "menuFootage.mp4";
+        }
     }
 
     void Update()
     {
-        TimeS();
-        checkTime();
+        if (!menu)
+        {
+            TimeS();
+            checkTime();
+        }
     }
 
     void TimeS()
