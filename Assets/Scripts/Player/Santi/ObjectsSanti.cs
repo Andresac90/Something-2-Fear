@@ -288,6 +288,10 @@ public class ObjectsSanti : MonoBehaviourPun
         {
             InjectionUI.SetActive(true);
         }
+        else
+        {
+            InjectionUI.SetActive(false);
+        }
 
         //Timer UI
         if (this.GetComponent<Injection>().isPlayerInjected)
