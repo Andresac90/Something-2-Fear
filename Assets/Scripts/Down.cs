@@ -165,14 +165,20 @@ public class Down : MonoBehaviourPun
     {
         if (playerAnimator != null)
         {
+            playerAnimator.ResetTrigger("IsStanding");
+            playerAnimator.ResetTrigger("IsLeftGrabbing");
+            playerAnimator.ResetTrigger("IsRightGrabbing");
+            playerAnimator.ResetTrigger("IsLeftThrowing");
+            playerAnimator.ResetTrigger("IsRightThrowing");
             playerAnimator.ResetTrigger("IsHealing");
-            playerAnimator.ResetTrigger("JoseRevivedTrigger");
-            playerAnimator.ResetTrigger("IsStanding");
-            playerAnimator.ResetTrigger("IsRightGrabbingTrigger");
-            playerAnimator.ResetTrigger("IsLeftGrabbingTrigger");
             playerAnimator.ResetTrigger("IsBending");
-            playerAnimator.ResetTrigger("IsStanding");
-            playerAnimator.SetTrigger("JoseDownedTrigger");
+            playerAnimator.ResetTrigger("Special_Idle");
+            playerAnimator.ResetTrigger("Special_Idle2");
+            playerAnimator.ResetTrigger("IsInyected");
+            playerAnimator.ResetTrigger("IsJumping");
+            playerAnimator.ResetTrigger("IsReanimating");
+            playerAnimator.ResetTrigger("Return");
+            playerAnimator.SetTrigger("IsDown");
         }
     }
 
@@ -181,14 +187,20 @@ public class Down : MonoBehaviourPun
     {
         if (playerAnimator != null)
         {
+            playerAnimator.ResetTrigger("IsDown");
+            playerAnimator.ResetTrigger("IsLeftGrabbing");
+            playerAnimator.ResetTrigger("IsRightGrabbing");
+            playerAnimator.ResetTrigger("IsLeftThrowing");
+            playerAnimator.ResetTrigger("IsRightThrowing");
             playerAnimator.ResetTrigger("IsHealing");
-            playerAnimator.ResetTrigger("JoseRevivedTrigger");
-            playerAnimator.ResetTrigger("IsStanding");
-            playerAnimator.ResetTrigger("IsRightGrabbingTrigger");
-            playerAnimator.ResetTrigger("IsLeftGrabbingTrigger");
             playerAnimator.ResetTrigger("IsBending");
-            playerAnimator.ResetTrigger("IsStanding");
-            playerAnimator.SetTrigger("JoseDownedTrigger");
+            playerAnimator.ResetTrigger("Special_Idle");
+            playerAnimator.ResetTrigger("Special_Idle2");
+            playerAnimator.ResetTrigger("IsInyected");
+            playerAnimator.ResetTrigger("IsJumping");
+            playerAnimator.ResetTrigger("IsReanimating");
+            playerAnimator.ResetTrigger("Return");
+            playerAnimator.SetTrigger("IsStanding");
         }
     }
 
@@ -197,12 +209,17 @@ public class Down : MonoBehaviourPun
     {
         if (playerAnimator != null)
         {
-            playerAnimator.ResetTrigger("SantiRevivedTrigger");
-            playerAnimator.ResetTrigger("BeginPuzzleTrigger");
-            playerAnimator.ResetTrigger("EndPuzzleTrigger");
-            playerAnimator.ResetTrigger("SpecialIdleTrigger");
-            playerAnimator.ResetTrigger("IsBengalThrowTrigger");
-            playerAnimator.SetTrigger("SantiDownedTrigger");
+            playerAnimator.ResetTrigger("IsEndingPuzzle");
+            playerAnimator.ResetTrigger("IsBeginningPuzzle");
+            playerAnimator.ResetTrigger("IsGrabbing");
+            playerAnimator.ResetTrigger("IsInyected");
+            playerAnimator.ResetTrigger("IsReanimating");
+            playerAnimator.ResetTrigger("IsHealing");
+            playerAnimator.ResetTrigger("IsStanding");
+            playerAnimator.ResetTrigger("IsThrowing");
+            playerAnimator.ResetTrigger("Special_Idle2");
+            playerAnimator.ResetTrigger("Special_Idle");
+            playerAnimator.SetTrigger("IsDown");
         }
     }
 
@@ -211,12 +228,17 @@ public class Down : MonoBehaviourPun
     {
         if (playerAnimator != null)
         {
-            playerAnimator.ResetTrigger("SantiDownedTrigger");
-            playerAnimator.ResetTrigger("BeginPuzzleTrigger");
-            playerAnimator.ResetTrigger("EndPuzzleTrigger");
-            playerAnimator.ResetTrigger("SpecialIdleTrigger");
-            playerAnimator.ResetTrigger("IsBengalThrowTrigger");
-            playerAnimator.SetTrigger("SantiRevivedTrigger");
+            playerAnimator.ResetTrigger("IsEndingPuzzle");
+            playerAnimator.ResetTrigger("IsBeginningPuzzle");
+            playerAnimator.ResetTrigger("IsDown");
+            playerAnimator.ResetTrigger("Special_Idle");
+            playerAnimator.ResetTrigger("Special_Idle2");
+            playerAnimator.ResetTrigger("IsThrowing");
+            playerAnimator.ResetTrigger("IsGrabbing");
+            playerAnimator.ResetTrigger("IsInyected");
+            playerAnimator.ResetTrigger("IsReanimating");
+            playerAnimator.ResetTrigger("IsHealing");
+            playerAnimator.SetTrigger("IsStanding");
         }
     }
 }

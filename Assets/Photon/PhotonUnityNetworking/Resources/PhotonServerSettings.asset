@@ -73,12 +73,6 @@ MonoBehaviour:
   - SetCodes
   - ChangeNina
   - AreDead
-  - UpdateBendingAnimation
-  - UpdateBengalThrowAnimation
-  - UpdateLeftGrabbingAnimation
-  - UpdateRightGrabbingAnimation
-  - UpdateRunningAnimation
-  - UpdateWalkingAnimation
   - ObjectsNurseChange
   - ObjectsNurseOff
   - SpawnInjection
@@ -94,13 +88,26 @@ MonoBehaviour:
   - EnableBlock4
   - EraseBlock4
   - UpdateAttackingAnimation
-  - UpdateEnterPuzzleAnimation
-  - UpdateExitPuzzle
-  - UpdateHealingAnimation
-  - UpdateIdleAnimation
-  - UpdateMoveAnimation
-  - UpdateStandAnimation
+  - UpdateEnterPuzzleAnimationSanti
+  - UpdateExitPuzzleSanti
+  - UpdateSpecialIdleAnimationSanti
+  - UpdateSpecialIdleTwoAnimationSanti
+  - UpdateThrowAnimationSanti
+  - UpdateHealingAnimationSanti
+  - UpdateReanimatingAnimationSanti
+  - UpdateInyectedAnimationSanti
+  - UpdateGrabAnimationSanti
+  - UpdateWalkingAnimationSanti
+  - UpdateLeftThrowingAnimationJose
+  - UpdateRightThrowingAnimationJose
+  - UpdateAttackAnimationNurse
   - UpdateBendingAnimationJose
+  - UpdateSpecialIdleAnimationJose
+  - UpdateSpecialIdleTwoAnimationJose
+  - UpdateInyectedAnimationJose
+  - UpdateReturnAnimationJose
+  - UpdateReanimatingAnimationJose
+  - UpdateJumpingAnimationJose
   - UpdateDownedAnimationJose
   - UpdateHealingAnimationJose
   - UpdateLeftGrabbingAnimationJose
@@ -115,6 +122,8 @@ MonoBehaviour:
   - UpdateMoveAnimationNurse
   - UpdateRunningAnimationNurse
   - UpdateAttackAnimationNurse
+  - OpenR
+  - UpdateMoveAnimation
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

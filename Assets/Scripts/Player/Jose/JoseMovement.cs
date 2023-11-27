@@ -155,6 +155,7 @@ public class JoseMovement : MonoBehaviourPun
         bool IsJumpPressed = Controls.Player.Jump.ReadValue<float>() > 0.1f;
         if (IsJumpPressed && IsGrounded && !HasCeiling && !IsCrouched && !HasJump)
         {
+            PV.RPC("UpdateJumpingAnimationJose", RpcTarget.All);
             YVel.y = Mathf.Sqrt(Gravity * JumpForce * -2);
             HasJump = true;
         }
@@ -189,54 +190,6 @@ public class JoseMovement : MonoBehaviourPun
             Speed = OriginalSpeed;
             HasCrouched = false;
             IsCrouched = false;
-        }
-    }
-
-    [PunRPC]
-    void UpdateWalkingAnimationJose(bool isWalking)
-    {
-        if (joseAnimator != null)
-        {
-            joseAnimator.SetBool("IsWalking", isWalking);
-        }
-    }
-
-    [PunRPC]
-    void UpdateRunningAnimationJose(bool isRunning)
-    {
-        if (joseAnimator != null)
-        {
-            joseAnimator.SetBool("IsRunning", isRunning);
-        }
-    }
-
-    [PunRPC]
-    void UpdateBendingAnimationJose()
-    {
-        if (joseAnimator != null)
-        {
-            joseAnimator.ResetTrigger("JoseDownedTrigger");
-            joseAnimator.ResetTrigger("JoseRevivedTrigger");
-            joseAnimator.ResetTrigger("IsStanding");
-            joseAnimator.ResetTrigger("IsLeftGrabbingTrigger");
-            joseAnimator.ResetTrigger("IsRightGrabbingTrigger");
-            joseAnimator.ResetTrigger("IsHealing");
-            joseAnimator.SetTrigger("IsBending");
-        }
-    }
-
-    [PunRPC]
-    void UpdateStandAnimationJose()
-    {
-        if (joseAnimator != null)
-        {
-            joseAnimator.ResetTrigger("JoseDownedTrigger");
-            joseAnimator.ResetTrigger("JoseRevivedTrigger");
-            joseAnimator.ResetTrigger("IsLeftGrabbingTrigger");
-            joseAnimator.ResetTrigger("IsRightGrabbingTrigger");
-            joseAnimator.ResetTrigger("IsHealing");
-            joseAnimator.ResetTrigger("IsBending");
-            joseAnimator.SetTrigger("IsStanding");
         }
     }
 
