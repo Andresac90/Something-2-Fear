@@ -611,6 +611,12 @@ public class ObjectsSanti : MonoBehaviourPun
         santiAnimator.SetTrigger("IsGrabbing");
     }
 
+    [PunRPC]
+    void UpdateRightDown(bool santiDown)
+    {
+        down = santiDown;
+    }
+
     private void Grab()
     {
         if(hit.transform.tag == "Object")
