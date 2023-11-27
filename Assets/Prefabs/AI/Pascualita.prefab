@@ -419,8 +419,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: ac417713670c7aa4094abbbae55514b5, type: 2}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: -3196511607817033700, guid: 38caae40c38a4b14db56c5ced1a96591, type: 3}
+    - {fileID: -6580527441550686012, guid: 38caae40c38a4b14db56c5ced1a96591, type: 3}
+    - {fileID: -7289914870046697083, guid: 38caae40c38a4b14db56c5ced1a96591, type: 3}
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 38caae40c38a4b14db56c5ced1a96591, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7264476130452837461}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 38caae40c38a4b14db56c5ced1a96591, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7597579931626339458}
@@ -609,21 +615,27 @@ MonoBehaviour:
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
   m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 0
-    Name: PascualitaAttack
   - Type: 9
     SynchronizeType: 0
-    Name: PascualaAtkTrigger
-  - Type: 4
+    Name: walk
+  - Type: 9
     SynchronizeType: 0
-    Name: Pose1
-  - Type: 4
+    Name: idle
+  - Type: 9
     SynchronizeType: 0
-    Name: Pose2
-  - Type: 4
+    Name: sprint
+  - Type: 9
     SynchronizeType: 0
-    Name: Pose3
+    Name: jumpscare
+  - Type: 9
+    SynchronizeType: 0
+    Name: pose1
+  - Type: 9
+    SynchronizeType: 0
+    Name: pose2
+  - Type: 9
+    SynchronizeType: 0
+    Name: pose3
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -690,3 +702,65 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!1001 &7159074072369787838
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3849951602125989407}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 924094f86c67f324fa96bf9562a6dc45, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 924094f86c67f324fa96bf9562a6dc45, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 924094f86c67f324fa96bf9562a6dc45, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 924094f86c67f324fa96bf9562a6dc45, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 924094f86c67f324fa96bf9562a6dc45, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 924094f86c67f324fa96bf9562a6dc45, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 924094f86c67f324fa96bf9562a6dc45, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 924094f86c67f324fa96bf9562a6dc45, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 924094f86c67f324fa96bf9562a6dc45, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 924094f86c67f324fa96bf9562a6dc45, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 924094f86c67f324fa96bf9562a6dc45, type: 3}
+      propertyPath: m_Name
+      value: Pascualita_Mesh_Animations
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 924094f86c67f324fa96bf9562a6dc45, type: 3}
+--- !u!4 &7264476130452837461 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 924094f86c67f324fa96bf9562a6dc45, type: 3}
+  m_PrefabInstance: {fileID: 7159074072369787838}
+  m_PrefabAsset: {fileID: 0}
