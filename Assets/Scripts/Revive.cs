@@ -13,6 +13,7 @@ public class Revive : MonoBehaviourPun
     private Transform playerCamera;
     private int playersJoined = 0;
     private bool reanimating = false;
+    private PhotonView PV;
 
     [SerializeField]
     private float objectTime;
@@ -31,6 +32,7 @@ public class Revive : MonoBehaviourPun
     }
     public void Start()
     {
+        PV = GetComponent<PhotonView>();
         playerCamera = transform.GetComponentInChildren<Camera>().gameObject.transform;
         // GameManager.OnPlayersJoined += HandlePlayersJoined;
         if (name == "Santi(Clone)")
@@ -60,15 +62,14 @@ public class Revive : MonoBehaviourPun
             if (hit.transform != null && (hit.transform.tag == "PlayerSanti" || hit.transform.tag == "PlayerJose"))
             {
                 if (hit.transform.gameObject.GetComponent<Down>().isPlayerDowned == false) return;
-                PhotonView playerPV = hit.transform.gameObject.GetComponent<PhotonView>();
                 if(!reanimating && hit.transform.tag == "PlayerJose")
                 {
-                    playerPV.RPC("UpdateReanimatingAnimationSanti", RpcTarget.All);
+                    PV.RPC("UpdateReanimatingAnimationSanti", RpcTarget.All);
                     reanimating = true;
                 }
                 else if(!reanimating && hit.transform.tag == "PlayerSanti")
                 {
-                    playerPV.RPC("UpdateReanimatingAnimationJose", RpcTarget.All);
+                    PV.RPC("UpdateReanimatingAnimationJose", RpcTarget.All);
                     reanimating = true;
                 }
 

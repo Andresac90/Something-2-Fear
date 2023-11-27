@@ -1299,6 +1299,7 @@ MonoBehaviour:
   downingIndicator: {fileID: 413314282749380676}
   playerAnimator: {fileID: 0}
   isPlayerDowned: 0
+  santiDown: 0
 --- !u!114 &-5500400414091018079
 MonoBehaviour:
   m_ObjectHideFlags: 0
