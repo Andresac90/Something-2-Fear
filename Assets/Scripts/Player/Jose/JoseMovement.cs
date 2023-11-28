@@ -169,6 +169,7 @@ public class JoseMovement : MonoBehaviourPun
     {
         HasCeiling = Physics.CheckSphere(HeadCheck.position, RadiusHead, GroundMask);
         bool IsCrouchPressed = Controls.Player.Crouch.ReadValue<float>() > 0.1f;
+        bool IsJumpPressed = Controls.Player.Jump.ReadValue<float>() > 0f;
         if (IsCrouchPressed && !HasCrouched && !HasJump)
         {
             PV.RPC("UpdateBendingAnimationJose", RpcTarget.All);
@@ -180,9 +181,9 @@ public class JoseMovement : MonoBehaviourPun
             HasCrouched = true;
             IsCrouched = true;
         }
-        else if (!HasCeiling && !IsCrouchPressed && !HasRun)
+        else if (!HasCeiling && !IsCrouchPressed && !HasRun && !IsJumpPressed)
         {
-            //PV.RPC("UpdateStandAnimationJose", RpcTarget.All);
+            PV.RPC("UpdateStandAnimationJose", RpcTarget.All);
             CharController.height = 2;
             CharController.center = new Vector3(0, 0, 0);
             // Camera.localPosition = new Vector3(0, 0.894f, 0.225f);
