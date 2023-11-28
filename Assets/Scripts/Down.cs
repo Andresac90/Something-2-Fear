@@ -126,7 +126,8 @@ public class Down : MonoBehaviourPun
     [PunRPC]
     public void AreDead()
     {
-        areDead = true;
+        var DeathScreenManager = GameObject.Find("DeathScreenManager").GetComponent<DeathScreenManager>();
+        DeathScreenManager.Die();
     }
     
     private void Die()
@@ -153,9 +154,10 @@ public class Down : MonoBehaviourPun
 
             // change ever
             // SceneManager.LoadScene("LoseScreen");
-            PhotonNetwork.LoadLevel("LoseScreen");
+            // PhotonNetwork.LoadLevel("LoseScreen");
             photonView.RPC("AreDead", RpcTarget.All);
             // gameObject.SetActive(false);
+            areDead = true;
         }
     }
 }

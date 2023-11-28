@@ -56,8 +56,20 @@ public class CheckPointManager : MonoBehaviourPun
 
     public void ResetPlayers()
     {
-        GameObject.Find("Santi(Clone)").transform.position = CurrentCheckPoint.transform.position;
-        GameObject.Find("Jose(Clone)").transform.position = CurrentCheckPoint.transform.position;
+
+        var santi = GameObject.Find("Santi(Clone)");
+        var jose = GameObject.Find("Jose(Clone)");
+        santi.transform.position = CurrentCheckPoint.transform.position;
+        jose.transform.position = CurrentCheckPoint.transform.position;
+
+        if (santi.GetComponent<Down>().isPlayerDowned)
+        {
+            santi.GetComponent<Revive>().RevivePlayer(santi);
+        }
+        if (jose.GetComponent<Down>().isPlayerDowned)
+        {
+            jose.GetComponent<Revive>().RevivePlayer(jose);
+        }
     }
 
     public void ResetPascualita()

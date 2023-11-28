@@ -79,7 +79,7 @@ public class Revive : MonoBehaviourPun
         }
     }
 
-    private void RevivePlayer(GameObject playerObject)
+    public void RevivePlayer(GameObject playerObject)
     {
         PhotonView playerPV = playerObject.GetComponent<PhotonView>();
         if (playerPV == null) return;
