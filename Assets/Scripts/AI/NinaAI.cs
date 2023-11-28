@@ -429,13 +429,16 @@ public class NinaAI : MonoBehaviour
         if (ninaAnimator != null)
         {
             ninaAnimator.SetBool("IsMoving", isMoving);
+            ninaAnimator.ResetTrigger("IsAttacking");
         }
     }
 
     [PunRPC]
     void UpdateAttackingAnimation()
     {
+        if (ninaAnimator != null)
+        {
         ninaAnimator.SetTrigger("IsAttacking");
-        ninaAnimator.ResetTrigger("IsAttacking");
+        }
     }
 }
