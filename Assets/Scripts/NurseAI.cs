@@ -109,16 +109,13 @@ public class NurseAI : MonoBehaviour
 
             if (isChasing && !isPlayerCaught)
             {
-                //aiAnimation.ResetTrigger("walk");
-                //aiAnimation.ResetTrigger("idle");
-                //aiAnimation.SetTrigger("sprint");
+                PV.RPC("UpdateAttackAnimationNurse", RpcTarget.All, false);
+                PV.RPC("UpdateMoveAnimationNurse", RpcTarget.All, false);
+                PV.RPC("UpdateRunningAnimationNurse", RpcTarget.All, true);
                 Chasing();
             }
             else if (isPatrol && !isPlayerCaught)
             {
-                //aiAnimation.ResetTrigger("sprint");
-                //aiAnimation.ResetTrigger("idle");
-                //aiAnimation.SetTrigger("walk");
                 Patroling();
             }
             else if (isPlayerCaught)
@@ -139,9 +136,6 @@ public class NurseAI : MonoBehaviour
 
         if (!isPlayerCaught)
         {
-            PV.RPC("UpdateAttackAnimationNurse", RpcTarget.All, false);
-            PV.RPC("UpdateMoveAnimationNurse", RpcTarget.All, false);
-            PV.RPC("UpdateRunningAnimationNurse", RpcTarget.All, true);
             Move(chaseSpeed);
             aiAgent.SetDestination(PlayerPosition);          //  set the destination of the enemy to the player location
         }

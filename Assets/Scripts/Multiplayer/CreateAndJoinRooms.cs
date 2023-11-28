@@ -31,6 +31,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable();
     
     public GameObject playButton;
+    public GameObject persistedObject;
 
     public void CreateRoom()
     {
@@ -80,6 +81,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     void Start ()
     {
+        persistedObject = GameObject.Find("Music");
         if (PhotonNetwork.InRoom)
             PhotonNetwork.LeaveRoom();
     }
@@ -148,6 +150,19 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public void Play()
     {
+        if (persistedObject != null)
+        {
+            gameObject.GetComponent<PhotonView>().RPC("DestroyMusic", RpcTarget.All);
+        }
+        else
+        {
+            Debug.LogWarning("Persisted object not found.");
+        }
         PhotonNetwork.LoadLevel("Main");
+    }
+    [PunRPC]
+    public void DestroyMusic()
+    {
+        Destroy(persistedObject);
     }
 }
