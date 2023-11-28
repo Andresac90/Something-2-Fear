@@ -77,12 +77,14 @@ public class Down : MonoBehaviourPun
             photonView.RPC("UpdateRightDown", RpcTarget.All, true);
             photonView.RPC("playerDown", RpcTarget.All, true);
             GetComponent<SantiController>().enabled = false;
+            GetComponent<ObjectsSanti>().enabled = false;
             photonView.RPC("UpdateDownedAnimationSanti", RpcTarget.All);
         }
         else if (name == "Jose(Clone)")
         {
             photonView.RPC("playerDown", RpcTarget.All, true);
             GetComponent<JoseMovement>().enabled = false;
+            GetComponent<ObjectsJose>().enabled = false;
             photonView.RPC("UpdateDownedAnimationJose", RpcTarget.All);
         }
         GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y - 0.879f, transform.position.z);
