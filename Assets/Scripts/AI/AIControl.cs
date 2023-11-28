@@ -250,38 +250,6 @@ public class AIControl : MonoBehaviourPun
         }
     }
 
-    [PunRPC]
-    void UpdateJumpScareAnimationSanti()
-    {
-        if (santiAnimation == null)
-            return;
-        santiAnimation.SetTrigger("SantiPascualitaJumpscareTrigger");
-    }
-
-    [PunRPC]
-    void UpdateJumpScareAnimationJose()
-    {
-        if (joseAnimation == null)
-            return;
-        joseAnimation.SetTrigger("JosePascualitaJumpscareTrigger");
-    }
-
-    [PunRPC]
-    void ResetJumpScareAnimationSanti()
-    {
-        if (santiAnimation == null)
-            return;
-        santiAnimation.ResetTrigger("SantiPascualitaJumpscareTrigger");
-    }
-
-    [PunRPC]
-    void ResetJumpScareAnimationJose()
-    {
-        if (joseAnimation == null)
-            return;
-        joseAnimation.ResetTrigger("JosePascualitaJumpscareTrigger");
-    }
-
     private void Attacking()
     {
 
@@ -523,5 +491,37 @@ public class AIControl : MonoBehaviourPun
         JosePV.RPC("ResetJumpScareAnimationSanti", RpcTarget.All);
         
 
+    }
+
+    [PunRPC]
+    void UpdateJumpScareAnimationSanti()
+    {
+        if (santiAnimation == null)
+            return;
+        santiAnimation.SetTrigger("SantiPascualitaJumpscareTrigger");
+    }
+
+    [PunRPC]
+    void UpdateJumpScareAnimationJose()
+    {
+        if (joseAnimation == null)
+            return;
+        joseAnimation.SetTrigger("JosePascualitaJumpscareTrigger");
+    }
+
+    [PunRPC]
+    void ResetJumpScareAnimationSanti()
+    {
+        if (santiAnimation == null)
+            return;
+        santiAnimation.ResetTrigger("SantiPascualitaJumpscareTrigger");
+    }
+
+    [PunRPC]
+    void ResetJumpScareAnimationJose()
+    {
+        if (joseAnimation == null)
+            return;
+        joseAnimation.ResetTrigger("JosePascualitaJumpscareTrigger");
     }
 }
