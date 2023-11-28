@@ -94,30 +94,27 @@ public class SantiController : MonoBehaviourPun
 
     private void CheckInteract()
     {
-        bool InteractPressed = Controls.Player.Interact.triggered;
-        if (isHiding)
-        {
-            UIPrompt("StopHide");
-
-            if (InteractPressed)
-            {
-                StopHide();
-                return;
-            }
-        }
-
+        Debug.Log("CheckInteract Running");
         RaycastHit hit;
         LayerMask mask = LayerMask.GetMask("Obstacle");
         Physics.Raycast(Camera.transform.position, Camera.transform.TransformDirection(Vector3.forward), out hit, 2.0f, mask);
+        //if (hit.transform == null)
+        //{
+        //    UIPrompt("");
+        //}
 
-        if (hit.transform == null){
-            UIPrompt("");
-            return;
+        bool InteractPressed = Controls.Player.Interact.triggered;
+        //UIPrompt(hit.transform.tag);
+        if (isHiding && InteractPressed)
+        {
+            StopHide();
         }
 
-        UIPrompt(hit.transform.tag);
-
+        //Ternary Operator
+        var tag = hit.transform != null ? hit.transform.tag: string.Empty;
+        UIPrompt(isHiding, tag);
         if (!InteractPressed) return;
+        
         switch (hit.transform.tag)
         {
             case "Hide":
@@ -203,23 +200,26 @@ public class SantiController : MonoBehaviourPun
         }
     }
 
-    private void UIPrompt(string text)
-    {   
-        if (text == "Hide")
-        {
-            HideText.SetActive(true);
-            StopHideText.SetActive(false);
-        }
-        else if (text == "StopHide")
-        {
-            StopHideText.SetActive(true);
-            HideText.SetActive(false);
-        }
-        else
-        {
-            HideText.SetActive(false);
-            StopHideText.SetActive(false);
-        }
+    private void UIPrompt(bool isHiding, string text)
+    {
+        StopHideText.SetActive(isHiding);
+        HideText.SetActive(!isHiding && text=="Hide");
+
+        //if (text == "Hide")
+        //{
+        //    HideText.SetActive(true);
+        //    StopHideText.SetActive(false);
+        //}
+        //else if (text == "StopHide")
+        //{
+        //    StopHideText.SetActive(true);
+        //    HideText.SetActive(false);
+        //}
+        //else
+        //{
+        //    HideText.SetActive(false);
+        //    StopHideText.SetActive(false);
+        //}
     }
 
     public void SetInjected()

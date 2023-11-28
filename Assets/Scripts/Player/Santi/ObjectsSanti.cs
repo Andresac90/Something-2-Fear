@@ -474,6 +474,8 @@ public class ObjectsSanti : MonoBehaviourPun
     [PunRPC]
     void UpdateEnterPuzzleAnimationSanti()
     {
+        if (santiAnimator == null)
+            return;
         santiAnimator.ResetTrigger("IsEndingPuzzle");
         santiAnimator.ResetTrigger("IsGrabbing");
         santiAnimator.ResetTrigger("IsInyected");
@@ -490,6 +492,8 @@ public class ObjectsSanti : MonoBehaviourPun
     [PunRPC]
     void UpdateExitPuzzleSanti()
     {
+        if (santiAnimator == null)
+            return;
         santiAnimator.ResetTrigger("IsBeginningPuzzle");
         santiAnimator.ResetTrigger("IsGrabbing");
         santiAnimator.ResetTrigger("IsInyected");
@@ -506,6 +510,8 @@ public class ObjectsSanti : MonoBehaviourPun
     [PunRPC]
     void UpdateSpecialIdleAnimationSanti()
     {
+        if (santiAnimator == null)
+            return;
         santiAnimator.ResetTrigger("IsEndingPuzzle");
         santiAnimator.ResetTrigger("IsBeginningPuzzle");
         santiAnimator.ResetTrigger("IsDown");
@@ -522,6 +528,8 @@ public class ObjectsSanti : MonoBehaviourPun
     [PunRPC]
     void UpdateSpecialIdleTwoAnimationSanti()
     {
+        if (santiAnimator == null)
+            return;
         santiAnimator.ResetTrigger("IsEndingPuzzle");
         santiAnimator.ResetTrigger("IsBeginningPuzzle");
         santiAnimator.ResetTrigger("IsDown");
@@ -538,6 +546,8 @@ public class ObjectsSanti : MonoBehaviourPun
     [PunRPC]
     void UpdateThrowAnimationSanti()
     {
+        if (santiAnimator == null)
+            return;
         santiAnimator.ResetTrigger("IsEndingPuzzle");
         santiAnimator.ResetTrigger("IsBeginningPuzzle");
         santiAnimator.ResetTrigger("IsDown");
@@ -602,6 +612,8 @@ public class ObjectsSanti : MonoBehaviourPun
     [PunRPC]
     void UpdateGrabAnimationSanti()
     {
+        if (santiAnimator == null)
+            return;
         santiAnimator.ResetTrigger("IsEndingPuzzle");
         santiAnimator.ResetTrigger("IsBeginningPuzzle");
         santiAnimator.ResetTrigger("IsDown");
