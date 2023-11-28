@@ -34,10 +34,11 @@ public class CheckPointManager : MonoBehaviourPun
 
     public void ResetKeys()
     {
-        foreach (var key in CurrentCheckPoint.FoundKeys)
+        foreach (var checkPoint in PassedCheckPoints)
         {
-            key.SetActive(false);
-            // TODO: add key to player inventory
+            GameManager.Instance.Key1 = checkPoint.key == CheckPoint.Key.Key1;
+            GameManager.Instance.Key2 = checkPoint.key == CheckPoint.Key.Key2;
+            GameManager.Instance.Key3 = checkPoint.key == CheckPoint.Key.Key3;
         }
     }
 

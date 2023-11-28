@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using Photon.Pun;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CheckPoint : MonoBehaviourPun
@@ -17,8 +15,17 @@ public class CheckPoint : MonoBehaviourPun
     public bool PascualitaIsOn = false;
     public bool EnfermeraIsOn = false;
     public bool NinaIsOn = false;
-    public GameObject[] FoundKeys;
     public GameObject[] OpenedDoors;
+
+    public Key key;
+
+    public enum Key
+    {
+        Key1,
+        Key2,
+        Key3,
+        None
+    }
 
     public void Start()
     {
@@ -53,11 +60,16 @@ public class CheckPoint : MonoBehaviourPun
 
     public void CheckIfBothPlayersPassed()
     {
-        if (!PhotonNetwork.IsMasterClient) return;
-
         if (SantiHasPassed && JoseHasPassed)
         {
-            CheckPointManager.GetComponent<PhotonView>().RPC("SetCheckPoint", RpcTarget.All, photonView.ViewID);
+            SetCheckPoint();
         }
+    }
+
+    public void SetCheckPoint()
+    {
+        if (!PhotonNetwork.IsMasterClient) return;
+        
+        CheckPointManager.GetComponent<PhotonView>().RPC("SetCheckPoint", RpcTarget.All, photonView.ViewID);
     }
 }
