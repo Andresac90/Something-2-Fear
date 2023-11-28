@@ -253,7 +253,7 @@ public class AIControl : MonoBehaviourPun
     [PunRPC]
     void UpdateJumpScareAnimationSanti()
     {
-        if (santiAnimator == null)
+        if (santiAnimation == null)
             return;
         santiAnimation.SetTrigger("SantiPascualitaJumpscareTrigger");
     }
@@ -269,7 +269,7 @@ public class AIControl : MonoBehaviourPun
     [PunRPC]
     void ResetJumpScareAnimationSanti()
     {
-        if (santiAnimator == null)
+        if (santiAnimation == null)
             return;
         santiAnimation.ResetTrigger("SantiPascualitaJumpscareTrigger");
     }
