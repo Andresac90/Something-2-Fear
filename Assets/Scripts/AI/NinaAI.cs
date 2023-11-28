@@ -121,7 +121,7 @@ public class NinaAI : MonoBehaviour
             if (attackingJose)
             {
                 ChaseJose();
-                walkSpeed = 0.5f;
+                walkSpeed = 0.9f;
             }
             else if (attackingSanti)
             {
