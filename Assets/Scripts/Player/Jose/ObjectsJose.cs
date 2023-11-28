@@ -211,6 +211,10 @@ public class ObjectsJose : MonoBehaviourPun
         {
             InjectionUI.SetActive(true);
         }
+        else
+        {
+            InjectionUI.SetActive(false);
+        }
 
         //Timer UI
         if (this.GetComponent<Injection>().isPlayerInjected)

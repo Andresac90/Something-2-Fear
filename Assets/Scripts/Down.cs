@@ -15,7 +15,6 @@ public class Down : MonoBehaviourPun
     [SerializeField]
     private float deadTime;
     private bool joseDown = false;
-    private bool santiDown = false;
     private bool areDead = false;
 
     public PhotonView downingIndicator;
@@ -23,6 +22,7 @@ public class Down : MonoBehaviourPun
     public Animator playerAnimator;
 
     public bool isPlayerDowned;
+    public bool santiDown = false;
 
     public void Start()
     {
@@ -74,6 +74,7 @@ public class Down : MonoBehaviourPun
         // look for santiController or JoseMovement
         if (name == "Santi(Clone)")
         {
+            photonView.RPC("UpdateRightDown", RpcTarget.All, true);
             photonView.RPC("playerDown", RpcTarget.All, true);
             GetComponent<SantiController>().enabled = false;
             photonView.RPC("UpdateDownedAnimationSanti", RpcTarget.All);
@@ -100,6 +101,7 @@ public class Down : MonoBehaviourPun
         Debug.Log("reviving");
         if (name == "Santi(Clone)")
         {
+            photonView.RPC("UpdateRightDown", RpcTarget.All, false);
             photonView.RPC("playerDown", RpcTarget.All, false);
             GetComponent<SantiController>().enabled = true;
             photonView.RPC("UpdateRevivedAnimationSanti", RpcTarget.All);
