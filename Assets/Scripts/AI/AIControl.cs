@@ -140,24 +140,20 @@ public class AIControl : MonoBehaviourPun
             if (isSeenBoth && !blinkingSanti && !blinkingJose)
             {
                 // Both players are seen and not blinking
-                Debug.Log("cond 1");
                 Stop();
             }
             // Either only Santi or only Jose is seen
             else if (!isSeenBoth && isSeenSanti && !blinkingSanti)
             {
-                Debug.Log("cond 2");
                 Stop();
             }
             else if (!isSeenBoth && isSeenJose && !blinkingJose)
             {
                 // Only Jose is seen and not blinking
-                Debug.Log("cond 3");
                 Stop();
             }
             else if (isChasing && !isPlayerCaught)
             {
-                Debug.Log("ass Chasing");
                 aiAnimation.ResetTrigger("walk");
                 aiAnimation.ResetTrigger("idle");
                 aiAnimation.SetTrigger("sprint");
@@ -165,7 +161,6 @@ public class AIControl : MonoBehaviourPun
             }
             else if (isPatrol && !isPlayerCaught)
             {
-                Debug.Log("ass patrolling");
                 aiAnimation.ResetTrigger("sprint");
                 aiAnimation.ResetTrigger("idle");
                 aiAnimation.SetTrigger("walk");
@@ -185,11 +180,9 @@ public class AIControl : MonoBehaviourPun
         {
             Move(chaseSpeed);
             aiAgent.SetDestination(PlayerPosition);          //  set the destination of the enemy to the player location
-            Debug.Log("ass CHASE");
         }
         if (aiAgent.remainingDistance <= aiAgent.stoppingDistance)    //  Control if the enemy arrive to the player location
         {
-            Debug.Log("ass PING");
             if (WaitTime <= 0 && !isPlayerCaught && Vector3.Distance(transform.position, closerPlayer.transform.position) >= 6f)
             {
                 //  Check if the enemy is not near to the player, returns to patrol after the wait time delay
@@ -257,6 +250,38 @@ public class AIControl : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
+    void UpdateJumpScareAnimationSanti()
+    {
+        if (santiAnimator == null)
+            return;
+        santiAnimation.SetTrigger("SantiPascualitaJumpscareTrigger");
+    }
+
+    [PunRPC]
+    void UpdateJumpScareAnimationJose()
+    {
+        if (joseAnimation == null)
+            return;
+        joseAnimation.SetTrigger("JosePascualitaJumpscareTrigger");
+    }
+
+    [PunRPC]
+    void ResetJumpScareAnimationSanti()
+    {
+        if (santiAnimator == null)
+            return;
+        santiAnimation.ResetTrigger("SantiPascualitaJumpscareTrigger");
+    }
+
+    [PunRPC]
+    void ResetJumpScareAnimationJose()
+    {
+        if (joseAnimation == null)
+            return;
+        joseAnimation.ResetTrigger("JosePascualitaJumpscareTrigger");
+    }
+
     private void Attacking()
     {
 
@@ -271,7 +296,7 @@ public class AIControl : MonoBehaviourPun
             Debug.Log("Pinga attack SANTI");
             SantiPV.RPC("SyncDowned", RpcTarget.All);
             GameManager.Instance.PascualitaJumpscare.Play();
-            santiAnimation.SetTrigger("SantiPascualitaJumpscareTrigger");
+            SantiPV.RPC("UpdateJumpScareAnimationSanti", RpcTarget.All);
             StartCoroutine(EndSantiJumpscare());
 
 
@@ -288,7 +313,7 @@ public class AIControl : MonoBehaviourPun
             Debug.Log("Pinga attack JOSE");
             JosePV.RPC("SyncDowned", RpcTarget.All);
             GameManager.Instance.PascualitaJumpscare.Play();
-            joseAnimation.SetTrigger("JosePascualitaJumpscareTrigger");
+            JosePV.RPC("UpdateJumpScareAnimationJose", RpcTarget.All);
             StartCoroutine(EndJoseJumpscare());
         }
 
@@ -477,7 +502,7 @@ public class AIControl : MonoBehaviourPun
         aiAnimation.ResetTrigger("walk");
         aiAnimation.ResetTrigger("idle");
         aiAnimation.ResetTrigger("sprint");
-        santiAnimation.ResetTrigger("SantiPascualitaJumpscareTrigger");
+        SantiPV.RPC("ResetJumpScareAnimationSanti", RpcTarget.All);
         
     }                                         
 
@@ -489,7 +514,7 @@ public class AIControl : MonoBehaviourPun
         aiAnimation.ResetTrigger("walk");
         aiAnimation.ResetTrigger("idle");
         aiAnimation.ResetTrigger("sprint");
-        joseAnimation.ResetTrigger("JosePascualitaJumpscareTrigger");
+        JosePV.RPC("ResetJumpScareAnimationSanti", RpcTarget.All);
         
 
     }
