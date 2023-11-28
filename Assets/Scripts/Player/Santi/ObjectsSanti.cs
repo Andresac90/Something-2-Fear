@@ -115,6 +115,9 @@ public class ObjectsSanti : MonoBehaviourPun
             PuzzleManager();
             NoteManager();
             Grab();
+
+            CheckPoint checkPoint;
+
             switch (objectNameString)
             {
                 case "KeyMaster1":
@@ -122,6 +125,9 @@ public class ObjectsSanti : MonoBehaviourPun
                     StartCoroutine(RightDrop());
                     objectNameString = "";
                     hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
+
+                    checkPoint = GameObject.Find("CheckPointHospital").GetComponent<CheckPoint>();
+                    checkPoint.SetCheckPoint();
                     
                     break;
                 case "KeyMaster2":
@@ -129,6 +135,9 @@ public class ObjectsSanti : MonoBehaviourPun
                     StartCoroutine(RightDrop());
                     objectNameString = "";
                     hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
+
+                    checkPoint = GameObject.Find("CheckPointLobby").GetComponent<CheckPoint>();
+                    checkPoint.SetCheckPoint();
                     
                     break;
                 case "KeyMaster3":
@@ -136,6 +145,9 @@ public class ObjectsSanti : MonoBehaviourPun
                     StartCoroutine(RightDrop());
                     objectNameString = "";
                     hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
+
+                    checkPoint = GameObject.Find("CheckPointLaberinto").GetComponent<CheckPoint>();
+                    checkPoint.SetCheckPoint();
                     
                     break;
                 case "Object1":

@@ -82,6 +82,11 @@ MonoBehaviour:
   - EndingCutscene
   - StartVideo
   - SpawnKey
+  - JosePassed
+  - SantiPassed
+  - SetCheckPoint
+  - SetCheckPointRPC
+  - GoToCheckPoint
   - EraseBlock1
   - EraseBlock2
   - EraseBlock3
