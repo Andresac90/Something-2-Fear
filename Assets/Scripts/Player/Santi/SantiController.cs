@@ -115,7 +115,7 @@ public class SantiController : MonoBehaviourPun
         UIPrompt(isHiding, tag);
         if (!InteractPressed) return;
         
-        switch (hit.transform.tag)
+        switch (tag)
         {
             case "Hide":
                 Hide(hit.transform.gameObject);
