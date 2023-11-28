@@ -17,7 +17,7 @@ public class ObjectsSanti : MonoBehaviourPun
     private GameObject nurse;
     private GameObject nina;
     private GameObject LightBox;
-    private GameObject puertaPrinicipal; 
+    private GameObject ChangeObjects;
     private RaycastHit hit;
     public Transform objectRightT;
 
@@ -25,7 +25,6 @@ public class ObjectsSanti : MonoBehaviourPun
     private Transform playerCamera;
     private bool grabObjR = false;
     private bool objectGrabbedR = true;
-    private bool throwCheckR = true;
     private bool activated = false;
     private Button activeButton = null;
     private Cure activeStation = null;
@@ -64,11 +63,14 @@ public class ObjectsSanti : MonoBehaviourPun
     private GameObject Object3UI;
     [SerializeField]
     private GameObject InjectionUI;
+    [SerializeField]
+    private GameObject noKeyUI;
 
     [SerializeField]
     private GameObject Timer;
 
     private PhotonView PV;
+    private Puzzle puzzle;
     private TextMeshProUGUI textMeshProText;
     private bool isInjectionSpawned = false;
     public bool puzzleCreated = false;
@@ -76,7 +78,7 @@ public class ObjectsSanti : MonoBehaviourPun
     public bool noteCreated = false;
     public string objectNameString;
     public int keylevel = 1;
-
+    public bool down;
     
 
     public void Awake()
@@ -97,12 +99,15 @@ public class ObjectsSanti : MonoBehaviourPun
         aicontrolP.santiActivation();
         aicontrolN.SantiActivation();
         aicontrolNi.SantiActivation();
-        puertaPrinicipal = GameObject.Find("PuertaPrincipal");
+        ChangeObjects = GameObject.Find("ChangeObjects");
         santiAnimator = GetComponent<Animator>();
+        down = GetComponent<Down>().santiDown;
     }
 
     public void Update()
     {
+        if (!PV.IsMine) return;
+
         Physics.Raycast(playerCamera.position, playerCamera.TransformDirection(Vector3.forward), out hit, rayLine);
         Activation();
         if(hit.transform != null)
@@ -149,7 +154,7 @@ public class ObjectsSanti : MonoBehaviourPun
                     StartCoroutine(RightDrop());
                     objectNameString = "";
                     hit.transform.GetComponent<PhotonView>().RPC("ObjectsNurseChange", RpcTarget.All, hit.transform.name);
-                    
+
                     break;
                 case "Object2":
                     StartCoroutine(RightDrop());
@@ -170,9 +175,10 @@ public class ObjectsSanti : MonoBehaviourPun
                     
                     break;
             }
-
-            
-
+        }
+        else
+        {
+            noKeyUI.SetActive(false);
         }
 
         //Object UI
@@ -198,7 +204,7 @@ public class ObjectsSanti : MonoBehaviourPun
         }
 
         //Interact UI
-        if (hit.transform != null && hit.transform.tag == "Puzzle")
+        if (hit.transform != null && hit.transform.tag == "Puzzle" && !noKeyUI.activeInHierarchy)
         {
             InteractUI.SetActive(true);
             DropRightUI.SetActive(false);
@@ -219,6 +225,11 @@ public class ObjectsSanti : MonoBehaviourPun
             DropRightUI.SetActive(false);
         }
         else if (hit.transform != null && hit.transform.tag == "FinalDoor")
+        {
+            InteractUI.SetActive(true);
+            DropRightUI.SetActive(false);
+        }
+        else if (hit.transform != null && hit.transform.tag == "Table")
         {
             InteractUI.SetActive(true);
             DropRightUI.SetActive(false);
@@ -281,7 +292,6 @@ public class ObjectsSanti : MonoBehaviourPun
             {
                 //Spawnear Injection
                 hit.transform.GetComponent<PhotonView>().RPC("SpawnInjection", RpcTarget.All);
-                Debug.Log("Hola!!!!!!!!!!");
                 isInjectionSpawned = true;
                 GameManager.Instance.SpawnInjectionOnline();
             }
@@ -291,6 +301,10 @@ public class ObjectsSanti : MonoBehaviourPun
         if (GameManager.Instance.Injection)
         {
             InjectionUI.SetActive(true);
+        }
+        else
+        {
+            InjectionUI.SetActive(false);
         }
 
         //Timer UI
@@ -364,6 +378,11 @@ public class ObjectsSanti : MonoBehaviourPun
             {
                 if (isInteractPressed)
                 {
+                    PV.RPC("UpdateHealingAnimationSanti", RpcTarget.All);
+                    if (!GameManager.Instance.Healing.isPlaying)
+                    {
+                        GameManager.Instance.Healing.Play();
+                    }
                     HealingUI.SetActive(true);
                     station.updateCure(true, this.gameObject);
                     activeStation = station;
@@ -390,6 +409,7 @@ public class ObjectsSanti : MonoBehaviourPun
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.1f;
             if (isInteractPressed && GameManager.Instance.Key1 && GameManager.Instance.Key2 && GameManager.Instance.Key3)
             {
+                ChangeObjects.GetComponent<PhotonView>().RPC("DeactivatePascualita", RpcTarget.All);
                 GameManager.Instance.GetComponent<PhotonView>().RPC("EndingCutscene",RpcTarget.All);
             }
         }
@@ -399,25 +419,24 @@ public class ObjectsSanti : MonoBehaviourPun
     {
         if(hit.transform.tag == "Puzzle")
         {
-            Puzzle puzzle = hit.transform.GetComponent<Puzzle>();
+            puzzle = hit.transform.GetComponent<Puzzle>();
             string objectName = hit.collider.gameObject.name;
             bool isInteractPressed = controls.Player.Interact.ReadValue<float>() > 0.2f;
-            //if (objectNameString != "Key" && puzzle.puzzle.name != null)
-            //{
-            //    if (puzzle.puzzle.name == "LockPick")
-            //    {
-            //        Debug.Log("You need a key");
-            //        //UI You need a key
-            //    }
-            //}
-            if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
+            if (objectNameString != "Key" && puzzle.puzzle.name != null && puzzle.puzzle.name == "LockPick" && !puzzleCreated)
             {
+                noKeyUI.SetActive(true);
+            }
+            else if (puzzle != null && isInteractPressed && !puzzleCreated && !puzzleActive)
+            {
+                PV.RPC("UpdateEnterPuzzleAnimationSanti", RpcTarget.All);
                 puzzle.OpenPuzzle(false, false, objectName);
                 puzzleCreated = true;
                 puzzleActive = true;
+                noKeyUI.SetActive(false);
             }
             else if(puzzle != null && isInteractPressed && puzzleCreated && !puzzleActive)
             {
+                PV.RPC("UpdateEnterPuzzleAnimationSanti", RpcTarget.All);
                 puzzle.OpenPuzzle(true, false, objectName);
                 puzzleActive = true;
             }
@@ -426,10 +445,21 @@ public class ObjectsSanti : MonoBehaviourPun
                 bool isCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0.2f;
                 if(isCancelPressed && puzzleActive)
                 {
+                    PV.RPC("UpdateExitPuzzleSanti", RpcTarget.All);
                     puzzle.ClosePuzzle(true);
                     puzzleActive = false;
                 }
             }
+        }
+        else
+        {
+            noKeyUI.SetActive(false);
+        }
+        if(puzzle != null && puzzleCreated && puzzleActive && down)
+        {
+            Debug.Log("Pene");
+            puzzle.ClosePuzzle(true);
+            puzzleActive = false;
         }
     }
 
@@ -452,6 +482,168 @@ public class ObjectsSanti : MonoBehaviourPun
             }
         }
     }
+    //puesta
+    [PunRPC]
+    void UpdateEnterPuzzleAnimationSanti()
+    {
+        if (santiAnimator == null)
+            return;
+        santiAnimator.ResetTrigger("IsEndingPuzzle");
+        santiAnimator.ResetTrigger("IsGrabbing");
+        santiAnimator.ResetTrigger("IsInyected");
+        santiAnimator.ResetTrigger("IsReanimating");
+        santiAnimator.ResetTrigger("IsHealing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.ResetTrigger("IsThrowing");
+        santiAnimator.ResetTrigger("Special_Idle2");
+        santiAnimator.ResetTrigger("Special_Idle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.SetTrigger("IsBeginningPuzzle");
+    }
+    //puesta
+    [PunRPC]
+    void UpdateExitPuzzleSanti()
+    {
+        if (santiAnimator == null)
+            return;
+        santiAnimator.ResetTrigger("IsBeginningPuzzle");
+        santiAnimator.ResetTrigger("IsGrabbing");
+        santiAnimator.ResetTrigger("IsInyected");
+        santiAnimator.ResetTrigger("IsReanimating");
+        santiAnimator.ResetTrigger("IsHealing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.ResetTrigger("IsThrowing");
+        santiAnimator.ResetTrigger("Special_Idle2");
+        santiAnimator.ResetTrigger("Special_Idle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.SetTrigger("IsEndingPuzzle");
+    }
+
+    [PunRPC]
+    void UpdateSpecialIdleAnimationSanti()
+    {
+        if (santiAnimator == null)
+            return;
+        santiAnimator.ResetTrigger("IsEndingPuzzle");
+        santiAnimator.ResetTrigger("IsBeginningPuzzle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.ResetTrigger("IsGrabbing");
+        santiAnimator.ResetTrigger("IsInyected");
+        santiAnimator.ResetTrigger("IsReanimating");
+        santiAnimator.ResetTrigger("IsHealing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.ResetTrigger("IsThrowing");
+        santiAnimator.ResetTrigger("Special_Idle2");
+        santiAnimator.SetTrigger("Special_Idle");
+    }
+
+    [PunRPC]
+    void UpdateSpecialIdleTwoAnimationSanti()
+    {
+        if (santiAnimator == null)
+            return;
+        santiAnimator.ResetTrigger("IsEndingPuzzle");
+        santiAnimator.ResetTrigger("IsBeginningPuzzle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.ResetTrigger("Special_Idle");
+        santiAnimator.ResetTrigger("IsGrabbing");
+        santiAnimator.ResetTrigger("IsInyected");
+        santiAnimator.ResetTrigger("IsReanimating");
+        santiAnimator.ResetTrigger("IsHealing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.ResetTrigger("IsThrowing");
+        santiAnimator.SetTrigger("Special_Idle2");
+    }
+    //puesta
+    [PunRPC]
+    void UpdateThrowAnimationSanti()
+    {
+        if (santiAnimator == null)
+            return;
+        santiAnimator.ResetTrigger("IsEndingPuzzle");
+        santiAnimator.ResetTrigger("IsBeginningPuzzle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.ResetTrigger("Special_Idle");
+        santiAnimator.ResetTrigger("Special_Idle2");
+        santiAnimator.ResetTrigger("IsGrabbing");
+        santiAnimator.ResetTrigger("IsInyected");
+        santiAnimator.ResetTrigger("IsReanimating");
+        santiAnimator.ResetTrigger("IsHealing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.SetTrigger("IsThrowing");
+    }
+    //puesta
+    [PunRPC]
+    void UpdateHealingAnimationSanti()
+    {
+        santiAnimator.ResetTrigger("IsEndingPuzzle");
+        santiAnimator.ResetTrigger("IsBeginningPuzzle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.ResetTrigger("Special_Idle");
+        santiAnimator.ResetTrigger("Special_Idle2");
+        santiAnimator.ResetTrigger("IsThrowing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.ResetTrigger("IsGrabbing");
+        santiAnimator.ResetTrigger("IsInyected");
+        santiAnimator.ResetTrigger("IsReanimating");
+        santiAnimator.SetTrigger("IsHealing");
+    }
+    //puesta
+    [PunRPC]
+    void UpdateReanimatingAnimationSanti()
+    {
+        santiAnimator.ResetTrigger("IsEndingPuzzle");
+        santiAnimator.ResetTrigger("IsBeginningPuzzle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.ResetTrigger("Special_Idle");
+        santiAnimator.ResetTrigger("Special_Idle2");
+        santiAnimator.ResetTrigger("IsThrowing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.ResetTrigger("IsHealing");
+        santiAnimator.ResetTrigger("IsGrabbing");
+        santiAnimator.ResetTrigger("IsInyected");
+        santiAnimator.SetTrigger("IsReanimating");
+    }
+    //puesta
+    [PunRPC]
+    void UpdateInyectedAnimationSanti()
+    {
+        santiAnimator.ResetTrigger("IsEndingPuzzle");
+        santiAnimator.ResetTrigger("IsBeginningPuzzle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.ResetTrigger("Special_Idle");
+        santiAnimator.ResetTrigger("Special_Idle2");
+        santiAnimator.ResetTrigger("IsThrowing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.ResetTrigger("IsHealing");
+        santiAnimator.ResetTrigger("IsReanimating");
+        santiAnimator.ResetTrigger("IsGrabbing");
+        santiAnimator.SetTrigger("IsInyected");
+    }
+    //puesta
+    [PunRPC]
+    void UpdateGrabAnimationSanti()
+    {
+        if (santiAnimator == null)
+            return;
+        santiAnimator.ResetTrigger("IsEndingPuzzle");
+        santiAnimator.ResetTrigger("IsBeginningPuzzle");
+        santiAnimator.ResetTrigger("IsDown");
+        santiAnimator.ResetTrigger("Special_Idle");
+        santiAnimator.ResetTrigger("Special_Idle2");
+        santiAnimator.ResetTrigger("IsThrowing");
+        santiAnimator.ResetTrigger("IsStanding");
+        santiAnimator.ResetTrigger("IsHealing");
+        santiAnimator.ResetTrigger("IsReanimating");
+        santiAnimator.ResetTrigger("IsInyected");
+        santiAnimator.SetTrigger("IsGrabbing");
+    }
+
+    [PunRPC]
+    void UpdateRightDown(bool santiDown)
+    {
+        down = santiDown;
+    }
 
     private void Grab()
     {
@@ -460,6 +652,7 @@ public class ObjectsSanti : MonoBehaviourPun
             bool isRightPressed = controls.Player.RightItem.ReadValue<float>() > 0.1f;
             if(isRightPressed && !grabObjR && objectGrabbedR && hit.transform.tag == "Object")
             {
+                PV.RPC("UpdateGrabAnimationSanti", RpcTarget.All);
                 StartCoroutine(RightGrab());
             }
         }
@@ -469,31 +662,32 @@ public class ObjectsSanti : MonoBehaviourPun
     {
         bool isRightPressed = controls.Player.RightThrow.ReadValue<float>() > 0.1f;
 
-        if(isRightPressed && grabObjR && throwCheckR)
+        if(isRightPressed && grabObjR)
         {
+            PV.RPC("UpdateThrowAnimationSanti", RpcTarget.All);
             StartCoroutine(RightDrop());
         }
     }
 
     private IEnumerator RightGrab()
     {
+        
         objectGrabbedR = false;
         hit.transform.GetComponent<ObjectsData>().OnGrab(objectRightCamera);
         objectRightT = hit.transform;
         ObjectRightUI.SetActive(false);
         objectNameString = hit.transform.GetComponent<ObjectsData>().ObjectName;
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.5f);
         grabObjR = true;
-        objectGrabbedR = true;
-        
+
     }
 
     public IEnumerator RightDrop()
     {
         objectRightT.GetComponent<ObjectsData>().OnRelease();
+        yield return new WaitForSeconds(0.501f);
         grabObjR = false;
-        throwCheckR = true;
-        yield return new WaitForSeconds(0.1f);
+        objectGrabbedR = true;
     }
 
     [PunRPC]

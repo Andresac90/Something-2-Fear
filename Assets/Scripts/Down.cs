@@ -15,7 +15,6 @@ public class Down : MonoBehaviourPun
     [SerializeField]
     private float deadTime;
     private bool joseDown = false;
-    private bool santiDown = false;
     private bool areDead = false;
 
     public PhotonView downingIndicator;
@@ -23,6 +22,7 @@ public class Down : MonoBehaviourPun
     public Animator playerAnimator;
 
     public bool isPlayerDowned;
+    public bool santiDown = false;
 
     public void Start()
     {
@@ -48,6 +48,7 @@ public class Down : MonoBehaviourPun
         else
         {
             downingIndicator.RPC("SyncDisableDowningIndicator", RpcTarget.All);
+            currentTime = 0f;
         }
     }
 
@@ -73,13 +74,18 @@ public class Down : MonoBehaviourPun
         // look for santiController or JoseMovement
         if (name == "Santi(Clone)")
         {
+            photonView.RPC("UpdateRightDown", RpcTarget.All, true);
             photonView.RPC("playerDown", RpcTarget.All, true);
             GetComponent<SantiController>().enabled = false;
+            GetComponent<ObjectsSanti>().enabled = false;
+            photonView.RPC("UpdateDownedAnimationSanti", RpcTarget.All);
         }
         else if (name == "Jose(Clone)")
         {
             photonView.RPC("playerDown", RpcTarget.All, true);
             GetComponent<JoseMovement>().enabled = false;
+            GetComponent<ObjectsJose>().enabled = false;
+            photonView.RPC("UpdateDownedAnimationJose", RpcTarget.All);
         }
         GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y - 0.879f, transform.position.z);
         GetComponent<Transform>().rotation = Quaternion.Euler(Quaternion.identity.x - 90f, Quaternion.identity.y, Quaternion.identity.z);
@@ -97,10 +103,10 @@ public class Down : MonoBehaviourPun
         Debug.Log("reviving");
         if (name == "Santi(Clone)")
         {
+            photonView.RPC("UpdateRightDown", RpcTarget.All, false);
             photonView.RPC("playerDown", RpcTarget.All, false);
             GetComponent<SantiController>().enabled = true;
-            playerAnimator.ResetTrigger("SantiDownedTrigger");
-            playerAnimator.SetTrigger("SantiRevivedTrigger");
+            photonView.RPC("UpdateRevivedAnimationSanti", RpcTarget.All);
             //playerAnimator.ResetTrigger("SantiRevivedTrigger");
             
             
@@ -110,8 +116,7 @@ public class Down : MonoBehaviourPun
         {
             photonView.RPC("playerDown", RpcTarget.All, false);
             GetComponent<JoseMovement>().enabled = true;
-            playerAnimator.ResetTrigger("JoseDownedTrigger");
-            playerAnimator.SetTrigger("JoseRevivedTrigger");
+            photonView.RPC("UpdateRevivedAnimationJose", RpcTarget.All);
             //playerAnimator.ResetTrigger("JoseRevivedTrigger");
 
         }
@@ -158,6 +163,88 @@ public class Down : MonoBehaviourPun
             photonView.RPC("AreDead", RpcTarget.All);
             // gameObject.SetActive(false);
             areDead = true;
+        }
+    }
+
+    [PunRPC]
+    void UpdateDownedAnimationJose()
+    {
+        if (playerAnimator != null)
+        {
+            playerAnimator.ResetTrigger("IsStanding");
+            playerAnimator.ResetTrigger("IsLeftGrabbing");
+            playerAnimator.ResetTrigger("IsRightGrabbing");
+            playerAnimator.ResetTrigger("IsLeftThrowing");
+            playerAnimator.ResetTrigger("IsRightThrowing");
+            playerAnimator.ResetTrigger("IsHealing");
+            playerAnimator.ResetTrigger("IsBending");
+            playerAnimator.ResetTrigger("Special_Idle");
+            playerAnimator.ResetTrigger("Special_Idle2");
+            playerAnimator.ResetTrigger("IsInyected");
+            playerAnimator.ResetTrigger("IsJumping");
+            playerAnimator.ResetTrigger("IsReanimating");
+            playerAnimator.ResetTrigger("Return");
+            playerAnimator.SetTrigger("IsDown");
+        }
+    }
+
+    [PunRPC]
+    void UpdateRevivedAnimationJose()
+    {
+        if (playerAnimator != null)
+        {
+            playerAnimator.ResetTrigger("IsDown");
+            playerAnimator.ResetTrigger("IsLeftGrabbing");
+            playerAnimator.ResetTrigger("IsRightGrabbing");
+            playerAnimator.ResetTrigger("IsLeftThrowing");
+            playerAnimator.ResetTrigger("IsRightThrowing");
+            playerAnimator.ResetTrigger("IsHealing");
+            playerAnimator.ResetTrigger("IsBending");
+            playerAnimator.ResetTrigger("Special_Idle");
+            playerAnimator.ResetTrigger("Special_Idle2");
+            playerAnimator.ResetTrigger("IsInyected");
+            playerAnimator.ResetTrigger("IsJumping");
+            playerAnimator.ResetTrigger("IsReanimating");
+            playerAnimator.ResetTrigger("Return");
+            playerAnimator.SetTrigger("IsStanding");
+        }
+    }
+
+    [PunRPC]
+    void UpdateDownedAnimationSanti()
+    {
+        if (playerAnimator != null)
+        {
+            playerAnimator.ResetTrigger("IsEndingPuzzle");
+            playerAnimator.ResetTrigger("IsBeginningPuzzle");
+            playerAnimator.ResetTrigger("IsGrabbing");
+            playerAnimator.ResetTrigger("IsInyected");
+            playerAnimator.ResetTrigger("IsReanimating");
+            playerAnimator.ResetTrigger("IsHealing");
+            playerAnimator.ResetTrigger("IsStanding");
+            playerAnimator.ResetTrigger("IsThrowing");
+            playerAnimator.ResetTrigger("Special_Idle2");
+            playerAnimator.ResetTrigger("Special_Idle");
+            playerAnimator.SetTrigger("IsDown");
+        }
+    }
+
+    [PunRPC]
+    void UpdateRevivedAnimationSanti()
+    {
+        if (playerAnimator != null)
+        {
+            playerAnimator.ResetTrigger("IsEndingPuzzle");
+            playerAnimator.ResetTrigger("IsBeginningPuzzle");
+            playerAnimator.ResetTrigger("IsDown");
+            playerAnimator.ResetTrigger("Special_Idle");
+            playerAnimator.ResetTrigger("Special_Idle2");
+            playerAnimator.ResetTrigger("IsThrowing");
+            playerAnimator.ResetTrigger("IsGrabbing");
+            playerAnimator.ResetTrigger("IsInyected");
+            playerAnimator.ResetTrigger("IsReanimating");
+            playerAnimator.ResetTrigger("IsHealing");
+            playerAnimator.SetTrigger("IsStanding");
         }
     }
 }

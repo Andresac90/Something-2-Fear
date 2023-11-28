@@ -84,6 +84,7 @@ public class EventManager : MonoBehaviour
         if (joseNear && santiNear && TwoPlayers && Event)
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateLights", RpcTarget.All);
+            ChangeObjects.GetComponent<PhotonView>().RPC("EraseBlock1", RpcTarget.All);
             Destroy(this.gameObject);
         }
     }
@@ -94,6 +95,8 @@ public class EventManager : MonoBehaviour
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("ActivatePascualita", RpcTarget.All);
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateDummy", RpcTarget.All);
+            ChangeObjects.GetComponent<PhotonView>().RPC("EraseBlock2", RpcTarget.All);
+            ChangeObjects.GetComponent<PhotonView>().RPC("EraseBlock3", RpcTarget.All);
             Destroy(this.gameObject);
         }
     }
@@ -112,6 +115,7 @@ public class EventManager : MonoBehaviour
         if (joseNear && santiNear && TwoPlayers && Hospital && !HospitalEvent)
         {
             ChangeObjects.GetComponent<PhotonView>().RPC("ActivateLockdown", RpcTarget.All);
+            ChangeObjects.GetComponent<PhotonView>().RPC("EnableBlock4", RpcTarget.All);
             GameManager.Instance.AudioHospital.Play();
             GameManager.Instance.audioH = true;
             HospitalEvent = true;
@@ -122,6 +126,7 @@ public class EventManager : MonoBehaviour
     {
         if (GameManager.Instance.Key3)
         {
+            ChangeObjects.GetComponent<PhotonView>().RPC("EraseBlock4", RpcTarget.All);
             ChangeObjects.GetComponent<PhotonView>().RPC("DeactivateLockdown", RpcTarget.All);
         }
     }

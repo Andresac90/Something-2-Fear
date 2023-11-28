@@ -113,11 +113,16 @@ public class JoseMovement : MonoBehaviourPun
 
         if(Move.x != 0 || Move.y != 0 && !IsSprintPressed)
         {
-            PV.RPC("UpdateWalkingAnimation", RpcTarget.All, true);
+            PV.RPC("UpdateWalkingAnimationJose", RpcTarget.All, true);
+            if (!GameManager.Instance.Footsteps.isPlaying)
+            {
+                GameManager.Instance.Footsteps.Play();
+            }
         }
         else
         {
-            PV.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
+            GameManager.Instance.Footsteps.Stop();
+            PV.RPC("UpdateWalkingAnimationJose", RpcTarget.All, false);
         }
     }
 
@@ -126,14 +131,19 @@ public class JoseMovement : MonoBehaviourPun
         bool IsSprintPressed = Controls.Player.Run.ReadValue<float>() > 0.1f;
         if (IsSprintPressed && !HasRun && !HasCrouched && IsGrounded)
         {
-            PV.RPC("UpdateRunningAnimation", RpcTarget.All, true);
-            PV.RPC("UpdateWalkingAnimation", RpcTarget.All, false);
+            if (!GameManager.Instance.Footsteps.isPlaying)
+            {
+                GameManager.Instance.Footsteps.Play();
+            }
+            PV.RPC("UpdateRunningAnimationJose", RpcTarget.All, true);
+            PV.RPC("UpdateWalkingAnimationJose", RpcTarget.All, false);
             Speed *= 1.9f;
             HasRun = true;
         }
         else if (!IsSprintPressed && HasRun)
         {
-            PV.RPC("UpdateRunningAnimation", RpcTarget.All, false);
+            GameManager.Instance.Footsteps.Stop();
+            PV.RPC("UpdateRunningAnimationJose", RpcTarget.All, false);
             Speed = OriginalSpeed;
             HasRun = false;
         }
@@ -142,9 +152,10 @@ public class JoseMovement : MonoBehaviourPun
     void Jump()
     {
         IsGrounded = Physics.CheckSphere(GroundCheck.position, RadiusGround, GroundMask);
-        bool IsJumpPressed = Controls.Player.Jump.ReadValue<float>() > 0.1f;
+        bool IsJumpPressed = Controls.Player.Jump.ReadValue<float>() > 0f;
         if (IsJumpPressed && IsGrounded && !HasCeiling && !IsCrouched && !HasJump)
         {
+            PV.RPC("UpdateJumpingAnimationJose", RpcTarget.All);
             YVel.y = Mathf.Sqrt(Gravity * JumpForce * -2);
             HasJump = true;
         }
@@ -158,9 +169,10 @@ public class JoseMovement : MonoBehaviourPun
     {
         HasCeiling = Physics.CheckSphere(HeadCheck.position, RadiusHead, GroundMask);
         bool IsCrouchPressed = Controls.Player.Crouch.ReadValue<float>() > 0.1f;
+        bool IsJumpPressed = Controls.Player.Jump.ReadValue<float>() > 0f;
         if (IsCrouchPressed && !HasCrouched && !HasJump)
         {
-            PV.RPC("UpdateBendingAnimation", RpcTarget.All, true);
+            PV.RPC("UpdateBendingAnimationJose", RpcTarget.All);
             CharController.height = 1;
             CharController.center = new Vector3(0, -0.5f, 0);
             // Camera.localPosition = new Vector3(0, 0.4f, 0.225f);
@@ -169,9 +181,9 @@ public class JoseMovement : MonoBehaviourPun
             HasCrouched = true;
             IsCrouched = true;
         }
-        else if (!HasCeiling && !IsCrouchPressed && !HasRun)
+        else if (!HasCeiling && !IsCrouchPressed && !HasRun && !IsJumpPressed)
         {
-            PV.RPC("UpdateBendingAnimation", RpcTarget.All, false);
+            PV.RPC("UpdateStandAnimationJose", RpcTarget.All);
             CharController.height = 2;
             CharController.center = new Vector3(0, 0, 0);
             // Camera.localPosition = new Vector3(0, 0.894f, 0.225f);
@@ -179,33 +191,6 @@ public class JoseMovement : MonoBehaviourPun
             Speed = OriginalSpeed;
             HasCrouched = false;
             IsCrouched = false;
-        }
-    }
-
-    [PunRPC]
-    void UpdateWalkingAnimation(bool isWalking)
-    {
-        if (joseAnimator != null)
-        {
-            joseAnimator.SetBool("IsWalking", isWalking);
-        }
-    }
-
-    [PunRPC]
-    void UpdateBendingAnimation(bool isBending)
-    {
-        if (joseAnimator != null)
-        {
-            joseAnimator.SetBool("IsBending", isBending);
-        }
-    }
-
-    [PunRPC]
-    void UpdateRunningAnimation(bool isRunning)
-    {
-        if (joseAnimator != null)
-        {
-            joseAnimator.SetBool("IsRunning", isRunning);
         }
     }
 

@@ -64,6 +64,13 @@ public class ObjectsJose : MonoBehaviourPun
     private GameObject Object3UI;
     [SerializeField]
     private GameObject InjectionUI;
+    //TutorialUI
+    [SerializeField]
+    private GameObject jumpUI;
+    [SerializeField]
+    private GameObject runUI;
+    [SerializeField]
+    private GameObject crouchUI;
 
     private TextMeshProUGUI textMeshProText;
     private RaycastHit hit;
@@ -84,6 +91,7 @@ public class ObjectsJose : MonoBehaviourPun
     private Animator joseAnimator;
     private PhotonView PV;
 
+    
     void Awake()
     {
         Controls = new InputMaster();
@@ -108,10 +116,13 @@ public class ObjectsJose : MonoBehaviourPun
         aicontrolNi.JoseActivation();
         joseAnimator = GetComponent<Animator>();
     }
-
+    
     // Update is called once per frame
     void Update()
     {
+
+        if (!PV.IsMine) return;
+        
         Activation();
         Physics.Raycast(PlayerCamera.position, PlayerCamera.TransformDirection(Vector3.forward), out hit, rayline);
         if (hit.transform != null)
@@ -200,6 +211,10 @@ public class ObjectsJose : MonoBehaviourPun
         {
             InjectionUI.SetActive(true);
         }
+        else
+        {
+            InjectionUI.SetActive(false);
+        }
 
         //Timer UI
         if (this.GetComponent<Injection>().isPlayerInjected)
@@ -232,9 +247,37 @@ public class ObjectsJose : MonoBehaviourPun
         {
             ThrowLeftUI.SetActive(false);
         }
+
+        //UI Tutorial
+        if (GameManager.Instance.tutorialJump)
+        {
+            jumpUI.SetActive(true);
+        }
+        else
+        {
+            jumpUI.SetActive(false);
+        }
+
+        if(GameManager.Instance.tutorialRun)
+        {
+            runUI.SetActive(true);
+        }
+        else
+        {
+            runUI.SetActive(false);
+        }
+
+        if(GameManager.Instance.tutorialCrouch)
+        {
+            crouchUI.SetActive(true);
+        }
+        else
+        {
+            crouchUI.SetActive(false);
+        }
+
         StartCoroutine(Throw());
         ThrowGrounded();
-
     }
 
     private void Activation()
@@ -270,6 +313,11 @@ public class ObjectsJose : MonoBehaviourPun
             {
                 if (isInteractPressed)
                 {
+                    if (!GameManager.Instance.Healing.isPlaying)
+                    {
+                        GameManager.Instance.Healing.Play();
+                    }
+                    PV.RPC("UpdateHealingAnimationJose", RpcTarget.All);
                     HealingUI.SetActive(true);
                     station.updateCure(true, this.gameObject);
                     activeStation = station;
@@ -282,6 +330,7 @@ public class ObjectsJose : MonoBehaviourPun
                     activeStation = null;
                     activated = false;
                 }
+                PV.RPC("UpdateReturnAnimationJose", RpcTarget.All);
             }
         }
         else if (activeStation != null && activated)
@@ -291,7 +340,7 @@ public class ObjectsJose : MonoBehaviourPun
             activated = false;
         }
 
-        if (hit.transform != null && hit.transform.tag == "Buzzer")
+        if (hit.transform != null && hit.transform.tag == "Buzzer" && !nina.GetComponent<NinaAI>().isWarping)
         {
             Buzzer buzzer = hit.transform.GetComponent<Buzzer>();
             bool isInteractPressed = Controls.Player.Interact.ReadValue<float>() > 0.0f;
@@ -305,22 +354,308 @@ public class ObjectsJose : MonoBehaviourPun
             }
         }
     }
-
+    //puesta
     [PunRPC]
-    void UpdateRightGrabbingAnimation(bool isRightGrabbing)
+    void UpdateWalkingAnimationJose(bool isWalking)
     {
         if (joseAnimator != null)
         {
-            joseAnimator.SetBool("IsRightGrabbing", isRightGrabbing);
+            joseAnimator.SetBool("IsWalking", isWalking);
+        }
+    }
+    //puesta
+    [PunRPC]
+    void UpdateRunningAnimationJose(bool isRunning)
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.SetBool("IsRunning", isRunning);
+        }
+    }
+    //puesta
+    [PunRPC]
+    void UpdateBendingAnimationJose()
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.ResetTrigger("IsDown");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsLeftGrabbing");
+            joseAnimator.ResetTrigger("IsRightGrabbing");
+            joseAnimator.ResetTrigger("IsLeftThrowing");
+            joseAnimator.ResetTrigger("IsRightThrowing");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("Special_Idle");
+            joseAnimator.ResetTrigger("Special_Idle2");
+            joseAnimator.ResetTrigger("IsInyected");
+            joseAnimator.ResetTrigger("IsJumping");
+            joseAnimator.ResetTrigger("IsReanimating");
+            joseAnimator.ResetTrigger("Return");
+            joseAnimator.SetTrigger("IsBending");
+        }
+    }
+    //puesta
+    [PunRPC]
+    void UpdateStandAnimationJose()
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.ResetTrigger("IsDown");
+            joseAnimator.ResetTrigger("IsLeftGrabbing");
+            joseAnimator.ResetTrigger("IsRightGrabbing");
+            joseAnimator.ResetTrigger("IsLeftThrowing");
+            joseAnimator.ResetTrigger("IsRightThrowing");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("Special_Idle");
+            joseAnimator.ResetTrigger("Special_Idle2");
+            joseAnimator.ResetTrigger("IsInyected");
+            joseAnimator.ResetTrigger("IsJumping");
+            joseAnimator.ResetTrigger("IsReanimating");
+            joseAnimator.ResetTrigger("Return");
+            joseAnimator.SetTrigger("IsStanding");
+        }
+    }
+    //puesta
+    [PunRPC]
+    void UpdateRightGrabbingAnimationJose()
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.ResetTrigger("IsDown");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsLeftGrabbing");
+            joseAnimator.ResetTrigger("IsLeftThrowing");
+            joseAnimator.ResetTrigger("IsRightThrowing");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("Special_Idle");
+            joseAnimator.ResetTrigger("Special_Idle2");
+            joseAnimator.ResetTrigger("IsInyected");
+            joseAnimator.ResetTrigger("IsJumping");
+            joseAnimator.ResetTrigger("IsReanimating");
+            joseAnimator.ResetTrigger("Return");
+            joseAnimator.SetTrigger("IsRightGrabbing");
+        }
+    }
+    //puesta
+    [PunRPC]
+    void UpdateLeftGrabbingAnimationJose()
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.ResetTrigger("IsDown");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsRightGrabbing");
+            joseAnimator.ResetTrigger("IsLeftThrowing");
+            joseAnimator.ResetTrigger("IsRightThrowing");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("Special_Idle");
+            joseAnimator.ResetTrigger("Special_Idle2");
+            joseAnimator.ResetTrigger("IsInyected");
+            joseAnimator.ResetTrigger("IsJumping");
+            joseAnimator.ResetTrigger("IsReanimating");
+            joseAnimator.ResetTrigger("Return");
+            joseAnimator.SetTrigger("IsLeftGrabbing");
+        }
+    }
+    //puesta
+    [PunRPC]
+    void UpdateHealingAnimationJose()
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.ResetTrigger("IsDown");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsLeftGrabbing");
+            joseAnimator.ResetTrigger("IsRightGrabbing");
+            joseAnimator.ResetTrigger("IsLeftThrowing");
+            joseAnimator.ResetTrigger("IsRightThrowing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("Special_Idle");
+            joseAnimator.ResetTrigger("Special_Idle2");
+            joseAnimator.ResetTrigger("IsInyected");
+            joseAnimator.ResetTrigger("IsJumping");
+            joseAnimator.ResetTrigger("IsReanimating");
+            joseAnimator.ResetTrigger("Return");
+            joseAnimator.SetTrigger("IsHealing");
+        }
+    }
+    //puesta
+    [PunRPC]
+    void UpdateRightThrowingAnimationJose()
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.ResetTrigger("IsDown");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsLeftGrabbing");
+            joseAnimator.ResetTrigger("IsRightGrabbing");
+            joseAnimator.ResetTrigger("IsLeftThrowing");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("Special_Idle");
+            joseAnimator.ResetTrigger("Special_Idle2");
+            joseAnimator.ResetTrigger("IsInyected");
+            joseAnimator.ResetTrigger("IsJumping");
+            joseAnimator.ResetTrigger("IsReanimating");
+            joseAnimator.ResetTrigger("Return");
+            joseAnimator.SetTrigger("IsRightThrowing");
+        }
+    }
+    //puesta
+    [PunRPC]
+    void UpdateLeftThrowingAnimationJose()
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.ResetTrigger("IsDown");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsLeftGrabbing");
+            joseAnimator.ResetTrigger("IsRightGrabbing");
+            joseAnimator.ResetTrigger("IsRightThrowing");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("Special_Idle");
+            joseAnimator.ResetTrigger("Special_Idle2");
+            joseAnimator.ResetTrigger("IsInyected");
+            joseAnimator.ResetTrigger("IsJumping");
+            joseAnimator.ResetTrigger("IsReanimating");
+            joseAnimator.ResetTrigger("Return");
+            joseAnimator.SetTrigger("IsLeftThrowing");
         }
     }
 
     [PunRPC]
-    void UpdateLeftGrabbingAnimation(bool isLeftGrabbing)
+    void UpdateSpecialIdleAnimationJose()
     {
         if (joseAnimator != null)
         {
-            joseAnimator.SetBool("IsLeftGrabbing", isLeftGrabbing);
+            joseAnimator.ResetTrigger("IsDown");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsLeftGrabbing");
+            joseAnimator.ResetTrigger("IsRightGrabbing");
+            joseAnimator.ResetTrigger("IsLeftThrowing");
+            joseAnimator.ResetTrigger("IsRightThrowing");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("Special_Idle2");
+            joseAnimator.ResetTrigger("IsInyected");
+            joseAnimator.ResetTrigger("IsJumping");
+            joseAnimator.ResetTrigger("IsReanimating");
+            joseAnimator.ResetTrigger("Return");
+            joseAnimator.SetTrigger("Special_Idle");
+        }
+    }
+
+    [PunRPC]
+    void UpdateSpecialIdleTwoAnimationJose()
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.ResetTrigger("IsDown");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsLeftGrabbing");
+            joseAnimator.ResetTrigger("IsRightGrabbing");
+            joseAnimator.ResetTrigger("IsLeftThrowing");
+            joseAnimator.ResetTrigger("IsRightThrowing");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("Special_Idle");
+            joseAnimator.ResetTrigger("IsInyected");
+            joseAnimator.ResetTrigger("IsJumping");
+            joseAnimator.ResetTrigger("IsReanimating");
+            joseAnimator.ResetTrigger("Return");
+            joseAnimator.SetTrigger("Special_Idle2");
+        }
+    }
+    //puesta
+    [PunRPC]
+    void UpdateInyectedAnimationJose()
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.ResetTrigger("IsDown");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsLeftGrabbing");
+            joseAnimator.ResetTrigger("IsRightGrabbing");
+            joseAnimator.ResetTrigger("IsLeftThrowing");
+            joseAnimator.ResetTrigger("IsRightThrowing");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("Special_Idle");
+            joseAnimator.ResetTrigger("Special_Idle2");
+            joseAnimator.ResetTrigger("IsJumping");
+            joseAnimator.ResetTrigger("IsReanimating");
+            joseAnimator.ResetTrigger("Return");
+            joseAnimator.SetTrigger("IsInyected");
+        }
+    }
+    //puesta
+    [PunRPC]
+    void UpdateJumpingAnimationJose()
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.ResetTrigger("IsDown");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsLeftGrabbing");
+            joseAnimator.ResetTrigger("IsRightGrabbing");
+            joseAnimator.ResetTrigger("IsLeftThrowing");
+            joseAnimator.ResetTrigger("IsRightThrowing");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("Special_Idle");
+            joseAnimator.ResetTrigger("Special_Idle2");
+            joseAnimator.ResetTrigger("IsInyected");
+            joseAnimator.ResetTrigger("IsReanimating");
+            joseAnimator.ResetTrigger("Return");
+            joseAnimator.SetTrigger("IsJumping");
+        }
+    }
+    //puesta
+    [PunRPC]
+    void UpdateReanimatingAnimationJose()
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.ResetTrigger("IsDown");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsLeftGrabbing");
+            joseAnimator.ResetTrigger("IsRightGrabbing");
+            joseAnimator.ResetTrigger("IsLeftThrowing");
+            joseAnimator.ResetTrigger("IsRightThrowing");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("Special_Idle");
+            joseAnimator.ResetTrigger("Special_Idle2");
+            joseAnimator.ResetTrigger("IsInyected");
+            joseAnimator.ResetTrigger("IsJumping");
+            joseAnimator.ResetTrigger("Return");
+            joseAnimator.SetTrigger("IsReanimating");
+        }
+    }
+    //puesta
+    [PunRPC]
+    void UpdateReturnAnimationJose()
+    {
+        if (joseAnimator != null)
+        {
+            joseAnimator.ResetTrigger("IsDown");
+            joseAnimator.ResetTrigger("IsStanding");
+            joseAnimator.ResetTrigger("IsLeftGrabbing");
+            joseAnimator.ResetTrigger("IsRightGrabbing");
+            joseAnimator.ResetTrigger("IsLeftThrowing");
+            joseAnimator.ResetTrigger("IsRightThrowing");
+            joseAnimator.ResetTrigger("IsHealing");
+            joseAnimator.ResetTrigger("IsBending");
+            joseAnimator.ResetTrigger("Special_Idle");
+            joseAnimator.ResetTrigger("Special_Idle2");
+            joseAnimator.ResetTrigger("IsInyected");
+            joseAnimator.ResetTrigger("IsJumping");
+            joseAnimator.ResetTrigger("IsReanimating");
+            joseAnimator.SetTrigger("Return");
         }
     }
 
@@ -333,8 +668,7 @@ public class ObjectsJose : MonoBehaviourPun
             bool IsRightPressed = Controls.Player.RightItem.ReadValue<float>() > 0.1f;
             if(IsRightPressed && !HasObjectRight)
             {
-                PV.RPC("UpdateRightGrabbingAnimation", RpcTarget.All, true);
-                PV.RPC("UpdateRightGrabbingAnimation", RpcTarget.All, false);
+                PV.RPC("UpdateRightGrabbingAnimationJose", RpcTarget.All);
                 // hit.transform.position = ObjectRightCamera.position;
                 // hit.rigidbody.isKinematic = true;
                 // hit.transform.parent = ObjectRightCamera;
@@ -356,8 +690,7 @@ public class ObjectsJose : MonoBehaviourPun
             bool IsLeftPressed = Controls.Player.LeftItem.ReadValue<float>() > 0.1f;
             if (IsLeftPressed && !HasObjectLeft)
             {
-                photonView.RPC("UpdateLeftGrabbingAnimation", RpcTarget.All, true);
-                photonView.RPC("UpdateLeftGrabbingAnimation", RpcTarget.All, false);
+                PV.RPC("UpdateLeftGrabbingAnimationJose", RpcTarget.All);
                 // hit.transform.position = ObjectRightCamera.position;
                 // hit.rigidbody.isKinematic = true;
                 // hit.transform.parent = ObjectLeftCamera;
@@ -384,6 +717,7 @@ public class ObjectsJose : MonoBehaviourPun
         bool IsRightTPressed = Controls.Player.RightThrow.ReadValue<float>() > 0.1f;
         if(IsRightTPressed && HasObjectRight == true && ThrowCheckR)
         {
+            PV.RPC("UpdateRightThrowingAnimationJose", RpcTarget.All);
             // ObjectRightT.transform.localScale = new Vector3(ObjectROriginalScale, ObjectROriginalScale, ObjectROriginalScale);
             // Vector3 camerDirection = PlayerCamera.transform.forward;
             // ObjectRightT.transform.parent = null;
@@ -392,7 +726,7 @@ public class ObjectsJose : MonoBehaviourPun
             Debug.Log("Throwing");
             ObjectRightRb.GetComponent<ObjectsData>().onThrow(PlayerCamera.transform.forward, ThrowForce);
             ThrowCheckR = false;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.501f);
             HasObjectRight = false;
            
         }
@@ -400,7 +734,7 @@ public class ObjectsJose : MonoBehaviourPun
         bool IsLeftPressed = Controls.Player.LeftThrow.ReadValue<float>() > 0.1f;
         if (IsLeftPressed && HasObjectLeft && ThrowCheckL)
         {
-            
+            PV.RPC("UpdateLeftThrowingAnimationJose", RpcTarget.All);
             // ObjectLeftT.transform.localScale = new Vector3(ObjectLOriginalScale, ObjectLOriginalScale, ObjectLOriginalScale);
             // Vector3 camerDirection = PlayerCamera.transform.forward;
             // ObjectLeftT.transform.parent = null;
@@ -409,7 +743,7 @@ public class ObjectsJose : MonoBehaviourPun
             Debug.Log("Throwing");
             ObjectLeftRb.GetComponent<ObjectsData>().onThrow(PlayerCamera.transform.forward, ThrowForce);
             ThrowCheckL = false;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.501f);
             HasObjectLeft = false;
         }
 

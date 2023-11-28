@@ -18,10 +18,12 @@ public class Puzzle : MonoBehaviourPun
 
     public int comprobations;
     public string PasswordRef;
+    private PhotonView PV;
 
     public void OpenPuzzle(bool puzzleCreated, bool puzzleActive, string objectName)
     {
         playerMove = GameObject.Find("Santi(Clone)");
+        PV = playerMove.GetComponent<PhotonView>();
         GameManager.Instance.puzzle = true;
         objectsSanti = playerMove.GetComponent<ObjectsSanti>();
         
@@ -31,6 +33,13 @@ public class Puzzle : MonoBehaviourPun
             {
                 puzzleCopy = Instantiate(puzzle);
                 PlayerMovement(false);
+                //DestroyKey
+                StartCoroutine(objectsSanti.RightDrop());
+                objectsSanti.objectNameString = "";
+                GameObject santi = GameObject.Find("Santi(Clone)");
+                int keylevel = santi.GetComponent<ObjectsSanti>().keylevel;
+                GameObject.Find("SmallKey_Item" + keylevel).GetComponent<PhotonView>().RPC("DestroyKeyOnline", RpcTarget.All, "SmallKey_Item" + keylevel);
+                santi.GetComponent<PhotonView>().RPC("SyncKeyLevel", RpcTarget.All, keylevel + 1);
             }
             else if (puzzle.name != "LockPick")
             {
@@ -42,7 +51,7 @@ public class Puzzle : MonoBehaviourPun
 
     public void ClosePuzzle(bool puzzleActive)
     {
-
+        if (!PV.IsMine) return;
         GameManager.Instance.puzzle = false;
         if(puzzleCopy != null)
         {
@@ -55,7 +64,8 @@ public class Puzzle : MonoBehaviourPun
     }
 
     public void PlayerMovement(bool puzzleActive)
-    {
+    {   
+        if (!PV.IsMine) return;
         if(!puzzleActive)
         {
             playerMove.GetComponent<SantiController>().enabled = false;
@@ -73,12 +83,15 @@ public class Puzzle : MonoBehaviourPun
 
     public void Completed()
     {
+        if (!PV.IsMine) return;
         if(puzzleCopy.name == "Labyrinth MiniGame" && comprobations == comprobationsNeeded)
         {
             PlayerMovement(true);
             objectsSanti.puzzleCreated = false;
             objectsSanti.puzzleActive = false;
             Destroy(puzzleCopy.gameObject, 1f);
+            this.transform.tag = "Untagged";
+            PV.RPC("UpdateExitPuzzleSanti", RpcTarget.All);
             Destroy(this);
         }
         else if (comprobations == comprobationsNeeded)
@@ -91,17 +104,9 @@ public class Puzzle : MonoBehaviourPun
             objectsSanti.puzzleCreated = false;
             objectsSanti.puzzleActive = false;
             Destroy(puzzleCopy.gameObject, 1f);
+            this.transform.tag = "Untagged";
+            PV.RPC("UpdateExitPuzzleSanti", RpcTarget.All);
             Destroy(this);
-            if (objectsSanti.objectNameString == "Key" && puzzle.name == "LockPick")
-            {
-                StartCoroutine(objectsSanti.RightDrop());
-                objectsSanti.objectNameString = "";
-                GameObject santi = GameObject.Find("Santi(Clone)"); 
-                int keylevel = santi.GetComponent<ObjectsSanti>().keylevel;
-
-                GameObject.Find("SmallKey_Item" + keylevel).GetComponent<PhotonView>().RPC("DestroyKeyOnline", RpcTarget.All, "SmallKey_Item" + keylevel);
-                santi.GetComponent<PhotonView>().RPC("SyncKeyLevel", RpcTarget.All, keylevel + 1);
-            }
 
         }
     }

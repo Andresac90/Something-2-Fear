@@ -9,13 +9,33 @@ public class Video : MonoBehaviour
     public float currentTime;
     public bool firstV;
     public bool secondV;
+    public bool menu;
     public bool firstPlaying = false;
     public bool secondPlaying = false;
 
+    private void Start()
+    {
+        if (firstV)
+        {
+            gameObject.GetComponent<VideoPlayer>().url = Application.streamingAssetsPath + "/" + "FinalCutsceneV2.mp4";
+        }
+        else if (secondV)
+        {
+            gameObject.GetComponent<VideoPlayer>().url = Application.streamingAssetsPath + "/" + "AnimacionLogo.mp4";
+        }
+        else if (menu)
+        {
+            gameObject.GetComponent<VideoPlayer>().url = Application.streamingAssetsPath + "/" + "menuFootage.mp4";
+        }
+    }
+
     void Update()
     {
-        TimeS();
-        checkTime();
+        if (!menu)
+        {
+            TimeS();
+            checkTime();
+        }
     }
 
     void TimeS()
@@ -33,13 +53,13 @@ public class Video : MonoBehaviour
 
     void checkTime()
     {
-        if (currentTime > 39.0f && firstV && !firstPlaying)
+        if (currentTime > 38.0f && firstV && !firstPlaying)
         {
             gameObject.GetComponent<VideoPlayer>().Play();
             firstPlaying = true;
         }
 
-        if (currentTime > 199.0f && secondV && !secondPlaying)
+        if (currentTime > 122.0f && secondV && !secondPlaying)
         {
             gameObject.GetComponent<VideoPlayer>().Play();
             secondPlaying = true;

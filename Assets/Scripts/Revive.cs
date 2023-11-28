@@ -12,6 +12,8 @@ public class Revive : MonoBehaviourPun
     private float currentTime = 0f;
     private Transform playerCamera;
     private int playersJoined = 0;
+    private bool reanimating = false;
+    private PhotonView PV;
 
     [SerializeField]
     private float objectTime;
@@ -30,6 +32,7 @@ public class Revive : MonoBehaviourPun
     }
     public void Start()
     {
+        PV = GetComponent<PhotonView>();
         playerCamera = transform.GetComponentInChildren<Camera>().gameObject.transform;
         // GameManager.OnPlayersJoined += HandlePlayersJoined;
         if (name == "Santi(Clone)")
@@ -46,6 +49,7 @@ public class Revive : MonoBehaviourPun
     {
         if (!photonView.IsMine) return;
         
+
         CheckRevive();
     }
 
@@ -57,6 +61,18 @@ public class Revive : MonoBehaviourPun
             Physics.Raycast(playerCamera.position, playerCamera.TransformDirection(Vector3.forward), out hit, rayLine, layerMask);
             if (hit.transform != null && (hit.transform.tag == "PlayerSanti" || hit.transform.tag == "PlayerJose"))
             {
+                if (hit.transform.gameObject.GetComponent<Down>().isPlayerDowned == false) return;
+                if(!reanimating && hit.transform.tag == "PlayerJose")
+                {
+                    PV.RPC("UpdateReanimatingAnimationSanti", RpcTarget.All);
+                    reanimating = true;
+                }
+                else if(!reanimating && hit.transform.tag == "PlayerSanti")
+                {
+                    PV.RPC("UpdateReanimatingAnimationJose", RpcTarget.All);
+                    reanimating = true;
+                }
+
                 canvas.gameObject.SetActive(true);
                 currentTime += Time.deltaTime;
                 fill.fillAmount = currentTime / objectTime;
@@ -65,6 +81,7 @@ public class Revive : MonoBehaviourPun
                     RevivePlayer(hit.transform.gameObject);
                     currentTime = 0f;
                     fill.fillAmount = currentTime / objectTime;
+                    reanimating = false;
                 }
             }
             else
@@ -74,6 +91,7 @@ public class Revive : MonoBehaviourPun
         }
         else
         {
+            reanimating = false;
             currentTime = 0f;
             fill.fillAmount = currentTime / objectTime;
         }

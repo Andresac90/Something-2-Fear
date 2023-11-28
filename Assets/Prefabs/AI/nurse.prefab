@@ -655,6 +655,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players: []
+  key: {fileID: 0}
   aiAgent: {fileID: 3242800303597295328}
   timeToRotate: 1
   walkSpeed: 6
@@ -719,8 +720,8 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9007477113144343296}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: d55f94f8323b6f54dae347a0b9696d54, type: 3}
+  m_Controller: {fileID: 9100000, guid: 41373c3d45fba954499fe8935e26688a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
