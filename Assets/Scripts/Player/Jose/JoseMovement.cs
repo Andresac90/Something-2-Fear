@@ -61,6 +61,9 @@ public class JoseMovement : MonoBehaviourPun
     PhotonView PV;
 
     private int controlsModifier  = 1;
+    private bool specialIdleChange = true;
+    private bool interact = false;
+    private float interactTimer = 0f;
 
 
     void Awake()
@@ -87,14 +90,38 @@ public class JoseMovement : MonoBehaviourPun
     void Update()
     {
         if (!PV.IsMine) return;
-
-
+    
+        CheckInteraction();
         Movement();
         Jump();
         Crouch();
         Sprint();
         Camera.transform.position = new Vector3(transform.position.x, Camera.transform.position.y, transform.position.z);
 
+    }
+    private void CheckInteraction()
+    {
+        if (Input.anyKeyDown)
+        {
+            interact = true;
+            interactTimer = 0f;
+        }
+
+        interactTimer += Time.deltaTime;
+
+        if (interactTimer >= 10f && !interact)
+        {
+            if (specialIdleChange)
+            {
+                PV.RPC("UpdateSpecialIdleAnimationJose", RpcTarget.All);
+            }
+            else
+            {
+                PV.RPC("UpdateSpecialIdleTwoAnimationJose", RpcTarget.All);
+            }
+            interact = false;
+            interactTimer = 0f;
+        }
     }
     void Movement()
     {

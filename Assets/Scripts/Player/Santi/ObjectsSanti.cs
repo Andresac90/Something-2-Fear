@@ -518,7 +518,7 @@ public class ObjectsSanti : MonoBehaviourPun
         santiAnimator.ResetTrigger("IsDown");
         santiAnimator.SetTrigger("IsEndingPuzzle");
     }
-
+    //puesta
     [PunRPC]
     void UpdateSpecialIdleAnimationSanti()
     {
@@ -536,7 +536,7 @@ public class ObjectsSanti : MonoBehaviourPun
         santiAnimator.ResetTrigger("Special_Idle2");
         santiAnimator.SetTrigger("Special_Idle");
     }
-
+    //puesta
     [PunRPC]
     void UpdateSpecialIdleTwoAnimationSanti()
     {

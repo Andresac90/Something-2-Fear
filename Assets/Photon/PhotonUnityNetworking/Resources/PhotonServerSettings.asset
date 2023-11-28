@@ -131,6 +131,10 @@ MonoBehaviour:
   - UpdateMoveAnimation
   - UpdateRightDown
   - DestroyMusic
+  - ResetJumpScareAnimationJose
+  - ResetJumpScareAnimationSanti
+  - UpdateJumpScareAnimationJose
+  - UpdateJumpScareAnimationSanti
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

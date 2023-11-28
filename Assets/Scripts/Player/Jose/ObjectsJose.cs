@@ -526,7 +526,7 @@ public class ObjectsJose : MonoBehaviourPun
             joseAnimator.SetTrigger("IsLeftThrowing");
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateSpecialIdleAnimationJose()
     {
@@ -548,7 +548,7 @@ public class ObjectsJose : MonoBehaviourPun
             joseAnimator.SetTrigger("Special_Idle");
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateSpecialIdleTwoAnimationJose()
     {
