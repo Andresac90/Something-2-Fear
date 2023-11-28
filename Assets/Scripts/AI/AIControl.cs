@@ -72,8 +72,6 @@ public class AIControl : MonoBehaviourPun
     public float stoppedTimer;
     public float defaultCooldownTime = 5f;
 
-    private bool courutineRinning = false;
-
     void Start()
     {
         players = new GameObject[2];
@@ -91,7 +89,7 @@ public class AIControl : MonoBehaviourPun
         //randNum = 0;
         minWaitTime = 1f;
         maxWiatTime = 3f;
-        catchDistance = 3f;
+        catchDistance = 2f;
 
         stoppedTimer = defaultCooldownTime;
         seenCooldownTimer = defaultCooldownTime;
@@ -102,7 +100,7 @@ public class AIControl : MonoBehaviourPun
 
         CurrentWaypointIndex = 0;                 //  Set the initial waypoint
         aiAgent = GetComponent<NavMeshAgent>();
-
+        aiAgent.acceleration = 30f;
         aiAgent.isStopped = false;
         aiAgent.speed = walkSpeed;             //  Set the navemesh speed with the normal speed of the enemy
         aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);    //  Set the destination to the first waypoint
@@ -325,29 +323,6 @@ public class AIControl : MonoBehaviourPun
         //        //TimeToRotate = timeToRotate;  
         //    }
         //}
-    }
-    public void Seen2(bool playerSeeing)
-    {
-        //StartCoroutine(IsSeenTimer());
-        if (WaitTime <= 0)
-        {
-            Debug.Log("Hallo");
-        }
-        else
-        {
-            Stop();
-            WaitTime -= Time.deltaTime;
-        }
-    }
-    private IEnumerator IsSeenTimer()
-    {
-        Stop();
-        yield return new WaitForSeconds(4f);
-        Debug.Log("Hallo");
-        isPatrol = true;
-        Move(walkSpeed);
-        aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
-
     }
 
     private void OnAnimatorMove()

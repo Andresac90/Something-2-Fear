@@ -479,7 +479,7 @@ MonoBehaviour:
   aiAgent: {fileID: 6775234893740932435}
   timeToRotate: 0.5
   walkSpeed: 6
-  chaseSpeed: 9
+  chaseSpeed: 10
   viewRadius: 15
   viewAngle: 90
   playerMask:
@@ -513,7 +513,7 @@ MonoBehaviour:
   isSeenSanti: 0
   isSeenJose: 0
   isSeenBoth: 0
-  catchDistance: 0
+  catchDistance: 1
   aiAnimation: {fileID: 7047640769868950306}
   santiAnimation: {fileID: 0}
   joseAnimation: {fileID: 0}
@@ -609,21 +609,27 @@ MonoBehaviour:
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
   m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 0
-    Name: PascualitaAttack
   - Type: 9
     SynchronizeType: 0
-    Name: PascualaAtkTrigger
-  - Type: 4
+    Name: walk
+  - Type: 9
     SynchronizeType: 0
-    Name: Pose1
-  - Type: 4
+    Name: idle
+  - Type: 9
     SynchronizeType: 0
-    Name: Pose2
-  - Type: 4
+    Name: sprint
+  - Type: 9
     SynchronizeType: 0
-    Name: Pose3
+    Name: jumpscare
+  - Type: 9
+    SynchronizeType: 0
+    Name: pose1
+  - Type: 9
+    SynchronizeType: 0
+    Name: pose2
+  - Type: 9
+    SynchronizeType: 0
+    Name: pose3
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
