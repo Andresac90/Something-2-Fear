@@ -152,7 +152,7 @@ public class JoseMovement : MonoBehaviourPun
     void Jump()
     {
         IsGrounded = Physics.CheckSphere(GroundCheck.position, RadiusGround, GroundMask);
-        bool IsJumpPressed = Controls.Player.Jump.ReadValue<float>() > 0.1f;
+        bool IsJumpPressed = Controls.Player.Jump.ReadValue<float>() > 0f;
         if (IsJumpPressed && IsGrounded && !HasCeiling && !IsCrouched && !HasJump)
         {
             PV.RPC("UpdateJumpingAnimationJose", RpcTarget.All);
