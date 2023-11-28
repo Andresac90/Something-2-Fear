@@ -182,7 +182,7 @@ public class JoseMovement : MonoBehaviourPun
         }
         else if (!HasCeiling && !IsCrouchPressed && !HasRun)
         {
-            PV.RPC("UpdateStandAnimationJose", RpcTarget.All);
+            //PV.RPC("UpdateStandAnimationJose", RpcTarget.All);
             CharController.height = 2;
             CharController.center = new Vector3(0, 0, 0);
             // Camera.localPosition = new Vector3(0, 0.894f, 0.225f);
