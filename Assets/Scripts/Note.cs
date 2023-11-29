@@ -17,7 +17,7 @@ public class Note : MonoBehaviour
     [SerializeField]
     private string text;
     [SerializeField]
-    private RawImage image;
+    private Texture m_Texture;
 
     void Start()
     {
@@ -33,7 +33,7 @@ public class Note : MonoBehaviour
         GameObject sonChild = child.transform.GetChild(1).gameObject;
         img = sonChild.GetComponent<RawImage>();
 
-        img = image;
+        img.texture = m_Texture;;
         textMesh.text = text;
         noteCopy = Instantiate(note);
         PlayerMovement(noteCreated);
