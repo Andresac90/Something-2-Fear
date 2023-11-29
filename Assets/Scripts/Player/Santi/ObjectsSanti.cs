@@ -126,7 +126,7 @@ public class ObjectsSanti : MonoBehaviourPun
                     objectNameString = "";
                     hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
 
-                    checkPoint = GameObject.Find("CheckPointHospital").GetComponent<CheckPoint>();
+                    checkPoint = GameObject.Find("CheckPointLobby").GetComponent<CheckPoint>();
                     
                     PhotonView checkPointManager = GameObject.Find("CheckPointManager").GetComponent<PhotonView>();
                     checkPointManager.RPC("SetCheckPoint", RpcTarget.All, checkPoint.GetComponent<PhotonView>().ViewID);
@@ -137,8 +137,8 @@ public class ObjectsSanti : MonoBehaviourPun
                     objectNameString = "";
                     hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
 
-                    checkPoint = GameObject.Find("CheckPointLobby").GetComponent<CheckPoint>();
-                    
+                    checkPoint = GameObject.Find("CheckPointLaberinto").GetComponent<CheckPoint>();
+
                     PhotonView checkPointManager2 = GameObject.Find("CheckPointManager").GetComponent<PhotonView>();
                     checkPointManager2.RPC("SetCheckPoint", RpcTarget.All, checkPoint.GetComponent<PhotonView>().ViewID);
                     
@@ -149,7 +149,7 @@ public class ObjectsSanti : MonoBehaviourPun
                     objectNameString = "";
                     hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
 
-                    checkPoint = GameObject.Find("CheckPointLaberinto").GetComponent<CheckPoint>();
+                    checkPoint = GameObject.Find("CheckPointHospital").GetComponent<CheckPoint>();
                     
                     PhotonView checkPointManager3 = GameObject.Find("CheckPointManager").GetComponent<PhotonView>();
                     checkPointManager3.RPC("SetCheckPoint", RpcTarget.All, checkPoint.GetComponent<PhotonView>().ViewID);
