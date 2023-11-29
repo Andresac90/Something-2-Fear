@@ -476,8 +476,10 @@ public class AIControl : MonoBehaviourPun
         aiAnimation.SetBool("stop", false);
         aiAnimation.ResetTrigger("attack");
         aiAnimation.SetTrigger("pose1");
-        SantiPV.RPC("ResetJumpScareAnimationSanti", RpcTarget.All);
-        
+        if (SantiPV.IsMine)
+        {
+            SantiPV.RPC("ResetJumpScareAnimationSanti", RpcTarget.All);
+        }
     }                                         
 
     IEnumerator EndJoseJumpscare()
@@ -488,9 +490,10 @@ public class AIControl : MonoBehaviourPun
         aiAnimation.SetBool("stop", false);
         aiAnimation.ResetTrigger("attack");
         aiAnimation.SetTrigger("pose1");
-        JosePV.RPC("ResetJumpScareAnimationSanti", RpcTarget.All);
-        
-
+        if (!JosePV.IsMine)
+        {
+            JosePV.RPC("ResetJumpScareAnimationSanti", RpcTarget.All);
+        }
     }
 
 
