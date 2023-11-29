@@ -84,7 +84,7 @@ public class NinaAI : MonoBehaviour
         //randNum = 0;
         minWaitTime = 1f;
         maxWiatTime = 3f;
-        catchDistance = 2f;
+        catchDistance = 1.5f;
 
         stoppedTimer = defaultCooldownTime;
         seenCooldownTimer = defaultCooldownTime;
