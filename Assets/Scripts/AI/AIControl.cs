@@ -490,7 +490,7 @@ public class AIControl : MonoBehaviourPun
         aiAnimation.SetBool("stop", false);
         aiAnimation.ResetTrigger("attack");
         aiAnimation.SetTrigger("pose1");
-        if (!JosePV.IsMine)
+        if (JosePV.IsMine)
         {
             JosePV.RPC("ResetJumpScareAnimationSanti", RpcTarget.All);
         }
