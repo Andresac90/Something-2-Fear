@@ -777,6 +777,24 @@ public class ObjectsJose : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
+    void UpdateJumpScareAnimationJose()
+    {
+        if (!photonView.IsMine) return;
+        if (joseAnimator == null)
+            return;
+        joseAnimator.SetTrigger("JosePascualitaJumpscareTrigger");
+    }
+
+    [PunRPC]
+    void ResetJumpScareAnimationJose()
+    {   
+        if (!photonView.IsMine) return;
+        if (joseAnimator == null)
+            return;
+        joseAnimator.ResetTrigger("JosePascualitaJumpscareTrigger");
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

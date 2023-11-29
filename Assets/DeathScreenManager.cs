@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class DeathScreenManager : MonoBehaviour
+public class DeathScreenManager : MonoBehaviourPun
 {
     [SerializeField]
     private CheckPointManager checkPointManager;
@@ -17,14 +18,23 @@ public class DeathScreenManager : MonoBehaviour
     public void RespawnButton()
     {
         Time.timeScale = 1f;
-        deathScreen.SetActive(false);
-        checkPointManager.GoToCheckPoint();
+
+        photonView.RPC("SyncRespawn", RpcTarget.All);
     }
 
     public void Die()
     {
         deathScreen.SetActive(true);
         Time.timeScale = 0f; 
+    }
+
+    [PunRPC]
+    public void SyncRespawn()
+    {
+        Time.timeScale = 1f;
+
+        deathScreen.SetActive(false);
+        checkPointManager.GoToCheckPoint();
     }
 }
 

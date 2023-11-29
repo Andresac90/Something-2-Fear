@@ -1,7 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CheckPointManager : MonoBehaviourPun
 {    
@@ -14,6 +14,12 @@ public class CheckPointManager : MonoBehaviourPun
     private GameObject PascualitaDummy;
     [SerializeField]
     private GameObject Pascualita;
+
+    [SerializeField]
+    private GameObject Nina;
+
+    [SerializeField]
+    private List<GameObject> closedDoors;
 
     [PunRPC]
     public void SetCheckPoint(int checkPointViewID)
@@ -30,6 +36,7 @@ public class CheckPointManager : MonoBehaviourPun
         ResetDoors();
         ResetPlayers();
         ResetPascualita();
+        ResetNina();
     }  
 
     public void ResetKeys()
@@ -44,6 +51,10 @@ public class CheckPointManager : MonoBehaviourPun
 
     public void ResetDoors()
     {
+
+        foreach (var door in closedDoors){
+            door.GetComponent<PhotonView>().RPC("SyncDoor", RpcTarget.All, false);
+        }
 
         foreach (var checkPoint in PassedCheckPoints)
         {
@@ -77,5 +88,12 @@ public class CheckPointManager : MonoBehaviourPun
         //enable or disable
         PascualitaDummy.SetActive(!CurrentCheckPoint.PascualitaIsOn);
         Pascualita.SetActive(CurrentCheckPoint.PascualitaIsOn);
+    }
+
+    public void ResetNina()
+    {
+        //warp to position in navmesh
+
+        Nina.GetComponent<NavMeshAgent>().Warp(new Vector3(0.01599915f, 0.3264152f, 0f));
     }
 }

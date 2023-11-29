@@ -103,6 +103,7 @@ public class Down : MonoBehaviourPun
     {
         if (!isPlayerDowned) return;
         Debug.Log("reviving");
+        areDead = false;
         if (name == "Santi(Clone)")
         {
             PV.RPC("UpdateRightDown", RpcTarget.All, false);

@@ -135,6 +135,7 @@ MonoBehaviour:
   - ResetJumpScareAnimationSanti
   - UpdateJumpScareAnimationJose
   - UpdateJumpScareAnimationSanti
+  - SyncRespawn
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
