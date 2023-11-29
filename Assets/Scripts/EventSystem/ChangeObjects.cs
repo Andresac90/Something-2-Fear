@@ -17,6 +17,10 @@ public class ChangeObjects : MonoBehaviourPun
     [SerializeField]
     private GameObject Nina;
     [SerializeField]
+    private GameObject NurseNavMesh;
+    [SerializeField]
+    private GameObject NinaNavMesh;
+    [SerializeField]
     private GameObject HospitalDoor;
     [SerializeField]
     private GameObject HospitalLightsLockdown;
@@ -70,6 +74,7 @@ public class ChangeObjects : MonoBehaviourPun
     [PunRPC]
     public void ActivateNurse()
     {
+        NurseNavMesh.SetActive(true);
         Nurse.SetActive(true);
         HospitalLightsLockdown.SetActive(false);
     }
@@ -78,6 +83,7 @@ public class ChangeObjects : MonoBehaviourPun
     public void DeactivateNurse()
     {
         Nurse.SetActive(false);
+        NurseNavMesh.SetActive(false);
     }
 
     [PunRPC]
@@ -104,6 +110,7 @@ public class ChangeObjects : MonoBehaviourPun
     public void DeactivateNina()
     {
         Nina.SetActive(false);
+        NinaNavMesh.SetActive(false);
     }
 
     [PunRPC]
