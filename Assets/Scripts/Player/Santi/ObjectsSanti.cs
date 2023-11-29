@@ -477,6 +477,7 @@ public class ObjectsSanti : MonoBehaviourPun
             bool isCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0.2f;
             if (note != null && isInteractPressed && !noteCreated)
             {
+                GameManager.Instance.Note.Play();
                 note.OpenNote(false);
                 noteCreated = true;
             }
