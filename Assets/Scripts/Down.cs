@@ -109,6 +109,7 @@ public class Down : MonoBehaviourPun
             PV.RPC("UpdateRightDown", RpcTarget.All, false);
             PV.RPC("playerDown", RpcTarget.All, false);
             GetComponent<SantiController>().enabled = true;
+            GetComponent<ObjectsSanti>().enabled = true;
             PV.RPC("UpdateRevivedAnimationSanti", RpcTarget.All);
             //playerAnimator.ResetTrigger("SantiRevivedTrigger");
             
@@ -119,6 +120,7 @@ public class Down : MonoBehaviourPun
         {
             PV.RPC("playerDown", RpcTarget.All, false);
             GetComponent<JoseMovement>().enabled = true;
+            GetComponent<ObjectsJose>().enabled = true;
             PV.RPC("UpdateRevivedAnimationJose", RpcTarget.All);
             //playerAnimator.ResetTrigger("JoseRevivedTrigger");
 
