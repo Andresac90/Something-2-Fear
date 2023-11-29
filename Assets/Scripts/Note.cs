@@ -32,7 +32,7 @@ public class Note : MonoBehaviour
         textMesh = child.GetComponentInChildren<TextMeshProUGUI>();
         GameObject sonChild = child.transform.GetChild(1).gameObject;
         img = sonChild.GetComponent<RawImage>();
-
+ 
         img.texture = m_Texture;
         textMesh.text = text;
         noteCopy = Instantiate(note);
