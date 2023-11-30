@@ -569,7 +569,7 @@ public class ObjectsJose : MonoBehaviourPun
             joseAnimator.SetTrigger("IsLeftThrowing");
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateSpecialIdleAnimationJose()
     {
@@ -591,7 +591,7 @@ public class ObjectsJose : MonoBehaviourPun
             joseAnimator.SetTrigger("Special_Idle");
         }
     }
-
+    //puesta
     [PunRPC]
     void UpdateSpecialIdleTwoAnimationJose()
     {
@@ -818,6 +818,24 @@ public class ObjectsJose : MonoBehaviourPun
             ObjectLeftRb.GetComponent<ObjectsData>().OnRelease();
             HasObjectLeft = false;
         }
+    }
+
+    [PunRPC]
+    void UpdateJumpScareAnimationJose()
+    {
+        if (!photonView.IsMine) return;
+        if (joseAnimator == null)
+            return;
+        joseAnimator.SetTrigger("JosePascualitaJumpscareTrigger");
+    }
+
+    [PunRPC]
+    void ResetJumpScareAnimationJose()
+    {   
+        if (!photonView.IsMine) return;
+        if (joseAnimator == null)
+            return;
+        joseAnimator.ResetTrigger("JosePascualitaJumpscareTrigger");
     }
 
     private void OnDrawGizmos()

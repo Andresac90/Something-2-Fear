@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public AudioSource NurseRunning;
     public AudioSource DoorLocked;
     public AudioSource Whispers;
+    public AudioSource Note;
 
     public PlayableDirector ending;
 

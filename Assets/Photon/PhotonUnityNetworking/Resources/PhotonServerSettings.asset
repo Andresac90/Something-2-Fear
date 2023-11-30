@@ -82,6 +82,11 @@ MonoBehaviour:
   - EndingCutscene
   - StartVideo
   - SpawnKey
+  - JosePassed
+  - SantiPassed
+  - SetCheckPoint
+  - SetCheckPointRPC
+  - GoToCheckPoint
   - EraseBlock1
   - EraseBlock2
   - EraseBlock3
@@ -125,6 +130,13 @@ MonoBehaviour:
   - OpenR
   - UpdateMoveAnimation
   - UpdateRightDown
+  - DestroyMusic
+  - ResetJumpScareAnimationJose
+  - ResetJumpScareAnimationSanti
+  - UpdateJumpScareAnimationJose
+  - UpdateJumpScareAnimationSanti
+  - SyncRespawn
+  - UpdateIdleAnimationNurse
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

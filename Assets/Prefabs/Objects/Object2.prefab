@@ -252,7 +252,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObjectScale: 1.4
+  ObjectYScale: 1.4
   ObjectOriginalScale: 4.5
+  ObjectOriginalYScale: 4.5
   ObjectName: Object2
 --- !u!54 &4305811978544278123
 Rigidbody:

@@ -61,6 +61,9 @@ public class JoseMovement : MonoBehaviourPun
     PhotonView PV;
 
     private int controlsModifier  = 1;
+    private bool specialIdleChange = true;
+    private bool interact = false;
+    private float interactTimer = 0f;
 
 
     void Awake()
@@ -87,14 +90,38 @@ public class JoseMovement : MonoBehaviourPun
     void Update()
     {
         if (!PV.IsMine) return;
-
-
+    
+        CheckInteraction();
         Movement();
         Jump();
         Crouch();
         Sprint();
         Camera.transform.position = new Vector3(transform.position.x, Camera.transform.position.y, transform.position.z);
 
+    }
+    private void CheckInteraction()
+    {
+        if (Input.anyKeyDown)
+        {
+            interact = true;
+            interactTimer = 0f;
+        }
+
+        interactTimer += Time.deltaTime;
+
+        if (interactTimer >= 10f && !interact)
+        {
+            if (specialIdleChange)
+            {
+                PV.RPC("UpdateSpecialIdleAnimationJose", RpcTarget.All);
+            }
+            else
+            {
+                PV.RPC("UpdateSpecialIdleTwoAnimationJose", RpcTarget.All);
+            }
+            interact = false;
+            interactTimer = 0f;
+        }
     }
     void Movement()
     {
@@ -152,7 +179,7 @@ public class JoseMovement : MonoBehaviourPun
     void Jump()
     {
         IsGrounded = Physics.CheckSphere(GroundCheck.position, RadiusGround, GroundMask);
-        bool IsJumpPressed = Controls.Player.Jump.ReadValue<float>() > 0.1f;
+        bool IsJumpPressed = Controls.Player.Jump.ReadValue<float>() > 0f;
         if (IsJumpPressed && IsGrounded && !HasCeiling && !IsCrouched && !HasJump)
         {
             PV.RPC("UpdateJumpingAnimationJose", RpcTarget.All);
@@ -169,6 +196,7 @@ public class JoseMovement : MonoBehaviourPun
     {
         HasCeiling = Physics.CheckSphere(HeadCheck.position, RadiusHead, GroundMask);
         bool IsCrouchPressed = Controls.Player.Crouch.ReadValue<float>() > 0.1f;
+        bool IsJumpPressed = Controls.Player.Jump.ReadValue<float>() > 0f;
         if (IsCrouchPressed && !HasCrouched && !HasJump)
         {
             PV.RPC("UpdateBendingAnimationJose", RpcTarget.All);
@@ -180,7 +208,7 @@ public class JoseMovement : MonoBehaviourPun
             HasCrouched = true;
             IsCrouched = true;
         }
-        else if (!HasCeiling && !IsCrouchPressed && !HasRun)
+        else if (!HasCeiling && !IsCrouchPressed && !HasRun && !IsJumpPressed)
         {
             PV.RPC("UpdateStandAnimationJose", RpcTarget.All);
             CharController.height = 2;

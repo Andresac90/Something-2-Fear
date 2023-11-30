@@ -17,6 +17,10 @@ public class ChangeObjects : MonoBehaviourPun
     [SerializeField]
     private GameObject Nina;
     [SerializeField]
+    private GameObject NurseNavMesh;
+    [SerializeField]
+    private GameObject NinaNavMesh;
+    [SerializeField]
     private GameObject HospitalDoor;
     [SerializeField]
     private GameObject HospitalLightsLockdown;
@@ -64,7 +68,6 @@ public class ChangeObjects : MonoBehaviourPun
     public void DeactivateLights()
     {
         GameManager.Instance.Ambience1.Stop();
-        GameManager.Instance.Ambience2.Play();
         lights.SetActive(false);
     }
 

@@ -53,6 +53,9 @@ public class SantiController : MonoBehaviourPun
     public bool isPlayerInjected = false;
     private int controlsModifier = 1;
     private PhotonView PV;
+    private bool specialIdleChange = true;
+    private bool interact = false;
+    private float interactTimer = 0f;
 
     void Awake()
     {
@@ -86,10 +89,36 @@ public class SantiController : MonoBehaviourPun
             Movement();
         }
 
+        CheckInteraction();
         CheckInteract();
 
         if (isHiding)
             CheckRange();
+    }
+
+    private void CheckInteraction()
+    {
+        if (Input.anyKeyDown)
+        {
+            interact = true;
+            interactTimer = 0f;
+        }
+
+        interactTimer += Time.deltaTime;
+
+        if (interactTimer >= 10f && !interact)
+        {
+            if (specialIdleChange)
+            {
+                PV.RPC("UpdateSpecialIdleAnimationSanti", RpcTarget.All);
+            }
+            else
+            {
+                PV.RPC("UpdateSpecialIdleTwoAnimationSanti", RpcTarget.All);
+            }
+            interact = false;
+            interactTimer = 0f;
+        }
     }
 
     private void CheckInteract()
@@ -115,7 +144,7 @@ public class SantiController : MonoBehaviourPun
         UIPrompt(isHiding, tag);
         if (!InteractPressed) return;
         
-        switch (hit.transform.tag)
+        switch (tag)
         {
             case "Hide":
                 Hide(hit.transform.gameObject);

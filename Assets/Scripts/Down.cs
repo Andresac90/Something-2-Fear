@@ -15,6 +15,7 @@ public class Down : MonoBehaviourPun
     public float deadTime;
     
     private bool areDead = false;
+    private PhotonView PV;
 
     public PhotonView downingIndicator;
 
@@ -26,6 +27,7 @@ public class Down : MonoBehaviourPun
 
     public void Start()
     {
+        PV = GetComponent<PhotonView>();
         playerCam = transform.GetComponentInChildren<Camera>().gameObject;
         Camera = playerCam.GetComponent<Camera>();
         CharController = GetComponent<CharacterController>();
@@ -74,16 +76,18 @@ public class Down : MonoBehaviourPun
         // look for santiController or JoseMovement
         if (name == "Santi(Clone)")
         {
-            photonView.RPC("UpdateRightDown", RpcTarget.All, true);
-            photonView.RPC("playerDown", RpcTarget.All, true);
+            PV.RPC("UpdateRightDown", RpcTarget.All, true);
+            PV.RPC("playerDown", RpcTarget.All, true);
             GetComponent<SantiController>().enabled = false;
-            photonView.RPC("UpdateDownedAnimationSanti", RpcTarget.All);
+            GetComponent<ObjectsSanti>().enabled = false;
+            PV.RPC("UpdateDownedAnimationSanti", RpcTarget.All);
         }
         else if (name == "Jose(Clone)")
         {
-            photonView.RPC("playerDown", RpcTarget.All, true);
+            PV.RPC("playerDown", RpcTarget.All, true);
             GetComponent<JoseMovement>().enabled = false;
-            photonView.RPC("UpdateDownedAnimationJose", RpcTarget.All);
+            GetComponent<ObjectsJose>().enabled = false;
+            PV.RPC("UpdateDownedAnimationJose", RpcTarget.All);
         }
         GetComponent<Transform>().position = new Vector3(transform.position.x, transform.position.y - 0.879f, transform.position.z);
         GetComponent<Transform>().rotation = Quaternion.Euler(Quaternion.identity.x - 90f, Quaternion.identity.y, Quaternion.identity.z);
@@ -99,12 +103,14 @@ public class Down : MonoBehaviourPun
     {
         if (!isPlayerDowned) return;
         Debug.Log("reviving");
+        areDead = false;
         if (name == "Santi(Clone)")
         {
-            photonView.RPC("UpdateRightDown", RpcTarget.All, false);
-            photonView.RPC("playerDown", RpcTarget.All, false);
+            PV.RPC("UpdateRightDown", RpcTarget.All, false);
+            PV.RPC("playerDown", RpcTarget.All, false);
             GetComponent<SantiController>().enabled = true;
-            photonView.RPC("UpdateRevivedAnimationSanti", RpcTarget.All);
+            GetComponent<ObjectsSanti>().enabled = true;
+            PV.RPC("UpdateRevivedAnimationSanti", RpcTarget.All);
             //playerAnimator.ResetTrigger("SantiRevivedTrigger");
             
             
@@ -112,9 +118,10 @@ public class Down : MonoBehaviourPun
         }
         else if (name == "Jose(Clone)")
         {
-            photonView.RPC("playerDown", RpcTarget.All, false);
+            PV.RPC("playerDown", RpcTarget.All, false);
             GetComponent<JoseMovement>().enabled = true;
-            photonView.RPC("UpdateRevivedAnimationJose", RpcTarget.All);
+            GetComponent<ObjectsJose>().enabled = true;
+            PV.RPC("UpdateRevivedAnimationJose", RpcTarget.All);
             //playerAnimator.ResetTrigger("JoseRevivedTrigger");
 
         }
@@ -129,7 +136,8 @@ public class Down : MonoBehaviourPun
     [PunRPC]
     public void AreDead()
     {
-        areDead = true;
+        var DeathScreenManager = GameObject.Find("DeathScreenManager").GetComponent<DeathScreenManager>();
+        DeathScreenManager.Die();
     }
     
     private void Die()
@@ -156,9 +164,10 @@ public class Down : MonoBehaviourPun
 
             // change ever
             // SceneManager.LoadScene("LoseScreen");
-            PhotonNetwork.LoadLevel("LoseScreen");
+            // PhotonNetwork.LoadLevel("LoseScreen");
             photonView.RPC("AreDead", RpcTarget.All);
             // gameObject.SetActive(false);
+            areDead = true;
         }
     }
 

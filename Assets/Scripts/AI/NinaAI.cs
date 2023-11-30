@@ -84,7 +84,7 @@ public class NinaAI : MonoBehaviour
         //randNum = 0;
         minWaitTime = 1f;
         maxWiatTime = 3f;
-        catchDistance = 0.5f;
+        catchDistance = 1.5f;
 
         stoppedTimer = defaultCooldownTime;
         seenCooldownTimer = defaultCooldownTime;
@@ -121,7 +121,7 @@ public class NinaAI : MonoBehaviour
             if (attackingJose)
             {
                 ChaseJose();
-                walkSpeed = 0.5f;
+                walkSpeed = 0.9f;
             }
             else if (attackingSanti)
             {
@@ -429,13 +429,16 @@ public class NinaAI : MonoBehaviour
         if (ninaAnimator != null)
         {
             ninaAnimator.SetBool("IsMoving", isMoving);
+            ninaAnimator.ResetTrigger("IsAttacking");
         }
     }
 
     [PunRPC]
     void UpdateAttackingAnimation()
     {
+        if (ninaAnimator != null)
+        {
         ninaAnimator.SetTrigger("IsAttacking");
-        ninaAnimator.ResetTrigger("IsAttacking");
+        }
     }
 }

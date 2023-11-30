@@ -127,6 +127,9 @@ public class ObjectsSanti : MonoBehaviourPun
             PuzzleManager();
             NoteManager();
             Grab();
+
+            CheckPoint checkPoint;
+
             switch (objectNameString)
             {
                 case "KeyMaster1":
@@ -134,13 +137,22 @@ public class ObjectsSanti : MonoBehaviourPun
                     StartCoroutine(RightDrop());
                     objectNameString = "";
                     hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
+
+                    checkPoint = GameObject.Find("CheckPointLaberinto").GetComponent<CheckPoint>();
                     
+                    PhotonView checkPointManager = GameObject.Find("CheckPointManager").GetComponent<PhotonView>();
+                    checkPointManager.RPC("SetCheckPoint", RpcTarget.All, checkPoint.GetComponent<PhotonView>().ViewID);
                     break;
                 case "KeyMaster2":
                     GameManager.Instance.Keys.Play();
                     StartCoroutine(RightDrop());
                     objectNameString = "";
                     hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
+
+                    checkPoint = GameObject.Find("CheckPointLobby").GetComponent<CheckPoint>();
+
+                    PhotonView checkPointManager2 = GameObject.Find("CheckPointManager").GetComponent<PhotonView>();
+                    checkPointManager2.RPC("SetCheckPoint", RpcTarget.All, checkPoint.GetComponent<PhotonView>().ViewID);
                     
                     break;
                 case "KeyMaster3":
@@ -148,6 +160,11 @@ public class ObjectsSanti : MonoBehaviourPun
                     StartCoroutine(RightDrop());
                     objectNameString = "";
                     hit.transform.GetComponent<PhotonView>().RPC("MasterKeysChange", RpcTarget.All, hit.transform.name);
+
+                    checkPoint = GameObject.Find("CheckPointHospital").GetComponent<CheckPoint>();
+                    
+                    PhotonView checkPointManager3 = GameObject.Find("CheckPointManager").GetComponent<PhotonView>();
+                    checkPointManager3.RPC("SetCheckPoint", RpcTarget.All, checkPoint.GetComponent<PhotonView>().ViewID);
                     
                     break;
                 case "Object1":
@@ -500,6 +517,7 @@ public class ObjectsSanti : MonoBehaviourPun
             bool isCancelPressed = controls.Player.Cancel.ReadValue<float>() > 0.2f;
             if (note != null && isInteractPressed && !noteCreated)
             {
+                GameManager.Instance.Note.Play();
                 note.OpenNote(false);
                 noteCreated = true;
             }
@@ -546,7 +564,7 @@ public class ObjectsSanti : MonoBehaviourPun
         santiAnimator.ResetTrigger("IsDown");
         santiAnimator.SetTrigger("IsEndingPuzzle");
     }
-
+    //puesta
     [PunRPC]
     void UpdateSpecialIdleAnimationSanti()
     {
@@ -564,7 +582,7 @@ public class ObjectsSanti : MonoBehaviourPun
         santiAnimator.ResetTrigger("Special_Idle2");
         santiAnimator.SetTrigger("Special_Idle");
     }
-
+    //puesta
     [PunRPC]
     void UpdateSpecialIdleTwoAnimationSanti()
     {
@@ -722,6 +740,24 @@ public class ObjectsSanti : MonoBehaviourPun
     public void SyncKeyLevel(int _keylevel)
     {
         keylevel = _keylevel;
+    }
+
+        [PunRPC]
+    void UpdateJumpScareAnimationSanti()
+    {
+        if (!photonView.IsMine) return;
+        if (santiAnimator == null)
+            return;
+        santiAnimator.SetTrigger("SantiPascualitaJumpscareTrigger");
+    }
+
+    [PunRPC]
+    void ResetJumpScareAnimationSanti()
+    {
+        if (!photonView.IsMine) return;
+        if (santiAnimator == null)
+            return;
+        santiAnimator.ResetTrigger("SantiPascualitaJumpscareTrigger");
     }
 
     private void OnEnable()

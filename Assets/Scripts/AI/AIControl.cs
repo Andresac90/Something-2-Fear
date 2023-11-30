@@ -140,35 +140,33 @@ public class AIControl : MonoBehaviourPun
             if (isSeenBoth && !blinkingSanti && !blinkingJose)
             {
                 // Both players are seen and not blinking
-                Debug.Log("cond 1");
+                aiAnimation.SetBool("stop", true);
                 Stop();
             }
             // Either only Santi or only Jose is seen
             else if (!isSeenBoth && isSeenSanti && !blinkingSanti)
             {
-                Debug.Log("cond 2");
+                aiAnimation.SetBool("stop", true);
                 Stop();
             }
             else if (!isSeenBoth && isSeenJose && !blinkingJose)
             {
                 // Only Jose is seen and not blinking
-                Debug.Log("cond 3");
+                aiAnimation.SetBool("stop", true);
                 Stop();
             }
             else if (isChasing && !isPlayerCaught)
             {
-                Debug.Log("ass Chasing");
-                aiAnimation.ResetTrigger("walk");
-                aiAnimation.ResetTrigger("idle");
-                aiAnimation.SetTrigger("sprint");
+                aiAnimation.ResetTrigger("attack");
+                aiAnimation.SetBool("stop", false);
+                aiAnimation.SetTrigger("pose1");
                 Chasing();
             }
             else if (isPatrol && !isPlayerCaught)
             {
-                Debug.Log("ass patrolling");
-                aiAnimation.ResetTrigger("sprint");
-                aiAnimation.ResetTrigger("idle");
-                aiAnimation.SetTrigger("walk");
+                aiAnimation.ResetTrigger("attack");
+                aiAnimation.SetBool("stop", false);
+                aiAnimation.SetTrigger("pose1");
                 Patroling();
             }
         }
@@ -185,11 +183,9 @@ public class AIControl : MonoBehaviourPun
         {
             Move(chaseSpeed);
             aiAgent.SetDestination(PlayerPosition);          //  set the destination of the enemy to the player location
-            Debug.Log("ass CHASE");
         }
         if (aiAgent.remainingDistance <= aiAgent.stoppingDistance)    //  Control if the enemy arrive to the player location
         {
-            Debug.Log("ass PING");
             if (WaitTime <= 0 && !isPlayerCaught && Vector3.Distance(transform.position, closerPlayer.transform.position) >= 6f)
             {
                 //  Check if the enemy is not near to the player, returns to patrol after the wait time delay
@@ -248,9 +244,6 @@ public class AIControl : MonoBehaviourPun
             }
             else
             {
-                aiAnimation.ResetTrigger("sprint");
-                aiAnimation.ResetTrigger("walk");
-                aiAnimation.SetTrigger("idle");
                 Stop();
                 WaitTime -= Time.deltaTime;
             }
@@ -271,7 +264,10 @@ public class AIControl : MonoBehaviourPun
             Debug.Log("Pinga attack SANTI");
             SantiPV.RPC("SyncDowned", RpcTarget.All);
             GameManager.Instance.PascualitaJumpscare.Play();
-            santiAnimation.SetTrigger("SantiPascualitaJumpscareTrigger");
+            SantiPV.RPC("UpdateJumpScareAnimationSanti", RpcTarget.All);
+            aiAnimation.SetBool("stop", false);
+            aiAnimation.ResetTrigger("pose1");
+            aiAnimation.SetTrigger("attack");
             StartCoroutine(EndSantiJumpscare());
 
 
@@ -288,7 +284,10 @@ public class AIControl : MonoBehaviourPun
             Debug.Log("Pinga attack JOSE");
             JosePV.RPC("SyncDowned", RpcTarget.All);
             GameManager.Instance.PascualitaJumpscare.Play();
-            joseAnimation.SetTrigger("JosePascualitaJumpscareTrigger");
+            JosePV.RPC("UpdateJumpScareAnimationJose", RpcTarget.All);
+            aiAnimation.SetBool("stop", false);
+            aiAnimation.ResetTrigger("pose1");
+            aiAnimation.SetTrigger("attack");
             StartCoroutine(EndJoseJumpscare());
         }
 
@@ -474,11 +473,13 @@ public class AIControl : MonoBehaviourPun
 
         yield return new WaitForSeconds(2f);
 
-        aiAnimation.ResetTrigger("walk");
-        aiAnimation.ResetTrigger("idle");
-        aiAnimation.ResetTrigger("sprint");
-        santiAnimation.ResetTrigger("SantiPascualitaJumpscareTrigger");
-        
+        aiAnimation.SetBool("stop", false);
+        aiAnimation.ResetTrigger("attack");
+        aiAnimation.SetTrigger("pose1");
+        if (SantiPV.IsMine)
+        {
+            SantiPV.RPC("ResetJumpScareAnimationSanti", RpcTarget.All);
+        }
     }                                         
 
     IEnumerator EndJoseJumpscare()
@@ -486,11 +487,20 @@ public class AIControl : MonoBehaviourPun
 
         yield return new WaitForSeconds(2f);
 
-        aiAnimation.ResetTrigger("walk");
-        aiAnimation.ResetTrigger("idle");
-        aiAnimation.ResetTrigger("sprint");
-        joseAnimation.ResetTrigger("JosePascualitaJumpscareTrigger");
-        
-
+        aiAnimation.SetBool("stop", false);
+        aiAnimation.ResetTrigger("attack");
+        aiAnimation.SetTrigger("pose1");
+        if (JosePV.IsMine)
+        {
+            JosePV.RPC("ResetJumpScareAnimationSanti", RpcTarget.All);
+        }
     }
+
+
+
+    
+
+    
+
+    
 }
