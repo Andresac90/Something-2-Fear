@@ -332,19 +332,9 @@ public class ObjectsSanti : MonoBehaviourPun
             Timer.SetActive(true);
             textMeshProText = Timer.GetComponent<TextMeshProUGUI>();
             textMeshProText.text = ((int)GameObject.Find("Jose(Clone)").GetComponent<Injection>().downTime - (int)this.GetComponent<Injection>().currentTime).ToString();
-            //Revive Hold UI
-            if (hit.transform.gameObject.GetComponent<Down>().isPlayerDowned)
-            {
-                ReviveHoldUI.SetActive(true);
-            }
-            else
-            {
-                ReviveHoldUI.SetActive(false);
-            }
         }
         else
         {
-            ReviveHoldUI.SetActive(false);
             QuestInjectionUI.SetActive(false);
             Timer.SetActive(false);
             textMeshProText = Timer.GetComponent<TextMeshProUGUI>();
