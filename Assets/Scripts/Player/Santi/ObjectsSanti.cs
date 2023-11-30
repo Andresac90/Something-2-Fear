@@ -345,8 +345,8 @@ public class ObjectsSanti : MonoBehaviourPun
         {
             QuestPlayerDownedUI.SetActive(true);
             TimerDowned.SetActive(true);
-            textMeshProText = TimerDowned.GetComponent<TextMeshProUGUI>();
-            textMeshProText.text = ((int)GameObject.Find("Jose(Clone)").GetComponent<Down>().deadTime - (int)GameObject.Find("Jose(Clone)").GetComponent<Down>().currentTime).ToString();
+            textMeshProText2 = TimerDowned.GetComponent<TextMeshProUGUI>();
+            textMeshProText2.text = ((int)GameObject.Find("Jose(Clone)").GetComponent<Down>().deadTime - (int)GameObject.Find("Jose(Clone)").GetComponent<Down>().currentTime).ToString();
             //Revive Hold UI
             if (hit.transform != null && hit.transform.tag == "PlayerJose")
             {
