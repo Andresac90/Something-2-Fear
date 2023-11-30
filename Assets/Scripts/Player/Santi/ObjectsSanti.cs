@@ -701,13 +701,30 @@ public class ObjectsSanti : MonoBehaviourPun
         keylevel = _keylevel;
     }
 
-        [PunRPC]
+    [PunRPC]
     void UpdateJumpScareAnimationSanti()
     {
         if (!photonView.IsMine) return;
         if (santiAnimator == null)
             return;
         santiAnimator.SetTrigger("SantiPascualitaJumpscareTrigger");
+    }
+    [PunRPC]
+    void UpdateNinaJumpScareAnimationSanti()
+    {
+        if (!photonView.IsMine) return;
+        if (santiAnimator == null)
+            return;
+        santiAnimator.SetTrigger("SantiNinaJumpscareTrigger");
+    }
+
+    [PunRPC]
+    void ResetNinaJumpScareAnimationSanti()
+    {
+        if (!photonView.IsMine) return;
+        if (santiAnimator == null)
+            return;
+        santiAnimator.ResetTrigger("SantiNinaJumpscareTrigger");
     }
 
     [PunRPC]

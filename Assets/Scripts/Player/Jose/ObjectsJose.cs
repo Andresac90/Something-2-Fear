@@ -787,6 +787,23 @@ public class ObjectsJose : MonoBehaviourPun
     }
 
     [PunRPC]
+    void UpdateNinaJumpScareAnimationJose()
+    {
+        if (!photonView.IsMine) return;
+        if (joseAnimator == null)
+            return;
+        joseAnimator.SetTrigger("JoseNinaJumpscareTrigger");
+    }
+    [PunRPC]
+    void ResetNinaJumpScareAnimationJose()
+    {
+        if (!photonView.IsMine) return;
+        if (joseAnimator == null)
+            return;
+        joseAnimator.ResetTrigger("JoseNinaJumpscareTrigger");
+    }
+
+    [PunRPC]
     void ResetJumpScareAnimationJose()
     {   
         if (!photonView.IsMine) return;

@@ -137,6 +137,10 @@ MonoBehaviour:
   - UpdateJumpScareAnimationSanti
   - SyncRespawn
   - UpdateIdleAnimationNurse
+  - UpdateNinaJumpScareAnimationJose
+  - ResetNinaJumpScareAnimationJose
+  - ResetNinaJumpScareAnimationSanti
+  - UpdateNinaJumpScareAnimationSanti
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
