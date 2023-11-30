@@ -331,7 +331,7 @@ public class ObjectsSanti : MonoBehaviourPun
             QuestInjectionUI.SetActive(true);
             Timer.SetActive(true);
             textMeshProText = Timer.GetComponent<TextMeshProUGUI>();
-            textMeshProText.text = ((int)GameObject.Find("Jose(Clone)").GetComponent<Injection>().downTime - (int)this.GetComponent<Injection>().currentTime).ToString();
+            textMeshProText.text = ((int)this.GetComponent<Injection>().downTime - (int)this.GetComponent<Injection>().currentTime).ToString();
         }
         else
         {

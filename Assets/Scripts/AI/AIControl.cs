@@ -16,8 +16,8 @@ public class AIControl : MonoBehaviourPun
     public NavMeshAgent aiAgent;               //  Nav mesh agent component
     static float startWaitTime = 4;                 //  Wait time of every action
     public float timeToRotate = 1;                  //  Wait time when the enemy detect near the player without seeing
-    public float walkSpeed = 6;                     //  Walking speed, speed in the nav mesh agent
-    public float chaseSpeed = 9;                      //  Running speed
+    public float walkSpeed = 5;                     //  Walking speed, speed in the nav mesh agent
+    public float chaseSpeed = 7;                      //  Running speed
 
     public float viewRadius = 15;                   //  Radius of the enemy view
     public float viewAngle = 90;                    //  Angle of the enemy view
@@ -261,7 +261,6 @@ public class AIControl : MonoBehaviourPun
                 return;
             }
             isPlayerCaught = false;
-            Debug.Log("Pinga attack SANTI");
             SantiPV.RPC("SyncDowned", RpcTarget.All);
             GameManager.Instance.PascualitaJumpscare.Play();
             SantiPV.RPC("UpdateJumpScareAnimationSanti", RpcTarget.All);
@@ -281,7 +280,6 @@ public class AIControl : MonoBehaviourPun
             }
 
             isPlayerCaught = false;
-            Debug.Log("Pinga attack JOSE");
             JosePV.RPC("SyncDowned", RpcTarget.All);
             GameManager.Instance.PascualitaJumpscare.Play();
             JosePV.RPC("UpdateJumpScareAnimationJose", RpcTarget.All);
@@ -298,30 +296,6 @@ public class AIControl : MonoBehaviourPun
     private void Seen()
     {
         Stop();
-        //StartCoroutine(IsSeenTimer());
-        //if (stoppedTimer >= 0) // pascualita is stopped (cambiar wait time)
-        //{
-        //    Stop();
-        //    stoppedTimer -= Time.deltaTime;
-        //    seenCooldownTimer = defaultCooldownTime;
-        //}
-        //else //is on cooldown from being seen
-        //{   
-        //    if(seenCooldownTimer >= 0) //
-        //    {
-        //        Debug.Log("Player is controlled");
-        //        seenCooldownTimer -= Time.deltaTime;
-        //        Move(walkSpeed);
-        //        //isPatrol = true;
-        //        //aiAgent.SetDestination(waypoints[CurrentWaypointIndex].position);
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("Undo ivnecible pascuala");
-        //        stoppedTimer = defaultCooldownTime;
-        //        //TimeToRotate = timeToRotate;  
-        //    }
-        //}
     }
 
     private void OnAnimatorMove()
