@@ -40,8 +40,6 @@ public class ObjectsJose : MonoBehaviourPun
     [SerializeField]
     private GameObject InteractUI;
     [SerializeField]
-    private GameObject InteractHoldUI;
-    [SerializeField]
     private GameObject ReviveHoldUI;
     [SerializeField]
     private GameObject HealingUI;
@@ -836,6 +834,23 @@ public class ObjectsJose : MonoBehaviourPun
         if (joseAnimator == null)
             return;
         joseAnimator.SetTrigger("JosePascualitaJumpscareTrigger");
+    }
+
+    [PunRPC]
+    void UpdateNinaJumpScareAnimationJose()
+    {
+        if (!photonView.IsMine) return;
+        if (joseAnimator == null)
+            return;
+        joseAnimator.SetTrigger("JoseNinaJumpscareTrigger");
+    }
+    [PunRPC]
+    void ResetNinaJumpScareAnimationJose()
+    {
+        if (!photonView.IsMine) return;
+        if (joseAnimator == null)
+            return;
+        joseAnimator.ResetTrigger("JoseNinaJumpscareTrigger");
     }
 
     [PunRPC]

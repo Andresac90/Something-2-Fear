@@ -14,6 +14,7 @@ public class NinaAI : MonoBehaviour
 
     private bool isSantiActive = false;
     private bool isJoseActive = false;
+    private bool jumpscareActive = false;
 
     public UnityEngine.AI.NavMeshAgent aiAgent;               //  Nav mesh agent component
     static float startWaitTime = 4;                 //  Wait time of every action
@@ -132,6 +133,7 @@ public class NinaAI : MonoBehaviour
                     //aiAnimation.ResetTrigger("idle");
                     //aiAnimation.SetTrigger("sprint");
                     Chasing();
+                    Debug.Log("TOPO1");
                 }
                 else if (isPatrol && !isPlayerCaught)
                 {
@@ -139,11 +141,13 @@ public class NinaAI : MonoBehaviour
                     //aiAnimation.ResetTrigger("idle");
                     //aiAnimation.SetTrigger("walk");
                     Patroling();
+                    Debug.Log("TOPO2");
                 }
                 else if (isPlayerCaught)
                 {
                     Debug.Log("Attacking");
                     Attacking();
+                    Debug.Log("TOPO3");
                 }
             }
         }
@@ -177,7 +181,7 @@ public class NinaAI : MonoBehaviour
             {
                 WaitTime -= Time.deltaTime;
             }
-            if (Vector3.Distance(transform.position, closerPlayer.transform.position) < catchDistance)
+            if (Vector3.Distance(transform.position, closerPlayer.transform.position) < catchDistance && !players[0].GetComponent<Down>().isPlayerDowned)
             {
                 CaughtPlayer();
             }
@@ -230,11 +234,14 @@ public class NinaAI : MonoBehaviour
         {
             isPlayerCaught = false;
             SantiPV.RPC("SyncDowned", RpcTarget.All);
+            
+            
         }
         else if (closerPlayer == players[1])
         {
             isPlayerCaught = false;
             JosePV.RPC("SyncDowned", RpcTarget.All);
+
         }
 
         isPatrol = true;
@@ -298,10 +305,13 @@ public class NinaAI : MonoBehaviour
         PV.RPC("UpdateAttackingAnimation", RpcTarget.All);
         aiAgent.SetDestination(players[1].transform.position);
         aiAgent.speed = 0.8f;
-        if (Vector3.Distance(transform.position, players[1].transform.position) < catchDistance)
+        if (Vector3.Distance(transform.position, players[1].transform.position) < catchDistance && !jumpscareActive)
         {
-            JosePV.RPC("SyncDowned", RpcTarget.All);
+            //JosePV.RPC("SyncDowned", RpcTarget.All);
+            //SantiPV.RPC("SyncDowned", RpcTarget.All);
             isPlayerCaught = false;
+            
+            StartJoseJumpscare();
         }
     }
 
@@ -316,14 +326,21 @@ public class NinaAI : MonoBehaviour
         isPlayerCaught = true;
         if (closerPlayer == players[0])
         {
-            SantiPV.RPC("SyncDowned", RpcTarget.All);
+            //SantiPV.RPC("SyncDowned", RpcTarget.All);
             isPlayerCaught = false;
 
+            StartSantiJumpscare();
         }
         else if (closerPlayer == players[1])
         {
             JosePV.RPC("SyncDowned", RpcTarget.All);
             isPlayerCaught = false;
+
+            //GameManager.Instance.NinaJumpscare.Play();
+            //JosePV.RPC("UpdateNinaJumpScareAnimationJose", RpcTarget.All);
+            //ninaAnimator.SetBool("IsMoving", false);
+            //ninaAnimator.SetTrigger("IsAttacking");
+            //StartCoroutine(EndJoseJumpscare());
         }
         Patroling();
     }
@@ -421,6 +438,65 @@ public class NinaAI : MonoBehaviour
         }
 
         return close;
+    }
+
+    void StartSantiJumpscare()
+    {
+        GameManager.Instance.NinaJumpscare.Play();
+        SantiPV.RPC("UpdateNinaJumpScareAnimationSanti", RpcTarget.All);
+        ninaAnimator.SetBool("IsMoving", false);
+        ninaAnimator.SetTrigger("IsAttacking");
+        StartCoroutine(EndSantiJumpscare());
+    }
+
+    void StartJoseJumpscare()
+    {
+        jumpscareActive = true;
+        GameManager.Instance.NinaJumpscare.Play();
+        JosePV.RPC("UpdateNinaJumpScareAnimationJose", RpcTarget.All);
+        ninaAnimator.SetBool("IsMoving", false);
+        ninaAnimator.SetTrigger("IsAttacking");
+        StartCoroutine(EndJoseJumpscare());
+    }
+    IEnumerator EndSantiJumpscare()
+    {
+
+        yield return new WaitForSeconds(3.3f);
+        SantiPV.RPC("SyncDowned", RpcTarget.All);
+        ninaAnimator.ResetTrigger("IsAttacking");
+        ninaAnimator.SetBool("IsMoving", true);
+
+        //StartJoseJumpscare();
+        //SantiPV.RPC("ResetNinaJumpScareAnimationSanti", RpcTarget.All);
+        if (SantiPV.IsMine)
+        {
+            SantiPV.RPC("ResetNinaJumpScareAnimationSanti", RpcTarget.All);
+        }
+        if (attackingSanti)
+        {
+            StartJoseJumpscare();
+        }
+    }
+
+    IEnumerator EndJoseJumpscare()
+    {
+
+        yield return new WaitForSeconds(3.3f);
+        JosePV.RPC("SyncDowned", RpcTarget.All);
+        ninaAnimator.ResetTrigger("IsAttacking");
+        ninaAnimator.SetBool("IsMoving", true);
+        //jumpscareActive = false;
+        
+        
+        Debug.Log("Jump a ver");
+        if (JosePV.IsMine)
+        {
+            JosePV.RPC("ResetNinaJumpScareAnimationJose", RpcTarget.All);    
+        }
+        if (attackingJose)
+        {
+            StartSantiJumpscare();
+        }
     }
 
     [PunRPC]
