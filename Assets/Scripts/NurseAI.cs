@@ -68,6 +68,7 @@ public class NurseAI : MonoBehaviour
         PlayerPosition = Vector3.zero;
         isPatrol = true;
         isPlayerCaught = false;
+        nurseAnimator = GetComponent<Animator>();
 
 
         //Testing
@@ -109,15 +110,23 @@ public class NurseAI : MonoBehaviour
 
             if (isChasing && !isPlayerCaught)
             {
+                nurseAnimator.ResetTrigger("AttackTrigger");
+                nurseAnimator.SetBool("IsWalking", false);
+                nurseAnimator.SetBool("IsRunning", true);
                 Chasing();
             }
             else if (isPatrol && !isPlayerCaught)
             {
+                nurseAnimator.ResetTrigger("AttackTrigger");
+                nurseAnimator.SetBool("IsRunning", false);
+                nurseAnimator.SetBool("IsWalking", true);
                 Patroling();
             }
             else if (isPlayerCaught)
             {
-                Debug.Log("Attacking");
+                nurseAnimator.SetBool("IsWalking", false);
+                nurseAnimator.SetBool("IsRunning", false);
+                nurseAnimator.SetTrigger("AttackTrigger");
                 Attacking();
             }
         }
@@ -132,7 +141,6 @@ public class NurseAI : MonoBehaviour
 
         if (!isPlayerCaught)
         {
-            PV.RPC("UpdateRunningAnimationNurse", RpcTarget.All);
             Move(chaseSpeed);
             aiAgent.SetDestination(PlayerPosition);          //  set the destination of the enemy to the player location
         }
@@ -183,14 +191,15 @@ public class NurseAI : MonoBehaviour
             //  If the enemy arrives to the waypoint position then wait for a moment and go to the next
             if (WaitTime <= 0)
             {
-                PV.RPC("UpdateMoveAnimationNurse", RpcTarget.All);
                 NextPoint();
                 Move(walkSpeed);
                 WaitTime = Random.Range(minWaitTime, maxWiatTime);
             }
             else
             {
-                PV.RPC("UpdateIdleAnimationNurse", RpcTarget.All);
+                nurseAnimator.SetBool("IsWalking", false);
+                nurseAnimator.SetBool("IsRunning", false);
+                nurseAnimator.ResetTrigger("AttackTrigger");
                 //aiAnimation.ResetTrigger("sprint");
                 //aiAnimation.ResetTrigger("walk");
                 //aiAnimation.SetTrigger("idle");
@@ -239,7 +248,6 @@ public class NurseAI : MonoBehaviour
         isPlayerCaught = true;
         if (closerPlayer == players[0] && !GameManager.Instance.Injection)
         {
-            PV.RPC("UpdateAttackAnimationNurse", RpcTarget.All);
             SantiPV.RPC("UpdateInyectedAnimationSanti", RpcTarget.All);
             SantiPV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
             isPlayerCaught = false;
@@ -247,7 +255,6 @@ public class NurseAI : MonoBehaviour
         }
         else if (closerPlayer == players[1] && !GameManager.Instance.Injection)
         {
-            PV.RPC("UpdateAttackAnimationNurse", RpcTarget.All);
             JosePV.RPC("UpdateInyectedAnimationJose", RpcTarget.All);
             JosePV.RPC("updateInjected", RpcTarget.All, isPlayerCaught);
             isPlayerCaught = false;
@@ -374,7 +381,7 @@ public class NurseAI : MonoBehaviour
         {
             nurseAnimator.ResetTrigger("AttackTrigger");
             nurseAnimator.SetBool("IsRunning", false);
-            nurseAnimator.SetBool("IsMoving", true);
+            nurseAnimator.SetBool("IsWalking", true);
         }
     }
 
@@ -384,7 +391,7 @@ public class NurseAI : MonoBehaviour
         if (nurseAnimator != null)
         {
             nurseAnimator.ResetTrigger("AttackTrigger");
-            nurseAnimator.SetBool("IsMoving", false);
+            nurseAnimator.SetBool("IsWalking", false);
             nurseAnimator.SetBool("IsRunning", true);
         }
     }
@@ -394,7 +401,7 @@ public class NurseAI : MonoBehaviour
     {
         if (nurseAnimator != null)
         {
-            nurseAnimator.SetBool("IsMoving", false);
+            nurseAnimator.SetBool("IsWalking", false);
             nurseAnimator.SetBool("IsRunning", false);
             nurseAnimator.SetTrigger("AttackTrigger");
         }
@@ -405,7 +412,7 @@ public class NurseAI : MonoBehaviour
     {
         if (nurseAnimator != null)
         {
-            nurseAnimator.SetBool("IsMoving", false);
+            nurseAnimator.SetBool("IsWalking", false);
             nurseAnimator.SetBool("IsRunning", false);
             nurseAnimator.ResetTrigger("AttackTrigger");
         }
