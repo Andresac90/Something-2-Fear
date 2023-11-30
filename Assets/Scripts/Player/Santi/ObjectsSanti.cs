@@ -325,7 +325,7 @@ public class ObjectsSanti : MonoBehaviourPun
             InjectionUI.SetActive(false);
         }
 
-        //Timer UI
+        //Timer UI Injection
         if (this.GetComponent<Injection>().isPlayerInjected)
         {
             QuestInjectionUI.SetActive(true);
@@ -370,7 +370,7 @@ public class ObjectsSanti : MonoBehaviourPun
             ReviveHoldUI.SetActive(false);
             QuestPlayerDownedUI.SetActive(false);
             TimerDowned.SetActive(false);
-            textMeshProText2 = Timer.GetComponent<TextMeshProUGUI>();
+            textMeshProText2 = TimerDowned.GetComponent<TextMeshProUGUI>();
             textMeshProText2.text = ((int)this.GetComponent<Down>().currentTime).ToString();
         }
 
