@@ -40,9 +40,22 @@ public class ObjectsJose : MonoBehaviourPun
     [SerializeField]
     private GameObject InteractUI;
     [SerializeField]
+    private GameObject InteractHoldUI;
+    [SerializeField]
+    private GameObject ReviveHoldUI;
+    [SerializeField]
     private GameObject HealingUI;
+
+    [SerializeField]
+    private GameObject QuestInjectionUI;
+    [SerializeField]
+    private GameObject QuestPlayerDownedUI;
+
     [SerializeField]
     private GameObject Timer;
+    [SerializeField]
+    private GameObject TimerDowned;
+
     private GameObject LightBox;
     [SerializeField]
     private GameObject[] Buzzer;
@@ -73,6 +86,7 @@ public class ObjectsJose : MonoBehaviourPun
     private GameObject crouchUI;
 
     private TextMeshProUGUI textMeshProText;
+    private TextMeshProUGUI textMeshProText2;
     private RaycastHit hit;
     private int iBuzzer = 0;
     private Rigidbody ObjectRightRb;
@@ -219,16 +233,45 @@ public class ObjectsJose : MonoBehaviourPun
         //Timer UI
         if (this.GetComponent<Injection>().isPlayerInjected)
         {
+            QuestInjectionUI.SetActive(true);
             Timer.SetActive(true);
             textMeshProText = Timer.GetComponent<TextMeshProUGUI>();
             textMeshProText.text = ((int)this.GetComponent<Injection>().downTime - (int)this.GetComponent<Injection>().currentTime).ToString();
         }
         else
         {
+            QuestInjectionUI.SetActive(false);
             Timer.SetActive(false);
             textMeshProText = Timer.GetComponent<TextMeshProUGUI>();
             textMeshProText.text = ((int)this.GetComponent<Injection>().currentTime).ToString();
         }
+        //Timer down
+        if (this.GetComponent<Down>().santiDown)
+        {
+            QuestPlayerDownedUI.SetActive(true);
+            TimerDowned.SetActive(true);
+            textMeshProText = TimerDowned.GetComponent<TextMeshProUGUI>();
+            textMeshProText.text = ((int)this.GetComponent<Down>().deadTime - (int)this.GetComponent<Down>().currentTime).ToString();
+            //Revive Hold UI
+            if (hit.transform.gameObject.GetComponent<Down>().isPlayerDowned)
+            {
+                ReviveHoldUI.SetActive(true);
+            }
+            else
+            {
+                ReviveHoldUI.SetActive(false);
+            }
+        }
+        else
+        {
+            ReviveHoldUI.SetActive(false);
+            QuestPlayerDownedUI.SetActive(false);
+            TimerDowned.SetActive(false);
+            textMeshProText2 = Timer.GetComponent<TextMeshProUGUI>();
+            textMeshProText2.text = ((int)this.GetComponent<Down>().currentTime).ToString();
+        }
+
+         
 
         //UI Throw
         if (HasObjectRight == true && ThrowCheckR)

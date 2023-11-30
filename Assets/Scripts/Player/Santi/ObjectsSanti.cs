@@ -44,6 +44,10 @@ public class ObjectsSanti : MonoBehaviourPun
     [SerializeField]
     private GameObject InteractUI;
     [SerializeField]
+    private GameObject InteractHoldUI;
+    [SerializeField]
+    private GameObject ReviveHoldUI;
+    [SerializeField]
     private GameObject HealingUI;
 
     //MasterKeys
@@ -67,11 +71,19 @@ public class ObjectsSanti : MonoBehaviourPun
     private GameObject noKeyUI;
 
     [SerializeField]
+    private GameObject QuestInjectionUI;
+    [SerializeField]
+    private GameObject QuestPlayerDownedUI;
+
+    [SerializeField]
     private GameObject Timer;
+    [SerializeField]
+    private GameObject TimerDowned;
 
     private PhotonView PV;
     private Puzzle puzzle;
     private TextMeshProUGUI textMeshProText;
+    private TextMeshProUGUI textMeshProText2;
     private bool isInjectionSpawned = false;
     public bool puzzleCreated = false;
     public bool puzzleActive = false;
@@ -199,7 +211,7 @@ public class ObjectsSanti : MonoBehaviourPun
         }
         else if (hit.transform != null && hit.transform.tag == "Button")
         {
-            InteractUI.SetActive(true);
+            InteractHoldUI.SetActive(true);
             DropRightUI.SetActive(false);
         }
         else if (hit.transform != null && hit.transform.tag == "Box")
@@ -230,6 +242,7 @@ public class ObjectsSanti : MonoBehaviourPun
         else
         {
             InteractUI.SetActive(false);
+            InteractHoldUI.SetActive(false);
         }
 
         //MasterKeysUI
@@ -298,15 +311,42 @@ public class ObjectsSanti : MonoBehaviourPun
         //Timer UI
         if (this.GetComponent<Injection>().isPlayerInjected)
         {
+            QuestInjectionUI.SetActive(true);
             Timer.SetActive(true);
             textMeshProText = Timer.GetComponent<TextMeshProUGUI>();
             textMeshProText.text = ((int)this.GetComponent<Injection>().downTime - (int)this.GetComponent<Injection>().currentTime).ToString();
+            //Revive Hold UI
+            if (hit.transform.gameObject.GetComponent<Down>().isPlayerDowned)
+            {
+                ReviveHoldUI.SetActive(true);
+            }
+            else
+            {
+                ReviveHoldUI.SetActive(false);
+            }
         }
         else
         {
+            ReviveHoldUI.SetActive(false);
+            QuestInjectionUI.SetActive(false);
             Timer.SetActive(false);
             textMeshProText = Timer.GetComponent<TextMeshProUGUI>();
             textMeshProText.text = ((int)this.GetComponent<Injection>().currentTime).ToString();
+        }
+        //Timer down
+        if (this.GetComponent<Down>().joseDown)
+        {
+            QuestPlayerDownedUI.SetActive(true);
+            TimerDowned.SetActive(true);
+            textMeshProText = TimerDowned.GetComponent<TextMeshProUGUI>();
+            textMeshProText.text = ((int)this.GetComponent<Down>().deadTime - (int)this.GetComponent<Down>().currentTime).ToString();
+        }
+        else
+        {
+            QuestPlayerDownedUI.SetActive(false);
+            TimerDowned.SetActive(false);
+            textMeshProText2 = Timer.GetComponent<TextMeshProUGUI>();
+            textMeshProText2.text = ((int)this.GetComponent<Down>().currentTime).ToString();
         }
 
         if (puzzleActive)

@@ -11,10 +11,9 @@ public class Down : MonoBehaviourPun
     private Camera Camera;
     private CharacterController CharController;
     private GameObject playerCam;
-    private float currentTime = 0f;
-    [SerializeField]
-    private float deadTime;
-    private bool joseDown = false;
+    public float currentTime = 0f;
+    public float deadTime;
+    
     private bool areDead = false;
 
     public PhotonView downingIndicator;
@@ -23,6 +22,7 @@ public class Down : MonoBehaviourPun
 
     public bool isPlayerDowned;
     public bool santiDown = false;
+    public bool joseDown = false;
 
     public void Start()
     {
