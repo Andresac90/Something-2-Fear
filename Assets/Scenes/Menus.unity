@@ -961,7 +961,10 @@ MonoBehaviour:
     Q - Left item
 
     E
-    - Right item'
+    - Right item
+
+
+    V - Push to Talk'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 41b62478924a18c48a66c7500cb599a2, type: 2}
   m_sharedMaterial: {fileID: -220576845332572938, guid: 41b62478924a18c48a66c7500cb599a2, type: 2}
