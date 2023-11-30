@@ -13,13 +13,11 @@ public class Rejilla : MonoBehaviour
         {
             rejilla.SetBool("activate", true);
             rejilla.SetBool("rejillaActivate", true);
-            Debug.Log("true");
         }
         else if(!rejillaState)
         {
             rejilla.SetBool("rejillaActivate", false);
             rejilla.SetBool("activate", false);
-            Debug.Log("false");
         }
     }
 }

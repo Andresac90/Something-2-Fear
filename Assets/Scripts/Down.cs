@@ -11,10 +11,9 @@ public class Down : MonoBehaviourPun
     private Camera Camera;
     private CharacterController CharController;
     private GameObject playerCam;
-    private float currentTime = 0f;
-    [SerializeField]
-    private float deadTime;
-    private bool joseDown = false;
+    public float currentTime = 0f;
+    public float deadTime;
+    
     private bool areDead = false;
     private PhotonView PV;
 
@@ -24,6 +23,7 @@ public class Down : MonoBehaviourPun
 
     public bool isPlayerDowned;
     public bool santiDown = false;
+    public bool joseDown = false;
 
     public void Start()
     {
@@ -60,10 +60,12 @@ public class Down : MonoBehaviourPun
         if (name == "Santi(Clone)")
         {
             santiDown = down;
+            GameManager.Instance.SantiDowned = down;
         }
         else if (name == "Jose(Clone)")
         {
             joseDown = down;
+            GameManager.Instance.JoseDowned = down;
         }
     }
 

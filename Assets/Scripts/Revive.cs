@@ -91,6 +91,7 @@ public class Revive : MonoBehaviourPun
         }
         else
         {
+            canvas.gameObject.SetActive(false);
             reanimating = false;
             currentTime = 0f;
             fill.fillAmount = currentTime / objectTime;

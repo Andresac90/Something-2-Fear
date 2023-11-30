@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public AudioSource NurseRunning;
     public AudioSource DoorLocked;
     public AudioSource Whispers;
+    public AudioSource Note;
 
     public PlayableDirector ending;
 
@@ -67,6 +68,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     public bool tutorialJump = false;
     public bool tutorialRun = false;
     public bool tutorialCrouch = false;
+
+    public bool JoseDowned = false;
+    public bool SantiDowned = false;
 
     void Awake()
     {
