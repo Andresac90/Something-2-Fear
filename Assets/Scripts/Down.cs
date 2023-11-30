@@ -55,7 +55,8 @@ public class Down : MonoBehaviourPun
 
         if (joseDown && santiDown)
         {
-            PV.RPC("AreDead", RpcTarget.All);
+            // PV.RPC("AreDead", RpcTarget.All);
+            Die();
         }
     }
 
@@ -168,10 +169,15 @@ public class Down : MonoBehaviourPun
             // SoundFollow.Instance.gameObject.GetComponent<AudioSource>().Play();
 
             // change ever
-            // SceneManager.LoadScene("LoseScreen");
+            SceneManager.LoadScene("LoseScreen");
             // PhotonNetwork.LoadLevel("LoseScreen");
-            photonView.RPC("AreDead", RpcTarget.All);
+            
             // gameObject.SetActive(false);
+
+
+
+            // photonView.RPC("AreDead", RpcTarget.All);
+
             areDead = true;
         }
     }
