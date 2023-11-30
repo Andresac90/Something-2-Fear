@@ -52,6 +52,11 @@ public class Down : MonoBehaviourPun
             downingIndicator.RPC("SyncDisableDowningIndicator", RpcTarget.All);
             currentTime = 0f;
         }
+
+        if (joseDown && santiDown)
+        {
+            PV.RPC("AreDead", RpcTarget.All);
+        }
     }
 
     [PunRPC]
@@ -74,8 +79,6 @@ public class Down : MonoBehaviourPun
     {
         if (isPlayerDowned) return;
 
-        Debug.Log("downing");
-        // look for santiController or JoseMovement
         if (name == "Santi(Clone)")
         {
             PV.RPC("UpdateRightDown", RpcTarget.All, true);
