@@ -331,7 +331,7 @@ public class ObjectsSanti : MonoBehaviourPun
             QuestInjectionUI.SetActive(true);
             Timer.SetActive(true);
             textMeshProText = Timer.GetComponent<TextMeshProUGUI>();
-            textMeshProText.text = ((int)this.GetComponent<Injection>().downTime - (int)this.GetComponent<Injection>().currentTime).ToString();
+            textMeshProText.text = ((int)GameObject.Find("Jose(Clone)").GetComponent<Injection>().downTime - (int)this.GetComponent<Injection>().currentTime).ToString();
             //Revive Hold UI
             if (hit.transform.gameObject.GetComponent<Down>().isPlayerDowned)
             {
@@ -351,15 +351,33 @@ public class ObjectsSanti : MonoBehaviourPun
             textMeshProText.text = ((int)this.GetComponent<Injection>().currentTime).ToString();
         }
         //Timer down
-        if (this.GetComponent<Down>().joseDown)
+        if (GameManager.Instance.JoseDowned)
         {
             QuestPlayerDownedUI.SetActive(true);
             TimerDowned.SetActive(true);
             textMeshProText = TimerDowned.GetComponent<TextMeshProUGUI>();
-            textMeshProText.text = ((int)this.GetComponent<Down>().deadTime - (int)this.GetComponent<Down>().currentTime).ToString();
+            textMeshProText.text = ((int)GameObject.Find("Jose(Clone)").GetComponent<Down>().deadTime - (int)GameObject.Find("Jose(Clone)").GetComponent<Down>().currentTime).ToString();
+            //Revive Hold UI
+            if (hit.transform != null && hit.transform.tag == "PlayerJose")
+            {
+                if (hit.transform.gameObject.GetComponent<Down>().isPlayerDowned)
+                {
+                    ReviveHoldUI.SetActive(true);
+                }
+                else
+                {
+                    ReviveHoldUI.SetActive(false);
+                }
+
+            }
+            else
+            {
+                ReviveHoldUI.SetActive(false);
+            }
         }
         else
         {
+            ReviveHoldUI.SetActive(false);
             QuestPlayerDownedUI.SetActive(false);
             TimerDowned.SetActive(false);
             textMeshProText2 = Timer.GetComponent<TextMeshProUGUI>();

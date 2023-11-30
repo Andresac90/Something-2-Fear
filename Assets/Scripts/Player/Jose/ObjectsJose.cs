@@ -246,21 +246,30 @@ public class ObjectsJose : MonoBehaviourPun
             textMeshProText.text = ((int)this.GetComponent<Injection>().currentTime).ToString();
         }
         //Timer down
-        if (this.GetComponent<Down>().santiDown)
+        if (GameManager.Instance.SantiDowned)
         {
             QuestPlayerDownedUI.SetActive(true);
             TimerDowned.SetActive(true);
             textMeshProText = TimerDowned.GetComponent<TextMeshProUGUI>();
-            textMeshProText.text = ((int)this.GetComponent<Down>().deadTime - (int)this.GetComponent<Down>().currentTime).ToString();
+            textMeshProText.text = ((int)GameObject.Find("Santi(Clone)").GetComponent<Down>().deadTime - (int)GameObject.Find("Santi(Clone)").GetComponent<Down>().currentTime).ToString();
             //Revive Hold UI
-            if (hit.transform.gameObject.GetComponent<Down>().isPlayerDowned)
+            if (hit.transform != null && hit.transform.tag == "PlayerSanti")
             {
-                ReviveHoldUI.SetActive(true);
+                if (hit.transform.gameObject.GetComponent<Down>().isPlayerDowned)
+                {
+                    ReviveHoldUI.SetActive(true);
+                }
+                else
+                {
+                    ReviveHoldUI.SetActive(false);
+                }
+
             }
             else
             {
                 ReviveHoldUI.SetActive(false);
             }
+
         }
         else
         {

@@ -60,10 +60,12 @@ public class Down : MonoBehaviourPun
         if (name == "Santi(Clone)")
         {
             santiDown = down;
+            GameManager.Instance.SantiDowned = down;
         }
         else if (name == "Jose(Clone)")
         {
             joseDown = down;
+            GameManager.Instance.JoseDowned = down;
         }
     }
 
