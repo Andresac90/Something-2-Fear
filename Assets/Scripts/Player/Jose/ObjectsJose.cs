@@ -40,8 +40,6 @@ public class ObjectsJose : MonoBehaviourPun
     [SerializeField]
     private GameObject InteractUI;
     [SerializeField]
-    private GameObject InteractHoldUI;
-    [SerializeField]
     private GameObject ReviveHoldUI;
     [SerializeField]
     private GameObject HealingUI;
