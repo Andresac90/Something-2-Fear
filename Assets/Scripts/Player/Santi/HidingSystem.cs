@@ -21,8 +21,11 @@ public class HidingSystem : MonoBehaviour
     private GameObject enemy;
     private AIControl enemyAIP;
     private NurseAI enemyAIN;
+    private NinaAI enemyAINi;
     public bool hiding;
     public bool Pascuala;
+    public bool Nurse;
+    public bool Nina;
     public float loseDistance;
 
     void Awake()
@@ -36,10 +39,15 @@ public class HidingSystem : MonoBehaviour
             enemy = GameObject.Find("Pascualita");
             enemyAIP = enemy.GetComponent<AIControl>();
         }
-        else
+        else if (Nurse)
         {
             enemy = GameObject.Find("nurse");
             enemyAIN = enemy.GetComponent<NurseAI>();
+        }
+        else if (Nina)
+        {
+            enemy = GameObject.Find("Nina");
+            enemyAINi = enemy.GetComponent<NinaAI>();
         }
 
         
@@ -75,7 +83,6 @@ public class HidingSystem : MonoBehaviour
             hideText.SetActive(false);
             stopHideText.SetActive(true);
             player.transform.localPosition = new Vector3(HidePosition.position.x, HidePosition.position.y, HidePosition.position.z);
-            Debug.Log("hide");
             float distance = Vector3.Distance(enemy.transform.position, player.transform.position);
             if (distance > loseDistance)
             {
@@ -86,9 +93,16 @@ public class HidingSystem : MonoBehaviour
                         InRange(false);
                     }
                 }
-                else
+                else if (Nurse)
                 {
                     if (enemyAIN.playerInRange)
+                    {
+                        InRange(false);
+                    }
+                }
+                else if (Nina)
+                {
+                    if (enemyAINi.playerInRange)
                     {
                         InRange(false);
                     }
@@ -106,9 +120,9 @@ public class HidingSystem : MonoBehaviour
                 player.GetComponent<CharacterController>().enabled = true;
                 player.GetComponent<SantiController>().enabled = true;
                 player.transform.localPosition = new Vector3(OutPosition.position.x, OutPosition.position.y, OutPosition.position.z);
-                //Debug.Log("show");
                 yield return new WaitForSeconds(1.5f);
-                hiding = false;            }
+                hiding = false;            
+            }
         }   
     }
 
