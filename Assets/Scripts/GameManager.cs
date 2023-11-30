@@ -68,6 +68,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     public bool tutorialRun = false;
     public bool tutorialCrouch = false;
 
+    public bool JoseDowned = false;
+    public bool SantiDowned = false;
+
     void Awake()
     {
         MakeSingleton();   
